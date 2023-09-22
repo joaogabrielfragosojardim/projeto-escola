@@ -19,7 +19,7 @@ export class RegisterUseCase {
     roleId,
     userId,
   }: RegisterUseCaseRequest) {
-    const creator = await prisma.user.findUniqueOrThrow({
+    const creator = await prisma.user.findUnique({
       where: {
         id: userId,
       },
@@ -28,11 +28,19 @@ export class RegisterUseCase {
       },
     });
 
-    const roleExists = await prisma.role.findUniqueOrThrow({
+    if (!creator) {
+      throw new AppError('Usuário inexistente', 400);
+    }
+
+    const roleExists = await prisma.role.findUnique({
       where: {
         id: roleId,
       },
     });
+
+    if (!roleExists) {
+      throw new AppError('Cargo inexistente', 400);
+    }
 
     if (creator.role.level < roleExists.level) {
       throw new AppError(
@@ -48,10 +56,6 @@ export class RegisterUseCase {
 
     if (userWithSameEmail) {
       throw new AppError('Email já cadastrado', 400);
-    }
-
-    if (!roleExists) {
-      throw new AppError('Cargo inexistente', 400);
     }
 
     const password_hash = await hash(password, 6);
