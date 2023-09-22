@@ -1,6 +1,7 @@
 import { verify } from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+
 const secret = process.env.SECRET_KEY || '';
 
 export const verifyJWT = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -14,8 +15,7 @@ export const verifyJWT = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const { sub } = verify(token, secret);
-
-    req.body.userId = sub;
+    req.userId = sub;
   } catch (error) {
     return res.status(401).json({ message: 'Token inválido.' });
   }

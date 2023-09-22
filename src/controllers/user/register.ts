@@ -11,7 +11,7 @@ export async function register(req: NextApiRequest, res: NextApiResponse) {
       roleId: z.string().uuid(),
     });
 
-    const { userId } = req.body
+    const { userId } = req;
 
     const { name, email, password, roleId } = registerBodySchema.parse(
       req.body
@@ -24,7 +24,7 @@ export async function register(req: NextApiRequest, res: NextApiResponse) {
       email,
       password,
       roleId,
-      userId
+      userId,
     });
 
     return res.status(201).json(user);

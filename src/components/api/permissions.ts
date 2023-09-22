@@ -6,7 +6,7 @@ export const permissions = async (
   res: NextApiResponse,
   roles: string[]
 ) => {
-  const { userId } = req.body;
+  const { userId } = req;
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
