@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { verifyJWT } from './verifyJWT';
 import { AppError } from '@/errors';
 import { ZodError } from 'zod';
+import { permissions } from './permissions';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 type HttpHandler = (request: NextApiRequest, response: NextApiResponse) => void;
@@ -18,11 +19,16 @@ export const RouteHandler = async (
   request: NextApiRequest,
   response: NextApiResponse,
   handlers: RouteHandlerParams,
-  auth?: boolean
+  auth?: boolean,
+  roles?: string[]
 ) => {
   try {
     if (auth) {
       verifyJWT(request, response);
+    }
+
+    if (roles) {
+      permissions(request, response, roles);
     }
 
     const method = request.method as HttpMethod;
