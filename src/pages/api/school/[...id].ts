@@ -16,7 +16,7 @@ const authMethods: Record<HttpMethod, boolean> = {
   PUT: true,
 };
 
-const permissionRoles: Record<HttpMethod, Role[]> = {
+const permissionMethods: Record<HttpMethod, Role[]> = {
   GET: ['master', 'administrator'],
   POST: [],
   PUT: ['master', 'administrator'],
@@ -42,6 +42,6 @@ export default async function handler(
       PUT: editSchoolController.handle,
     },
     authMethods[method],
-    permissionRoles[method]
+    permissionMethods[method]
   );
 }
