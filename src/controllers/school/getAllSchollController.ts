@@ -6,8 +6,8 @@ export class GetAllSchoolsController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
     try {
       const getAllQuerySchema = z.object({
-        page: z.number().default(1),
-        perPage: z.number().default(10),
+        page: z.coerce.number().default(1),
+        perPage: z.coerce.number().default(10),
       });
 
       const { page, perPage } = getAllQuerySchema.parse(req.query);
