@@ -7,8 +7,8 @@ interface GetAllSchoolsUseCaseRequest {
 
 export class GetAllSchoolsUseCase {
   async execute({ page, perPage }: GetAllSchoolsUseCaseRequest) {
-    const skip = Number(perPage) * (Number(page) - 1);
-    const take = Number(perPage);
+    const skip = perPage * (page - 1);
+    const take = perPage;
 
     const [schools, total] = await prisma.$transaction([
       prisma.school.findMany({
@@ -26,6 +26,7 @@ export class GetAllSchoolsUseCase {
         page,
         totalPage,
         perPage,
+        total
       },
     };
   }
