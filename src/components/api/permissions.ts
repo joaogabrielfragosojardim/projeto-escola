@@ -1,10 +1,11 @@
+import type { NextApiRequest, NextApiResponse } from 'next/types';
+
 import { prisma } from '@/lib/prisma';
-import { NextApiRequest, NextApiResponse } from 'next';
 
 export const permissions = async (
   req: NextApiRequest,
   res: NextApiResponse,
-  roles: string[]
+  roles: string[],
 ) => {
   const { userId } = req;
 

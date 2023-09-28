@@ -9,7 +9,5 @@ export class DeleteSchoolUseCase {
     await prisma.school.delete({
       where: { id },
     });
-
-    return;
   }
 }

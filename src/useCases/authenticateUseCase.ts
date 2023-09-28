@@ -1,8 +1,9 @@
-import { AppError } from '@/errors';
-import { prisma } from '@/lib/prisma';
-import { User } from '@prisma/client';
+import type { User } from '@prisma/client';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+
+import { AppError } from '@/errors';
+import { prisma } from '@/lib/prisma';
 
 interface AuthenticateUseCaseRequest {
   email: string;

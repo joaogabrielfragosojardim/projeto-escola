@@ -1,8 +1,8 @@
-import { HttpMethod, RouteHandler } from '@/components/api/RouteHandler';
+import type { NextApiRequest, NextApiResponse } from 'next/types';
+
+import type { HttpMethod } from '@/components/api/RouteHandler';
+import { RouteHandler } from '@/components/api/RouteHandler';
 import { CreateUserController } from '@/controllers/user';
-
-
-import { NextApiRequest, NextApiResponse } from 'next';
 
 const authMethods: Record<HttpMethod, boolean> = {
   GET: false,
@@ -13,7 +13,7 @@ const authMethods: Record<HttpMethod, boolean> = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const method = req.method as HttpMethod;
 
@@ -25,6 +25,6 @@ export default async function handler(
     {
       POST: createUserController.handle,
     },
-    authMethods[method]
+    authMethods[method],
   );
 }

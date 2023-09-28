@@ -1,9 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-
-import { verifyJWT } from './verifyJWT';
-import { AppError } from '@/errors';
+import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { ZodError } from 'zod';
+
+import { AppError } from '@/errors';
+
 import { permissions } from './permissions';
+import { verifyJWT } from './verifyJWT';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 type HttpHandler = (request: NextApiRequest, response: NextApiResponse) => void;
@@ -20,14 +21,14 @@ export const RouteHandler = async (
   response: NextApiResponse,
   handlers: RouteHandlerParams,
   auth?: boolean,
-  roles?: string[]
+  roles?: string[],
 ) => {
   try {
     if (auth) {
       await verifyJWT(request, response);
     }
 
-    if (!!roles?.length) {
+    if (roles?.length) {
       await permissions(request, response, roles);
     }
 
@@ -38,7 +39,7 @@ export const RouteHandler = async (
       return response.status(405).send('Method not allowed');
     }
 
-    return await handler!(request, response);
+    return handler!(request, response);
   } catch (error) {
     if (error instanceof AppError) {
       return response.status(error.status).send({ message: error.message });

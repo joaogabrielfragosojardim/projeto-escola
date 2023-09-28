@@ -1,6 +1,7 @@
-import { AuthenticateUseCase } from '@/useCases/authenticateUseCase';
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { z } from 'zod';
+
+import { AuthenticateUseCase } from '@/useCases/authenticateUseCase';
 
 export class AuthenticateController {
   async handle(req: NextApiRequest, res: NextApiResponse) {

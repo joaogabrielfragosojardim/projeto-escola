@@ -1,8 +1,9 @@
-import { HttpMethod, RouteHandler } from '@/components/api/RouteHandler';
-import { AuthenticateController } from '@/controllers/auth';
-import { Role } from '@/types/roles';
+import type { NextApiRequest, NextApiResponse } from 'next/types';
 
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { HttpMethod } from '@/components/api/RouteHandler';
+import { RouteHandler } from '@/components/api/RouteHandler';
+import { AuthenticateController } from '@/controllers/auth';
+import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
   GET: false,
@@ -20,7 +21,7 @@ const permissionMethods: Record<HttpMethod, Role[]> = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const method = req.method as HttpMethod;
 
@@ -33,6 +34,6 @@ export default async function handler(
       POST: authenticateController.handle,
     },
     authMethods[method],
-    permissionMethods[method]
+    permissionMethods[method],
   );
 }

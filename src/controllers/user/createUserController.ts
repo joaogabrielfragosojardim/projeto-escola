@@ -1,5 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { z } from 'zod';
+
 import { CreateUserUseCase } from '@/useCases/createUserUseCase';
 
 export class CreateUserController {
@@ -15,7 +16,7 @@ export class CreateUserController {
       const { userId: creatorId } = req;
 
       const { name, email, password, roleId } = registerBodySchema.parse(
-        req.body
+        req.body,
       );
 
       const createUserUseCase = new CreateUserUseCase();

@@ -1,6 +1,5 @@
 import { verify } from 'jsonwebtoken';
-import { NextApiRequest, NextApiResponse } from 'next';
-
+import type { NextApiRequest, NextApiResponse } from 'next/types';
 
 const secret = process.env.SECRET_KEY || '';
 

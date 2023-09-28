@@ -1,7 +1,7 @@
+import { hash } from 'bcryptjs';
+
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
-
-import { hash } from 'bcryptjs';
 
 interface CreateUserUseCaseRequest {
   name: string;
@@ -45,7 +45,7 @@ export class CreateUserUseCase {
     if (creator.role.level < roleExists.level) {
       throw new AppError(
         'Você não tem permissão para cadastrar este tipo de usuário',
-        403
+        403,
       );
     }
     const userWithSameEmail = await prisma.user.findUnique({
@@ -58,13 +58,13 @@ export class CreateUserUseCase {
       throw new AppError('Email já cadastrado', 400);
     }
 
-    const password_hash = await hash(password, 6);
+    const passwordHash = await hash(password, 6);
 
     const user = await prisma.user.create({
       data: {
         name,
         email,
-        password: password_hash,
+        password: passwordHash,
         roleId,
       },
     });

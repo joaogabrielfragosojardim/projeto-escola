@@ -1,6 +1,7 @@
-import { GetAllSchoolsUseCase } from '@/useCases/getAllSchoolsUseCase';
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { z } from 'zod';
+
+import { GetAllSchoolsUseCase } from '@/useCases/getAllSchoolsUseCase';
 
 export class GetAllSchoolsController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
@@ -14,7 +15,7 @@ export class GetAllSchoolsController {
       });
 
       const { page, perPage, name, city, state } = getAllQuerySchema.parse(
-        req.query
+        req.query,
       );
 
       const getAllSchoolsUseCase = new GetAllSchoolsUseCase();

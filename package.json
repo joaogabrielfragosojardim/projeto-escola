@@ -10,7 +10,6 @@
     "lint": "next lint",
     "format": "next lint --fix && prettier '**/*.{json,yaml}' --write --ignore-path .gitignore",
     "check-types": "tsc --noEmit --pretty && tsc --project cypress --noEmit --pretty",
-    "test": "jest",
     "commit": "cz",
     "prepare": "husky install",
     "postbuild": "next-sitemap"

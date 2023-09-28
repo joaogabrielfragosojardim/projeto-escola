@@ -1,13 +1,13 @@
-import { HttpMethod, RouteHandler } from '@/components/api/RouteHandler';
+import type { NextApiRequest, NextApiResponse } from 'next/types';
+
+import type { HttpMethod } from '@/components/api/RouteHandler';
+import { RouteHandler } from '@/components/api/RouteHandler';
 import {
   DeleteSchoolController,
   EditSchoolController,
   GetOneSchoolController,
 } from '@/controllers/school';
-
-import { Role } from '@/types/roles';
-
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
   GET: true,
@@ -25,7 +25,7 @@ const permissionMethods: Record<HttpMethod, Role[]> = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const getOneSchoolsController = new GetOneSchoolController();
   const deleteSchoolController = new DeleteSchoolController();
@@ -42,6 +42,6 @@ export default async function handler(
       PUT: editSchoolController.handle,
     },
     authMethods[method],
-    permissionMethods[method]
+    permissionMethods[method],
   );
 }
