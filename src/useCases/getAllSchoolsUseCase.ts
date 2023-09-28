@@ -3,10 +3,19 @@ import { prisma } from '@/lib/prisma';
 interface GetAllSchoolsUseCaseRequest {
   perPage: number;
   page: number;
+  name?: string;
+  city?: string;
+  state?: string;
 }
 
 export class GetAllSchoolsUseCase {
-  async execute({ page, perPage }: GetAllSchoolsUseCaseRequest) {
+  async execute({
+    page,
+    perPage,
+    name,
+    state,
+    city,
+  }: GetAllSchoolsUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
 
@@ -14,8 +23,19 @@ export class GetAllSchoolsUseCase {
       prisma.school.findMany({
         skip,
         take,
+        where: {
+          name: { contains: name, mode: 'insensitive' },
+          city: { contains: city, mode: 'insensitive' },
+          state: { contains: state, mode: 'insensitive' },
+        },
       }),
-      prisma.school.count(),
+      prisma.school.count({
+        where: {
+          name: { contains: name, mode: 'insensitive' },
+          city: { contains: city, mode: 'insensitive' },
+          state: { contains: state, mode: 'insensitive' },
+        },
+      }),
     ]);
 
     const totalPage = Math.ceil(total / take);
@@ -26,7 +46,7 @@ export class GetAllSchoolsUseCase {
         page,
         totalPage,
         perPage,
-        total
+        total,
       },
     };
   }
