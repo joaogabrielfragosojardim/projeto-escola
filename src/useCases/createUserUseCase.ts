@@ -3,25 +3,25 @@ import { prisma } from '@/lib/prisma';
 
 import { hash } from 'bcryptjs';
 
-interface RegisterUseCaseRequest {
+interface CreateUserUseCaseRequest {
   name: string;
   email: string;
   password: string;
   roleId: string;
-  userId: string;
+  creatorId: string;
 }
 
-export class RegisterUseCase {
+export class CreateUserUseCase {
   async execute({
     name,
     email,
     password,
     roleId,
-    userId,
-  }: RegisterUseCaseRequest) {
+    creatorId,
+  }: CreateUserUseCaseRequest) {
     const creator = await prisma.user.findUnique({
       where: {
-        id: userId,
+        id: creatorId,
       },
       include: {
         role: true,

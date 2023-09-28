@@ -1,19 +1,20 @@
 import { HttpMethod, RouteHandler } from '@/components/api/RouteHandler';
-import { AuthenticateController } from '@/controllers/auth';
+import { CreateSchoolController, GetAllSchoolsController } from '@/controllers/school';
+
 import { Role } from '@/types/roles';
 
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 const authMethods: Record<HttpMethod, boolean> = {
-  GET: false,
-  POST: false,
+  GET: true,
+  POST: true,
   DELETE: false,
   PUT: false,
 };
 
 const permissionMethods: Record<HttpMethod, Role[]> = {
   GET: [],
-  POST: [],
+  POST: ['master', 'administrator'],
   PUT: [],
   DELETE: [],
 };
@@ -22,15 +23,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const method = req.method as HttpMethod;
+  const getAllSchoolsController = new GetAllSchoolsController();
+  const createSchoolController = new CreateSchoolController();
 
-  const authenticateController = new AuthenticateController();
+  const method = req.method as HttpMethod;
 
   await RouteHandler(
     req,
     res,
     {
-      POST: authenticateController.handle,
+      GET: getAllSchoolsController.handle,
+      POST: createSchoolController.handle,
     },
     authMethods[method],
     permissionMethods[method]

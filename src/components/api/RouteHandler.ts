@@ -5,7 +5,7 @@ import { AppError } from '@/errors';
 import { ZodError } from 'zod';
 import { permissions } from './permissions';
 
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 type HttpHandler = (request: NextApiRequest, response: NextApiResponse) => void;
 
 interface RouteHandlerParams {
@@ -24,11 +24,11 @@ export const RouteHandler = async (
 ) => {
   try {
     if (auth) {
-      verifyJWT(request, response);
+      await verifyJWT(request, response);
     }
 
-    if (roles) {
-      permissions(request, response, roles);
+    if (!!roles?.length) {
+      await permissions(request, response, roles);
     }
 
     const method = request.method as HttpMethod;
