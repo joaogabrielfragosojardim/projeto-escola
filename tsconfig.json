@@ -49,6 +49,7 @@
   },
   "exclude": ["./out/**/*", "./node_modules/**/*", "cypress/**/*.ts"],
   "include": [
+    "@types",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",

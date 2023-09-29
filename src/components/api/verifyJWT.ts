@@ -14,7 +14,7 @@ export const verifyJWT = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const { sub } = verify(token, secret);
-    req.userId = sub;
+    req.userId = sub as string;
   } catch (error) {
     return res.status(401).json({ message: 'Token inválido.' });
   }
