@@ -39,7 +39,7 @@ export const RouteHandler = async (
       return response.status(405).send('Method not allowed');
     }
 
-    return handler!(request, response);
+    await handler!(request, response);
   } catch (error) {
     if (error instanceof AppError) {
       return response.status(error.status).send({ message: error.message });
