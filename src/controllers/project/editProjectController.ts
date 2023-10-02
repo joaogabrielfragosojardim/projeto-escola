@@ -1,6 +1,8 @@
-import { EditProjectUseCase } from '@/useCases/editProjectUseCase';
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
+
+import { EditProjectUseCase } from '@/useCases/editProjectUseCase';
+
 export class EditProjectController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
     try {

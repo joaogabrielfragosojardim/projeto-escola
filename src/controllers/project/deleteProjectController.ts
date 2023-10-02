@@ -1,7 +1,7 @@
-import { DeleteProjectUseCase } from '@/useCases/deleteProjectUseCase';
-
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
+
+import { DeleteProjectUseCase } from '@/useCases/deleteProjectUseCase';
 
 export class DeleteProjectController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
