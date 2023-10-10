@@ -1,4 +1,4 @@
-import { useUser } from "@/store/user/context";
+import { useUser } from '@/store/user/context';
 
 const Dashboard = () => {
   const user = useUser();
