@@ -11,12 +11,15 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  name     String
-  email    String @unique
-  password String
-  roleId   String
-  role     Role   @relation(fields: [roleId], references: [id])
+  id          String        @id @default(uuid())
+  name        String
+  email       String        @unique
+  password    String
+  roleId      String
+  role        Role          @relation(fields: [roleId], references: [id])
+  Student     Student[]
+  Teacher     Teacher[]
+  Coordinator Coordinator[]
 }
 
 model Role {
@@ -33,14 +36,56 @@ model School {
   city  String
   state String
 
-  project   Project @relation(fields: [projectId], references: [id])
-  projectId String
+  project     Project       @relation(fields: [projectId], references: [id])
+  projectId   String
+  Coordinator Coordinator[]
+  Teacher     Teacher[]
+  Student     Student[]
 }
 
 model Project {
-  id             String   @id @default(uuid())
+  id             String  @id @default(uuid())
   name           String
   visualIdentity Json
   about          String
-  Schools        School[]
+  validated      Boolean @default(false)
+
+  Schools School[]
+}
+
+model Student {
+  id           String   @id @default(uuid())
+  userId       String
+  teacherId    String
+  schoolId     String
+  birtday      DateTime
+  registration String   @unique
+
+  user    User    @relation(fields: [userId], references: [id])
+  school  School  @relation(fields: [schoolId], references: [id])
+  teacher Teacher @relation(fields: [teacherId], references: [id])
+}
+
+model Teacher {
+  id            String @id @default(uuid())
+  schoolId      String
+  userId        String
+  telephone     String
+  coordinatorId String
+
+  school      School      @relation(fields: [schoolId], references: [id])
+  user        User        @relation(fields: [userId], references: [id])
+  coordinator Coordinator @relation(fields: [coordinatorId], references: [id])
+  Student     Student[]
+}
+
+model Coordinator {
+  id        String @id @default(uuid())
+  userId    String
+  telephone String
+  schoolId  String
+
+  user    User      @relation(fields: [userId], references: [id])
+  school  School    @relation(fields: [schoolId], references: [id])
+  Teacher Teacher[]
 }
