@@ -1,4 +1,4 @@
-import type { User } from '@prisma/client';
+import type { Role, User } from '@prisma/client';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
@@ -11,7 +11,9 @@ interface AuthenticateUseCaseRequest {
 }
 
 interface AuthenticateUseCaseResponse {
-  user: Pick<User, 'name' | 'email' | 'id'>;
+  user: {
+    role: Pick<Role, 'name' | 'description'>;
+  } & Pick<User, 'name' | 'email' | 'id'>;
   token: string;
 }
 
@@ -26,8 +28,18 @@ export class AuthenticateUseCase {
       where: {
         email,
       },
-      include: {
-        role: true,
+      select: {
+        id: true,
+        roleId: false,
+        name: true,
+        email: true,
+        password: true,
+        role: {
+          select: {
+            name: true,
+            description: true,
+          },
+        },
       },
     });
 
@@ -40,6 +52,9 @@ export class AuthenticateUseCase {
     if (!passwordMatch) {
       throw new AppError('E-mail ou senha inválidos');
     }
+
+    // @ts-ignore
+    user.password = undefined;
 
     const token = sign({}, secret, {
       subject: user.id,
