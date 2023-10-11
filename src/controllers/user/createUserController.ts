@@ -31,8 +31,6 @@ export class CreateUserController {
 
       return res.status(201).json(user);
     } catch (error) {
-      console.log(error);
-
       throw error;
     }
   }
