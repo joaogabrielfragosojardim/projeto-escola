@@ -2,7 +2,6 @@ import type { NextApiRequest, NextApiResponse } from 'next/types';
 
 import { GetUserUseCase } from '@/useCases/getUserUserUseCase';
 
-
 export class GetUserController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
     try {

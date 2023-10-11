@@ -7,11 +7,7 @@ interface EditCoordinatorUseCaseRequest {
 }
 
 export class EditCoordinatorUseCase {
-  async execute({
-    id,
-    schoolId,
-    telephone,
-  }: EditCoordinatorUseCaseRequest) {
+  async execute({ id, schoolId, telephone }: EditCoordinatorUseCaseRequest) {
     const coordinator = await prisma.coordinator.update({
       where: { id },
       data: {
