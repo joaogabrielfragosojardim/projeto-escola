@@ -31,24 +31,24 @@ model Role {
 }
 
 model School {
-  id    String @id @default(uuid())
-  name  String
-  city  String
-  state String
+  id        String @id @default(uuid())
+  name      String
+  city      String
+  state     String
+  projectId String
 
   project     Project       @relation(fields: [projectId], references: [id])
-  projectId   String
   Coordinator Coordinator[]
   Teacher     Teacher[]
   Student     Student[]
+  Class       Class[]
 }
 
 model Project {
-  id             String  @id @default(uuid())
+  id             String @id @default(uuid())
   name           String
   visualIdentity Json
   about          String
-  validated      Boolean @default(false)
 
   Schools School[]
 }
@@ -60,23 +60,27 @@ model Student {
   schoolId     String
   birtday      DateTime
   registration String   @unique
+  classId      String
 
   user    User    @relation(fields: [userId], references: [id])
   school  School  @relation(fields: [schoolId], references: [id])
   teacher Teacher @relation(fields: [teacherId], references: [id])
+  Class   Class   @relation(fields: [classId], references: [id])
 }
 
 model Teacher {
-  id            String @id @default(uuid())
+  id            String  @id @default(uuid())
   schoolId      String
   userId        String
   telephone     String
+  validated     Boolean @default(false)
   coordinatorId String
 
   school      School      @relation(fields: [schoolId], references: [id])
   user        User        @relation(fields: [userId], references: [id])
   coordinator Coordinator @relation(fields: [coordinatorId], references: [id])
   Student     Student[]
+  Class       Class[]
 }
 
 model Coordinator {
@@ -88,4 +92,24 @@ model Coordinator {
   user    User      @relation(fields: [userId], references: [id])
   school  School    @relation(fields: [schoolId], references: [id])
   Teacher Teacher[]
+}
+
+model Class {
+  id        String @id @default(uuid())
+  name      String
+  year      Int
+  gradeId   String
+  schoolId  String
+  teacherId String
+
+  school   School    @relation(fields: [schoolId], references: [id])
+  teacher  Teacher   @relation(fields: [teacherId], references: [id])
+  grade    Grade     @relation(fields: [gradeId], references: [id])
+  students Student[]
+}
+
+model Grade {
+  id    String  @id @default(uuid())
+  name  String
+  Class Class[]
 }
