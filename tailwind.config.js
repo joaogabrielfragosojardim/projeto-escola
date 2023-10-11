@@ -16,7 +16,10 @@ module.exports = {
     },
     colors: {
       main: '#5C6189',
-      complement: '#4D4D4D',
+      complement: {
+        100: '#D9D9D9',
+        200: '#4D4D4D',
+      },
     },
   },
   plugins: [],

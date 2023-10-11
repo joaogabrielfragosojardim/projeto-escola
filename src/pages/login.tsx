@@ -1,7 +1,7 @@
-import Cookies from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { setCookie } from 'nookies';
 import { useForm } from 'react-hook-form';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useMutation } from 'react-query';
@@ -40,13 +40,20 @@ const Login = () => {
       );
     },
     onSuccess: (data) => {
-      const { token, user } = data;
-      Cookies.set('token', token);
+      const {
+        token,
+        user: { id, name, email, role },
+      } = data;
+      setCookie(null, 'token', token);
       axiosApi.defaults.headers.Authorization = `Bearer ${token}`;
       dispatch({
         type: UserTypesEnum.ADD_USER,
-        name: user.name,
-        email: user.email,
+        payload: {
+          id,
+          name,
+          email,
+          role,
+        },
       });
       router.push('/dashboard');
     },
@@ -105,7 +112,7 @@ const Login = () => {
           <div className="mt-[42px] flex w-full items-center justify-center">
             <button
               type="submit"
-              className="mx-[auto] flex w-[45%] items-center justify-center gap-[16px] rounded-[5px] bg-main py-[16px] text-[white]"
+              className="mx-[auto] flex w-[45%] items-center justify-center gap-[16px] rounded-[5px] bg-main py-[16px] text-complement-100"
             >
               Entrar
               {isLoading && (

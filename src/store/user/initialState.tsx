@@ -1,6 +1,10 @@
-export const initialState = {
+import type { User } from '@/types/user';
+
+export const initialState: User = {
   id: '',
   name: '',
   email: '',
-  roleId: '',
+  role: {
+    name: '',
+  },
 };

@@ -21,7 +21,7 @@ export const InputThemed = (props: InputThemedProps) => {
       {label && <label htmlFor={name}>{label}</label>}
       <input
         {...props}
-        className="w-full rounded-[5px] border-[1px] border-solid border-complement p-[8px] text-[16px]"
+        className="w-full rounded-[5px] border-[1px] border-solid border-complement-200 p-[8px] text-[16px]"
         id={name}
         {...register(name, validations)}
       />

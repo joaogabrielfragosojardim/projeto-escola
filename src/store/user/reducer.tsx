@@ -1,16 +1,13 @@
 import type { User } from '@/types/user';
 
+import type { UserAction } from './types';
 import { UserTypesEnum } from './types';
 
-interface UserAction extends User {
-  type: UserTypesEnum;
-}
-
-export const userReducer = (_: any, action: UserAction) => {
+export const userReducer = (state: User, action: UserAction) => {
   switch (action.type) {
     case UserTypesEnum.ADD_USER: {
-      const { name, email } = action;
-      return { name, email };
+      const { id, name, email, role } = action.payload;
+      return { id, name, email, role };
     }
     case UserTypesEnum.REMOVE_USER: {
       return {};
