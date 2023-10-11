@@ -11,12 +11,15 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  name     String
-  email    String @unique
-  password String
-  roleId   String
-  role     Role   @relation(fields: [roleId], references: [id])
+  id          String        @id @default(uuid())
+  name        String
+  email       String        @unique
+  password    String
+  roleId      String
+  role        Role          @relation(fields: [roleId], references: [id])
+  Student     Student[]
+  Teacher     Teacher[]
+  Coordinator Coordinator[]
 }
 
 model Role {
@@ -28,19 +31,85 @@ model Role {
 }
 
 model School {
-  id    String @id @default(uuid())
-  name  String
-  city  String
-  state String
-
-  project   Project @relation(fields: [projectId], references: [id])
+  id        String @id @default(uuid())
+  name      String
+  city      String
+  state     String
   projectId String
+
+  project     Project       @relation(fields: [projectId], references: [id])
+  Coordinator Coordinator[]
+  Teacher     Teacher[]
+  Student     Student[]
+  Class       Class[]
 }
 
 model Project {
-  id             String   @id @default(uuid())
+  id             String @id @default(uuid())
   name           String
   visualIdentity Json
   about          String
-  Schools        School[]
+
+  Schools School[]
+}
+
+model Student {
+  id           String   @id @default(uuid())
+  userId       String
+  teacherId    String
+  schoolId     String
+  birtday      DateTime
+  registration String   @unique
+  classId      String
+
+  user    User    @relation(fields: [userId], references: [id])
+  school  School  @relation(fields: [schoolId], references: [id])
+  teacher Teacher @relation(fields: [teacherId], references: [id])
+  Class   Class   @relation(fields: [classId], references: [id])
+}
+
+model Teacher {
+  id            String  @id @default(uuid())
+  schoolId      String
+  userId        String
+  telephone     String
+  validated     Boolean @default(false)
+  coordinatorId String
+
+  school      School      @relation(fields: [schoolId], references: [id])
+  user        User        @relation(fields: [userId], references: [id])
+  coordinator Coordinator @relation(fields: [coordinatorId], references: [id])
+  Student     Student[]
+  Class       Class[]
+}
+
+model Coordinator {
+  id        String @id @default(uuid())
+  userId    String
+  telephone String
+  schoolId  String
+
+  user    User      @relation(fields: [userId], references: [id])
+  school  School    @relation(fields: [schoolId], references: [id])
+  Teacher Teacher[]
+}
+
+model Class {
+  id        String @id @default(uuid())
+  name      String
+  year      Int
+  gradeId   String
+  schoolId  String
+  teacherId String
+
+  school   School    @relation(fields: [schoolId], references: [id])
+  teacher  Teacher   @relation(fields: [teacherId], references: [id])
+  grade    Grade     @relation(fields: [gradeId], references: [id])
+  students Student[]
+}
+
+model Grade {
+  id    String  @id @default(uuid())
+  name  String
+  Class Class[]
 }
