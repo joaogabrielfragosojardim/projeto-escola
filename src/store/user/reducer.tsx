@@ -3,7 +3,7 @@ import type { User } from '@/types/user';
 import type { UserAction } from './types';
 import { UserTypesEnum } from './types';
 
-export const userReducer = (state: User, action: UserAction) => {
+export const userReducer = (_: User, action: UserAction) => {
   switch (action.type) {
     case UserTypesEnum.ADD_USER: {
       const { id, name, email, role } = action.payload;
