@@ -1,7 +1,14 @@
 import { GoPeople } from 'react-icons/go';
-import { PiHouseLight, PiStackSimpleLight, PiFolderMinusLight, PiRulerLight } from 'react-icons/pi';
-import { RxPerson } from 'react-icons/rx';
 import { IoSchoolOutline } from 'react-icons/io5';
+import {
+  PiBookBookmarkLight,
+  PiFolderMinusLight,
+  PiHouseLight,
+  PiNotePencilLight,
+  PiRulerLight,
+  PiStackSimpleLight,
+} from 'react-icons/pi';
+import { RxPerson } from 'react-icons/rx';
 
 export const sideNavMenuRoutes = ({
   isAdmMaster,
@@ -29,7 +36,7 @@ export const sideNavMenuRoutes = ({
     },
     {
       name: 'Cadastrar',
-      icon: <RxPerson size={25} />,
+      icon: <PiNotePencilLight size={25} />,
       route: '',
       userCanView: true,
       children: [
@@ -46,12 +53,6 @@ export const sideNavMenuRoutes = ({
           userCanView: isAdmMaster || isAdm,
         },
         {
-          name: 'Projeto',
-          icon: <PiStackSimpleLight size={25} />,
-          route: '/forms/student',
-          userCanView: isAdmMaster || isAdm,
-        },
-        {
           name: 'Educador Social',
           icon: <PiRulerLight size={25} />,
           route: '/forms/educator',
@@ -62,6 +63,18 @@ export const sideNavMenuRoutes = ({
           icon: <IoSchoolOutline size={25} />,
           route: '/forms/student',
           userCanView: isAdmMaster || isAdm || isCoordinator || isTeacher,
+        },
+        {
+          name: 'Escola',
+          icon: <PiBookBookmarkLight size={25} />,
+          route: '/forms/school',
+          userCanView: isAdmMaster || isAdm,
+        },
+        {
+          name: 'Projeto',
+          icon: <PiStackSimpleLight size={25} />,
+          route: '/forms/project',
+          userCanView: isAdmMaster || isAdm,
         },
       ],
     },

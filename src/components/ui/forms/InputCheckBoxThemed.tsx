@@ -6,29 +6,30 @@ import type {
 } from 'react-hook-form';
 
 interface InputThemedProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
+  label: string;
   register: UseFormRegister<any>;
   name: string;
   validations?: RegisterOptions<any, string>;
   error?: FieldError | undefined;
 }
 
-export const InputThemed = (props: InputThemedProps) => {
+export const InputCheckBoxThemed = (props: InputThemedProps) => {
   const { label, register, name, validations, error } = props;
 
   return (
-    <div className="flex flex-col gap-[16px]">
-      {label && (
-        <label htmlFor={name} className="text-[20px] text-complement-200">
+    <div>
+      <div className="flex items-center gap-[16px]">
+        <input
+          {...props}
+          type="checkbox"
+          className="h-[26px] w-[26px] rounded-[5px] text-[14px]"
+          id={name}
+          {...register(name, validations)}
+        />
+        <label htmlFor={name} className="text-[14px] text-complement-200">
           {label}
         </label>
-      )}
-      <input
-        {...props}
-        className="w-full rounded-[5px] border-[1px] border-solid border-complement-200 p-[8px] text-[16px]"
-        id={name}
-        {...register(name, validations)}
-      />
+      </div>
       {error && (
         <span className="mt-[-6px] text-[12px] text-[red]">
           {error.message}

@@ -3,11 +3,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { setCookie } from 'nookies';
 import { useForm } from 'react-hook-form';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { TbLoader } from 'react-icons/tb';
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
+import { InputCheckBoxThemed } from '@/components/ui/forms/InputCheckBoxThemed';
+import { InputPasswordThemed } from '@/components/ui/forms/InputPasswordThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { useUserDispatch } from '@/store/user/context';
 import { UserTypesEnum } from '@/store/user/types';
@@ -17,6 +19,7 @@ import type { UserAuth } from '@/types/userAuth';
 interface ILoginForm {
   email: string;
   password: string;
+  rememberMe: boolean;
 }
 
 const Login = () => {
@@ -87,7 +90,7 @@ const Login = () => {
             error={errors.email}
           />
           <div className="mt-[32px]">
-            <InputThemed
+            <InputPasswordThemed
               label="Senha"
               type="password"
               placeholder="********"
@@ -104,7 +107,12 @@ const Login = () => {
             />
           </div>
           <div className="mt-[16px] flex justify-between">
-            {/* <InputThemed type="checkbox" label="Lembrar de mim?" /> */}
+            <InputCheckBoxThemed
+              type="checkbox"
+              label="Lembrar de mim?"
+              register={register}
+              name="rememberMe"
+            />
             <Link href="/login" className="text-[14px] text-main">
               Esqueceu a senha?
             </Link>
@@ -114,11 +122,12 @@ const Login = () => {
               type="submit"
               className="mx-[auto] flex w-[45%] items-center justify-center gap-[16px] rounded-[5px] bg-main py-[16px] text-complement-100"
             >
-              Entrar
-              {isLoading && (
+              {isLoading ? (
                 <div className="animate-spin">
-                  <AiOutlineLoading3Quarters />
+                  <TbLoader size={24} />
                 </div>
+              ) : (
+                'Entrar'
               )}
             </button>
           </div>

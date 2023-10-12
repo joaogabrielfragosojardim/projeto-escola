@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import type { ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
+import { IoIosArrowDown } from 'react-icons/io';
 
 import { useUserIsAdm } from '@/hooks/useUserIsAdm';
 import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
@@ -18,6 +19,43 @@ interface RouteInterface {
   children?: RouteInterface[];
 }
 
+const GenerateDropdown = ({
+  childrenRoute,
+  routerDrop,
+}: {
+  childrenRoute: RouteInterface;
+  routerDrop: { pathname: string };
+}) => {
+  const [closed, setClosed] = useState(false);
+
+  return (
+    <button
+      type="button"
+      className="cursor-pointer"
+      onClick={() => {
+        setClosed((prev) => !prev);
+      }}
+    >
+      <div className="flex items-center gap-[16px]">
+        {childrenRoute.icon}
+        <span className="text-[20px]">{childrenRoute.name}</span>
+        <div className={`transition-all ${!closed ? '' : 'rotate-180'}`}>
+          <IoIosArrowDown />
+        </div>
+      </div>
+      <ul
+        className={`flex flex-col gap-[8px] pl-[16px] transition-all ${
+          !closed ? 'h-[0px] overflow-hidden' : 'mt-[16px] h-[auto] '
+        }`}
+      >
+        {childrenRoute?.children?.map((children) =>
+          renderMenuWithChildren(children, routerDrop),
+        )}
+      </ul>
+    </button>
+  );
+};
+
 const renderMenuWithChildren = (
   route: RouteInterface,
   router: { pathname: string },
@@ -32,20 +70,10 @@ const renderMenuWithChildren = (
       } ${route.userCanView ? '' : 'hidden'}`}
     >
       {route.children ? (
-        <div>
-          <div className="flex items-center gap-[16px]">
-            {route.icon}
-            <span className="text-[20px]">{route.name}</span>
-          </div>
-          <ul className="mt-[16px] flex flex-col gap-[8px] pl-[16px]">
-            {route.children.map((children) =>
-              renderMenuWithChildren(children, router),
-            )}
-          </ul>
-        </div>
+        <GenerateDropdown childrenRoute={route} routerDrop={router} />
       ) : (
         <Link href={route.route}>
-          <div className="flex items-center gap-[16px]">
+          <div className="flex items-center gap-[16px] ">
             {route.icon}
             <span className="text-[20px]">{route.name}</span>
           </div>

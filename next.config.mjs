@@ -27,4 +27,12 @@ export default bundleAnalyzer({
 
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'jrgqdaonyjwefdaxvvjt.supabase.co',
+      },
+    ],
+  },
 });
