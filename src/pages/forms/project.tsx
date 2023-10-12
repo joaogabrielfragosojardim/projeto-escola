@@ -37,8 +37,9 @@ const ProjectForm = () => {
     createProjectHandle,
     {
       onError: (error: PrismaError) => {
+        console.log(error);
         toast.error(
-          error.response.data.message ||
+          error?.response?.data?.message ||
             'Algo deu errado ao cadastrar o projeto!',
         );
       },
@@ -53,18 +54,19 @@ const ProjectForm = () => {
   };
 
   return (
-    <div>
+    <div className="mx-auto flex max-w-[345px] flex-col items-center lg:inline lg:max-w-[400px]">
       <Link
         href="/dashboard"
-        className="flex max-w-max items-center gap-[8px] rounded bg-main p-[8px] text-complement-100"
+        className="flex max-w-max items-center gap-[8px] self-start rounded bg-main p-[8px] text-complement-100"
       >
-        <IoIosArrowBack /> Voltar para o dashboard
+        <IoIosArrowBack />{' '}
+        <p className="hidden lg:inline">Voltar para o dashboard</p>
       </Link>
-      <h1 className="mt-[32px] text-[24px] font-semibold text-complement-200">
+      <h1 className="mt-[32px] text-[16px] font-semibold text-complement-200 lg:text-[24px]">
         Cadastro de Projeto:
       </h1>
       <form
-        className="mt-[16px] max-w-[400px]"
+        className="mt-[16px] w-full lg:max-w-[400px]"
         onSubmit={handleSubmit(onSubmit)}
       >
         <InputImageThemed
@@ -85,7 +87,6 @@ const ProjectForm = () => {
             error={errors.name}
           />
         </div>
-
         <div className="mt-[16px]">
           <InputThemed
             label="Sobre"
@@ -98,7 +99,7 @@ const ProjectForm = () => {
             error={errors.about}
           />
         </div>
-        <div className="mt-[48px] text-[20px]">
+        <div className="mt-[48px] text-[16px] lg:text-[20px]">
           <button
             type="submit"
             className="flex items-center justify-center gap-[16px] rounded-[5px] bg-main px-[62px] py-[8px] text-complement-100"

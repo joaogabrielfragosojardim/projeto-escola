@@ -21,7 +21,10 @@ export const InputPasswordThemed = (props: InputThemedProps) => {
   return (
     <div className="flex flex-col gap-[16px]">
       {label && (
-        <label htmlFor={name} className="text-[20px] text-complement-200">
+        <label
+          htmlFor={name}
+          className="text-[14px] text-complement-200 lg:text-[20px]"
+        >
           {label}
         </label>
       )}
@@ -29,7 +32,7 @@ export const InputPasswordThemed = (props: InputThemedProps) => {
         <input
           {...props}
           type={!hidde ? 'password' : 'text'}
-          className="w-full rounded-[5px] border-[1px] border-solid border-complement-200 p-[8px] text-[16px]"
+          className="w-full rounded-[5px] border-[1px] border-solid border-complement-200 p-[8px] text-[12px] lg:text-[16px]"
           id={name}
           {...register(name, validations)}
           maxLength={32}

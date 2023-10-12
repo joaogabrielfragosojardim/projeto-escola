@@ -11,8 +11,8 @@ export const FormDefaultPage = ({
 }) => {
   return (
     <div className="flex justify-between">
-      <div className="w-full px-[122px] py-[32px]">{form}</div>
-      <div className="relative min-h-[100vh] w-full">
+      <div className="w-full px-[26px] py-[32px] lg:px-[122px]">{form}</div>
+      <div className="relative hidden min-h-[100vh] w-full lg:inline">
         <Image
           src={image}
           alt="image-form-create"

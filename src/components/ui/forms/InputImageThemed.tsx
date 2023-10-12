@@ -48,7 +48,10 @@ export const InputImageThemed = (props: InputThemedProps) => {
 
   return (
     <div>
-      <label htmlFor={name} className="text-[20px] text-complement-200">
+      <label
+        htmlFor={name}
+        className="text-[14px] text-complement-200 lg:text-[20px]"
+      >
         {label}
       </label>
       <div
@@ -72,7 +75,7 @@ export const InputImageThemed = (props: InputThemedProps) => {
             <RxImage size={32} />
           )}
         </div>
-        <div className="flex items-center gap-[6px] rounded-[5px] bg-main p-[6px] text-[16px] text-complement-100">
+        <div className="flex items-center gap-[6px] rounded-[5px] bg-main p-[6px] text-[14px] text-complement-100 lg:text-[16px]">
           <GoPaperclip />
           <p>Escolher Imagem</p>
         </div>

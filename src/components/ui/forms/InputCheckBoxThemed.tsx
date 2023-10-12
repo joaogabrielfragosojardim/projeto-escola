@@ -26,7 +26,10 @@ export const InputCheckBoxThemed = (props: InputThemedProps) => {
           id={name}
           {...register(name, validations)}
         />
-        <label htmlFor={name} className="text-[14px] text-complement-200">
+        <label
+          htmlFor={name}
+          className="text-[12px] text-complement-200 lg:text-[14px]"
+        >
           {label}
         </label>
       </div>
