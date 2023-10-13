@@ -22,7 +22,6 @@ export class DeleteTeacherUseCase {
       where: { id },
     });
 
-    // Delete o usuário associado ao professor
     await prisma.user.delete({
       where: { id: teacher.userId },
     });
