@@ -4,12 +4,10 @@ import { useRouter } from 'next/router';
 import { type ReactNode, useState } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 
-import { useUserIsAdm } from '@/hooks/useUserIsAdm';
-import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
-import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
-import { useUserIsTeacher } from '@/hooks/useUserIsTeacher';
 import { sideNavMenuRoutes } from '@/routes/sideNavMenuRoutes';
 import { sideNavMenuRoutesBottom } from '@/routes/sideNavMenuRoutesBottom';
+import { useUser } from '@/store/user/context';
+import type { RoleEnum } from '@/types/roles';
 
 interface RouteInterface {
   name: string;
@@ -85,16 +83,11 @@ const renderMenuWithChildren = (
 
 export const SideNavMenu = () => {
   const router = useRouter();
-  const isAdmMaster = useUserIsAdmMaster();
-  const isAdm = useUserIsAdm();
-  const isCoordinator = useUserIsCoordinator();
-  const isTeacher = useUserIsTeacher();
-  const menuRoutes = sideNavMenuRoutes({
-    isAdmMaster,
-    isAdm,
-    isCoordinator,
-    isTeacher,
-  });
+  const {
+    role: { name },
+  } = useUser();
+
+  const menuRoutes = sideNavMenuRoutes(name as RoleEnum);
 
   return (
     <div className="flex h-[100vh] min-w-[296px] max-w-[296px] flex-col bg-main py-[32px] pl-[32px]">

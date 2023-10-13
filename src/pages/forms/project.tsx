@@ -1,5 +1,8 @@
+import { verify } from 'jsonwebtoken';
+import type { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import nookies from 'nookies';
 import { useForm } from 'react-hook-form';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { IoIosArrowBack } from 'react-icons/io';
@@ -11,6 +14,7 @@ import { FormDefaultPage } from '@/components/ui/forms/FormDefaultPage';
 import { InputImageThemed } from '@/components/ui/forms/InputImageThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import type { PrismaError } from '@/types/prismaError';
+import { RoleEnum } from '@/types/roles';
 
 interface IProjectForm {
   name: string;
@@ -37,7 +41,6 @@ const ProjectForm = () => {
     createProjectHandle,
     {
       onError: (error: PrismaError) => {
-        console.log(error);
         toast.error(
           error?.response?.data?.message ||
             'Algo deu errado ao cadastrar o projeto!',
@@ -59,7 +62,7 @@ const ProjectForm = () => {
         href="/dashboard"
         className="flex max-w-max items-center gap-[8px] self-start rounded bg-main p-[8px] text-complement-100"
       >
-        <IoIosArrowBack />{' '}
+        <IoIosArrowBack />
         <p className="hidden lg:inline">Voltar para o dashboard</p>
       </Link>
       <h1 className="mt-[32px] text-[16px] font-semibold text-complement-200 lg:text-[24px]">
@@ -125,6 +128,28 @@ const Project = () => {
       form={<ProjectForm />}
     />
   );
+};
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const { token, user } = nookies.get(ctx);
+  const secret = process.env.SECRET_KEY || '';
+  const userObject = JSON.parse(user || '');
+
+  try {
+    verify(token || '', secret);
+
+    const canView = [RoleEnum.ADM_MASTER, RoleEnum.ADM].includes(
+      userObject?.role.name,
+    );
+
+    if (canView) {
+      return { props: {} };
+    }
+
+    return { redirect: { permanent: false, destination: '/login' } };
+  } catch (error) {
+    return { redirect: { permanent: false, destination: '/login' } };
+  }
 };
 
 export default Project;

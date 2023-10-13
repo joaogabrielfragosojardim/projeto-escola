@@ -48,6 +48,7 @@ const Login = () => {
         user: { id, name, email, role },
       } = data;
       setCookie(null, 'token', token);
+      setCookie(null, 'user', JSON.stringify({ id, name, email, role }));
       axiosApi.defaults.headers.Authorization = `Bearer ${token}`;
       dispatch({
         type: UserTypesEnum.ADD_USER,
