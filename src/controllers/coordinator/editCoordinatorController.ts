@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { z } from 'zod';
 
-import { EditCoordinatorUseCase } from '@/useCases/editCoordinatorUseCase';
+import { EditCoordinatorUseCase } from '@/useCases/coordinator';
 
 export class EditCoordinatorController {
   async handle(req: NextApiRequest, res: NextApiResponse) {

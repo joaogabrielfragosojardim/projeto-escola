@@ -2,9 +2,11 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import type { HttpMethod } from '@/components/api/RouteHandler';
 import { RouteHandler } from '@/components/api/RouteHandler';
-import { DeleteProjectController } from '@/controllers/project/deleteProjectController';
-import { EditProjectController } from '@/controllers/project/editProjectController';
-import { GetOneProjectController } from '@/controllers/project/getOneProjectController';
+import {
+  DeleteProjectController,
+  EditProjectController,
+  GetOneProjectController,
+} from '@/controllers/project';
 import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {

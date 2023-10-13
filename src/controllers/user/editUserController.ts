@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { z } from 'zod';
 
-import { EditUserUseCase } from '@/useCases/editUserUseCase';
+import { EditUserUseCase } from '@/useCases/user';
 
 export class EditUserController {
   async handle(req: NextApiRequest, res: NextApiResponse) {

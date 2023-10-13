@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 
-import { DeleteCoordinatorUseCase } from '@/useCases/deleteCoordinatorUseCase';
+import { DeleteCoordinatorUseCase } from '@/useCases/coordinator';
 
 export class DeleteCooordinatorController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
