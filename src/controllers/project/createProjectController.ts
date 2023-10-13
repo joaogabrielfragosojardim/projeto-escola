@@ -9,7 +9,7 @@ export class CreateProjectController {
       const createBodySchema = z.object({
         name: z.string(),
         about: z.string(),
-        visualIdentity: z.record(z.string()),
+        visualIdentity: z.string(),
       });
 
       const { name, about, visualIdentity } = createBodySchema.parse(req.body);

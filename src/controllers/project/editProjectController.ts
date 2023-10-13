@@ -12,7 +12,7 @@ export class EditProjectController {
 
       const editBodySchema = z.object({
         name: z.string(),
-        visualIdentity: z.record(z.string()),
+        visualIdentity: z.string(),
         about: z.string(),
       });
 

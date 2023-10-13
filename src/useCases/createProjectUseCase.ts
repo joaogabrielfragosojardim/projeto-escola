@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 
 interface CreateProjectUseCaseRequest {
   name: string;
-  visualIdentity: Record<string, string>;
+  visualIdentity: string;
   about: string;
 }
 

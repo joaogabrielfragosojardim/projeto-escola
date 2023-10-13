@@ -47,7 +47,7 @@ model School {
 model Project {
   id             String @id @default(uuid())
   name           String
-  visualIdentity Json
+  visualIdentity String
   about          String
 
   Schools School[]
