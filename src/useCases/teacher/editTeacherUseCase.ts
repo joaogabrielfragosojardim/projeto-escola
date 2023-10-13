@@ -49,7 +49,6 @@ export class EditTeacherUseCase {
       },
     });
 
-    // Atualize o usuário
     const user = await prisma.user.update({
       where: { id: teacher.user.id },
       data: {
