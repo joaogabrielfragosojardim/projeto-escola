@@ -4,7 +4,7 @@ interface EditProjectUseCaseRequest {
   id: string | undefined;
   name: string;
   about: string;
-  visualIdentity: Record<string, string>;
+  visualIdentity: string;
 }
 
 export class EditProjectUseCase {
