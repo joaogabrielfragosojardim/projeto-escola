@@ -8,6 +8,7 @@ export class CreateUserController {
     try {
       const registerBodySchema = z.object({
         name: z.string(),
+        profileUrl: z.string().url(),
         email: z.string().email(),
         password: z.string().min(6),
         roleId: z.string().uuid(),
@@ -15,9 +16,8 @@ export class CreateUserController {
 
       const { userId: creatorId } = req;
 
-      const { name, email, password, roleId } = registerBodySchema.parse(
-        req.body,
-      );
+      const { name, email, password, roleId, profileUrl } =
+        registerBodySchema.parse(req.body);
 
       const createUserUseCase = new CreateUserUseCase();
 
@@ -27,6 +27,7 @@ export class CreateUserController {
         password,
         roleId,
         creatorId,
+        profileUrl,
       });
 
       return res.status(201).json(user);

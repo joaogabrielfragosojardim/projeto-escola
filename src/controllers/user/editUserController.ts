@@ -10,15 +10,19 @@ export class EditUserController {
 
       const editBodySchema = z.object({
         name: z.string(),
+        password: z.string().optional(),
+        profileUrl: z.string().url(),
       });
 
-      const { name } = editBodySchema.parse(req.body);
+      const { name, password, profileUrl } = editBodySchema.parse(req.body);
 
       const editUserUseCase = new EditUserUseCase();
 
       const { user } = await editUserUseCase.execute({
         id: userId,
         name,
+        password,
+        profileUrl,
       });
 
       return res.status(200).json({ user });

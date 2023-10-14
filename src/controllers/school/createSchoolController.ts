@@ -8,24 +8,28 @@ export class CreateSchoolController {
     try {
       const createBodySchema = z.object({
         name: z.string(),
-        city: z.string(),
-        state: z.string(),
         projectId: z.string().uuid(),
+        address: z.object({
+          zipCode: z.string(),
+          city: z.string(),
+          state: z.string(),
+          street: z.string(),
+        }),
       });
 
-      const { name, city, state, projectId } = createBodySchema.parse(req.body);
+      const { name, projectId, address } = createBodySchema.parse(req.body);
 
       const createSchoolUseCase = new CreateSchoolUseCase();
 
       const { school } = await createSchoolUseCase.execute({
         name,
-        city,
-        state,
         projectId,
+        address,
       });
 
       return res.status(201).json({ school });
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

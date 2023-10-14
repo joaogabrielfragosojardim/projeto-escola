@@ -14,6 +14,7 @@ model User {
   id          String        @id @default(uuid())
   name        String
   email       String        @unique
+  profileUrl  String
   password    String
   roleId      String
   role        Role          @relation(fields: [roleId], references: [id])
@@ -31,12 +32,13 @@ model Role {
 }
 
 model School {
-  id        String @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
-  city      String
-  state     String
   projectId String
+  createdAt DateTime @default(now())
+  addressId String   @unique
 
+  Address     Address       @relation(fields: [addressId], references: [id], onDelete: Cascade)
   project     Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
   Coordinator Coordinator[]
   Teacher     Teacher[]
@@ -45,10 +47,11 @@ model School {
 }
 
 model Project {
-  id             String @id @default(uuid())
+  id             String   @id @default(uuid())
   name           String
   visualIdentity String
   about          String
+  createdAt      DateTime @default(now())
 
   Schools School[]
 }
@@ -60,6 +63,7 @@ model Student {
   schoolId     String
   birtday      DateTime
   registration String   @unique
+  createdAt    DateTime @default(now())
   classId      String
 
   user    User    @relation(fields: [userId], references: [id])
@@ -69,11 +73,12 @@ model Student {
 }
 
 model Teacher {
-  id            String  @id @default(uuid())
+  id            String   @id @default(uuid())
   schoolId      String
   userId        String
   telephone     String
-  validated     Boolean @default(false)
+  validated     Boolean  @default(false)
+  createdAt     DateTime @default(now())
   coordinatorId String
 
   school      School      @relation(fields: [schoolId], references: [id])
@@ -84,9 +89,10 @@ model Teacher {
 }
 
 model Coordinator {
-  id        String @id @default(uuid())
+  id        String   @id @default(uuid())
   userId    String
   telephone String
+  createdAt DateTime @default(now())
   schoolId  String
 
   user    User      @relation(fields: [userId], references: [id])
@@ -112,4 +118,14 @@ model Grade {
   id    String  @id @default(uuid())
   name  String
   Class Class[]
+}
+
+model Address {
+  id      String @id @default(uuid())
+  street  String
+  city    String
+  state   String
+  zipCode String
+
+  School School?
 }
