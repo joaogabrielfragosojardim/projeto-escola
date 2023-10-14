@@ -5,7 +5,8 @@ import type {
   UseFormRegister,
 } from 'react-hook-form';
 
-interface InputThemedProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputCheckBoxThemedProps
+  extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   register: UseFormRegister<any>;
   name: string;
@@ -13,7 +14,7 @@ interface InputThemedProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: FieldError | undefined;
 }
 
-export const InputCheckBoxThemed = (props: InputThemedProps) => {
+export const InputCheckBoxThemed = (props: InputCheckBoxThemedProps) => {
   const { label, register, name, validations, error } = props;
 
   return (

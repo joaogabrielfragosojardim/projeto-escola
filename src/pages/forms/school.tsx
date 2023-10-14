@@ -1,57 +1,35 @@
+import type { Project } from '@prisma/client';
 import { verify } from 'jsonwebtoken';
 import type { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import nookies from 'nookies';
 import { useForm } from 'react-hook-form';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { IoIosArrowBack } from 'react-icons/io';
-import { useMutation } from 'react-query';
-import { toast } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { FormDefaultPage } from '@/components/ui/forms/FormDefaultPage';
 import { InputImageThemed } from '@/components/ui/forms/InputImageThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
-import type { PrismaError } from '@/types/prismaError';
-import type { Project as ProjectType } from '@/types/project';
+import { SelectThemed } from '@/components/ui/forms/SelectThemed';
 import { RoleEnum } from '@/types/roles';
+import type { School as SchoolType } from '@/types/school';
 
-const ProjectForm = () => {
+const SchoolForm = ({ projects }: { projects: Project[] }) => {
   const {
     register,
-    formState: { errors },
     handleSubmit,
+    formState: { errors },
     reset,
-  } = useForm<ProjectType>();
+    control,
+  } = useForm<SchoolType>();
+  const formatedProjects = projects.map((project) => ({
+    value: project.name,
+    label: project.name,
+  }));
 
-  const router = useRouter();
-
-  const createProjectHandle = async (data: ProjectType): Promise<any> => {
-    return (await axiosApi.post('/project', data)).data;
+  const onSubmit = (data: SchoolType) => {
+    console.log({ data });
   };
-
-  const { isLoading, mutate } = useMutation(
-    'creatingProjectMutation',
-    createProjectHandle,
-    {
-      onError: (error: PrismaError) => {
-        toast.error(
-          error?.response?.data?.message ||
-            'Algo deu errado ao cadastrar o projeto!',
-        );
-      },
-      onSuccess: () => {
-        toast.success('Projeto cadastrado');
-        router.push('/dashboard');
-      },
-    },
-  );
-
-  const onSubmit = (data: ProjectType) => {
-    mutate(data);
-  };
-
   return (
     <div className="mx-auto flex max-w-[345px] flex-col items-center lg:inline lg:max-w-[400px]">
       <Link
@@ -62,14 +40,14 @@ const ProjectForm = () => {
         <p className="hidden lg:inline">Voltar para o dashboard</p>
       </Link>
       <h1 className="mt-[32px] text-[16px] font-semibold text-complement-200 lg:text-[24px]">
-        Cadastro de Projeto:
+        Cadastro de Escola:
       </h1>
       <form
         className="mt-[16px] w-full lg:max-w-[400px]"
         onSubmit={handleSubmit(onSubmit)}
       >
         <InputImageThemed
-          label="Identidade Visual"
+          label="Imagem"
           register={register}
           name="visualIdentity"
           validations={{ required: 'Campo obrigatório' }}
@@ -78,8 +56,8 @@ const ProjectForm = () => {
         />
         <div className="mt-[16px]">
           <InputThemed
-            label="Nome do projeto"
-            placeholder="projeto exemplo..."
+            label="Nome da escola"
+            placeholder="Escola exemplo..."
             register={register}
             name="name"
             validations={{ required: 'Campo obrigatório' }}
@@ -87,15 +65,16 @@ const ProjectForm = () => {
           />
         </div>
         <div className="mt-[16px]">
-          <InputThemed
-            label="Sobre"
-            placeholder="Projeto desenvolvido para..."
-            register={register}
-            name="about"
+          <SelectThemed
+            label="Projeto"
+            placeholder="Selecione um projeto"
+            control={control}
+            name="project"
             validations={{
               required: 'Campo obrigatório',
             }}
-            error={errors.about}
+            error={errors.project}
+            options={formatedProjects}
           />
         </div>
         <div className="mt-[48px] text-[16px] lg:text-[20px]">
@@ -103,13 +82,7 @@ const ProjectForm = () => {
             type="submit"
             className="flex items-center justify-center gap-[16px] rounded-[5px] bg-main px-[62px] py-[8px] text-complement-100"
           >
-            {isLoading ? (
-              <div className="animate-spin">
-                <AiOutlineLoading3Quarters />
-              </div>
-            ) : (
-              'Cadastrar Projeto'
-            )}
+            Continuar
           </button>
         </div>
       </form>
@@ -117,11 +90,11 @@ const ProjectForm = () => {
   );
 };
 
-const Project = () => {
+const School = ({ projects }: { projects: Project[] }) => {
   return (
     <FormDefaultPage
       image="/assets/images/form-project.png"
-      form={<ProjectForm />}
+      form={<SchoolForm projects={projects} />}
     />
   );
 };
@@ -139,7 +112,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     );
 
     if (canView) {
-      return { props: {} };
+      const { data } = await axiosApi.get('/project', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      return { props: { projects: data.data } };
     }
 
     return { redirect: { permanent: false, destination: '/login' } };
@@ -148,4 +125,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 };
 
-export default Project;
+export default School;

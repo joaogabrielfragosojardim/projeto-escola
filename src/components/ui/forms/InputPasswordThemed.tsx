@@ -6,7 +6,8 @@ import type {
 } from 'react-hook-form';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 
-interface InputThemedProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputPasswordThemedProps
+  extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   register: UseFormRegister<any>;
   name: string;
@@ -14,7 +15,7 @@ interface InputThemedProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: FieldError | undefined;
 }
 
-export const InputPasswordThemed = (props: InputThemedProps) => {
+export const InputPasswordThemed = (props: InputPasswordThemedProps) => {
   const [hidde, setHidde] = useState(false);
   const { label, register, name, validations, error } = props;
 

@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 import { getImageInSupabase } from '@/utils/supabase/getImageInSupabase';
 import { storeImageInSupabase } from '@/utils/supabase/storeImageInSupabase';
 
-interface InputThemedProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputImageThemedProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   register: UseFormRegister<any>;
   name: string;
@@ -24,7 +24,7 @@ interface InputThemedProps extends InputHTMLAttributes<HTMLInputElement> {
   reset: UseFormReset<any>;
 }
 
-export const InputImageThemed = (props: InputThemedProps) => {
+export const InputImageThemed = (props: InputImageThemedProps) => {
   const [image, setImage] = useState('');
   const [loading, setLoading] = useState(false);
   const { label, register, name, validations, error, reset } = props;
