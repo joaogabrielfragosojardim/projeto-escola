@@ -10,13 +10,21 @@ export class CreateTeacherController {
         name: z.string(),
         email: z.string().email(),
         password: z.string().min(6),
+        profileUrl: z.string().url(),
         telephone: z.string(),
         schoolId: z.string().uuid(),
         coordinatorId: z.string().uuid(),
       });
 
-      const { name, email, password, schoolId, telephone, coordinatorId } =
-        createBodySchema.parse(req.body);
+      const {
+        name,
+        email,
+        password,
+        schoolId,
+        telephone,
+        coordinatorId,
+        profileUrl,
+      } = createBodySchema.parse(req.body);
 
       const createTeacherUseCase = new CreateTeacherUseCase();
 
@@ -27,6 +35,7 @@ export class CreateTeacherController {
         schoolId,
         telephone,
         coordinatorId,
+        profileUrl,
       });
 
       return res.status(201).json({ teacher });
