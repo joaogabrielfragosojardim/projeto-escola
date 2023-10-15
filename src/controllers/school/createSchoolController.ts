@@ -10,7 +10,10 @@ export class CreateSchoolController {
         name: z.string(),
         projectId: z.string().uuid(),
         address: z.object({
-          zipCode: z.string(),
+          zipCode: z
+            .string()
+            .min(8, 'Digite 8 caracteres')
+            .max(8, 'Digite somente 8 caracteres'),
           city: z.string(),
           state: z.string(),
           street: z.string(),
