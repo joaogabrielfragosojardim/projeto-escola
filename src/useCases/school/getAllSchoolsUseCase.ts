@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { toSchool } from '@/utils/schoolAdapter';
 
 interface GetAllSchoolsUseCaseRequest {
   perPage: number;
@@ -42,7 +43,7 @@ export class GetAllSchoolsUseCase {
     const totalPage = Math.ceil(total / take);
 
     return {
-      data: schools,
+      data: toSchool(schools),
       meta: {
         page,
         totalPage,
