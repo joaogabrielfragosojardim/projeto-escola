@@ -2,8 +2,10 @@ import type { NextApiRequest, NextApiResponse } from 'next/types';
 
 import type { HttpMethod } from '@/components/api/RouteHandler';
 import { RouteHandler } from '@/components/api/RouteHandler';
-import { CreateCoordinatorController } from '@/controllers/coordinator/createCoordinatorController';
-import { GetAllCoordinatorController } from '@/controllers/coordinator/getAllCoordinatorController';
+import {
+  CreateCoordinatorController,
+  GetAllCoordinatorController,
+} from '@/controllers/coordinator';
 
 const authMethods: Record<HttpMethod, boolean> = {
   GET: true,

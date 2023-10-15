@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { z } from 'zod';
 
-import { EditSchoolUseCase } from '@/useCases/editSchoolUseCase';
+import { EditSchoolUseCase } from '@/useCases/school';
 
 export class EditSchoolController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
@@ -12,21 +12,27 @@ export class EditSchoolController {
 
       const editBodySchema = z.object({
         name: z.string(),
-        city: z.string(),
-        state: z.string(),
         projectId: z.string().uuid(),
+        address: z.object({
+          zipCode: z
+            .string()
+            .min(8, 'Digite 8 caracteres')
+            .max(8, 'Digite somente 8 caracteres'),
+          city: z.string(),
+          state: z.string(),
+          street: z.string(),
+        }),
       });
 
       const { id } = editQuerySchema.parse(req.query);
-      const { name, city, state, projectId } = editBodySchema.parse(req.body);
+      const { name, address, projectId } = editBodySchema.parse(req.body);
 
       const editSchoolUseCase = new EditSchoolUseCase();
 
       const { school } = await editSchoolUseCase.execute({
         id: id[0],
         name,
-        city,
-        state,
+        address,
         projectId,
       });
 

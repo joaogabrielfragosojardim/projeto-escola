@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { z } from 'zod';
 
-import { CreateCoordinatorUseCase } from '@/useCases/createCoordinatorUseCase';
+import { CreateCoordinatorUseCase } from '@/useCases/coordinator';
 
 export class CreateCoordinatorController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
@@ -10,11 +10,12 @@ export class CreateCoordinatorController {
         name: z.string(),
         email: z.string().email(),
         password: z.string().min(6),
+        profileUrl: z.string().url(),
         telephone: z.string(),
         schoolId: z.string().uuid(),
       });
 
-      const { name, email, password, schoolId, telephone } =
+      const { name, email, password, schoolId, telephone, profileUrl } =
         createBodySchema.parse(req.body);
 
       const createCoordinatorUseCase = new CreateCoordinatorUseCase();
@@ -25,6 +26,7 @@ export class CreateCoordinatorController {
         password,
         schoolId,
         telephone,
+        profileUrl,
       });
 
       return res.status(201).json({ coordinator });

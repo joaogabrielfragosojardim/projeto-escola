@@ -7,6 +7,7 @@ interface CreateCoordinatorUseCaseRequest {
   password: string;
   telephone: string;
   schoolId: string;
+  profileUrl: string;
 }
 
 export class CreateCoordinatorUseCase {
@@ -15,6 +16,7 @@ export class CreateCoordinatorUseCase {
     email,
     password,
     telephone,
+    profileUrl,
     schoolId,
   }: CreateCoordinatorUseCaseRequest) {
     const coordinatorRole = await prisma.role.findUnique({
@@ -41,6 +43,7 @@ export class CreateCoordinatorUseCase {
       data: {
         name,
         email,
+        profileUrl,
         password,
         roleId: coordinatorRole.id,
       },
