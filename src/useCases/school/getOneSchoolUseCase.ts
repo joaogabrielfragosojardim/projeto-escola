@@ -2,7 +2,7 @@ import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
 
 interface GetOneSchoolUseCaseRequest {
-  id: string | undefined;
+  id?: string;
 }
 
 export class GetOneSchoolUseCase {
@@ -11,6 +11,20 @@ export class GetOneSchoolUseCase {
       where: {
         id,
       },
+      select: {
+        id: true,
+        name: true,
+        projectId: true,
+        Address: {
+          select: {
+            id: true,
+            city: true,
+            state: true,
+            street: true,
+            zipCode: true,
+          },
+        },
+      },
     });
 
     if (!school) {
@@ -18,7 +32,14 @@ export class GetOneSchoolUseCase {
     }
 
     return {
-      school,
+      school: {
+        id: school.id,
+        name: school.name,
+        projectId: school.projectId,
+        address: {
+          ...school.Address,
+        },
+      },
     };
   }
 }
