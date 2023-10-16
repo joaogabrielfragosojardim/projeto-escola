@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { z } from 'zod';
 
-import { DeleteSchoolUseCase } from '@/useCases/deleteSchoolUseCase';
+import { DeleteSchoolUseCase } from '@/useCases/school';
 
 export class DeleteSchoolController {
   async handle(req: NextApiRequest, res: NextApiResponse) {

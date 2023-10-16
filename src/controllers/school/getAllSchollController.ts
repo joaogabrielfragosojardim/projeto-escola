@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { z } from 'zod';
 
-import { GetAllSchoolsUseCase } from '@/useCases/getAllSchoolsUseCase';
+import { GetAllSchoolsUseCase } from '@/useCases/school';
 
 export class GetAllSchoolsController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
@@ -10,13 +10,9 @@ export class GetAllSchoolsController {
         page: z.coerce.number().default(1),
         perPage: z.coerce.number().default(10),
         name: z.string().optional(),
-        city: z.string().optional(),
-        state: z.string().optional(),
       });
 
-      const { page, perPage, name, city, state } = getAllQuerySchema.parse(
-        req.query,
-      );
+      const { page, perPage, name } = getAllQuerySchema.parse(req.query);
 
       const getAllSchoolsUseCase = new GetAllSchoolsUseCase();
 
@@ -24,8 +20,6 @@ export class GetAllSchoolsController {
         page,
         perPage,
         name,
-        city,
-        state,
       });
 
       return res.status(200).json({ data, meta });

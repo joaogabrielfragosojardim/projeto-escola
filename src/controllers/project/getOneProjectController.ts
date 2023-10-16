@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 
-import { GetOneProjectUseCase } from '@/useCases/getOneProjectUseCase';
+import { GetOneProjectUseCase } from '@/useCases/project';
 
 export class GetOneProjectController {
   async handle(req: NextApiRequest, res: NextApiResponse) {

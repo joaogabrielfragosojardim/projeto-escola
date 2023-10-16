@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { z } from 'zod';
 
-import { EditCoordinatorUseCase } from '@/useCases/editCoordinatorUseCase';
+import { EditCoordinatorUseCase } from '@/useCases/coordinator';
 
 export class EditCoordinatorController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
@@ -13,10 +13,11 @@ export class EditCoordinatorController {
       const editBodySchema = z.object({
         schoolId: z.string(),
         telephone: z.string(),
+        name: z.string(),
       });
 
       const { id } = editQuerySchema.parse(req.query);
-      const { schoolId, telephone } = editBodySchema.parse(req.body);
+      const { schoolId, telephone, name } = editBodySchema.parse(req.body);
 
       const editCoordinatorUseCase = new EditCoordinatorUseCase();
 
@@ -24,6 +25,7 @@ export class EditCoordinatorController {
         id: id[0],
         schoolId,
         telephone,
+        name,
       });
 
       return res.status(200).json({ coordinator });
