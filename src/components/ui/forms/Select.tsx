@@ -9,7 +9,7 @@ interface ISelectProps extends InputHTMLAttributes<HTMLSelectElement> {
 const NoOptionsMessage = (props: any) => {
   return (
     <components.NoOptionsMessage {...props}>
-      <span className="custom-css-class">Sem Resultados</span>
+      <span>Sem Resultados</span>
     </components.NoOptionsMessage>
   );
 };

@@ -5,5 +5,5 @@ export type School = {
   street: string;
   cep: string;
   visualIdentity: string;
-  project: string;
+  projectId: { value: string; label: string };
 };

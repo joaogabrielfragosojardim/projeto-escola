@@ -25,7 +25,7 @@ interface InputImageThemedProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const InputImageThemed = (props: InputImageThemedProps) => {
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState('' || (props.defaultValue as string));
   const [loading, setLoading] = useState(false);
   const { label, register, name, validations, error, reset } = props;
 

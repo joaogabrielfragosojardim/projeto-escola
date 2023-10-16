@@ -1,10 +1,13 @@
-import type { InputHTMLAttributes } from 'react';
-import {
-  type Control,
-  Controller,
-  type FieldError,
-  type RegisterOptions,
+import { type InputHTMLAttributes, useEffect } from 'react';
+import type {
+  Control,
+  FieldError,
+  FieldErrorsImpl,
+  Merge,
+  RegisterOptions,
+  UseFormReset,
 } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
 import { Select } from './Select';
 
@@ -13,7 +16,8 @@ interface SelectThemedProps extends InputHTMLAttributes<HTMLSelectElement> {
   control: Control<any, any>;
   name: string;
   validations?: RegisterOptions<any, string>;
-  error?: FieldError | undefined;
+  error?: Merge<FieldError, FieldErrorsImpl<any>>;
+  reset: UseFormReset<any>;
   options: { value: string; label: string }[];
 }
 
@@ -22,11 +26,46 @@ const colourStyles: any = {
     ...styles,
     backgroundColor: 'white',
     borderColor: '#4D4D4D',
+    fontSize: '16px',
+
+    '@media only screen and (max-width: 1023px)': {
+      ...styles['@media only screen and (max-width: 1023px)'],
+      fontSize: '12px',
+    },
+  }),
+  option: (styles: any) => ({
+    ...styles,
+    fontSize: '16px',
+    color: '#4D4D4D',
+    '@media only screen and (max-width: 1023px)': {
+      ...styles['@media only screen and (max-width: 1023px)'],
+      fontSize: '12px',
+    },
+  }),
+  singleValue: (styles: any) => ({
+    ...styles,
+    color: 'black',
   }),
 };
 
 export const SelectThemed = (props: SelectThemedProps) => {
-  const { label, control, name, validations, error, options } = props;
+  const {
+    label,
+    control,
+    name,
+    validations,
+    error,
+    options,
+    defaultValue,
+    placeholder,
+    reset,
+  } = props;
+
+  useEffect(() => {
+    if (defaultValue) {
+      reset({ [name]: defaultValue });
+    }
+  }, []);
 
   return (
     <div className="flex flex-col gap-[16px]">
@@ -48,14 +87,15 @@ export const SelectThemed = (props: SelectThemedProps) => {
             onChange={onChange}
             onBlur={onBlur}
             styles={colourStyles}
-            placeholder="Selecione um Projeto"
+            placeholder={placeholder}
+            defaultValue={defaultValue}
           />
         )}
       />
 
       {error && (
         <span className="mt-[-6px] text-[12px] text-[red]">
-          {error.message}
+          {error.message as unknown as any}
         </span>
       )}
     </div>
