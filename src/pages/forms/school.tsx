@@ -2,6 +2,7 @@ import type { Project } from '@prisma/client';
 import { verify } from 'jsonwebtoken';
 import type { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import nookies from 'nookies';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
@@ -21,6 +22,7 @@ import {
   useSchoolFormDispatch,
 } from '@/store/schoolForm/context';
 import { SchoolFormTypesEnum } from '@/store/schoolForm/types';
+import type { PrismaError } from '@/types/prismaError';
 import { RoleEnum } from '@/types/roles';
 import type { School as SchoolType } from '@/types/school';
 
@@ -62,7 +64,7 @@ const SchoolFormFirstStep = ({
         city: '',
         state: '',
         street: '',
-        cep: '',
+        zipCode: '',
       },
     });
     setStep((prev) => prev + 1);
@@ -151,6 +153,8 @@ const SchoolFormSecondStep = ({
   } = useForm<SchoolType>();
 
   const schoolFormDispatch = useSchoolFormDispatch();
+  const schoolForm = useSchoolForm();
+  const route = useRouter();
 
   const getDataFromViaCep = async (cep: string) => {
     if (cep.length !== 8) {
@@ -165,29 +169,53 @@ const SchoolFormSecondStep = ({
 
   const { mutate } = useMutation('viaCepMutation', getDataFromViaCep, {
     onError: () => {
-      toast.error('Alglo de errado aconteceu ao buscar os dados de CEP');
+      toast.error('Algo de errado aconteceu ao buscar os dados de CEP');
     },
   });
 
+  const createSchool = async (data: any) => {
+    return axiosApi.post('/school', data);
+  };
+
+  const { mutate: mutateCreateSchool } = useMutation(
+    'createSchoolMutation',
+    createSchool,
+    {
+      onError: (error: PrismaError) => {
+        toast.error(
+          error.response.data.message ||
+            'Algo de errado aconteceu ao criar a escola!',
+        );
+      },
+      onSuccess: () => {
+        toast.success('escola criada com sucesso!');
+        schoolFormDispatch({
+          type: SchoolFormTypesEnum.REMOVE_SCHOOL_FORM,
+          payload: {},
+        });
+        route.push('/dashboard');
+      },
+    },
+  );
+
   const onSubmit = (data: SchoolType) => {
     const {
-      visualIdentity,
       name,
-      projectId: { value, label },
-    } = data;
-    schoolFormDispatch({
-      type: SchoolFormTypesEnum.ADD_SCHOOL_FORM,
-      payload: {
-        visualIdentity,
-        name,
-        projectId: { value, label },
-        city: '',
-        state: '',
-        street: '',
-        cep: '',
+      projectId: { value },
+    } = schoolForm;
+    const { zipCode, city, state, street } = data;
+
+    const submitData = {
+      name,
+      projectId: value,
+      address: {
+        zipCode,
+        city,
+        state,
+        street,
       },
-    });
-    setStep((prev) => prev + 1);
+    };
+    mutateCreateSchool(submitData);
   };
   return (
     <div className="mx-auto flex max-w-[345px] flex-col items-center lg:inline lg:max-w-[400px]">
@@ -209,7 +237,7 @@ const SchoolFormSecondStep = ({
           label="CEP"
           placeholder="99999999"
           register={register}
-          name="cep"
+          name="zipCode"
           validations={{
             required: 'Campo obrigatório',
             minLength: {
@@ -218,7 +246,7 @@ const SchoolFormSecondStep = ({
             },
           }}
           maxLength={8}
-          error={errors.cep}
+          error={errors.zipCode}
           onChange={(e) => mutate(e.target.value)}
         />
         <div className="mt-[16px] flex gap-[16px]">
@@ -229,7 +257,7 @@ const SchoolFormSecondStep = ({
               disabled
               name="state"
               validations={{ required: 'Campo obrigatório' }}
-              error={errors.name}
+              error={errors.state}
             />
           </div>
           <div className="w-[50%]">
@@ -239,7 +267,7 @@ const SchoolFormSecondStep = ({
               register={register}
               name="city"
               validations={{ required: 'Campo obrigatório' }}
-              error={errors.name}
+              error={errors.city}
             />
           </div>
         </div>
@@ -250,7 +278,7 @@ const SchoolFormSecondStep = ({
             register={register}
             name="street"
             validations={{ required: 'Campo obrigatório' }}
-            error={errors.name}
+            error={errors.street}
           />
         </div>
         <div className="mt-[48px] text-[16px] lg:text-[20px]">

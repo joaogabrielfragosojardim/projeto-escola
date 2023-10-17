@@ -5,7 +5,7 @@ export const initialState: School = {
   city: '',
   state: '',
   street: '',
-  cep: '',
+  zipCode: '',
   visualIdentity: '',
   projectId: { value: '', label: '' },
 };

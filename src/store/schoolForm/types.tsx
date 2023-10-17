@@ -5,7 +5,7 @@ export enum SchoolFormTypesEnum {
   REMOVE_SCHOOL_FORM = 'REMOVE_SCHOOL_FORM',
 }
 
-export interface UserAction {
+export interface SchoolAction {
   type: SchoolFormTypesEnum;
-  payload: School;
+  payload: School | any;
 }

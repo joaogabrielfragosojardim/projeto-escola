@@ -3,7 +3,7 @@ export type School = {
   city: string;
   state: string;
   street: string;
-  cep: string;
+  zipCode: string;
   visualIdentity: string;
   projectId: { value: string; label: string };
 };

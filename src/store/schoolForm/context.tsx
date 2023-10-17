@@ -5,9 +5,9 @@ import type { School } from '@/types/school';
 
 import { initialState } from './initialState';
 import { schoolFormReducer } from './reducer';
-import type { UserAction } from './types';
+import type { SchoolAction } from './types';
 
-type UseUserSchoolDispatchType = () => (action: UserAction) => any;
+type UseSchoolDispatchType = () => (action: SchoolAction) => any;
 
 const SchoolFormContext = createContext(null);
 
@@ -17,7 +17,7 @@ export const useSchoolForm: () => School = () => {
   return useContext(SchoolFormContext) as unknown as any;
 };
 
-export const useSchoolFormDispatch: UseUserSchoolDispatchType = () => {
+export const useSchoolFormDispatch: UseSchoolDispatchType = () => {
   return useContext(SchoolFormDispatchContext) as unknown as any;
 };
 

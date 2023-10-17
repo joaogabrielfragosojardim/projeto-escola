@@ -1,9 +1,9 @@
 import type { School } from '@/types/school';
 
-import type { UserAction } from './types';
+import type { SchoolAction } from './types';
 import { SchoolFormTypesEnum } from './types';
 
-export const schoolFormReducer = (_: School, action: UserAction) => {
+export const schoolFormReducer = (_: School, action: SchoolAction) => {
   switch (action.type) {
     case SchoolFormTypesEnum.ADD_SCHOOL_FORM: {
       const {
@@ -11,7 +11,7 @@ export const schoolFormReducer = (_: School, action: UserAction) => {
         city,
         state,
         street,
-        cep,
+        zipCode,
         visualIdentity,
         projectId: { value, label },
       } = action.payload;
@@ -20,7 +20,7 @@ export const schoolFormReducer = (_: School, action: UserAction) => {
         city,
         state,
         street,
-        cep,
+        zipCode,
         visualIdentity,
         projectId: { value, label },
       };
