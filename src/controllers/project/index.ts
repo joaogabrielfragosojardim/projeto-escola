@@ -3,3 +3,4 @@ export * from './deleteProjectController';
 export * from './editProjectController';
 export * from './getAllProjectController';
 export * from './getOneProjectController';
+export * from './optionsProjectController';
