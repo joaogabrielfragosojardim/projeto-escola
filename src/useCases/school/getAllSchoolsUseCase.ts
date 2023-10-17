@@ -5,10 +5,20 @@ interface GetAllSchoolsUseCaseRequest {
   perPage: number;
   page: number;
   name?: string;
+  projectId?: string;
+  city?: string;
+  state?: string;
 }
 
 export class GetAllSchoolsUseCase {
-  async execute({ page, perPage, name }: GetAllSchoolsUseCaseRequest) {
+  async execute({
+    page,
+    perPage,
+    name,
+    projectId,
+    city,
+    state,
+  }: GetAllSchoolsUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
 
@@ -18,6 +28,11 @@ export class GetAllSchoolsUseCase {
         take,
         where: {
           name: { contains: name, mode: 'insensitive' },
+          projectId: { equals: projectId },
+          Address: {
+            city: { contains: city, mode: 'insensitive' },
+            state: { contains: state, mode: 'insensitive' },
+          },
         },
         select: {
           id: true,
@@ -36,6 +51,11 @@ export class GetAllSchoolsUseCase {
       prisma.school.count({
         where: {
           name: { contains: name, mode: 'insensitive' },
+          projectId: { equals: projectId },
+          Address: {
+            city: { contains: city, mode: 'insensitive' },
+            state: { contains: state, mode: 'insensitive' },
+          },
         },
       }),
     ]);
