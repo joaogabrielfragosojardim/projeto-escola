@@ -6,7 +6,7 @@ interface EditUserUseCaseRequest {
   id: string | undefined;
   name: string;
   password?: string;
-  profileUrl: string;
+  profileUrl?: string;
 }
 
 export class EditUserUseCase {

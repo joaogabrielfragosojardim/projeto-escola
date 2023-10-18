@@ -7,7 +7,7 @@ interface CreateCoordinatorUseCaseRequest {
   password: string;
   telephone: string;
   schoolId: string;
-  profileUrl: string;
+  profileUrl?: string;
 }
 
 export class CreateCoordinatorUseCase {

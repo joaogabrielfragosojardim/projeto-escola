@@ -11,7 +11,7 @@ export class EditUserController {
       const editBodySchema = z.object({
         name: z.string(),
         password: z.string().optional(),
-        profileUrl: z.string().url(),
+        profileUrl: z.string().url().optional(),
       });
 
       const { name, password, profileUrl } = editBodySchema.parse(req.body);
