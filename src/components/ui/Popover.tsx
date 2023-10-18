@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { useClientSide } from '@/hooks/useClientSide';
+
 interface PopoverProps {
   triggerElement: JSX.Element;
   children: JSX.Element;
@@ -8,6 +10,7 @@ interface PopoverProps {
 export const Popover = ({ triggerElement, children }: PopoverProps) => {
   const [showPopover, setShowPopover] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
+  const { clientSide } = useClientSide();
 
   const togglePopover = () => setShowPopover((prevState) => !prevState);
 
@@ -28,8 +31,12 @@ export const Popover = ({ triggerElement, children }: PopoverProps) => {
     };
   }, [popoverRef]);
 
+  if (!clientSide) {
+    return;
+  }
+
   return (
-    <div className="relative" ref={popoverRef}>
+    <div className="relative" ref={popoverRef} suppressHydrationWarning>
       <button type="button" onClick={togglePopover}>
         {triggerElement}
       </button>

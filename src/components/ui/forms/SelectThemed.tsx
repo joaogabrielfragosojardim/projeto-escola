@@ -83,6 +83,7 @@ export const SelectThemed = (props: SelectThemedProps) => {
         rules={validations}
         render={({ field: { onChange, onBlur } }) => (
           <Select
+            {...props}
             options={options}
             onChange={onChange}
             onBlur={onBlur}

@@ -1,9 +1,11 @@
-import { type ReactNode, useState } from 'react';
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoIosArrowDown } from 'react-icons/io';
 import { VscFilter } from 'react-icons/vsc';
 
 import { InputCheckBoxThemed } from './forms/InputCheckBoxThemed';
+import { InputThemed } from './forms/InputThemed';
 import { Popover } from './Popover';
 
 interface IFilters {
@@ -24,31 +26,41 @@ interface ITables {
 
 interface IProjectTable {
   tables: ITables[];
-  active: string;
+  selectedTable: number;
+  setSelectedTable: Dispatch<SetStateAction<number>>;
 }
 
-export const DashBoardTable = ({ tables, active }: IProjectTable) => {
-  const [selectedTable, setSelectedTable] = useState(0);
+export const DashBoardTable = ({
+  tables,
+  selectedTable,
+  setSelectedTable,
+}: IProjectTable) => {
+  const [filters, setFilters] = useState<IFilters[]>([]);
 
-  const { register } = useForm();
+  const { register, control, reset } = useForm();
 
   return (
     <div className="overflow-hidden rounded border-[3px] border-solid border-main">
-      <div>
+      <div className="flex w-full">
         {tables.map((table, tableIndex) => (
           <button
             type="button"
-            className="flex max-w-max items-center justify-start gap-[16px] border-[1px] border-solid border-complement-100 p-[22px] text-complement-200"
+            className={`flex flex-auto items-center justify-center gap-[16px] border-[1px] border-solid border-complement-100 p-[22px] text-complement-200 ${
+              tableIndex === selectedTable
+                ? 'border-b-[3px] border-solid border-b-main'
+                : ''
+            }`}
             key={table.name}
             onClick={() => {
               setSelectedTable(tableIndex);
+              setFilters([]);
             }}
           >
             {table.icon} <p>{table.name}</p>
           </button>
         ))}
       </div>
-      <div className="mb-[128px]">
+      <div>
         <div className="p-[32px]">
           <div className="flex items-center justify-between">
             <Popover
@@ -68,6 +80,28 @@ export const DashBoardTable = ({ tables, active }: IProjectTable) => {
                     name={filter.formValue}
                     label={filter.name}
                     key={filter.name}
+                    validations={{
+                      onChange(event) {
+                        if (event.target.checked) {
+                          return setFilters([
+                            ...filters,
+                            {
+                              name: filter.name,
+                              type: filter.type,
+                              formValue: filter.formValue,
+                            },
+                          ]);
+                        }
+                        const copyFilters = [...filters];
+                        const id = copyFilters.indexOf({
+                          name: filter.name,
+                          type: filter.type,
+                          formValue: filter.formValue,
+                        });
+                        copyFilters.splice(id);
+                        setFilters(copyFilters);
+                      },
+                    }}
                   />
                 ))}
               </form>
@@ -78,6 +112,26 @@ export const DashBoardTable = ({ tables, active }: IProjectTable) => {
             >
               Gerar Relatório <IoIosArrowDown size={20} />
             </button>
+          </div>
+          <div className="mt-[32px] grid grid-cols-2">
+            {filters.map((filter) => (
+              <div key={filter.formValue}>
+                {filter.type === 'string' ? (
+                  <InputThemed
+                    label={filter.name}
+                    register={register}
+                    name={`${filter.formValue}Filter`}
+                  />
+                ) : (
+                  // <SelectThemed
+                  //   control={control}
+                  //   name={`${filter.formValue}Filter`}
+                  //   reset={reset}
+                  // />
+                  <div>rever options do select</div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>

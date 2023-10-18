@@ -9,16 +9,18 @@ import type { UserAction } from './types';
 
 type UseUserDispatchType = () => (action: UserAction) => any;
 
-const UserContext = createContext(null);
+const UserContext = createContext<User>(initialState);
 
-const UserDispatchContext = createContext(null);
+const UserDispatchContext = createContext<UseUserDispatchType>(
+  {} as UseUserDispatchType,
+);
 
-export const useUser: () => User = () => {
-  return useContext(UserContext) as unknown as any;
+export const useUser = () => {
+  return useContext(UserContext) as unknown as User;
 };
 
-export const useUserDispatch: UseUserDispatchType = () => {
-  return useContext(UserDispatchContext) as unknown as any;
+export const useUserDispatch = () => {
+  return useContext(UserDispatchContext);
 };
 
 // apenas para context dev tools

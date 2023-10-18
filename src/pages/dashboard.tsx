@@ -1,7 +1,14 @@
 import { verify } from 'jsonwebtoken';
 import type { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
-import { PiStackSimpleLight } from 'react-icons/pi';
+import { useState } from 'react';
+import { GoPeople } from 'react-icons/go';
+import { IoSchoolOutline } from 'react-icons/io5';
+import {
+  PiBookBookmarkLight,
+  PiRulerLight,
+  PiStackSimpleLight,
+} from 'react-icons/pi';
 
 import { DashBoardTable } from '@/components/ui/DashboardTable';
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
@@ -9,6 +16,8 @@ import { useUserIsAdm } from '@/hooks/useUserIsAdm';
 import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
 
 const Dashboard = () => {
+  const [selectedTable, setSelectedTable] = useState(0);
+
   const isAdmMaster = useUserIsAdmMaster();
   const isAdm = useUserIsAdm();
 
@@ -22,6 +31,42 @@ const Dashboard = () => {
       icon: <PiStackSimpleLight size={25} />,
       noDataImage: '',
     },
+    {
+      filters: [],
+      columns: [''],
+      actions: ['view', 'delete'],
+      userCanView: isAdmMaster || isAdm,
+      name: 'Escolas',
+      icon: <PiBookBookmarkLight size={25} />,
+      noDataImage: '',
+    },
+    {
+      filters: [],
+      columns: [''],
+      actions: ['view', 'delete'],
+      userCanView: isAdmMaster || isAdm,
+      name: 'Coordenadores',
+      icon: <GoPeople size={25} />,
+      noDataImage: '',
+    },
+    {
+      filters: [],
+      columns: [''],
+      actions: ['view', 'delete'],
+      userCanView: isAdmMaster || isAdm,
+      name: 'Educadores Sociais',
+      icon: <PiRulerLight size={25} />,
+      noDataImage: '',
+    },
+    {
+      filters: [],
+      columns: [''],
+      actions: ['view', 'delete'],
+      userCanView: isAdmMaster || isAdm,
+      name: 'Alunos',
+      icon: <IoSchoolOutline size={25} />,
+      noDataImage: '',
+    },
   ];
 
   return (
@@ -30,7 +75,11 @@ const Dashboard = () => {
         <p className="mb-[32px] text-[24px] font-semibold text-complement-200">
           Gráficos
         </p>
-        <DashBoardTable active="" tables={tables} />
+        <DashBoardTable
+          selectedTable={selectedTable}
+          setSelectedTable={setSelectedTable}
+          tables={tables}
+        />
       </div>
     </SideNavMenuContainer>
   );

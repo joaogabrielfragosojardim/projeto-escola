@@ -1,4 +1,3 @@
-import type { Project } from '@prisma/client';
 import { verify } from 'jsonwebtoken';
 import type { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
@@ -30,7 +29,7 @@ const SchoolFormFirstStep = ({
   projects,
   setStep,
 }: {
-  projects: Project[];
+  projects: { label: string; value: string }[];
   setStep: Dispatch<SetStateAction<number>>;
 }) => {
   const {
@@ -43,11 +42,6 @@ const SchoolFormFirstStep = ({
 
   const schoolFormDispatch = useSchoolFormDispatch();
   const schoolForm = useSchoolForm();
-
-  const formatedProjects = projects.map((project) => ({
-    value: project.id,
-    label: project.name,
-  }));
 
   const onSubmit = (data: SchoolType) => {
     const {
@@ -115,7 +109,7 @@ const SchoolFormFirstStep = ({
               required: 'Campo obrigatório',
             }}
             error={errors.projectId}
-            options={formatedProjects}
+            options={projects}
             defaultValue={
               schoolForm.projectId.label && schoolForm.projectId.value
                 ? ({
@@ -294,7 +288,11 @@ const SchoolFormSecondStep = ({
   );
 };
 
-const School = ({ projects }: { projects: Project[] }) => {
+const School = ({
+  projects,
+}: {
+  projects: { value: string; label: string }[];
+}) => {
   const [step, setStep] = useState(0);
   return (
     <FormDefaultPage
@@ -329,11 +327,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     );
 
     if (canView) {
-      const { data } = await axiosApi.get('/project', {
+      const { data } = await axiosApi.get('/project/options', {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      return { props: { projects: data.data } };
+      return { props: { projects: data.options } };
     }
 
     return { redirect: { permanent: false, destination: '/login' } };

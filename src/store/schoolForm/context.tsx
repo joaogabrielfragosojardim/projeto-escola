@@ -9,16 +9,16 @@ import type { SchoolAction } from './types';
 
 type UseSchoolDispatchType = () => (action: SchoolAction) => any;
 
-const SchoolFormContext = createContext(null);
+const SchoolFormContext = createContext<School>(initialState);
 
-const SchoolFormDispatchContext = createContext(null);
+const SchoolFormDispatchContext = createContext({} as UseSchoolDispatchType);
 
-export const useSchoolForm: () => School = () => {
-  return useContext(SchoolFormContext) as unknown as any;
+export const useSchoolForm = () => {
+  return useContext(SchoolFormContext);
 };
 
-export const useSchoolFormDispatch: UseSchoolDispatchType = () => {
-  return useContext(SchoolFormDispatchContext) as unknown as any;
+export const useSchoolFormDispatch = () => {
+  return useContext(SchoolFormDispatchContext);
 };
 
 // apenas para context dev tools

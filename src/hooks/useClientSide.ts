@@ -6,8 +6,10 @@ export const useClientSide = () => {
   useEffect(() => {
     setClientSide(true);
 
-    return setClientSide(false);
+    return () => {
+      setClientSide(false);
+    };
   }, []);
 
-  return clientSide;
+  return { clientSide };
 };
