@@ -9,7 +9,7 @@ interface CreateUserUseCaseRequest {
   password: string;
   roleId: string;
   creatorId: string;
-  profileUrl: string;
+  profileUrl?: string;
 }
 
 export class CreateUserUseCase {

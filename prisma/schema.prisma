@@ -14,7 +14,7 @@ model User {
   id          String        @id @default(uuid())
   name        String
   email       String        @unique
-  profileUrl  String
+  profileUrl  String?
   password    String
   roleId      String
   role        Role          @relation(fields: [roleId], references: [id])

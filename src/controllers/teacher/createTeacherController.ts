@@ -10,7 +10,7 @@ export class CreateTeacherController {
         name: z.string(),
         email: z.string().email(),
         password: z.string().min(6),
-        profileUrl: z.string().url(),
+        profileUrl: z.string().url().optional(),
         telephone: z.string(),
         schoolId: z.string().uuid(),
         coordinatorId: z.string().uuid(),
