@@ -8,7 +8,7 @@ export class CreateUserController {
     try {
       const registerBodySchema = z.object({
         name: z.string(),
-        profileUrl: z.string().url(),
+        profileUrl: z.string().url().optional(),
         email: z.string().email(),
         password: z.string().min(6),
         roleId: z.string().uuid(),

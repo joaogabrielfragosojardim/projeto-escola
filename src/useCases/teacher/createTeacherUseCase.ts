@@ -8,7 +8,7 @@ interface CreateTeacherUseCaseRequest {
   telephone: string;
   schoolId: string;
   coordinatorId: string;
-  profileUrl: string;
+  profileUrl?: string;
 }
 
 export class CreateTeacherUseCase {
