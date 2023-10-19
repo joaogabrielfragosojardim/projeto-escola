@@ -12,8 +12,10 @@
     "check-types": "tsc --noEmit --pretty && tsc --project cypress --noEmit --pretty",
     "commit": "cz",
     "prepare": "husky install",
-    "postbuild": "next-sitemap",
-    "seed": "node prisma/seed.js"
+    "postbuild": "next-sitemap"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
@@ -40,7 +42,7 @@
     "@semantic-release/git": "^10.0.1",
     "@types/bcryptjs": "^2.4.3",
     "@types/jsonwebtoken": "^9.0.2",
-    "@types/node": "^20.5.7",
+    "@types/node": "^20.8.7",
     "@types/react": "^18.2.21",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
@@ -72,6 +74,7 @@
     "rimraf": "^5.0.1",
     "semantic-release": "^19.0.5",
     "tailwindcss": "^3.3.3",
+    "ts-node": "^10.9.1",
     "tsx": "^3.12.7",
     "typescript": "^5.2.2"
   },
