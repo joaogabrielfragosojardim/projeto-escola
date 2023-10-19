@@ -6,10 +6,10 @@ import { VscFilter } from 'react-icons/vsc';
 import { useQuery } from 'react-query';
 
 import { axiosApi } from '@/components/api/axiosApi';
+import { useTableTheme } from '@/hooks/useTableTheme';
 import type { Project } from '@/types/project';
 
 import { Popover } from '../Popover';
-import { useTableTheme } from '@/hooks/useTableTheme';
 
 const columns = [
   {

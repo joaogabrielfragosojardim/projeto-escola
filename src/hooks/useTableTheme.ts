@@ -5,7 +5,7 @@ export const useTableTheme = () => {
   const theme = useTheme([
     getTheme(),
     {
-      HeaderCell:`
+      HeaderCell: `
         font-weight: normal;
         font-size: 20px;
         border: none
