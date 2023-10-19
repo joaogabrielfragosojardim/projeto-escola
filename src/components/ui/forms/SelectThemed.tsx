@@ -95,7 +95,7 @@ export const SelectThemed = (props: SelectThemedProps) => {
       />
 
       {error && (
-        <span className="mt-[-6px] text-[12px] text-[red]">
+        <span className="mt-[-6px] text-[12px] text-wrong">
           {error.message as unknown as any}
         </span>
       )}

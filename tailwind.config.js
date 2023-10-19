@@ -20,6 +20,7 @@ module.exports = {
         100: '#D9D9D9',
         200: '#4D4D4D',
       },
+      wrong: '#AB2727',
     },
   },
   plugins: [],

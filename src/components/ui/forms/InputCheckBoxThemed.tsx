@@ -35,7 +35,7 @@ export const InputCheckBoxThemed = (props: InputCheckBoxThemedProps) => {
         </label>
       </div>
       {error && (
-        <span className="mt-[-6px] text-[12px] text-[red]">
+        <span className="mt-[-6px] text-[12px] text-wrong">
           {error.message}
         </span>
       )}

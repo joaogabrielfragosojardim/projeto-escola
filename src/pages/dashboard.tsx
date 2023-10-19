@@ -10,8 +10,9 @@ import {
   PiStackSimpleLight,
 } from 'react-icons/pi';
 
-import { DashBoardTable } from '@/components/ui/DashboardTable';
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
+import { DashBoardTable } from '@/components/ui/tables/DashboardTable';
+import { ProjectTable } from '@/components/ui/tables/ProjectTable';
 import { useUserIsAdm } from '@/hooks/useUserIsAdm';
 import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
 
@@ -23,49 +24,35 @@ const Dashboard = () => {
 
   const tables = [
     {
-      filters: [{ name: 'Nome', type: 'string', formValue: 'name' }],
-      columns: [''],
-      actions: ['view', 'delete'],
+      table: <ProjectTable />,
       userCanView: isAdmMaster || isAdm,
       name: 'Projetos',
       icon: <PiStackSimpleLight size={25} />,
-      noDataImage: '',
     },
     {
-      filters: [],
-      columns: [''],
-      actions: ['view', 'delete'],
+      table: <ProjectTable />,
       userCanView: isAdmMaster || isAdm,
       name: 'Escolas',
       icon: <PiBookBookmarkLight size={25} />,
-      noDataImage: '',
     },
     {
-      filters: [],
-      columns: [''],
-      actions: ['view', 'delete'],
+      table: <ProjectTable />,
       userCanView: isAdmMaster || isAdm,
       name: 'Coordenadores',
       icon: <GoPeople size={25} />,
-      noDataImage: '',
     },
     {
-      filters: [],
-      columns: [''],
-      actions: ['view', 'delete'],
+      table: <ProjectTable />,
       userCanView: isAdmMaster || isAdm,
       name: 'Educadores Sociais',
       icon: <PiRulerLight size={25} />,
-      noDataImage: '',
     },
     {
-      filters: [],
-      columns: [''],
-      actions: ['view', 'delete'],
+      table: <ProjectTable />,
+
       userCanView: isAdmMaster || isAdm,
       name: 'Alunos',
       icon: <IoSchoolOutline size={25} />,
-      noDataImage: '',
     },
   ];
 

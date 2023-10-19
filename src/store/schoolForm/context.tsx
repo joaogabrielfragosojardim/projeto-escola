@@ -7,7 +7,7 @@ import { initialState } from './initialState';
 import { schoolFormReducer } from './reducer';
 import type { SchoolAction } from './types';
 
-type UseSchoolDispatchType = () => (action: SchoolAction) => any;
+type UseSchoolDispatchType = (action: SchoolAction) => any;
 
 const SchoolFormContext = createContext<School>(initialState);
 

@@ -33,7 +33,7 @@ export const InputThemed = (props: InputThemedProps) => {
         {...props}
       />
       {error && (
-        <span className="mt-[-6px] text-[12px] text-[red]">
+        <span className="mt-[-6px] text-[12px] text-wrong">
           {error.message}
         </span>
       )}

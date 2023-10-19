@@ -90,7 +90,7 @@ export const SideNavMenu = () => {
   const menuRoutes = sideNavMenuRoutes(name as RoleEnum);
 
   return (
-    <div className="flex h-[100vh] min-w-[296px] max-w-[296px] flex-col bg-main py-[32px] pl-[32px]">
+    <div className="sticky left-0 top-0 flex h-[100vh] min-w-[296px] max-w-[296px] flex-col bg-main py-[32px] pl-[32px]">
       <div className="relative h-[60px] w-[172px]">
         <Image
           alt="escola prime logo"

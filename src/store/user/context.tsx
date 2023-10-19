@@ -7,7 +7,7 @@ import { initialState } from './initialState';
 import { userReducer } from './reducer';
 import type { UserAction } from './types';
 
-type UseUserDispatchType = () => (action: UserAction) => any;
+type UseUserDispatchType = (action: UserAction) => any;
 
 const UserContext = createContext<User>(initialState);
 
