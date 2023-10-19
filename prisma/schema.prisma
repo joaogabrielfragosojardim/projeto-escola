@@ -103,7 +103,7 @@ model Coordinator {
 model Class {
   id        String @id @default(uuid())
   name      String
-  year      Int
+  session   String
   gradeId   String
   schoolId  String
   teacherId String
