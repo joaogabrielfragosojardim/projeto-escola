@@ -57,19 +57,16 @@ model Project {
 }
 
 model Student {
-  id           String   @id @default(uuid())
-  userId       String
-  teacherId    String
-  schoolId     String
-  birtday      DateTime
-  registration String   @unique
-  createdAt    DateTime @default(now())
-  classId      String
+  id        String   @id @default(uuid())
+  birtday   DateTime
+  createdAt DateTime @default(now())
+  userId    String
+  schoolId  String
+  classId   String
 
-  user    User    @relation(fields: [userId], references: [id])
-  school  School  @relation(fields: [schoolId], references: [id])
-  teacher Teacher @relation(fields: [teacherId], references: [id])
-  Class   Class   @relation(fields: [classId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  school School @relation(fields: [schoolId], references: [id])
+  Class  Class  @relation(fields: [classId], references: [id])
 }
 
 model Teacher {
@@ -84,7 +81,6 @@ model Teacher {
   school      School      @relation(fields: [schoolId], references: [id])
   user        User        @relation(fields: [userId], references: [id])
   coordinator Coordinator @relation(fields: [coordinatorId], references: [id])
-  Student     Student[]
   Class       Class[]
 }
 
