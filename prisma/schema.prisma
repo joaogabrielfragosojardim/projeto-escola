@@ -63,10 +63,10 @@ model Student {
   userId    String
   schoolId  String
   classId   String
-
-  user   User   @relation(fields: [userId], references: [id])
-  school School @relation(fields: [schoolId], references: [id])
-  Class  Class  @relation(fields: [classId], references: [id])
+  status    Boolean  @default(true)
+  user      User     @relation(fields: [userId], references: [id])
+  school    School   @relation(fields: [schoolId], references: [id])
+  Class     Class    @relation(fields: [classId], references: [id])
 }
 
 model Teacher {
