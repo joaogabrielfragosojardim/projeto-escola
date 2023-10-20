@@ -11,6 +11,17 @@ export class GetOneProjectUseCase {
       where: {
         id,
       },
+      select: {
+        id: true,
+        name: true,
+        visualIdentity: true,
+        Schools: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
 
     if (!project) {

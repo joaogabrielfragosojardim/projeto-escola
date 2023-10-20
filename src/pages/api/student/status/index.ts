@@ -2,10 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next/types';
 
 import type { HttpMethod } from '@/components/api/RouteHandler';
 import { RouteHandler } from '@/components/api/RouteHandler';
-import {
-  CreateStudentController,
-  GetAllStudentController,
-} from '@/controllers/student';
+import { ChangeStudentStatusController } from '@/controllers/student';
 import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
@@ -26,8 +23,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const createStudentController = new CreateStudentController();
-  const getAllStudentController = new GetAllStudentController();
+  const changeStudentStatusController = new ChangeStudentStatusController();
 
   const method = req.method as HttpMethod;
 
@@ -35,8 +31,7 @@ export default async function handler(
     req,
     res,
     {
-      POST: createStudentController.handle,
-      GET: getAllStudentController.handle,
+      PUT: changeStudentStatusController.handle,
     },
     authMethods[method],
     permissionMethods[method],
