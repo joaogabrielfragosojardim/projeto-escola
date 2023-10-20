@@ -7,7 +7,7 @@ interface ITables {
   table: ReactNode;
 }
 
-interface IProjectTable {
+interface IDashboardTable {
   tables: ITables[];
   selectedTable: number;
   setSelectedTable: Dispatch<SetStateAction<number>>;
@@ -17,7 +17,7 @@ export const DashBoardTable = ({
   tables,
   selectedTable,
   setSelectedTable,
-}: IProjectTable) => {
+}: IDashboardTable) => {
   return (
     <div className="overflow-hidden rounded border-[3px] border-solid border-main">
       <div className="flex w-full">

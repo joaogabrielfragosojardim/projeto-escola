@@ -8,6 +8,9 @@ import {
   Table,
 } from '@table-library/react-table-library';
 import Image from 'next/image';
+import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { BiTrash } from 'react-icons/bi';
 import { FiEye } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
@@ -16,27 +19,75 @@ import { VscFilter } from 'react-icons/vsc';
 import { useQuery } from 'react-query';
 
 import { axiosApi } from '@/components/api/axiosApi';
+import { useDebounce } from '@/hooks/useDebounce';
 import { useTableTheme } from '@/hooks/useTableTheme';
 import type { Project } from '@/types/project';
 
+import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
+import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
 
 export const ProjectTable = ({
   page,
-  quantity,
+  perPage,
 }: {
   page: number;
-  quantity: number;
+  perPage: number;
 }) => {
+  const { register } = useForm();
   const theme = useTableTheme();
+  const [filtersValues, setFiltersValues] = useState({ name: '' });
+
   const fetchProjects = async () => {
     return (
-      await axiosApi.get('/project', { params: { perPage: quantity, page } })
+      await axiosApi.get('/project', {
+        params: { perPage, page, name: filtersValues.name || null },
+      })
     ).data;
   };
 
-  const { isLoading, data } = useQuery('fetchAllProjectsQuery', fetchProjects);
+  const { isLoading, data, refetch } = useQuery(
+    'fetchAllProjectsQuery',
+    fetchProjects,
+  );
   const nodes = { nodes: data?.data };
+
+  const nameDebounce = useDebounce((value: string) => {
+    setFiltersValues((prev) => ({ ...prev, name: value }));
+  }, 600);
+
+  useEffect(() => {
+    refetch();
+  }, [filtersValues, refetch]);
+
+  const [filters, setFilters] = useState<{
+    [key: string]: { element: ReactNode; view: boolean };
+  }>({
+    namePopover: {
+      element: (
+        <InputThemed
+          register={register}
+          name="name"
+          label="Nome do projeto"
+          onChange={(event) => {
+            nameDebounce(event.target.value);
+          }}
+        />
+      ),
+      view: false,
+    },
+  });
+
+  const handleChangeFilters = (name: string, event: any) => {
+    setFilters((prev) => ({
+      ...prev,
+      [name]: {
+        element: prev[name]?.element,
+        view: event.target?.checked,
+        value: '',
+      },
+    }));
+  };
 
   return (
     <div>
@@ -53,7 +104,16 @@ export const ProjectTable = ({
               </button>
             }
           >
-            <form />
+            <form>
+              <InputCheckBoxThemed
+                label="Nome"
+                register={register}
+                name="namePopover"
+                onClick={(event) => {
+                  handleChangeFilters('namePopover', event);
+                }}
+              />
+            </form>
           </Popover>
           <button
             type="button"
@@ -63,7 +123,13 @@ export const ProjectTable = ({
             Gerar Relatório <IoIosArrowDown size={20} />
           </button>
         </div>
-        <div className="mt-[32px] grid grid-cols-2" />
+        <div className="mt-[32px] grid grid-cols-2">
+          {Object.keys(filters)
+            .filter((item) => filters[item]?.view === true)
+            .map((item) => (
+              <div key={item}>{filters[item]?.element}</div>
+            ))}
+        </div>
       </div>
       <div>
         {isLoading && (
@@ -135,7 +201,7 @@ export const ProjectTable = ({
               />
             </div>
             <div className="text-center text-[22px] text-main">
-              <p>Você não cadastrou nenhum projeto ainda!</p>
+              <p>Nenhum projeto encontrado!</p>
             </div>
           </div>
         ) : null}
