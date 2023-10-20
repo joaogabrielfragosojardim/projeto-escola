@@ -21,10 +21,18 @@ import type { Project } from '@/types/project';
 
 import { Popover } from '../Popover';
 
-export const ProjectTable = () => {
+export const ProjectTable = ({
+  page,
+  quantity,
+}: {
+  page: number;
+  quantity: number;
+}) => {
   const theme = useTableTheme();
   const fetchProjects = async () => {
-    return (await axiosApi.get('/project')).data;
+    return (
+      await axiosApi.get('/project', { params: { perPage: quantity, page } })
+    ).data;
   };
 
   const { isLoading, data } = useQuery('fetchAllProjectsQuery', fetchProjects);

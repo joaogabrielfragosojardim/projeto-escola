@@ -18,37 +18,39 @@ import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
 
 const Dashboard = () => {
   const [selectedTable, setSelectedTable] = useState(0);
+  const [page, setPage] = useState(1);
+  const [quantity, setQuantity] = useState(10);
 
   const isAdmMaster = useUserIsAdmMaster();
   const isAdm = useUserIsAdm();
 
   const tables = [
     {
-      table: <ProjectTable />,
+      table: <ProjectTable page={page} quantity={quantity} />,
       userCanView: isAdmMaster || isAdm,
       name: 'Projetos',
       icon: <PiStackSimpleLight size={25} />,
     },
     {
-      table: <ProjectTable />,
+      table: <ProjectTable page={page} quantity={quantity} />,
       userCanView: isAdmMaster || isAdm,
       name: 'Escolas',
       icon: <PiBookBookmarkLight size={25} />,
     },
     {
-      table: <ProjectTable />,
+      table: <ProjectTable page={page} quantity={quantity} />,
       userCanView: isAdmMaster || isAdm,
       name: 'Coordenadores',
       icon: <GoPeople size={25} />,
     },
     {
-      table: <ProjectTable />,
+      table: <ProjectTable page={page} quantity={quantity} />,
       userCanView: isAdmMaster || isAdm,
       name: 'Educadores Sociais',
       icon: <PiRulerLight size={25} />,
     },
     {
-      table: <ProjectTable />,
+      table: <ProjectTable page={page} quantity={quantity} />,
 
       userCanView: isAdmMaster || isAdm,
       name: 'Alunos',
