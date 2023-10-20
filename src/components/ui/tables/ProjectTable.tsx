@@ -1,5 +1,15 @@
-import { CompactTable } from '@table-library/react-table-library/compact';
+import {
+  Body,
+  Cell,
+  Header,
+  HeaderCell,
+  HeaderRow,
+  Row,
+  Table,
+} from '@table-library/react-table-library';
 import Image from 'next/image';
+import { BiTrash } from 'react-icons/bi';
+import { FiEye } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
 import { VscFilter } from 'react-icons/vsc';
@@ -10,24 +20,6 @@ import { useTableTheme } from '@/hooks/useTableTheme';
 import type { Project } from '@/types/project';
 
 import { Popover } from '../Popover';
-
-const columns = [
-  {
-    label: 'Imagem',
-    renderCell: (item: Project) => (
-      <div className="flex items-center gap-[16px]">
-        <div className="relative h-[62px] w-[62px] overflow-hidden rounded-full">
-          <Image src={item.visualIdentity} alt="logo do projeto" fill />
-        </div>
-        {item.name}
-      </div>
-    ),
-  },
-  {
-    label: 'Sobre',
-    renderCell: (item: Project) => <div>{item.about}</div>,
-  },
-];
 
 export const ProjectTable = () => {
   const theme = useTableTheme();
@@ -76,7 +68,54 @@ export const ProjectTable = () => {
           </div>
         )}
         {nodes?.nodes && nodes?.nodes.length ? (
-          <CompactTable columns={columns} data={nodes} theme={theme} />
+          <Table
+            data={nodes}
+            theme={theme}
+            style={{ gridTemplateColumns: '1fr 2fr 0.4fr' }}
+          >
+            {(tableList: Project[]) => (
+              <>
+                <Header>
+                  <HeaderRow>
+                    <HeaderCell>Nome</HeaderCell>
+                    <HeaderCell>Sobre</HeaderCell>
+                    <HeaderCell>Ações</HeaderCell>
+                  </HeaderRow>
+                </Header>
+                <Body>
+                  {tableList.map((project) => (
+                    <Row key={project.id} item={project}>
+                      <Cell className="text-main hover:text-main">
+                        <div className="flex items-center gap-[16px] text-[20px]">
+                          <div className="relative h-[62px] w-[62px] overflow-hidden rounded-full">
+                            <Image
+                              src={project.visualIdentity}
+                              alt="logo do projeto"
+                              fill
+                            />
+                          </div>
+                          {project.name}
+                        </div>
+                      </Cell>
+                      <Cell className="text-main hover:text-main">
+                        {project.about}
+                      </Cell>
+                      <Cell className="text-center text-main hover:text-main">
+                        <div className="flex gap-[8px]">
+                          <button type="button">
+                            <FiEye size={20} />
+                          </button>
+                          <button type="button">
+                            <BiTrash size={20} />
+                          </button>
+                        </div>
+                      </Cell>
+                    </Row>
+                  ))}
+                </Body>
+              </>
+            )}
+          </Table>
         ) : null}
         {nodes?.nodes && !nodes?.nodes.length ? (
           <div className="p-[44px]">
