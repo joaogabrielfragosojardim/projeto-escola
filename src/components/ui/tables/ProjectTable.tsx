@@ -8,7 +8,7 @@ import {
   Table,
 } from '@table-library/react-table-library';
 import Image from 'next/image';
-import type { ReactNode } from 'react';
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BiTrash } from 'react-icons/bi';
@@ -29,10 +29,12 @@ import { Popover } from '../Popover';
 
 export const ProjectTable = ({
   page,
-  perPage,
+  setTotalPages,
+  setPage,
 }: {
   page: number;
-  perPage: number;
+  setTotalPages: Dispatch<SetStateAction<number>>;
+  setPage: Dispatch<SetStateAction<number>>;
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
@@ -41,24 +43,30 @@ export const ProjectTable = ({
   const fetchProjects = async () => {
     return (
       await axiosApi.get('/project', {
-        params: { perPage, page, name: filtersValues.name || null },
+        params: { page, name: filtersValues.name },
       })
     ).data;
   };
 
-  const { isLoading, data, refetch } = useQuery(
+  const { isLoading, data, refetch, isRefetching } = useQuery(
     'fetchAllProjectsQuery',
     fetchProjects,
+    { refetchOnWindowFocus: false },
   );
   const nodes = { nodes: data?.data };
 
   const nameDebounce = useDebounce((value: string) => {
+    setPage(1);
     setFiltersValues((prev) => ({ ...prev, name: value }));
   }, 600);
 
   useEffect(() => {
     refetch();
-  }, [filtersValues, refetch]);
+  }, [filtersValues, page, refetch]);
+
+  useEffect(() => {
+    setTotalPages(data?.meta.totalPage);
+  }, [data, setTotalPages]);
 
   const [filters, setFilters] = useState<{
     [key: string]: { element: ReactNode; view: boolean };
@@ -132,8 +140,8 @@ export const ProjectTable = ({
         </div>
       </div>
       <div>
-        {isLoading && (
-          <div className="flex h-[320px] w-full items-center justify-center text-main">
+        {(isLoading || isRefetching) && (
+          <div className="flex h-[420px] w-full items-center justify-center text-main">
             <div>
               <div className="animate-spin">
                 <TbLoader size={62} />
@@ -141,7 +149,7 @@ export const ProjectTable = ({
             </div>
           </div>
         )}
-        {nodes?.nodes && nodes?.nodes.length ? (
+        {nodes?.nodes && nodes?.nodes.length && !(isLoading || isRefetching) ? (
           <Table
             data={nodes}
             theme={theme}

@@ -1,7 +1,7 @@
 import { verify } from 'jsonwebtoken';
 import type { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GoPeople } from 'react-icons/go';
 import { IoSchoolOutline } from 'react-icons/io5';
 import {
@@ -19,38 +19,74 @@ import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
 const Dashboard = () => {
   const [selectedTable, setSelectedTable] = useState(0);
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
 
   const isAdmMaster = useUserIsAdmMaster();
   const isAdm = useUserIsAdm();
 
+  useEffect(() => {
+    if (totalPages) {
+      setTotalPages(0);
+    }
+  }, [selectedTable]);
+
   const tables = [
     {
-      table: <ProjectTable page={page} perPage={perPage} />,
+      table: (
+        <ProjectTable
+          page={page}
+          setTotalPages={setTotalPages}
+          setPage={setPage}
+        />
+      ),
       userCanView: isAdmMaster || isAdm,
       name: 'Projetos',
       icon: <PiStackSimpleLight size={25} />,
     },
     {
-      table: <ProjectTable page={page} perPage={perPage} />,
+      table: (
+        <ProjectTable
+          page={page}
+          setTotalPages={setTotalPages}
+          setPage={setPage}
+        />
+      ),
       userCanView: isAdmMaster || isAdm,
       name: 'Escolas',
       icon: <PiBookBookmarkLight size={25} />,
     },
     {
-      table: <ProjectTable page={page} perPage={perPage} />,
+      table: (
+        <ProjectTable
+          page={page}
+          setTotalPages={setTotalPages}
+          setPage={setPage}
+        />
+      ),
       userCanView: isAdmMaster || isAdm,
       name: 'Coordenadores',
       icon: <GoPeople size={25} />,
     },
     {
-      table: <ProjectTable page={page} perPage={perPage} />,
+      table: (
+        <ProjectTable
+          page={page}
+          setTotalPages={setTotalPages}
+          setPage={setPage}
+        />
+      ),
       userCanView: isAdmMaster || isAdm,
       name: 'Educadores Sociais',
       icon: <PiRulerLight size={25} />,
     },
     {
-      table: <ProjectTable page={page} perPage={perPage} />,
+      table: (
+        <ProjectTable
+          page={page}
+          setTotalPages={setTotalPages}
+          setPage={setPage}
+        />
+      ),
 
       userCanView: isAdmMaster || isAdm,
       name: 'Alunos',
@@ -68,6 +104,9 @@ const Dashboard = () => {
           selectedTable={selectedTable}
           setSelectedTable={setSelectedTable}
           tables={tables}
+          page={page}
+          setPage={setPage}
+          totalPages={totalPages}
         />
       </div>
     </SideNavMenuContainer>
