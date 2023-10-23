@@ -1,6 +1,7 @@
 type SchoolQuery = {
   id: string;
   name: string;
+  visualIdentity: string | null;
   project: {
     id: string;
     name: string;
@@ -16,6 +17,7 @@ type SchoolQuery = {
 type School = {
   id: string;
   name: string;
+  visualIdentity: string | null;
   project: {
     id: string;
     name: string;
@@ -32,6 +34,7 @@ export function toSchool(schools: SchoolQuery[]): School[] {
   return schools.map((school) => ({
     id: school.id,
     name: school.name,
+    visualIdentity: school?.visualIdentity ?? null,
     project: {
       id: school.project.id,
       name: school.project.name,

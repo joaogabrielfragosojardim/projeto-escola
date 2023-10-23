@@ -14,6 +14,7 @@ export class GetOneSchoolUseCase {
       select: {
         id: true,
         name: true,
+        visualIdentity: true,
         project: {
           select: {
             id: true,
@@ -40,6 +41,7 @@ export class GetOneSchoolUseCase {
       school: {
         id: school.id,
         name: school.name,
+        visualIdentity: school?.visualIdentity,
         project: {
           id: school.project.id,
           name: school.project.name,
