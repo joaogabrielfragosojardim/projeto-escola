@@ -9,6 +9,7 @@ export class CreateSchoolController {
       const createBodySchema = z.object({
         name: z.string(),
         projectId: z.string().uuid(),
+        visualIdentity: z.string().url().optional(),
         address: z.object({
           zipCode: z
             .string()
@@ -20,7 +21,8 @@ export class CreateSchoolController {
         }),
       });
 
-      const { name, projectId, address } = createBodySchema.parse(req.body);
+      const { name, projectId, visualIdentity, address } =
+        createBodySchema.parse(req.body);
 
       const createSchoolUseCase = new CreateSchoolUseCase();
 
@@ -28,11 +30,11 @@ export class CreateSchoolController {
         name,
         projectId,
         address,
+        visualIdentity,
       });
 
       return res.status(201).json({ school });
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }

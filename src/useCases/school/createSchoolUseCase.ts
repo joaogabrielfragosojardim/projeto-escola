@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 interface CreateSchoolUseCaseRequest {
   name: string;
   projectId: string;
+  visualIdentity?: string;
   address: {
     zipCode: string;
     city: string;
@@ -12,7 +13,12 @@ interface CreateSchoolUseCaseRequest {
 }
 
 export class CreateSchoolUseCase {
-  async execute({ name, projectId, address }: CreateSchoolUseCaseRequest) {
+  async execute({
+    name,
+    projectId,
+    address,
+    visualIdentity,
+  }: CreateSchoolUseCaseRequest) {
     const { id: addressId } = await prisma.address.create({
       data: {
         zipCode: address.zipCode,
@@ -30,6 +36,7 @@ export class CreateSchoolUseCase {
         name,
         addressId,
         projectId,
+        visualIdentity,
       },
     });
 

@@ -32,11 +32,12 @@ model Role {
 }
 
 model School {
-  id        String   @id @default(uuid())
-  name      String
-  projectId String
-  createdAt DateTime @default(now())
-  addressId String   @unique
+  id             String   @id @default(uuid())
+  name           String
+  projectId      String
+  visualIdentity String?
+  createdAt      DateTime @default(now())
+  addressId      String   @unique
 
   Address     Address       @relation(fields: [addressId], references: [id], onDelete: Cascade)
   project     Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -57,16 +58,17 @@ model Project {
 }
 
 model Student {
-  id        String   @id @default(uuid())
-  birtday   DateTime
-  createdAt DateTime @default(now())
-  userId    String
-  schoolId  String
-  classId   String
-  status    Boolean  @default(true)
-  user      User     @relation(fields: [userId], references: [id])
-  school    School   @relation(fields: [schoolId], references: [id])
-  Class     Class    @relation(fields: [classId], references: [id])
+  id         String       @id @default(uuid())
+  birtday    DateTime
+  createdAt  DateTime     @default(now())
+  userId     String
+  schoolId   String
+  classId    String
+  status     Boolean      @default(true)
+  user       User         @relation(fields: [userId], references: [id])
+  school     School       @relation(fields: [schoolId], references: [id])
+  Class      Class        @relation(fields: [classId], references: [id])
+  Attendance Attendance[]
 }
 
 model Teacher {
@@ -104,10 +106,11 @@ model Class {
   schoolId  String
   teacherId String
 
-  school   School    @relation(fields: [schoolId], references: [id])
-  teacher  Teacher   @relation(fields: [teacherId], references: [id])
-  grade    Grade     @relation(fields: [gradeId], references: [id])
-  students Student[]
+  school     School       @relation(fields: [schoolId], references: [id])
+  teacher    Teacher      @relation(fields: [teacherId], references: [id])
+  grade      Grade        @relation(fields: [gradeId], references: [id])
+  students   Student[]
+  Attendance Attendance[]
 }
 
 model Grade {
@@ -124,4 +127,15 @@ model Address {
   zipCode String
 
   School School?
+}
+
+model Attendance {
+  id        String   @id @default(uuid())
+  date      DateTime
+  isPresent Boolean
+  studentId String
+  classId   String
+
+  student Student @relation(fields: [studentId], references: [id])
+  class   Class   @relation(fields: [classId], references: [id])
 }

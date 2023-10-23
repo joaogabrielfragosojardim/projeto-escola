@@ -4,6 +4,7 @@ interface EditSchoolUseCaseRequest {
   id?: string;
   name: string;
   projectId: string;
+  visualIdentity?: string;
   address: {
     zipCode: string;
     city: string;
@@ -13,12 +14,19 @@ interface EditSchoolUseCaseRequest {
 }
 
 export class EditSchoolUseCase {
-  async execute({ id, name, projectId, address }: EditSchoolUseCaseRequest) {
+  async execute({
+    id,
+    name,
+    projectId,
+    visualIdentity,
+    address,
+  }: EditSchoolUseCaseRequest) {
     const school = await prisma.school.update({
       where: { id },
       data: {
         name,
         projectId,
+        visualIdentity,
       },
     });
 
@@ -34,7 +42,9 @@ export class EditSchoolUseCase {
 
     return {
       school: {
+        id: school.id,
         name: school.name,
+        visualIdentity: school.visualIdentity,
         projectId: school.projectId,
         address: newAddress,
       },
