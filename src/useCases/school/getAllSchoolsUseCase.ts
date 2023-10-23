@@ -37,6 +37,7 @@ export class GetAllSchoolsUseCase {
         select: {
           id: true,
           name: true,
+          visualIdentity: true,
           project: {
             select: {
               id: true,
