@@ -37,7 +37,12 @@ export class GetAllSchoolsUseCase {
         select: {
           id: true,
           name: true,
-          projectId: true,
+          project: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
           Address: {
             select: {
               city: true,

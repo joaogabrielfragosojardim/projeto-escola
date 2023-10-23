@@ -14,7 +14,12 @@ export class GetOneSchoolUseCase {
       select: {
         id: true,
         name: true,
-        projectId: true,
+        project: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         Address: {
           select: {
             id: true,
@@ -35,7 +40,10 @@ export class GetOneSchoolUseCase {
       school: {
         id: school.id,
         name: school.name,
-        projectId: school.projectId,
+        project: {
+          id: school.project.id,
+          name: school.project.name,
+        },
         address: {
           ...school.Address,
         },
