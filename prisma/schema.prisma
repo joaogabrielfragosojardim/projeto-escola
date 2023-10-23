@@ -32,11 +32,12 @@ model Role {
 }
 
 model School {
-  id        String   @id @default(uuid())
-  name      String
-  projectId String
-  createdAt DateTime @default(now())
-  addressId String   @unique
+  id             String   @id @default(uuid())
+  name           String
+  projectId      String
+  visualIdentity String?
+  createdAt      DateTime @default(now())
+  addressId      String   @unique
 
   Address     Address       @relation(fields: [addressId], references: [id], onDelete: Cascade)
   project     Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)

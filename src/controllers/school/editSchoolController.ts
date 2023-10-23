@@ -13,6 +13,7 @@ export class EditSchoolController {
       const editBodySchema = z.object({
         name: z.string(),
         projectId: z.string().uuid(),
+        visualIdentity: z.string().url().optional(),
         address: z.object({
           zipCode: z
             .string()
@@ -25,7 +26,9 @@ export class EditSchoolController {
       });
 
       const { id } = editQuerySchema.parse(req.query);
-      const { name, address, projectId } = editBodySchema.parse(req.body);
+      const { name, address, projectId, visualIdentity } = editBodySchema.parse(
+        req.body,
+      );
 
       const editSchoolUseCase = new EditSchoolUseCase();
 
@@ -33,6 +36,7 @@ export class EditSchoolController {
         id: id[0],
         name,
         address,
+        visualIdentity,
         projectId,
       });
 
