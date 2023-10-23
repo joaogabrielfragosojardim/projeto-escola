@@ -19,6 +19,7 @@ interface SelectThemedProps extends InputHTMLAttributes<HTMLSelectElement> {
   error?: Merge<FieldError, FieldErrorsImpl<any>>;
   reset: UseFormReset<any>;
   options: { value: string; label: string }[];
+  menuPlacement?: string;
 }
 
 const colourStyles: any = {
@@ -85,7 +86,7 @@ export const SelectThemed = (props: SelectThemedProps) => {
           <Select
             {...props}
             options={options}
-            onChange={onChange}
+            onChange={props.onChange ? props.onChange : onChange}
             onBlur={onBlur}
             styles={colourStyles}
             placeholder={placeholder}

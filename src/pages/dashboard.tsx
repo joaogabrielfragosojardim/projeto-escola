@@ -13,6 +13,7 @@ import {
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
 import { DashBoardTable } from '@/components/ui/tables/DashboardTable';
 import { ProjectTable } from '@/components/ui/tables/ProjectTable';
+import { SchoolTable } from '@/components/ui/tables/SchoolTable';
 import { useUserIsAdm } from '@/hooks/useUserIsAdm';
 import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
 
@@ -20,6 +21,7 @@ const Dashboard = () => {
   const [selectedTable, setSelectedTable] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [perPage, setPerPage] = useState(10);
 
   const isAdmMaster = useUserIsAdmMaster();
   const isAdm = useUserIsAdm();
@@ -37,6 +39,7 @@ const Dashboard = () => {
           page={page}
           setTotalPages={setTotalPages}
           setPage={setPage}
+          perPage={perPage}
         />
       ),
       userCanView: isAdmMaster || isAdm,
@@ -45,10 +48,11 @@ const Dashboard = () => {
     },
     {
       table: (
-        <ProjectTable
+        <SchoolTable
           page={page}
           setTotalPages={setTotalPages}
           setPage={setPage}
+          perPage={perPage}
         />
       ),
       userCanView: isAdmMaster || isAdm,
@@ -61,6 +65,7 @@ const Dashboard = () => {
           page={page}
           setTotalPages={setTotalPages}
           setPage={setPage}
+          perPage={perPage}
         />
       ),
       userCanView: isAdmMaster || isAdm,
@@ -73,6 +78,7 @@ const Dashboard = () => {
           page={page}
           setTotalPages={setTotalPages}
           setPage={setPage}
+          perPage={perPage}
         />
       ),
       userCanView: isAdmMaster || isAdm,
@@ -85,6 +91,7 @@ const Dashboard = () => {
           page={page}
           setTotalPages={setTotalPages}
           setPage={setPage}
+          perPage={perPage}
         />
       ),
 
@@ -107,6 +114,8 @@ const Dashboard = () => {
           page={page}
           setPage={setPage}
           totalPages={totalPages}
+          setPerPage={setPerPage}
+          perPage={perPage}
         />
       </div>
     </SideNavMenuContainer>

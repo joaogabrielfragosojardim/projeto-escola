@@ -2,6 +2,7 @@ import type { InputHTMLAttributes } from 'react';
 import SelectTypeScript, { components } from 'react-select';
 
 interface ISelectProps extends InputHTMLAttributes<HTMLSelectElement> {
+  menuPlacement?: string;
   options: { value: string; label: string }[];
   styles: any;
 }

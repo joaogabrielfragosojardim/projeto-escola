@@ -1,4 +1,7 @@
 import { type Dispatch, type ReactNode, type SetStateAction } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { SelectThemed } from '../forms/SelectThemed';
 
 interface ITables {
   userCanView: boolean;
@@ -14,6 +17,8 @@ interface IDashboardTable {
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
   totalPages: number;
+  setPerPage: Dispatch<SetStateAction<number>>;
+  perPage: number;
 }
 
 export const DashBoardTable = ({
@@ -23,8 +28,13 @@ export const DashBoardTable = ({
   page,
   setPage,
   totalPages,
+  setPerPage,
+  perPage,
 }: IDashboardTable) => {
   const pagesArray = Array.from({ length: totalPages }, (_, i) => i + 1);
+  const slicedPagesArray = pagesArray.slice(0, 5);
+
+  const { control, reset } = useForm();
 
   return (
     <div>
@@ -40,6 +50,7 @@ export const DashBoardTable = ({
               }`}
               key={table.name}
               onClick={() => {
+                setPage(1);
                 setSelectedTable(tableIndex);
               }}
             >
@@ -49,7 +60,7 @@ export const DashBoardTable = ({
         </div>
         <div>{tables[selectedTable]?.table}</div>
       </div>
-      {totalPages !== 1 && (
+      {totalPages !== 1 ? (
         <div className="mt-[24px] flex w-full justify-between">
           <button
             type="button"
@@ -62,7 +73,7 @@ export const DashBoardTable = ({
             Anterior
           </button>
           <div className="flex gap-[16px]">
-            {pagesArray.map((pageArray) => (
+            {slicedPagesArray.map((pageArray) => (
               <button
                 key={pageArray}
                 type="button"
@@ -78,17 +89,81 @@ export const DashBoardTable = ({
                 {pageArray}
               </button>
             ))}
+            {pagesArray.length > 5 && perPage > 10 ? (
+              <>
+                {!slicedPagesArray.includes(page) && page !== totalPages ? (
+                  <div className="rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100">
+                    {page}
+                  </div>
+                ) : (
+                  <div className="rounded bg-complement-100 px-[16px] py-[8px] text-[16px] text-complement-200">
+                    ...
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  className={`${
+                    page === totalPages
+                      ? 'bg-main text-complement-100'
+                      : 'bg-complement-100 text-complement-200'
+                  } rounded px-[16px] py-[8px] text-[16px]`}
+                  onClick={() => {
+                    setPage(totalPages);
+                  }}
+                >
+                  {totalPages}
+                </button>
+              </>
+            ) : null}
           </div>
-          <button
-            type="button"
-            className="rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100 disabled:opacity-60"
-            onClick={() => {
-              setPage((prev) => prev + 1);
+          <div className="flex gap-[16px]">
+            <div>
+              <SelectThemed
+                control={control}
+                reset={reset}
+                name="perPageSelect"
+                placeholder="quantidade"
+                menuPlacement="top"
+                options={[
+                  { label: '10', value: '10' },
+                  { label: '30', value: '30' },
+                  { label: '50', value: '50' },
+                ]}
+                onChange={(e: any) => {
+                  setPerPage(parseInt(e.value, 10));
+                }}
+              />
+            </div>
+            <button
+              type="button"
+              className="rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100 disabled:opacity-60"
+              onClick={() => {
+                setPage((prev) => prev + 1);
+              }}
+              disabled={page === totalPages}
+            >
+              Próxima
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="ml-auto mt-[32px] max-w-[180px]">
+          <SelectThemed
+            control={control}
+            reset={reset}
+            name="perPageSelect"
+            placeholder="quantidade"
+            menuPlacement="top"
+            options={[
+              { label: '10', value: '10' },
+              { label: '30', value: '30' },
+              { label: '50', value: '50' },
+            ]}
+            onChange={(e: any) => {
+              setPerPage(parseInt(e.value, 10));
             }}
-            disabled={page === totalPages}
-          >
-            Próxima
-          </button>
+          />
         </div>
       )}
     </div>

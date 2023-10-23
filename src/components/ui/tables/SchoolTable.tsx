@@ -21,13 +21,13 @@ import { useQuery } from 'react-query';
 import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useTableTheme } from '@/hooks/useTableTheme';
-import type { Project } from '@/types/project';
+import type { SchollAddress } from '@/types/school';
 
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
 
-export const ProjectTable = ({
+export const SchoolTable = ({
   page,
   setTotalPages,
   setPage,
@@ -42,17 +42,17 @@ export const ProjectTable = ({
   const theme = useTableTheme();
   const [filtersValues, setFiltersValues] = useState({ name: '' });
 
-  const fetchProjects = async () => {
+  const fetchSchools = async () => {
     return (
-      await axiosApi.get('/project', {
+      await axiosApi.get('/school', {
         params: { page, name: filtersValues.name || null, perPage },
       })
     ).data;
   };
 
   const { isLoading, data, refetch, isRefetching } = useQuery(
-    'fetchAllProjectsQuery',
-    fetchProjects,
+    'fetchAllSchoolsQuery',
+    fetchSchools,
     { refetchOnWindowFocus: false },
   );
   const nodes = { nodes: data?.data };
@@ -64,7 +64,7 @@ export const ProjectTable = ({
 
   useEffect(() => {
     refetch();
-  }, [filtersValues, page, perPage, refetch]);
+  }, [filtersValues, page, refetch]);
 
   useEffect(() => {
     setTotalPages(data?.meta.totalPage);
@@ -78,7 +78,7 @@ export const ProjectTable = ({
         <InputThemed
           register={register}
           name="name"
-          label="Nome do projeto"
+          label="Nome da escola"
           onChange={(event) => {
             nameDebounce(event.target.value);
           }}
@@ -155,34 +155,42 @@ export const ProjectTable = ({
           <Table
             data={nodes}
             theme={theme}
-            style={{ gridTemplateColumns: '1fr 2fr 0.4fr' }}
+            style={{ gridTemplateColumns: '1.5fr 1fr 1fr 1fr 0.4fr' }}
           >
-            {(tableList: Project[]) => (
+            {(tableList: SchollAddress[]) => (
               <>
                 <Header>
                   <HeaderRow>
                     <HeaderCell>Nome</HeaderCell>
-                    <HeaderCell>Sobre</HeaderCell>
+                    <HeaderCell>Projeto</HeaderCell>
+                    <HeaderCell>Cidade</HeaderCell>
+                    <HeaderCell>Estado</HeaderCell>
                     <HeaderCell>Ações</HeaderCell>
                   </HeaderRow>
                 </Header>
                 <Body>
-                  {tableList.map((project) => (
-                    <Row key={project.id} item={project}>
+                  {tableList.map((school) => (
+                    <Row key={school.id} item={school}>
                       <Cell className="text-main hover:text-main">
                         <div className="flex items-center gap-[16px] text-[20px]">
                           <div className="relative h-[62px] w-[62px] overflow-hidden rounded-full">
                             <Image
-                              src={project.visualIdentity}
+                              src={school.visualIdentity}
                               alt="logo do projeto"
                               fill
                             />
                           </div>
-                          {project.name}
+                          {school.name}
                         </div>
                       </Cell>
                       <Cell className="text-[20px] text-main hover:text-main">
-                        {project.about}
+                        {school.project.name}
+                      </Cell>
+                      <Cell className="text-[20px] text-main hover:text-main">
+                        {school.address.city}
+                      </Cell>
+                      <Cell className="text-[20px] text-main hover:text-main">
+                        {school.address.state}
                       </Cell>
                       <Cell className="text-center text-main hover:text-main">
                         <div className="flex gap-[8px]">
