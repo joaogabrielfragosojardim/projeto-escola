@@ -29,7 +29,12 @@ export class GetOneProjectUseCase {
     }
 
     return {
-      project,
+      project: {
+        id: project.id,
+        name: project.name,
+        visualIdentity: project.visualIdentity,
+        school: [...project.Schools],
+      },
     };
   }
 }
