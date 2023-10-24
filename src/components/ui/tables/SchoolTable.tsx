@@ -16,7 +16,8 @@ import { FiEye } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
 import { VscFilter } from 'react-icons/vsc';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
+import { toast } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -24,6 +25,7 @@ import { useTableTheme } from '@/hooks/useTableTheme';
 import type { SchollAddress } from '@/types/school';
 import { createCSV } from '@/utils/createCSV';
 
+import { ConfirmModal } from '../ConfirmModal';
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
@@ -44,6 +46,9 @@ export const SchoolTable = ({
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [schoolToDelete, setScholToDelete] = useState('');
+
   const [filtersValues, setFiltersValues] = useState({
     name: '',
     projectId: '',
@@ -123,6 +128,20 @@ export const SchoolTable = ({
     { refetchOnWindowFocus: false },
   );
   const nodes = { nodes: data?.data };
+
+  const deleteProject = async (id: string) => {
+    return (await axiosApi.delete(`/school/${id}`)).data;
+  };
+
+  const { mutate } = useMutation('fetchAllProjectsQuery', deleteProject, {
+    onSuccess: () => {
+      toast.success('escola deletada!');
+      refetch();
+    },
+    onError: () => {
+      toast.error('Algo de arrado aconteceu ao deletar a escola!');
+    },
+  });
 
   const nameDebounce = useDebounce((value: string) => {
     setPage(1);
@@ -297,7 +316,13 @@ export const SchoolTable = ({
                           <button type="button">
                             <FiEye size={20} />
                           </button>
-                          <button type="button">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setScholToDelete(school.id);
+                              setDeleteModal(true);
+                            }}
+                          >
                             <BiTrash size={20} />
                           </button>
                         </div>
@@ -324,6 +349,15 @@ export const SchoolTable = ({
           </div>
         ) : null}
       </div>
+      <ConfirmModal
+        isOpen={deleteModal}
+        setOpen={setDeleteModal}
+        text="Deseja realmente excluir essa escola?"
+        onConfirm={() => {
+          mutate(schoolToDelete);
+          setDeleteModal(false);
+        }}
+      />
     </div>
   );
 };

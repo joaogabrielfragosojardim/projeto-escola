@@ -71,7 +71,7 @@ export const ProjectTable = ({
     return (await axiosApi.delete(`/project/${id}`)).data;
   };
 
-  const { mutate } = useMutation('fetchAllProjectsQuery', deleteProject, {
+  const { mutate } = useMutation('fdeleteProjectMutation', deleteProject, {
     onSuccess: () => {
       toast.success('projeto deletado!');
       refetch();
