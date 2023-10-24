@@ -17,7 +17,8 @@ import { FiEye } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
 import { VscFilter } from 'react-icons/vsc';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
+import { toast } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -25,6 +26,7 @@ import { useTableTheme } from '@/hooks/useTableTheme';
 import type { Project } from '@/types/project';
 import { createCSV } from '@/utils/createCSV';
 
+import { ConfirmModal } from '../ConfirmModal';
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
@@ -44,6 +46,19 @@ export const ProjectTable = ({
   const theme = useTableTheme();
   const route = useRouter();
   const [filtersValues, setFiltersValues] = useState({ name: '' });
+  const [deleteModal, setDeleteModal] = useState(true);
+  const [projectToDelete, setProjectToDelete] = useState('');
+
+  const deleteProject = async (id: string) => {
+    return (await axiosApi.delete(`/project/${id}`)).data;
+  };
+
+  const { mutate } = useMutation('fetchAllProjectsQuery', deleteProject, {
+    onSuccess: () => {
+      toast.success('projeto deletado!');
+      refetch();
+    },
+  });
 
   const fetchProjects = async () => {
     return (
@@ -219,7 +234,13 @@ export const ProjectTable = ({
                           >
                             <FiEye size={20} />
                           </button>
-                          <button type="button">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setProjectToDelete(project.id);
+                              setDeleteModal(true);
+                            }}
+                          >
                             <BiTrash size={20} />
                           </button>
                         </div>
@@ -246,6 +267,15 @@ export const ProjectTable = ({
           </div>
         ) : null}
       </div>
+      <ConfirmModal
+        isOpen={deleteModal}
+        setOpen={setDeleteModal}
+        text="Deseja realmente excluir esse projeto?"
+        onConfirm={() => {
+          mutate(projectToDelete);
+          setDeleteModal(false);
+        }}
+      />
     </div>
   );
 };
