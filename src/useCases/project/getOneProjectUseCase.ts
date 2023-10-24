@@ -15,6 +15,7 @@ export class GetOneProjectUseCase {
         id: true,
         name: true,
         visualIdentity: true,
+        about: true,
         Schools: {
           select: {
             id: true,
