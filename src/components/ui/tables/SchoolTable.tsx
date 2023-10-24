@@ -11,7 +11,7 @@ import Image from 'next/image';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { BiTrash } from 'react-icons/bi';
+import { BiDownload, BiTrash } from 'react-icons/bi';
 import { FiEye } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
@@ -22,10 +22,14 @@ import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useTableTheme } from '@/hooks/useTableTheme';
 import type { SchollAddress } from '@/types/school';
+import { createCSV } from '@/utils/createCSV';
 
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
+import { CitySelect } from './Selects/CitySelect';
+import { ProjectSelect } from './Selects/ProjectSelect';
+import { StateSelect } from './Selects/StateSelect';
 
 export const SchoolTable = ({
   page,
@@ -40,12 +44,75 @@ export const SchoolTable = ({
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
-  const [filtersValues, setFiltersValues] = useState({ name: '' });
+  const [filtersValues, setFiltersValues] = useState({
+    name: '',
+    projectId: '',
+    state: '',
+    city: '',
+  });
+
+  const [filters, setFilters] = useState<{
+    [key: string]: { element: ReactNode; view: boolean };
+  }>({
+    namePopover: {
+      element: (
+        <InputThemed
+          register={register}
+          name="name"
+          label="Nome da escola"
+          onChange={(event) => {
+            nameDebounce(event.target.value);
+          }}
+        />
+      ),
+      view: false,
+    },
+    projectPopover: {
+      element: (
+        <ProjectSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
+    statePopover: {
+      element: (
+        <StateSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, state: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
+    cityPopover: {
+      element: (
+        <CitySelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, city: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
+  });
 
   const fetchSchools = async () => {
     return (
       await axiosApi.get('/school', {
-        params: { page, name: filtersValues.name || null, perPage },
+        params: {
+          page,
+          perPage,
+          name: filtersValues.name || null,
+          projectId: filtersValues.projectId || null,
+          state: filtersValues.state || null,
+          city: filtersValues.city || null,
+        },
       })
     ).data;
   };
@@ -70,33 +137,18 @@ export const SchoolTable = ({
     setTotalPages(data?.meta.totalPage);
   }, [data, setTotalPages]);
 
-  const [filters, setFilters] = useState<{
-    [key: string]: { element: ReactNode; view: boolean };
-  }>({
-    namePopover: {
-      element: (
-        <InputThemed
-          register={register}
-          name="name"
-          label="Nome da escola"
-          onChange={(event) => {
-            nameDebounce(event.target.value);
-          }}
-        />
-      ),
-      view: false,
-    },
-  });
-
-  const handleChangeFilters = (name: string, event: any) => {
+  const handleChangeFilters = (name: string, valueName: string, event: any) => {
     setFilters((prev) => ({
       ...prev,
       [name]: {
         element: prev[name]?.element,
         view: event.target?.checked,
-        value: '',
       },
     }));
+
+    if (!event.target?.checked) {
+      setFiltersValues((prev) => ({ ...prev, [valueName]: '' }));
+    }
   };
 
   return (
@@ -106,7 +158,7 @@ export const SchoolTable = ({
           <Popover
             triggerElement={
               <button
-                disabled={isLoading}
+                disabled={isLoading || isRefetching}
                 type="button"
                 className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
               >
@@ -114,26 +166,74 @@ export const SchoolTable = ({
               </button>
             }
           >
-            <form>
+            <form className="flex flex-col gap-[16px]">
               <InputCheckBoxThemed
                 label="Nome"
                 register={register}
                 name="namePopover"
                 onClick={(event) => {
-                  handleChangeFilters('namePopover', event);
+                  handleChangeFilters('namePopover', 'name', event);
+                }}
+              />
+              <InputCheckBoxThemed
+                label="Projeto"
+                register={register}
+                name="projectPopover"
+                onClick={(event) => {
+                  handleChangeFilters('projectPopover', 'projectId', event);
+                }}
+              />
+              <InputCheckBoxThemed
+                label="Estado"
+                register={register}
+                name="statePopover"
+                onClick={(event) => {
+                  handleChangeFilters('statePopover', 'state', event);
+                }}
+              />
+              <InputCheckBoxThemed
+                label="Cidade"
+                register={register}
+                name="cityPopover"
+                onClick={(event) => {
+                  handleChangeFilters('cityPopover', 'city', event);
                 }}
               />
             </form>
           </Popover>
-          <button
-            type="button"
-            disabled={isLoading}
-            className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
+          <Popover
+            triggerElement={
+              <button
+                type="button"
+                disabled={isLoading}
+                className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
+              >
+                Gerar Relatório <IoIosArrowDown size={20} />
+              </button>
+            }
           >
-            Gerar Relatório <IoIosArrowDown size={20} />
-          </button>
+            <button
+              type="button"
+              className="flex items-center gap-[8px]"
+              onClick={() =>
+                createCSV(
+                  data?.data.map((item: SchollAddress) => ({
+                    name: item.name,
+                    project: item.project.name,
+                    city: item.address.city,
+                    state: item.address.state,
+                  })),
+                  ['Nome', 'Projeto', 'Cidade', 'Estado'],
+                  'relatorioEscolas',
+                )
+              }
+            >
+              <BiDownload size={16} />
+              CSV
+            </button>
+          </Popover>
         </div>
-        <div className="mt-[32px] grid grid-cols-2">
+        <div className="mt-[32px] grid grid-cols-2 items-end gap-[32px]">
           {Object.keys(filters)
             .filter((item) => filters[item]?.view === true)
             .map((item) => (

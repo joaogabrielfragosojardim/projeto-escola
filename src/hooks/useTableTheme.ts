@@ -10,6 +10,7 @@ export const useTableTheme = () => {
         font-weight: normal;
         font-size: 20px;
         border: none;
+        z-index: -10;
         
         &:first-of-type{
           padding-left: ${padding}px;

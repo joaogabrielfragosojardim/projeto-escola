@@ -46,8 +46,26 @@ export const ProjectTable = ({
   const theme = useTableTheme();
   const route = useRouter();
   const [filtersValues, setFiltersValues] = useState({ name: '' });
-  const [deleteModal, setDeleteModal] = useState(true);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState('');
+
+  const [filters, setFilters] = useState<{
+    [key: string]: { element: ReactNode; view: boolean };
+  }>({
+    namePopover: {
+      element: (
+        <InputThemed
+          register={register}
+          name="name"
+          label="Nome do projeto"
+          onChange={(event) => {
+            nameDebounce(event.target.value);
+          }}
+        />
+      ),
+      view: false,
+    },
+  });
 
   const deleteProject = async (id: string) => {
     return (await axiosApi.delete(`/project/${id}`)).data;
@@ -57,6 +75,9 @@ export const ProjectTable = ({
     onSuccess: () => {
       toast.success('projeto deletado!');
       refetch();
+    },
+    onError: () => {
+      toast.error('Algo de arrado aconteceu ao deletar o projeto!');
     },
   });
 
@@ -87,24 +108,6 @@ export const ProjectTable = ({
   useEffect(() => {
     setTotalPages(data?.meta.totalPage);
   }, [data, setTotalPages]);
-
-  const [filters, setFilters] = useState<{
-    [key: string]: { element: ReactNode; view: boolean };
-  }>({
-    namePopover: {
-      element: (
-        <InputThemed
-          register={register}
-          name="name"
-          label="Nome do projeto"
-          onChange={(event) => {
-            nameDebounce(event.target.value);
-          }}
-        />
-      ),
-      view: false,
-    },
-  });
 
   const handleChangeFilters = (name: string, event: any) => {
     setFilters((prev) => ({
@@ -173,7 +176,7 @@ export const ProjectTable = ({
             </button>
           </Popover>
         </div>
-        <div className="mt-[32px] grid grid-cols-2">
+        <div className="mt-[32px] grid grid-cols-2 items-end">
           {Object.keys(filters)
             .filter((item) => filters[item]?.view === true)
             .map((item) => (
