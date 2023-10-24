@@ -1,15 +1,12 @@
-import type { NextApiRequest, NextApiResponse } from 'next/types';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 import type { HttpMethod } from '@/components/api/RouteHandler';
 import { RouteHandler } from '@/components/api/RouteHandler';
-import {
-  CreateClassController,
-  GetAllClassController,
-} from '@/controllers/class';
+import { CreateAttendenceController } from '@/controllers/attendence';
 import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
-  GET: true,
+  GET: false,
   POST: true,
   DELETE: false,
   PUT: false,
@@ -26,8 +23,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const createClassController = new CreateClassController();
-  const getAllClassController = new GetAllClassController();
+  const createAttendenceController = new CreateAttendenceController();
 
   const method = req.method as HttpMethod;
 
@@ -35,8 +31,7 @@ export default async function handler(
     req,
     res,
     {
-      POST: createClassController.handle,
-      GET: getAllClassController.handle,
+      POST: createAttendenceController.handle,
     },
     authMethods[method],
     permissionMethods[method],

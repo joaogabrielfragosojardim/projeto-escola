@@ -132,7 +132,7 @@ model Address {
 model Attendance {
   id        String   @id @default(uuid())
   date      DateTime
-  isPresent Boolean
+  isPresent Boolean  @default(false)
   studentId String
   classId   String
 
