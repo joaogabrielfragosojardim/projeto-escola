@@ -105,7 +105,7 @@ const Dashboard = () => {
     <SideNavMenuContainer title="Início">
       <div className="p-[32px]">
         <p className="mb-[32px] text-[24px] font-semibold text-complement-200">
-          Gráficos
+          Informações
         </p>
         <DashBoardTable
           selectedTable={selectedTable}

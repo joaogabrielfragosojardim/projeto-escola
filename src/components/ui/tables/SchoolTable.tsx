@@ -175,7 +175,7 @@ export const SchoolTable = ({
                         <div className="flex items-center gap-[16px] text-[20px]">
                           <div className="relative h-[62px] w-[62px] overflow-hidden rounded-full">
                             <Image
-                              src={school.visualIdentity}
+                              src={school?.visualIdentity || ''}
                               alt="logo do projeto"
                               fill
                             />

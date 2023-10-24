@@ -8,6 +8,7 @@ import {
   Table,
 } from '@table-library/react-table-library';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -41,6 +42,7 @@ export const ProjectTable = ({
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
+  const route = useRouter();
   const [filtersValues, setFiltersValues] = useState({ name: '' });
 
   const fetchProjects = async () => {
@@ -209,7 +211,12 @@ export const ProjectTable = ({
                       </Cell>
                       <Cell className="text-center text-main hover:text-main">
                         <div className="flex gap-[8px]">
-                          <button type="button">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              route.push(`/view/${project.id}/project`);
+                            }}
+                          >
                             <FiEye size={20} />
                           </button>
                           <button type="button">

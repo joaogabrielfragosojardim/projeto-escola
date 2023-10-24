@@ -131,6 +131,7 @@ export const DashBoardTable = ({
                   { label: '50', value: '50' },
                 ]}
                 onChange={(e: any) => {
+                  setPage(1);
                   setPerPage(parseInt(e.value, 10));
                 }}
               />
