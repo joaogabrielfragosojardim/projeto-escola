@@ -11,10 +11,10 @@ export const useTableTheme = () => {
         font-size: 20px;
         border: none;
         
-        &:first-child{
+        &:first-of-type{
           padding-left: ${padding}px;
         }
-        &:last-child{
+        &:last-of-type{
           padding-right: ${padding}px;
         }
       `,
@@ -32,10 +32,10 @@ export const useTableTheme = () => {
       padding-bottom: 12px;
       padding-top: 12px;
 
-      &:first-child{
+      &:first-of-type{
         padding-left: ${padding}px;
       }
-      &:last-child{
+      &:last-of-type{
         padding-right: ${padding}px;
       }
 

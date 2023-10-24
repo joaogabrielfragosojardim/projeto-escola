@@ -11,7 +11,7 @@ import Image from 'next/image';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { BiTrash } from 'react-icons/bi';
+import { BiDownload, BiTrash } from 'react-icons/bi';
 import { FiEye } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
@@ -22,6 +22,7 @@ import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useTableTheme } from '@/hooks/useTableTheme';
 import type { Project } from '@/types/project';
+import { createCSV } from '@/utils/createCSV';
 
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
@@ -125,13 +126,35 @@ export const ProjectTable = ({
               />
             </form>
           </Popover>
-          <button
-            type="button"
-            disabled={isLoading}
-            className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
+          <Popover
+            triggerElement={
+              <button
+                type="button"
+                disabled={isLoading}
+                className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
+              >
+                Gerar Relatório <IoIosArrowDown size={20} />
+              </button>
+            }
           >
-            Gerar Relatório <IoIosArrowDown size={20} />
-          </button>
+            <button
+              type="button"
+              className="flex items-center gap-[8px]"
+              onClick={() =>
+                createCSV(
+                  data?.data.map((item: Project) => ({
+                    name: item.name,
+                    about: item.about,
+                  })),
+                  ['Nome', 'Sobre'],
+                  'relatorioProjetos',
+                )
+              }
+            >
+              <BiDownload size={16} />
+              CSV
+            </button>
+          </Popover>
         </div>
         <div className="mt-[32px] grid grid-cols-2">
           {Object.keys(filters)
