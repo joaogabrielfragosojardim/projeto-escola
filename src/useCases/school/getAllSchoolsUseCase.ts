@@ -26,6 +26,9 @@ export class GetAllSchoolsUseCase {
       prisma.school.findMany({
         skip,
         take,
+        orderBy: {
+          createdAt: 'desc',
+        },
         where: {
           name: { contains: name, mode: 'insensitive' },
           projectId: { equals: projectId },
