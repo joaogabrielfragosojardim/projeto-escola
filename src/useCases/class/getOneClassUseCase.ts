@@ -1,12 +1,12 @@
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
 
-interface GetOneStudentUseCaseRequest {
+interface GetOneClassUseCaseRequest {
   id: string | undefined;
 }
 
 export class GetOneClassUseCase {
-  async execute({ id }: GetOneStudentUseCaseRequest) {
+  async execute({ id }: GetOneClassUseCaseRequest) {
     const classroom = await prisma.class.findUnique({
       where: {
         id,
