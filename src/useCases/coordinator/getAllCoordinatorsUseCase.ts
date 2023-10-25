@@ -14,6 +14,9 @@ export class GetAllCoordinatorsUseCase {
       prisma.coordinator.findMany({
         skip,
         take,
+        orderBy: {
+          createdAt: 'desc',
+        },
         select: {
           id: true,
           telephone: true,
