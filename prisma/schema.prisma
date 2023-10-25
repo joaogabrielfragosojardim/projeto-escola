@@ -104,9 +104,10 @@ model Coordinator {
 }
 
 model Class {
-  id        String @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
   session   String
+  createdAt DateTime @default(now())
   gradeId   String
   schoolId  String
   teacherId String
