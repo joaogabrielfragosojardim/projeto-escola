@@ -15,14 +15,19 @@ import type { Project as ProjectType } from '@/types/project';
 import { RoleEnum } from '@/types/roles';
 
 const Project = ({ project }: { project: ProjectType }) => {
-  const { register, reset, handleSubmit } = useForm<ProjectType>();
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProjectType>();
 
   const editProjectHandle = async (data: ProjectType): Promise<any> => {
     return (await axiosApi.put(`/project/${project.id}`, data)).data;
   };
 
   const { isLoading, mutate } = useMutation(
-    'creatingProjectMutation',
+    'editingProjectMutation',
     editProjectHandle,
     {
       onError: (error: PrismaError) => {
@@ -51,6 +56,8 @@ const Project = ({ project }: { project: ProjectType }) => {
             label=""
             reset={reset}
             defaultValue={project.visualIdentity}
+            validations={{ required: 'Campo obrigatório' }}
+            error={errors.visualIdentity}
           />
           <div className="mt-[32px]">
             <InputThemed
@@ -58,6 +65,8 @@ const Project = ({ project }: { project: ProjectType }) => {
               name="name"
               defaultValue={project.name}
               label="Nome"
+              validations={{ required: 'Campo obrigatório' }}
+              error={errors.name}
             />
           </div>
           <div className="mt-[32px]">
@@ -66,6 +75,8 @@ const Project = ({ project }: { project: ProjectType }) => {
               name="about"
               defaultValue={project.about}
               label="Sobre"
+              validations={{ required: 'Campo obrigatório' }}
+              error={errors.about}
             />
           </div>
           <div className="mt-[48px] text-[16px] lg:text-[20px]">

@@ -16,3 +16,10 @@ export type SchollAddress = {
   address: { city: string; state: string; street: string; zipCode: string };
   project: { name: string; id: string };
 };
+
+export type SchoolEdit = {
+  name: string;
+  address: { city: string; state: string; street: string; zipCode: string };
+  visualIdentity: string;
+  projectId: string;
+};

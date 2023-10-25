@@ -194,12 +194,14 @@ const SchoolFormSecondStep = ({
 
   const onSubmit = (data: SchoolType) => {
     const {
+      visualIdentity,
       name,
       projectId: { value },
     } = schoolForm;
     const { zipCode, city, state, street } = data;
 
     const submitData = {
+      visualIdentity,
       name,
       projectId: value,
       address: {
