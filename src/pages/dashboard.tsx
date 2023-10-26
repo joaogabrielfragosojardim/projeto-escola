@@ -11,6 +11,7 @@ import {
 } from 'react-icons/pi';
 
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
+import { CoordinatorTable } from '@/components/ui/tables/CoordinatorTable';
 import { DashBoardTable } from '@/components/ui/tables/DashboardTable';
 import { ProjectTable } from '@/components/ui/tables/ProjectTable';
 import { SchoolTable } from '@/components/ui/tables/SchoolTable';
@@ -61,7 +62,7 @@ const Dashboard = () => {
     },
     {
       table: (
-        <ProjectTable
+        <CoordinatorTable
           page={page}
           setTotalPages={setTotalPages}
           setPage={setPage}

@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import nookies from 'nookies';
 import { useForm } from 'react-hook-form';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { IoIosArrowBack } from 'react-icons/io';
+import { TbLoader } from 'react-icons/tb';
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 
@@ -105,7 +105,7 @@ const ProjectForm = () => {
           >
             {isLoading ? (
               <div className="animate-spin">
-                <AiOutlineLoading3Quarters />
+                <TbLoader />
               </div>
             ) : (
               'Cadastrar Projeto'

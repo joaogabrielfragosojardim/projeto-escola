@@ -69,7 +69,7 @@ export const InputImageThemed = (props: InputImageThemedProps) => {
               src={image}
               alt="project visual identity"
               fill
-              className="object-contain"
+              className="object-cover"
             />
           ) : (
             <RxImage size={32} />

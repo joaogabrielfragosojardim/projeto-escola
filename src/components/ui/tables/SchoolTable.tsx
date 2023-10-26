@@ -294,11 +294,12 @@ export const SchoolTable = ({
                     <Row key={school.id} item={school}>
                       <Cell className="text-main hover:text-main">
                         <div className="flex items-center gap-[16px] text-[20px]">
-                          <div className="relative h-[62px] w-[62px] overflow-hidden rounded-full">
+                          <div className="relative h-[62px] w-[62px] min-w-[62px] overflow-hidden rounded-full">
                             <Image
                               src={school?.visualIdentity || ''}
                               alt="logo do projeto"
                               fill
+                              className="object-cover"
                             />
                           </div>
                           {school.name}

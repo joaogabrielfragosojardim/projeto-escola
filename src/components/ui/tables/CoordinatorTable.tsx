@@ -23,15 +23,18 @@ import { toast } from 'react-toastify';
 import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useTableTheme } from '@/hooks/useTableTheme';
-import type { Project } from '@/types/project';
+import type { SchollAddress } from '@/types/school';
 import { createCSV } from '@/utils/createCSV';
 
 import { ConfirmModal } from '../ConfirmModal';
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
+import { CitySelect } from './Selects/CitySelect';
+import { ProjectSelect } from './Selects/ProjectSelect';
+import { StateSelect } from './Selects/StateSelect';
 
-export const ProjectTable = ({
+export const CoordinatorTable = ({
   page,
   setTotalPages,
   setPage,
@@ -45,9 +48,15 @@ export const ProjectTable = ({
   const { register } = useForm();
   const theme = useTableTheme();
   const route = useRouter();
-  const [filtersValues, setFiltersValues] = useState({ name: '' });
   const [deleteModal, setDeleteModal] = useState(false);
-  const [projectToDelete, setProjectToDelete] = useState('');
+  const [coordinatorToDelete, setCoordinatorToDelete] = useState('');
+
+  const [filtersValues, setFiltersValues] = useState({
+    name: '',
+    projectId: '',
+    state: '',
+    city: '',
+  });
 
   const [filters, setFilters] = useState<{
     [key: string]: { element: ReactNode; view: boolean };
@@ -57,7 +66,7 @@ export const ProjectTable = ({
         <InputThemed
           register={register}
           name="name"
-          label="Nome do projeto"
+          label="Nome da escola"
           onChange={(event) => {
             nameDebounce(event.target.value);
           }}
@@ -65,36 +74,76 @@ export const ProjectTable = ({
       ),
       view: false,
     },
+    projectPopover: {
+      element: (
+        <ProjectSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
+    statePopover: {
+      element: (
+        <StateSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, state: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
+    cityPopover: {
+      element: (
+        <CitySelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, city: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
   });
 
-  const deleteProject = async (id: string) => {
-    return (await axiosApi.delete(`/project/${id}`)).data;
-  };
-
-  const { mutate } = useMutation('fdeleteProjectMutation', deleteProject, {
-    onSuccess: () => {
-      toast.success('projeto deletado!');
-      refetch();
-    },
-    onError: () => {
-      toast.error('Algo de arrado aconteceu ao deletar o projeto!');
-    },
-  });
-
-  const fetchProjects = async () => {
+  const fetchCoordinators = async () => {
     return (
-      await axiosApi.get('/project', {
-        params: { page, name: filtersValues.name || null, perPage },
+      await axiosApi.get('/coordinator', {
+        params: {
+          page,
+          perPage,
+          name: filtersValues.name || null,
+          projectId: filtersValues.projectId || null,
+          state: filtersValues.state || null,
+          city: filtersValues.city || null,
+        },
       })
     ).data;
   };
 
   const { isLoading, data, refetch, isRefetching } = useQuery(
-    'fetchAllProjectsQuery',
-    fetchProjects,
+    'fetchAllCoordinatorsQuery',
+    fetchCoordinators,
     { refetchOnWindowFocus: false },
   );
   const nodes = { nodes: data?.data };
+
+  const deleteProject = async (id: string) => {
+    return (await axiosApi.delete(`/coordinator/${id}`)).data;
+  };
+
+  const { mutate } = useMutation('fetchAllProjectsQuery', deleteProject, {
+    onSuccess: () => {
+      toast.success('escola deletada!');
+      refetch();
+    },
+    onError: () => {
+      toast.error('Algo de arrado aconteceu ao deletar a escola!');
+    },
+  });
 
   const nameDebounce = useDebounce((value: string) => {
     setPage(1);
@@ -103,21 +152,24 @@ export const ProjectTable = ({
 
   useEffect(() => {
     refetch();
-  }, [filtersValues, page, perPage, refetch]);
+  }, [filtersValues, page, refetch]);
 
   useEffect(() => {
     setTotalPages(data?.meta.totalPage);
   }, [data, setTotalPages]);
 
-  const handleChangeFilters = (name: string, event: any) => {
+  const handleChangeFilters = (name: string, valueName: string, event: any) => {
     setFilters((prev) => ({
       ...prev,
       [name]: {
         element: prev[name]?.element,
         view: event.target?.checked,
-        value: '',
       },
     }));
+
+    if (!event.target?.checked) {
+      setFiltersValues((prev) => ({ ...prev, [valueName]: '' }));
+    }
   };
 
   return (
@@ -127,7 +179,7 @@ export const ProjectTable = ({
           <Popover
             triggerElement={
               <button
-                disabled={isLoading}
+                disabled={isLoading || isRefetching}
                 type="button"
                 className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
               >
@@ -135,13 +187,37 @@ export const ProjectTable = ({
               </button>
             }
           >
-            <form>
+            <form className="flex flex-col gap-[16px]">
               <InputCheckBoxThemed
                 label="Nome"
                 register={register}
                 name="namePopover"
                 onClick={(event) => {
-                  handleChangeFilters('namePopover', event);
+                  handleChangeFilters('namePopover', 'name', event);
+                }}
+              />
+              <InputCheckBoxThemed
+                label="Projeto"
+                register={register}
+                name="projectPopover"
+                onClick={(event) => {
+                  handleChangeFilters('projectPopover', 'projectId', event);
+                }}
+              />
+              <InputCheckBoxThemed
+                label="Estado"
+                register={register}
+                name="statePopover"
+                onClick={(event) => {
+                  handleChangeFilters('statePopover', 'state', event);
+                }}
+              />
+              <InputCheckBoxThemed
+                label="Cidade"
+                register={register}
+                name="cityPopover"
+                onClick={(event) => {
+                  handleChangeFilters('cityPopover', 'city', event);
                 }}
               />
             </form>
@@ -162,12 +238,14 @@ export const ProjectTable = ({
               className="flex items-center gap-[8px]"
               onClick={() =>
                 createCSV(
-                  data?.data.map((item: Project) => ({
+                  data?.data.map((item: SchollAddress) => ({
                     name: item.name,
-                    about: item.about,
+                    project: item.project.name,
+                    city: item.address.city,
+                    state: item.address.state,
                   })),
-                  ['Nome', 'Sobre'],
-                  'relatorioProjetos',
+                  ['Nome', 'Projeto', 'Cidade', 'Estado'],
+                  'relatorioEscolas',
                 )
               }
             >
@@ -176,7 +254,7 @@ export const ProjectTable = ({
             </button>
           </Popover>
         </div>
-        <div className="mt-[32px] grid grid-cols-2 items-end">
+        <div className="mt-[32px] grid grid-cols-2 items-end gap-[32px]">
           {Object.keys(filters)
             .filter((item) => filters[item]?.view === true)
             .map((item) => (
@@ -198,42 +276,50 @@ export const ProjectTable = ({
           <Table
             data={nodes}
             theme={theme}
-            style={{ gridTemplateColumns: '1fr 2fr 0.4fr' }}
+            style={{ gridTemplateColumns: '1fr 1fr 1fr' }}
           >
-            {(tableList: Project[]) => (
+            {(tableList: SchollAddress[]) => (
               <>
                 <Header>
                   <HeaderRow>
                     <HeaderCell>Nome</HeaderCell>
-                    <HeaderCell>Sobre</HeaderCell>
-                    <HeaderCell>Ações</HeaderCell>
+                    <HeaderCell>Email</HeaderCell>
+                    <HeaderCell>Telefone</HeaderCell>
+                    {/* <HeaderCell>Estado</HeaderCell>
+                    <HeaderCell>Ações</HeaderCell> */}
                   </HeaderRow>
                 </Header>
                 <Body>
-                  {tableList.map((project) => (
-                    <Row key={project.id} item={project}>
+                  {tableList.map((coordinator) => (
+                    <Row key={coordinator.id} item={coordinator}>
                       <Cell className="text-main hover:text-main">
                         <div className="flex items-center gap-[16px] text-[20px]">
                           <div className="relative h-[62px] w-[62px] min-w-[62px] overflow-hidden rounded-full">
                             <Image
-                              src={project?.visualIdentity}
+                              src={coordinator?.visualIdentity || ''}
                               alt="logo do projeto"
                               fill
                               className="object-cover"
                             />
                           </div>
-                          {project.name}
+                          {coordinator.user.name}
                         </div>
                       </Cell>
                       <Cell className="text-[20px] text-main hover:text-main">
-                        {project.about}
+                        {coordinator.user.email}
                       </Cell>
-                      <Cell className="text-center text-main hover:text-main">
+                      <Cell className="text-[20px] text-main hover:text-main">
+                        {coordinator.telephone}
+                      </Cell>
+                      {/* <Cell className="text-[20px] text-main hover:text-main">
+                        {coordinator.address.state}
+                      </Cell> */}
+                      {/* <Cell className="text-center text-main hover:text-main">
                         <div className="flex gap-[8px]">
                           <button
                             type="button"
                             onClick={() => {
-                              route.push(`/view/${project.id}/project`);
+                              route.push(`/view/${coordinator.id}/coordinator`);
                             }}
                           >
                             <FiEye size={20} />
@@ -241,14 +327,14 @@ export const ProjectTable = ({
                           <button
                             type="button"
                             onClick={() => {
-                              setProjectToDelete(project.id);
+                              setCoordinatorToDelete(coordinator.id);
                               setDeleteModal(true);
                             }}
                           >
                             <BiTrash size={20} />
                           </button>
                         </div>
-                      </Cell>
+                      </Cell> */}
                     </Row>
                   ))}
                 </Body>
@@ -274,9 +360,9 @@ export const ProjectTable = ({
       <ConfirmModal
         isOpen={deleteModal}
         setOpen={setDeleteModal}
-        text="Deseja realmente excluir esse projeto?"
+        text="Deseja realmente excluir essa escola?"
         onConfirm={() => {
-          mutate(projectToDelete);
+          mutate(coordinatorToDelete);
           setDeleteModal(false);
         }}
       />

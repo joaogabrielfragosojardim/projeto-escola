@@ -16,7 +16,6 @@ import { FormDefaultPage } from '@/components/ui/forms/FormDefaultPage';
 import { InputImageThemed } from '@/components/ui/forms/InputImageThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { MultiStepForm } from '@/components/ui/forms/MultiStepForm';
-import { SelectThemed } from '@/components/ui/forms/SelectThemed';
 import {
   useSchoolForm,
   useSchoolFormDispatch,
@@ -26,7 +25,7 @@ import type { PrismaError } from '@/types/prismaError';
 import { RoleEnum } from '@/types/roles';
 import type { School as SchoolType } from '@/types/school';
 
-const SchoolFormFirstStep = ({
+const SocialEducatorFirstStep = ({
   projects,
   setStep,
 }: {
@@ -56,6 +55,10 @@ const SchoolFormFirstStep = ({
         visualIdentity,
         name,
         projectId: { value, label },
+        city: '',
+        state: '',
+        street: '',
+        zipCode: '',
       },
     });
     setStep((prev) => prev + 1);
@@ -70,7 +73,7 @@ const SchoolFormFirstStep = ({
         <p className="hidden lg:inline">Voltar para o dashboard</p>
       </Link>
       <h1 className="mt-[32px] text-[16px] font-semibold text-complement-200 lg:text-[24px]">
-        Cadastro de Escola:
+        Cadastro de Educador Social:
       </h1>
       <form
         className="mt-[16px] w-full lg:max-w-[400px]"
@@ -87,8 +90,8 @@ const SchoolFormFirstStep = ({
         />
         <div className="mt-[16px]">
           <InputThemed
-            label="Nome da escola"
-            placeholder="Escola exemplo..."
+            label="Nome do educador"
+            placeholder="Nome exemplo..."
             register={register}
             name="name"
             validations={{ required: 'Campo obrigatório' }}
@@ -97,27 +100,17 @@ const SchoolFormFirstStep = ({
           />
         </div>
         <div className="mt-[16px]">
-          <SelectThemed
-            label="Projeto"
-            placeholder="Selecione um projeto"
-            control={control}
-            name="projectId"
-            validations={{
-              required: 'Campo obrigatório',
-            }}
-            error={errors.projectId}
-            options={projects}
-            defaultValue={
-              schoolForm.projectId.label && schoolForm.projectId.value
-                ? ({
-                    label: schoolForm.projectId.label,
-                    value: schoolForm.projectId.value,
-                  } as unknown as any)
-                : null
-            }
-            reset={reset}
+          <InputThemed
+            label="Email do educador"
+            placeholder="Email exemplo..."
+            register={register}
+            name="email"
+            validations={{ required: 'Campo obrigatório' }}
+            error={errors.email}
+            defaultValue={schoolForm.email}
           />
         </div>
+
         <div className="mt-[48px] text-[16px] lg:text-[20px]">
           <button
             type="submit"
@@ -131,7 +124,7 @@ const SchoolFormFirstStep = ({
   );
 };
 
-const SchoolFormSecondStep = ({
+const SocialEducatorSecondStep = ({
   setStep,
 }: {
   setStep: Dispatch<SetStateAction<number>>;
@@ -294,7 +287,7 @@ const SchoolFormSecondStep = ({
   );
 };
 
-const School = ({
+const Educator = ({
   projects,
 }: {
   projects: { value: string; label: string }[];
@@ -302,17 +295,17 @@ const School = ({
   const [step, setStep] = useState(0);
   return (
     <FormDefaultPage
-      image="/assets/images/form-school.png"
+      image="/assets/images/form-educator.png"
       form={
         <MultiStepForm
           step={step}
           forms={[
-            <SchoolFormFirstStep
+            <SocialEducatorFirstStep
               projects={projects}
               setStep={setStep}
               key={0}
             />,
-            <SchoolFormSecondStep setStep={setStep} key={1} />,
+            <SocialEducatorSecondStep setStep={setStep} key={1} />,
           ]}
         />
       }
@@ -346,4 +339,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 };
 
-export default School;
+export default Educator;

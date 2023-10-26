@@ -41,7 +41,7 @@ export const sideNavMenuRoutes = (role: RoleEnum) => {
         {
           name: 'Coordenador',
           icon: <GoPeople size={25} />,
-          route: '/forms/coordenator',
+          route: '/forms/coordinator',
           userCanView: [RoleEnum.ADM_MASTER, RoleEnum.ADM].includes(role),
         },
         {
