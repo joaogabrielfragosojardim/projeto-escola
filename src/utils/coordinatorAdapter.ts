@@ -54,3 +54,21 @@ export function toCoordinators(
     },
   }));
 }
+
+export function toCoordinator(coordinator: CoordinatorQuery): Coordinator {
+  return {
+    id: coordinator.id,
+    name: coordinator.user.name,
+    visualIdentity: coordinator.user.visualIdentity,
+    email: coordinator.user.email,
+    telephone: coordinator.telephone,
+    project: {
+      id: coordinator.school.project.id,
+      name: coordinator.school.project.name,
+    },
+    school: {
+      id: coordinator.school.id,
+      name: coordinator.school.name,
+    },
+  };
+}
