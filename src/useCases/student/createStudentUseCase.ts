@@ -7,7 +7,7 @@ interface CreateStudentUseCaseRequest {
   password: string;
   classId: string;
   schoolId: string;
-  profileUrl?: string;
+  visualIdentity?: string;
   birtday: Date;
 }
 
@@ -16,7 +16,7 @@ export class CreateStudentUseCase {
     name,
     email,
     password,
-    profileUrl,
+    visualIdentity,
     schoolId,
     classId,
     birtday,
@@ -47,7 +47,7 @@ export class CreateStudentUseCase {
         email,
         password,
         roleId: studentRole.id,
-        profileUrl,
+        visualIdentity,
       },
     });
 

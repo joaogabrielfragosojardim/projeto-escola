@@ -6,11 +6,16 @@ interface EditUserUseCaseRequest {
   id: string | undefined;
   name: string;
   password?: string;
-  profileUrl?: string;
+  visualIdentity?: string;
 }
 
 export class EditUserUseCase {
-  async execute({ id, name, password, profileUrl }: EditUserUseCaseRequest) {
+  async execute({
+    id,
+    name,
+    password,
+    visualIdentity,
+  }: EditUserUseCaseRequest) {
     if (password) {
       const passwordHash = await hash(password, 6);
 
@@ -18,7 +23,7 @@ export class EditUserUseCase {
         where: { id },
         data: {
           name,
-          profileUrl,
+          visualIdentity,
           password: passwordHash,
         },
       });
@@ -32,7 +37,7 @@ export class EditUserUseCase {
       where: { id },
       data: {
         name,
-        profileUrl,
+        visualIdentity,
       },
     });
 
