@@ -13,7 +13,7 @@ interface CreateAttendanceUseCaseRequest {
 
 export class CreateAttendanceUseCase {
   async execute({ students, date, classId }: CreateAttendanceUseCaseRequest) {
-    const classroom = await prisma.class.findFirst({
+    const classroom = await prisma.classroom.findFirst({
       where: {
         id: classId,
       },
