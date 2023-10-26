@@ -13,7 +13,7 @@ export class GetOnePegagogicalVisitUseCase {
       },
       include: {
         School: true,
-        class: true,
+        Classroom: true,
         Coodinator: true,
       },
     });

@@ -19,10 +19,13 @@ export class GetAllClassUseCase {
     const skip = perPage * (page - 1);
     const take = perPage;
 
-    const [schools, total] = await prisma.$transaction([
-      prisma.class.findMany({
+    const [classrooms, total] = await prisma.$transaction([
+      prisma.classroom.findMany({
         skip,
         take,
+        orderBy: {
+          createdAt: 'desc',
+        },
         where: {
           schoolId: { equals: schoolId },
           gradeId: { equals: gradeId },
@@ -69,13 +72,13 @@ export class GetAllClassUseCase {
           },
         },
       }),
-      prisma.class.count(),
+      prisma.classroom.count(),
     ]);
 
     const totalPage = Math.ceil(total / take);
 
     return {
-      data: schools,
+      data: classrooms,
       meta: {
         page,
         totalPage,

@@ -7,7 +7,7 @@ interface GetOneClassUseCaseRequest {
 
 export class GetOneClassUseCase {
   async execute({ id }: GetOneClassUseCaseRequest) {
-    const classroom = await prisma.class.findUnique({
+    const classroom = await prisma.classroom.findUnique({
       where: {
         id,
       },
