@@ -16,6 +16,7 @@ export class GetUserUseCase {
         roleId: false,
         name: true,
         email: true,
+        profileUrl: true,
         password: false,
         role: {
           select: {
