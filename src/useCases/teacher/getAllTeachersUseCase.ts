@@ -14,6 +14,9 @@ export class GetAllTeacherUseCase {
       prisma.teacher.findMany({
         skip,
         take,
+        orderBy: {
+          createdAt: 'desc',
+        },
         select: {
           id: true,
           telephone: true,

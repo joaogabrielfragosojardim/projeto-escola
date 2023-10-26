@@ -15,6 +15,9 @@ export class GetAllStudentUseCase {
       prisma.student.findMany({
         skip,
         take,
+        orderBy: {
+          createdAt: 'desc',
+        },
         where: {
           classId: { equals: classId },
         },

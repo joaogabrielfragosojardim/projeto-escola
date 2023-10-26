@@ -30,7 +30,7 @@ export class CreateClassUseCase {
       throw new AppError('Professor não vinculado à mesma escola', 400);
     }
 
-    const classroom = await prisma.class.create({
+    const classroom = await prisma.classroom.create({
       data: {
         name,
         session,

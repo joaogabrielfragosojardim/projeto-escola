@@ -51,7 +51,7 @@ export class CreateStudentUseCase {
       },
     });
 
-    const classroom = await prisma.class.findFirst({
+    const classroom = await prisma.classroom.findFirst({
       where: {
         id: classId,
       },

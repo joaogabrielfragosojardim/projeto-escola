@@ -21,6 +21,8 @@ model User {
   Student     Student[]
   Teacher     Teacher[]
   Coordinator Coordinator[]
+
+  @@map("user")
 }
 
 model Role {
@@ -29,6 +31,8 @@ model Role {
   description String?
   level       Int     @default(1)
   User        User[]
+
+  @@map("role")
 }
 
 model School {
@@ -44,8 +48,10 @@ model School {
   Coordinator      Coordinator[]
   Teacher          Teacher[]
   Student          Student[]
-  Class            Class[]
+  Classroom        Classroom[]
   PegagogicalVisit PegagogicalVisit[]
+
+  @@map("school")
 }
 
 model Project {
@@ -56,35 +62,44 @@ model Project {
   createdAt      DateTime @default(now())
 
   Schools School[]
+
+  @@map("project")
 }
 
 model Student {
-  id         String       @id @default(uuid())
-  birtday    DateTime
-  createdAt  DateTime     @default(now())
-  userId     String
-  schoolId   String
-  classId    String
-  status     Boolean      @default(true)
+  id        String   @id @default(uuid())
+  birtday   DateTime
+  createdAt DateTime @default(now())
+  userId    String
+  schoolId  String
+  classId   String
+  status    Boolean  @default(true)
+
   user       User         @relation(fields: [userId], references: [id])
   school     School       @relation(fields: [schoolId], references: [id])
-  Class      Class        @relation(fields: [classId], references: [id])
+  Classroom  Classroom    @relation(fields: [classId], references: [id])
   Attendance Attendance[]
+
+  @@map("student")
 }
 
 model Teacher {
-  id            String   @id @default(uuid())
-  schoolId      String
-  userId        String
-  telephone     String
-  validated     Boolean  @default(false)
-  createdAt     DateTime @default(now())
+  id        String   @id @default(uuid())
+  schoolId  String
+  userId    String
+  telephone String
+  validated Boolean  @default(false)
+  createdAt DateTime @default(now())
+  status    Boolean  @default(true)
+
   coordinatorId String
 
   school      School      @relation(fields: [schoolId], references: [id])
   user        User        @relation(fields: [userId], references: [id])
   coordinator Coordinator @relation(fields: [coordinatorId], references: [id])
-  Class       Class[]
+  Classroom   Classroom[]
+
+  @@map("teacher")
 }
 
 model Coordinator {
@@ -98,12 +113,15 @@ model Coordinator {
   school           School             @relation(fields: [schoolId], references: [id])
   Teacher          Teacher[]
   PegagogicalVisit PegagogicalVisit[]
+
+  @@map("coordinator")
 }
 
-model Class {
-  id        String @id @default(uuid())
+model Classroom {
+  id        String   @id @default(uuid())
   name      String
   session   String
+  createdAt DateTime @default(now())
   gradeId   String
   schoolId  String
   teacherId String
@@ -114,12 +132,17 @@ model Class {
   students         Student[]
   Attendance       Attendance[]
   PegagogicalVisit PegagogicalVisit[]
+
+  @@map("classroom")
 }
 
 model Grade {
-  id    String  @id @default(uuid())
-  name  String
-  Class Class[]
+  id        String      @id @default(uuid())
+  name      String
+  year      String
+  Classroom Classroom[]
+
+  @@map("grade")
 }
 
 model Address {
@@ -130,6 +153,8 @@ model Address {
   zipCode String
 
   School School?
+
+  @@map("address")
 }
 
 model Attendance {
@@ -139,8 +164,10 @@ model Attendance {
   studentId String
   classId   String
 
-  student Student @relation(fields: [studentId], references: [id])
-  class   Class   @relation(fields: [classId], references: [id])
+  student   Student   @relation(fields: [studentId], references: [id])
+  Classroom Classroom @relation(fields: [classId], references: [id])
+
+  @@map("attendance")
 }
 
 model PegagogicalVisit {
@@ -154,7 +181,9 @@ model PegagogicalVisit {
   coordinatorId String
   classId       String
 
-  class      Class       @relation(fields: [classId], references: [id])
+  Classroom  Classroom   @relation(fields: [classId], references: [id])
   Coodinator Coordinator @relation(fields: [coordinatorId], references: [id])
   School     School      @relation(fields: [schoolId], references: [id])
+
+  @@map("pegagogicalVisit")
 }

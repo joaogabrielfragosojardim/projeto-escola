@@ -45,7 +45,7 @@ export class CreatePegagogicalVisitUseCase {
       throw new AppError('Escola não encontrada', 400);
     }
 
-    const classroom = await prisma.class.findFirst({
+    const classroom = await prisma.classroom.findFirst({
       where: {
         id: classId,
       },
