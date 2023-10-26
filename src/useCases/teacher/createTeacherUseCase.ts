@@ -1,3 +1,5 @@
+import { hash } from 'bcryptjs';
+
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
 
@@ -41,6 +43,16 @@ export class CreateTeacherUseCase {
       throw new AppError('Email já cadastrado', 400);
     }
 
+    const school = await prisma.school.findUnique({
+      where: {
+        id: schoolId,
+      },
+    });
+
+    if (!school) {
+      throw new AppError('Escola inexistente', 400);
+    }
+
     const coordinator = await prisma.coordinator.findUnique({
       where: {
         id: coordinatorId,
@@ -54,12 +66,14 @@ export class CreateTeacherUseCase {
       throw new AppError('Coordenador não vinculado à mesma escola', 400);
     }
 
+    const passwordHash = await hash(password, 6);
+
     const user = await prisma.user.create({
       data: {
         name,
         email,
         profileUrl,
-        password,
+        password: passwordHash,
         roleId: teacherRole.id,
       },
       select: {
