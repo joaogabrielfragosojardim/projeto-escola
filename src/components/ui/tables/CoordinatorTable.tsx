@@ -8,12 +8,10 @@ import {
   Table,
 } from '@table-library/react-table-library';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { BiDownload, BiTrash } from 'react-icons/bi';
-import { FiEye } from 'react-icons/fi';
+import { BiDownload } from 'react-icons/bi';
 import { IoIosArrowDown } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
 import { VscFilter } from 'react-icons/vsc';
@@ -47,9 +45,9 @@ export const CoordinatorTable = ({
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
-  const route = useRouter();
+  // const route = useRouter();
   const [deleteModal, setDeleteModal] = useState(false);
-  const [coordinatorToDelete, setCoordinatorToDelete] = useState('');
+  // const [coordinatorToDelete, setCoordinatorToDelete] = useState('');
 
   const [filtersValues, setFiltersValues] = useState({
     name: '',

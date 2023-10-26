@@ -26,10 +26,10 @@ import { RoleEnum } from '@/types/roles';
 import type { School as SchoolType } from '@/types/school';
 
 const SocialEducatorFirstStep = ({
-  projects,
+  // projects,
   setStep,
 }: {
-  projects: { label: string; value: string }[];
+  // projects: { label: string; value: string }[];
   setStep: Dispatch<SetStateAction<number>>;
 }) => {
   const {
@@ -37,7 +37,7 @@ const SocialEducatorFirstStep = ({
     handleSubmit,
     formState: { errors },
     reset,
-    control,
+    // control,
   } = useForm<SchoolType>();
 
   const schoolFormDispatch = useSchoolFormDispatch();
