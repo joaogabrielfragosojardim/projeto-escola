@@ -31,6 +31,16 @@ export class CreateCoordinatorUseCase {
       throw new AppError('Cargo inexistente', 400);
     }
 
+    const school = await prisma.school.findUnique({
+      where: {
+        id: schoolId,
+      },
+    });
+
+    if (!school) {
+      throw new AppError('Escola inexistente', 400);
+    }
+
     const userWithSameEmail = await prisma.user.findUnique({
       where: {
         email,
@@ -51,6 +61,10 @@ export class CreateCoordinatorUseCase {
         password: passwordHash,
         roleId: coordinatorRole.id,
       },
+      select: {
+        password: false,
+        id: true,
+      },
     });
 
     const coordinator = await prisma.coordinator.create({
@@ -60,9 +74,6 @@ export class CreateCoordinatorUseCase {
         schoolId,
       },
     });
-
-    // @ts-ignore
-    user.password = undefined;
 
     return {
       coordinator: { ...user, ...coordinator },

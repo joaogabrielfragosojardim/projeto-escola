@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { toCoordinators } from '@/utils/coordinatorAdapter';
 
 interface GetAllCoordinatorsUseCaseRequest {
   perPage: number;
@@ -20,7 +21,18 @@ export class GetAllCoordinatorsUseCase {
         select: {
           id: true,
           telephone: true,
-          schoolId: true,
+          school: {
+            select: {
+              id: true,
+              name: true,
+              project: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
           user: {
             select: {
               email: true,
@@ -35,7 +47,7 @@ export class GetAllCoordinatorsUseCase {
     const totalPage = Math.ceil(total / take);
 
     return {
-      data: coordinators,
+      data: toCoordinators(coordinators),
       meta: {
         page,
         totalPage,
