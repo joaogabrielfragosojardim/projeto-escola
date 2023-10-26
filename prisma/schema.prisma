@@ -11,16 +11,16 @@ datasource db {
 }
 
 model User {
-  id          String        @id @default(uuid())
-  name        String
-  email       String        @unique
-  profileUrl  String?
-  password    String
-  roleId      String
-  role        Role          @relation(fields: [roleId], references: [id])
-  Student     Student[]
-  Teacher     Teacher[]
-  Coordinator Coordinator[]
+  id             String        @id @default(uuid())
+  name           String
+  email          String        @unique
+  visualIdentity String?
+  password       String
+  roleId         String
+  role           Role          @relation(fields: [roleId], references: [id])
+  Student        Student[]
+  Teacher        Teacher[]
+  Coordinator    Coordinator[]
 
   @@map("user")
 }

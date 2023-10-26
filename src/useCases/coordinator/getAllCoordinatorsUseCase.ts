@@ -37,6 +37,7 @@ export class GetAllCoordinatorsUseCase {
             select: {
               email: true,
               name: true,
+              visualIdentity: true,
             },
           },
         },

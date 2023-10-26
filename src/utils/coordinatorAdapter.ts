@@ -19,12 +19,14 @@ interface Project {
 export interface User {
   email: string;
   name: string;
+  visualIdentity: string | null;
 }
 
 export interface Coordinator {
   id: string;
   email: string;
   name: string;
+  visualIdentity: string | null;
   telephone: string;
   project: Project;
   school: {
@@ -39,6 +41,7 @@ export function toCoordinators(
   return coordinators.map((coordinator) => ({
     id: coordinator.id,
     name: coordinator.user.name,
+    visualIdentity: coordinator.user.visualIdentity,
     email: coordinator.user.email,
     telephone: coordinator.telephone,
     project: {

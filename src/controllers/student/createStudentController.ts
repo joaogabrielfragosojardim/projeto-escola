@@ -10,14 +10,21 @@ export class CreateStudentController {
         name: z.string(),
         email: z.string().email(),
         password: z.string().min(6),
-        profileUrl: z.string().url().optional(),
+        visualIdentity: z.string().url().optional(),
         birtday: z.coerce.date(),
         schoolId: z.string().uuid(),
         classId: z.string().uuid(),
       });
 
-      const { name, email, password, schoolId, birtday, profileUrl, classId } =
-        createBodySchema.parse(req.body);
+      const {
+        name,
+        email,
+        password,
+        schoolId,
+        birtday,
+        visualIdentity,
+        classId,
+      } = createBodySchema.parse(req.body);
 
       const createStudentUseCase = new CreateStudentUseCase();
 
@@ -27,7 +34,7 @@ export class CreateStudentController {
         password,
         schoolId,
         birtday,
-        profileUrl,
+        visualIdentity,
         classId,
       });
 

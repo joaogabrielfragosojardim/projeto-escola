@@ -11,10 +11,10 @@ export class EditUserController {
       const editBodySchema = z.object({
         name: z.string(),
         password: z.string().optional(),
-        profileUrl: z.string().url().optional(),
+        visualIdentity: z.string().url().optional(),
       });
 
-      const { name, password, profileUrl } = editBodySchema.parse(req.body);
+      const { name, password, visualIdentity } = editBodySchema.parse(req.body);
 
       const editUserUseCase = new EditUserUseCase();
 
@@ -22,7 +22,7 @@ export class EditUserController {
         id: userId,
         name,
         password,
-        profileUrl,
+        visualIdentity,
       });
 
       return res.status(200).json({ user });

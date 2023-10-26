@@ -11,6 +11,8 @@ export class GetAllTeacherController {
         perPage: z.coerce.number().default(10),
       });
 
+      const { userId } = req;
+
       const { page, perPage } = getAllQuerySchema.parse(req.query);
 
       const getAllTeacherUseCase = new GetAllTeacherUseCase();
@@ -18,10 +20,12 @@ export class GetAllTeacherController {
       const { data, meta } = await getAllTeacherUseCase.execute({
         page,
         perPage,
+        userId,
       });
 
       return res.status(200).json({ data, meta });
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

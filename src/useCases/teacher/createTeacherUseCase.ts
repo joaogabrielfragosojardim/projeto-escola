@@ -10,7 +10,7 @@ interface CreateTeacherUseCaseRequest {
   telephone: string;
   schoolId: string;
   coordinatorId: string;
-  profileUrl?: string;
+  visualIdentity?: string;
 }
 
 export class CreateTeacherUseCase {
@@ -21,7 +21,7 @@ export class CreateTeacherUseCase {
     telephone,
     schoolId,
     coordinatorId,
-    profileUrl,
+    visualIdentity,
   }: CreateTeacherUseCaseRequest) {
     const teacherRole = await prisma.role.findUnique({
       where: {
@@ -72,7 +72,7 @@ export class CreateTeacherUseCase {
       data: {
         name,
         email,
-        profileUrl,
+        visualIdentity,
         password: passwordHash,
         roleId: teacherRole.id,
       },

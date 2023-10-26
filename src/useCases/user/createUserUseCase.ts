@@ -9,7 +9,7 @@ interface CreateUserUseCaseRequest {
   password: string;
   roleId: string;
   creatorId: string;
-  profileUrl?: string;
+  visualIdentity?: string;
 }
 
 export class CreateUserUseCase {
@@ -19,7 +19,7 @@ export class CreateUserUseCase {
     password,
     roleId,
     creatorId,
-    profileUrl,
+    visualIdentity,
   }: CreateUserUseCaseRequest) {
     const creator = await prisma.user.findUnique({
       where: {
@@ -68,7 +68,7 @@ export class CreateUserUseCase {
         email,
         password: passwordHash,
         roleId,
-        profileUrl,
+        visualIdentity,
       },
     });
 
