@@ -2,10 +2,10 @@ import type { NextApiRequest, NextApiResponse } from 'next/types';
 
 import type { HttpMethod } from '@/components/api/RouteHandler';
 import { RouteHandler } from '@/components/api/RouteHandler';
+import { EditAdmController } from '@/controllers/adm';
 import { DeleteAdmController } from '@/controllers/adm/deleteAdmController';
 import { GetOneAdmController } from '@/controllers/adm/getOneAdmController';
 import type { Role } from '@/types/roles';
-import { EditAdmController } from '@/controllers/adm';
 
 const authMethods: Record<HttpMethod, boolean> = {
   GET: true,
@@ -29,7 +29,7 @@ export default async function handler(
 
   const deleteAdmController = new DeleteAdmController();
   const getOneAdmController = new GetOneAdmController();
-  const editAdmController = new EditAdmController()
+  const editAdmController = new EditAdmController();
 
   await RouteHandler(
     req,
