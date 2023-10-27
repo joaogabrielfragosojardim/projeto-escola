@@ -221,3 +221,9 @@
 // };
 
 // export default Coordinator;
+
+const Coordinator = () => {
+  return <main>coordinator</main>;
+};
+
+export default Coordinator;

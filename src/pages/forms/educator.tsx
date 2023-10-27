@@ -340,3 +340,9 @@
 // };
 
 // export default Educator;
+
+const Educator = () => {
+  return <main>educator</main>;
+};
+
+export default Educator;
