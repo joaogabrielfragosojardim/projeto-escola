@@ -1,5 +1,6 @@
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
+import { toCoordinator } from '@/utils/coordinatorAdapter';
 
 interface GetOneCoordinatorUseCaseRequest {
   id: string | undefined;
@@ -14,11 +15,23 @@ export class GetOneCoordinatorUseCase {
       select: {
         id: true,
         telephone: true,
-        schoolId: true,
+        school: {
+          select: {
+            id: true,
+            name: true,
+            project: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
         user: {
           select: {
             email: true,
             name: true,
+            visualIdentity: true,
           },
         },
       },
@@ -29,7 +42,7 @@ export class GetOneCoordinatorUseCase {
     }
 
     return {
-      coordinator,
+      coordinator: toCoordinator(coordinator),
     };
   }
 }
