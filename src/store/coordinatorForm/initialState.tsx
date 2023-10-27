@@ -6,6 +6,7 @@ export const initialState: Coordinator = {
   visualIdentity: '',
   email: '',
   password: '',
-  phone: '',
-  school: { id: '', name: '' },
+  telephone: '',
+  school: { id: '', name: '', value: '' },
+  project: { id: '', name: '', value: '' },
 };
