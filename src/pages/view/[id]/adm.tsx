@@ -1,6 +1,5 @@
 import { verify } from 'jsonwebtoken';
 import type { GetServerSidePropsContext } from 'next';
-import { useRouter } from 'next/router';
 import nookies from 'nookies';
 import { useForm } from 'react-hook-form';
 import { TbLoader } from 'react-icons/tb';
@@ -9,11 +8,9 @@ import { toast } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { InputImageThemed } from '@/components/ui/forms/InputImageThemed';
-import { InputPasswordThemed } from '@/components/ui/forms/InputPasswordThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
 import { useClientSide } from '@/hooks/useClientSide';
-import { useUser } from '@/store/user/context';
 import type { ADM } from '@/types/adm';
 import type { PrismaError } from '@/types/prismaError';
 import { RoleEnum } from '@/types/roles';
@@ -25,8 +22,6 @@ const Adm = ({ adm }: { adm: ADM }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<ADM>();
-  const route = useRouter();
-  const user = useUser();
   const clientSide = useClientSide();
 
   const editAdmHandle = async (data: ADM): Promise<any> => {
@@ -82,6 +77,7 @@ const Adm = ({ adm }: { adm: ADM }) => {
           </div>
           <div className="mt-[32px]">
             <InputThemed
+              disabled
               register={register}
               name="email"
               defaultValue={adm.email}
@@ -90,17 +86,7 @@ const Adm = ({ adm }: { adm: ADM }) => {
               error={errors.email}
             />
           </div>
-          <div className="mt-[32px]">
-            <InputPasswordThemed
-              disabled={user.id !== route.query.id}
-              register={register}
-              name="password"
-              defaultValue={adm.password}
-              label="Senha"
-              validations={{ required: 'Campo obrigatório' }}
-              error={errors.password}
-            />
-          </div>
+
           <div className="mt-[48px] text-[16px] lg:text-[20px]">
             <button
               type="submit"
