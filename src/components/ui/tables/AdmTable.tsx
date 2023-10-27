@@ -8,7 +8,7 @@ import {
   Table,
 } from '@table-library/react-table-library';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -44,7 +44,6 @@ export const AdmTable = ({
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
-  const route = useRouter();
   const [filtersValues, setFiltersValues] = useState({ name: '' });
   const [deleteModal, setDeleteModal] = useState(false);
   const [admToDelete, setAdmToDelete] = useState('');
@@ -233,14 +232,9 @@ export const AdmTable = ({
                       </Cell>
                       <Cell className="text-center text-main hover:text-main">
                         <div className="flex gap-[8px]">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              route.push(`/view/${adm.id}/adm`);
-                            }}
-                          >
+                          <Link href={`/view/${adm.id}/adm`}>
                             <FiEye size={20} />
-                          </button>
+                          </Link>
                           <button
                             type="button"
                             onClick={() => {

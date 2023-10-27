@@ -8,7 +8,7 @@ import {
   Table,
 } from '@table-library/react-table-library';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -46,7 +46,6 @@ export const CoordinatorTable = ({
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
-  const route = useRouter();
   const [deleteModal, setDeleteModal] = useState(false);
   const [coordinatorToDelete, setCoordinatorToDelete] = useState('');
 
@@ -306,14 +305,9 @@ export const CoordinatorTable = ({
                       </Cell>
                       <Cell className="text-center text-main hover:text-main">
                         <div className="flex gap-[8px]">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              route.push(`/view/${coordinator.id}/coordinator`);
-                            }}
-                          >
+                          <Link href={`/view/${coordinator.id}/coordinator`}>
                             <FiEye size={20} />
-                          </button>
+                          </Link>
                           <button
                             type="button"
                             onClick={() => {

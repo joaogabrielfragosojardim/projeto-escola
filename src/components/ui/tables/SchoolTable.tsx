@@ -8,7 +8,7 @@ import {
   Table,
 } from '@table-library/react-table-library';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -47,7 +47,6 @@ export const SchoolTable = ({
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
-  const route = useRouter();
   const [deleteModal, setDeleteModal] = useState(false);
   const [schoolToDelete, setScholToDelete] = useState('');
 
@@ -319,14 +318,9 @@ export const SchoolTable = ({
                       </Cell>
                       <Cell className="text-center text-main hover:text-main">
                         <div className="flex gap-[8px]">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              route.push(`/view/${school.id}/school`);
-                            }}
-                          >
+                          <Link href={`/view/${school.id}/school`}>
                             <FiEye size={20} />
-                          </button>
+                          </Link>
                           <button
                             type="button"
                             onClick={() => {
