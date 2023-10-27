@@ -33,7 +33,6 @@ export class GetAllClassUseCase {
         },
         select: {
           id: true,
-          name: true,
           session: true,
           school: {
             select: {

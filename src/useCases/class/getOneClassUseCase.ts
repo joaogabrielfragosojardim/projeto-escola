@@ -13,7 +13,6 @@ export class GetOneClassUseCase {
       },
       select: {
         id: true,
-        name: true,
         session: true,
         school: {
           select: {
