@@ -30,9 +30,8 @@ import { ConfirmModal } from '../ConfirmModal';
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
-import { CitySelect } from './Selects/CitySelect';
 import { ProjectSelect } from './Selects/ProjectSelect';
-import { StateSelect } from './Selects/StateSelect';
+import { SchoolSelect } from './Selects/SchoolSelect';
 
 export const CoordinatorTable = ({
   page,
@@ -54,8 +53,7 @@ export const CoordinatorTable = ({
   const [filtersValues, setFiltersValues] = useState({
     name: '',
     projectId: '',
-    state: '',
-    city: '',
+    schoolId: '',
   });
 
   const [filters, setFilters] = useState<{
@@ -85,23 +83,12 @@ export const CoordinatorTable = ({
       ),
       view: false,
     },
-    statePopover: {
+    schoolPopover: {
       element: (
-        <StateSelect
+        <SchoolSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, state: event.value }));
-          }}
-        />
-      ),
-      view: false,
-    },
-    cityPopover: {
-      element: (
-        <CitySelect
-          onChange={(event) => {
-            setPage(1);
-            setFiltersValues((prev) => ({ ...prev, city: event.value }));
+            setFiltersValues((prev) => ({ ...prev, schoolId: event.value }));
           }}
         />
       ),
@@ -117,8 +104,7 @@ export const CoordinatorTable = ({
           perPage,
           name: filtersValues.name || null,
           projectId: filtersValues.projectId || null,
-          state: filtersValues.state || null,
-          city: filtersValues.city || null,
+          schoolId: filtersValues.schoolId || null,
         },
       })
     ).data;
@@ -209,19 +195,11 @@ export const CoordinatorTable = ({
                 }}
               />
               <InputCheckBoxThemed
-                label="Estado"
+                label="Escola"
                 register={register}
-                name="statePopover"
+                name="schoolPopover"
                 onClick={(event) => {
-                  handleChangeFilters('statePopover', 'state', event);
-                }}
-              />
-              <InputCheckBoxThemed
-                label="Cidade"
-                register={register}
-                name="cityPopover"
-                onClick={(event) => {
-                  handleChangeFilters('cityPopover', 'city', event);
+                  handleChangeFilters('schoolPopover', 'schoolId', event);
                 }}
               />
             </form>
@@ -302,8 +280,11 @@ export const CoordinatorTable = ({
                         <div className="flex items-center gap-[16px] text-[20px]">
                           <div className="relative h-[62px] w-[62px] min-w-[62px] overflow-hidden rounded-full">
                             <Image
-                              src={coordinator?.visualIdentity || ''}
-                              alt="logo do projeto"
+                              src={
+                                coordinator?.visualIdentity ||
+                                '/assets/images/default-profile.png'
+                              }
+                              alt="foto do coordenador"
                               fill
                               className="object-cover"
                             />

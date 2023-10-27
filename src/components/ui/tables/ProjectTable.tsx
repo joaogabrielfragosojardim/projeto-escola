@@ -216,7 +216,10 @@ export const ProjectTable = ({
                         <div className="flex items-center gap-[16px] text-[20px]">
                           <div className="relative h-[62px] w-[62px] min-w-[62px] overflow-hidden rounded-full">
                             <Image
-                              src={project?.visualIdentity}
+                              src={
+                                project?.visualIdentity ||
+                                '/assets/images/default-profile.png'
+                              }
                               alt="logo do projeto"
                               fill
                               className="object-cover"

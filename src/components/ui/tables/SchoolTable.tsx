@@ -296,8 +296,11 @@ export const SchoolTable = ({
                         <div className="flex items-center gap-[16px] text-[20px]">
                           <div className="relative h-[62px] w-[62px] min-w-[62px] overflow-hidden rounded-full">
                             <Image
-                              src={school?.visualIdentity || ''}
-                              alt="logo do projeto"
+                              src={
+                                school?.visualIdentity ||
+                                '/assets/images/default-profile.png'
+                              }
+                              alt="logo da escola"
                               fill
                               className="object-cover"
                             />
