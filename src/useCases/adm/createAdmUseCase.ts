@@ -33,11 +33,10 @@ export class CreateAdmUseCase {
       },
     });
 
-    console.log(userWithSameEmail)
     if (userWithSameEmail) {
       throw new AppError('Email já cadastrado', 400);
     }
-    console.log(3);
+
     const passwordHash = await hash(password, 6);
     const user = await prisma.user.create({
       data: {
@@ -52,7 +51,6 @@ export class CreateAdmUseCase {
         id: true,
       },
     });
-    console.log(4);
 
     const adm = await prisma.administrator.create({
       data: { userId: user.id },

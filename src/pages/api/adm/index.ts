@@ -7,7 +7,7 @@ import { GetAllAdmController } from '@/controllers/adm/getAllAdmController';
 import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
-  GET: false,
+  GET: true,
   POST: true,
   DELETE: false,
   PUT: false,
@@ -25,7 +25,6 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const method = req.method as HttpMethod;
-
   const createAdmController = new CreateAdmController();
   const getAllAdmController = new GetAllAdmController();
 

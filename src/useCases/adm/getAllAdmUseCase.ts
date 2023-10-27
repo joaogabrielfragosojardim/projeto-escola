@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { toAdms } from '@/utils/admAdapter';
 
 interface GetAllAdmUseCaseRequest {
   perPage: number;
@@ -21,6 +22,16 @@ export class GetAllAdmUseCase {
         where: {
           user: { name: { contains: name, mode: 'insensitive' } },
         },
+        select: {
+          id: true,
+          user: {
+            select: {
+              name: true,
+              email: true,
+              visualIdentity: true,
+            },
+          },
+        },
       }),
       prisma.administrator.count({
         where: {
@@ -32,7 +43,7 @@ export class GetAllAdmUseCase {
     const totalPage = Math.ceil(total / take);
 
     return {
-      data: adms,
+      data: toAdms(adms),
       meta: {
         page,
         totalPage,

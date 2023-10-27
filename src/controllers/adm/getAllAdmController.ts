@@ -11,11 +11,10 @@ export class GetAllAdmController {
         perPage: z.coerce.number().default(10),
         name: z.string().optional(),
       });
-
       const { page, perPage, name } = getAllQuerySchema.parse(req.query);
 
-      const getAllProjectsUseCase = new GetAllAdmUseCase();
-      const { data, meta } = await getAllProjectsUseCase.execute({
+      const getAllAdmUseCase = new GetAllAdmUseCase();
+      const { data, meta } = await getAllAdmUseCase.execute({
         page,
         perPage,
         name,

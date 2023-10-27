@@ -1,5 +1,6 @@
 import { hash } from 'bcryptjs';
 
+import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
 
 interface EditAdmUseCaseRequest {
@@ -14,8 +15,19 @@ export class EditAdmUseCase {
     if (password) {
       const passwordHash = await hash(password, 6);
 
-      const user = await prisma.user.update({
+      const administrator = await prisma.administrator.findUnique({
         where: { id },
+        select: {
+          userId: true,
+        },
+      });
+
+      if (!administrator) {
+        throw new Error('Adminstrador não encontrado');
+      }
+
+      const user = await prisma.user.update({
+        where: { id: administrator.userId },
         data: {
           name,
           visualIdentity,
@@ -23,13 +35,23 @@ export class EditAdmUseCase {
         },
       });
 
-      return {
-        user,
-      };
+      return { user };
+    }
+
+    const administrator = await prisma.administrator.findUnique({
+      where: { id },
+      select: {
+        userId: true,
+      },
+    });
+    console.log(administrator);
+
+    if (!administrator) {
+      throw new AppError('Adminstrador não encontrado');
     }
 
     const user = await prisma.user.update({
-      where: { id },
+      where: { id: administrator.userId },
       data: {
         name,
         visualIdentity,
