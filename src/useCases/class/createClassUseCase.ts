@@ -2,7 +2,6 @@ import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
 
 interface CreateClassUseCaseRequest {
-  name: string;
   session: string;
   schoolId: string;
   gradeId: string;
@@ -11,7 +10,6 @@ interface CreateClassUseCaseRequest {
 
 export class CreateClassUseCase {
   async execute({
-    name,
     session,
     schoolId,
     gradeId,
@@ -32,7 +30,6 @@ export class CreateClassUseCase {
 
     const classroom = await prisma.classroom.create({
       data: {
-        name,
         session,
         schoolId,
         gradeId,
@@ -41,7 +38,6 @@ export class CreateClassUseCase {
       select: {
         id: true,
         session: true,
-        name: true,
         grade: {
           select: {
             name: true,
@@ -54,7 +50,7 @@ export class CreateClassUseCase {
       classroom: {
         ...classroom,
         id: classroom.id,
-        name: `${classroom.name} - ${classroom.grade.name} - ${classroom.session}`,
+        name: `${classroom.grade.name} - ${classroom.session}`,
       },
     };
   }

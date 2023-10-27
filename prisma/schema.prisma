@@ -86,13 +86,12 @@ model Student {
 
 model Teacher {
   id        String   @id @default(uuid())
-  schoolId  String
-  userId    String
   telephone String
-  validated Boolean  @default(false)
   createdAt DateTime @default(now())
   status    Boolean  @default(true)
 
+  schoolId      String
+  userId        String
   coordinatorId String
 
   school      School      @relation(fields: [schoolId], references: [id])
@@ -120,9 +119,9 @@ model Coordinator {
 
 model Classroom {
   id        String   @id @default(uuid())
-  name      String
   session   String
   createdAt DateTime @default(now())
+
   gradeId   String
   schoolId  String
   teacherId String
