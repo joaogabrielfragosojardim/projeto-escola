@@ -6,11 +6,13 @@ import { GoPeople } from 'react-icons/go';
 import { IoSchoolOutline } from 'react-icons/io5';
 import {
   PiBookBookmarkLight,
+  PiFolderMinusLight,
   PiRulerLight,
   PiStackSimpleLight,
 } from 'react-icons/pi';
 
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
+import { AdmTable } from '@/components/ui/tables/AdmTable';
 import { CoordinatorTable } from '@/components/ui/tables/CoordinatorTable';
 import { DashBoardTable } from '@/components/ui/tables/DashboardTable';
 import { ProjectTable } from '@/components/ui/tables/ProjectTable';
@@ -34,6 +36,19 @@ const Dashboard = () => {
   }, [selectedTable]);
 
   const tables = [
+    {
+      table: (
+        <AdmTable
+          page={page}
+          setTotalPages={setTotalPages}
+          setPage={setPage}
+          perPage={perPage}
+        />
+      ),
+      userCanView: isAdmMaster,
+      name: 'Adms',
+      icon: <PiFolderMinusLight size={25} />,
+    },
     {
       table: (
         <ProjectTable

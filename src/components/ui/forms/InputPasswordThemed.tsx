@@ -33,7 +33,7 @@ export const InputPasswordThemed = (props: InputPasswordThemedProps) => {
         <input
           {...props}
           type={!hidde ? 'password' : 'text'}
-          className="w-full rounded-[5px] border-[1px] border-solid border-complement-200 p-[8px] text-[12px] lg:text-[16px]"
+          className="w-full rounded-[5px] border-[1px] border-solid border-complement-200 p-[8px] text-[12px] disabled:bg-complement-100 disabled:placeholder:text-complement-200 lg:text-[16px]"
           id={name}
           {...register(name, validations)}
           maxLength={32}

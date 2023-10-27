@@ -23,7 +23,7 @@ import { toast } from 'react-toastify';
 import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useTableTheme } from '@/hooks/useTableTheme';
-import type { Project } from '@/types/project';
+import type { ADM } from '@/types/adm';
 import { createCSV } from '@/utils/createCSV';
 
 import { ConfirmModal } from '../ConfirmModal';
@@ -31,7 +31,7 @@ import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
 
-export const ProjectTable = ({
+export const AdmTable = ({
   page,
   setTotalPages,
   setPage,
@@ -47,7 +47,7 @@ export const ProjectTable = ({
   const route = useRouter();
   const [filtersValues, setFiltersValues] = useState({ name: '' });
   const [deleteModal, setDeleteModal] = useState(false);
-  const [projectToDelete, setProjectToDelete] = useState('');
+  const [admToDelete, setAdmToDelete] = useState('');
 
   const [filters, setFilters] = useState<{
     [key: string]: { element: ReactNode; view: boolean };
@@ -57,7 +57,7 @@ export const ProjectTable = ({
         <InputThemed
           register={register}
           name="name"
-          label="Nome do projeto"
+          label="Nome do adm"
           onChange={(event) => {
             nameDebounce(event.target.value);
           }}
@@ -67,31 +67,31 @@ export const ProjectTable = ({
     },
   });
 
-  const deleteProject = async (id: string) => {
-    return (await axiosApi.delete(`/project/${id}`)).data;
+  const deleteAdm = async (id: string) => {
+    return (await axiosApi.delete(`/adm/${id}`)).data;
   };
 
-  const { mutate } = useMutation('fdeleteProjectMutation', deleteProject, {
+  const { mutate } = useMutation('deleteAdmMutation', deleteAdm, {
     onSuccess: () => {
-      toast.success('projeto deletado!');
+      toast.success('adm deletado!');
       refetch();
     },
     onError: () => {
-      toast.error('Algo de arrado aconteceu ao deletar o projeto!');
+      toast.error('Algo de arrado aconteceu ao deletar o adm!');
     },
   });
 
-  const fetchProjects = async () => {
+  const fetchAdms = async () => {
     return (
-      await axiosApi.get('/project', {
+      await axiosApi.get('/adm', {
         params: { page, name: filtersValues.name || null, perPage },
       })
     ).data;
   };
 
   const { isLoading, data, refetch, isRefetching } = useQuery(
-    'fetchAllProjectsQuery',
-    fetchProjects,
+    'fetchAllAdmsQuery',
+    fetchAdms,
     { refetchOnWindowFocus: false },
   );
   const nodes = { nodes: data?.data };
@@ -162,12 +162,12 @@ export const ProjectTable = ({
               className="flex items-center gap-[8px]"
               onClick={() =>
                 createCSV(
-                  data?.data.map((item: Project) => ({
+                  data?.data.map((item: ADM) => ({
                     name: item.name,
-                    about: item.about,
+                    email: item.email,
                   })),
-                  ['Nome', 'Sobre'],
-                  'relatorioProjetos',
+                  ['Nome', 'Email'],
+                  'relatorioAdms',
                 )
               }
             >
@@ -200,40 +200,43 @@ export const ProjectTable = ({
             theme={theme}
             style={{ gridTemplateColumns: '1fr 2fr 0.4fr' }}
           >
-            {(tableList: Project[]) => (
+            {(tableList: ADM[]) => (
               <>
                 <Header>
                   <HeaderRow>
                     <HeaderCell>Nome</HeaderCell>
-                    <HeaderCell>Sobre</HeaderCell>
+                    <HeaderCell>Email</HeaderCell>
                     <HeaderCell>Ações</HeaderCell>
                   </HeaderRow>
                 </Header>
                 <Body>
-                  {tableList.map((project) => (
-                    <Row key={project.id} item={project}>
+                  {tableList.map((adm) => (
+                    <Row key={adm.id} item={adm}>
                       <Cell className="text-main hover:text-main">
                         <div className="flex items-center gap-[16px] text-[20px]">
                           <div className="relative h-[62px] w-[62px] min-w-[62px] overflow-hidden rounded-full">
                             <Image
-                              src={project?.visualIdentity}
-                              alt="logo do projeto"
+                              src={
+                                adm?.visualIdentity ||
+                                '/assets/images/default-profile.png'
+                              }
+                              alt="Foto do adm"
                               fill
                               className="object-cover"
                             />
                           </div>
-                          {project.name}
+                          {adm.name}
                         </div>
                       </Cell>
                       <Cell className="text-[20px] text-main hover:text-main">
-                        {project.about}
+                        {adm.email}
                       </Cell>
                       <Cell className="text-center text-main hover:text-main">
                         <div className="flex gap-[8px]">
                           <button
                             type="button"
                             onClick={() => {
-                              route.push(`/view/${project.id}/adm`);
+                              route.push(`/view/${adm.id}/adm`);
                             }}
                           >
                             <FiEye size={20} />
@@ -241,7 +244,7 @@ export const ProjectTable = ({
                           <button
                             type="button"
                             onClick={() => {
-                              setProjectToDelete(project.id);
+                              setAdmToDelete(adm.id);
                               setDeleteModal(true);
                             }}
                           >
@@ -266,7 +269,7 @@ export const ProjectTable = ({
               />
             </div>
             <div className="text-center text-[22px] text-main">
-              <p>Nenhum projeto encontrado!</p>
+              <p>Nenhum ADM encontrado!</p>
             </div>
           </div>
         ) : null}
@@ -274,9 +277,9 @@ export const ProjectTable = ({
       <ConfirmModal
         isOpen={deleteModal}
         setOpen={setDeleteModal}
-        text="Deseja realmente excluir esse projeto?"
+        text="Deseja realmente excluir esse Adm?"
         onConfirm={() => {
-          mutate(projectToDelete);
+          mutate(admToDelete);
           setDeleteModal(false);
         }}
       />
