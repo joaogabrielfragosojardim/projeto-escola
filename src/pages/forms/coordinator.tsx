@@ -10,7 +10,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
-import { validateEmail } from 'validations-br';
+import { validateEmail, validatePhone } from 'validations-br';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { FormDefaultPage } from '@/components/ui/forms/FormDefaultPage';
@@ -210,10 +210,14 @@ const CoordinatorSecondStep = ({
           <InputThemed
             label="Telefone"
             placeholder="(99) 9 9999-9999"
+            mask="(99) 9 9999-9999"
             register={register}
             name="telephone"
             validations={{
               required: 'Campo obrigatório',
+              validate: (value: string) => {
+                return validatePhone(value) || 'Telefone invalido';
+              },
             }}
             error={errors.telephone}
           />

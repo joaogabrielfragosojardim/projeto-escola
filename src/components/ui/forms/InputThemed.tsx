@@ -4,6 +4,7 @@ import type {
   RegisterOptions,
   UseFormRegister,
 } from 'react-hook-form';
+import InputMask from 'react-input-mask';
 
 interface InputThemedProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -11,6 +12,7 @@ interface InputThemedProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   validations?: RegisterOptions<any, string>;
   error?: FieldError | undefined;
+  mask?: string;
 }
 
 export const InputThemed = (props: InputThemedProps) => {
@@ -26,12 +28,22 @@ export const InputThemed = (props: InputThemedProps) => {
           {label}
         </label>
       )}
-      <input
-        className="w-full rounded-[5px] border-[1px] border-solid border-complement-200 p-[8px] text-[12px] disabled:bg-complement-100 disabled:placeholder:text-complement-200 lg:text-[16px]"
-        id={name}
-        {...register(name, validations)}
-        {...props}
-      />
+      {props.mask ? (
+        // @ts-ignore
+        <InputMask
+          className="w-full rounded-[5px] border-[1px] border-solid border-complement-200 p-[8px] text-[12px] disabled:bg-complement-100 disabled:placeholder:text-complement-200 lg:text-[16px]"
+          id={name}
+          {...register(name, validations)}
+          {...props}
+        />
+      ) : (
+        <input
+          className="w-full rounded-[5px] border-[1px] border-solid border-complement-200 p-[8px] text-[12px] disabled:bg-complement-100 disabled:placeholder:text-complement-200 lg:text-[16px]"
+          id={name}
+          {...register(name, validations)}
+          {...props}
+        />
+      )}
       {error && (
         <span className="mt-[-6px] text-[12px] text-wrong">
           {error.message}

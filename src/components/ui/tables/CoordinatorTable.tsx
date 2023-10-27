@@ -8,10 +8,12 @@ import {
   Table,
 } from '@table-library/react-table-library';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { BiDownload } from 'react-icons/bi';
+import { BiDownload, BiTrash } from 'react-icons/bi';
+import { FiEye } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
 import { VscFilter } from 'react-icons/vsc';
@@ -21,7 +23,7 @@ import { toast } from 'react-toastify';
 import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useTableTheme } from '@/hooks/useTableTheme';
-import type { SchollAddress } from '@/types/school';
+import type { Coordinator } from '@/types/coordinator';
 import { createCSV } from '@/utils/createCSV';
 
 import { ConfirmModal } from '../ConfirmModal';
@@ -45,9 +47,9 @@ export const CoordinatorTable = ({
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
-  // const route = useRouter();
+  const route = useRouter();
   const [deleteModal, setDeleteModal] = useState(false);
-  // const [coordinatorToDelete, setCoordinatorToDelete] = useState('');
+  const [coordinatorToDelete, setCoordinatorToDelete] = useState('');
 
   const [filtersValues, setFiltersValues] = useState({
     name: '',
@@ -129,19 +131,23 @@ export const CoordinatorTable = ({
   );
   const nodes = { nodes: data?.data };
 
-  const deleteProject = async (id: string) => {
+  const deleteCoordinator = async (id: string) => {
     return (await axiosApi.delete(`/coordinator/${id}`)).data;
   };
 
-  const { mutate } = useMutation('fetchAllProjectsQuery', deleteProject, {
-    onSuccess: () => {
-      toast.success('escola deletada!');
-      refetch();
+  const { mutate } = useMutation(
+    'deleteCoordinatorMutation',
+    deleteCoordinator,
+    {
+      onSuccess: () => {
+        toast.success('Coordenador deletado!');
+        refetch();
+      },
+      onError: () => {
+        toast.error('Algo de arrado aconteceu ao deletar o coordenador!');
+      },
     },
-    onError: () => {
-      toast.error('Algo de arrado aconteceu ao deletar a escola!');
-    },
-  });
+  );
 
   const nameDebounce = useDebounce((value: string) => {
     setPage(1);
@@ -236,14 +242,15 @@ export const CoordinatorTable = ({
               className="flex items-center gap-[8px]"
               onClick={() =>
                 createCSV(
-                  data?.data.map((item: SchollAddress) => ({
+                  data?.data.map((item: Coordinator) => ({
                     name: item.name,
+                    email: item.email,
+                    telephone: item.telephone,
                     project: item.project.name,
-                    city: item.address.city,
-                    state: item.address.state,
+                    school: item.school.name,
                   })),
-                  ['Nome', 'Projeto', 'Cidade', 'Estado'],
-                  'relatorioEscolas',
+                  ['Nome', 'Email', 'Telefone', 'Projeto', 'Escola'],
+                  'relatorioCoordenadores',
                 )
               }
             >
@@ -274,17 +281,18 @@ export const CoordinatorTable = ({
           <Table
             data={nodes}
             theme={theme}
-            style={{ gridTemplateColumns: '1fr 1fr 1fr' }}
+            style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 0.4fr' }}
           >
-            {(tableList: SchollAddress[]) => (
+            {(tableList: Coordinator[]) => (
               <>
                 <Header>
                   <HeaderRow>
                     <HeaderCell>Nome</HeaderCell>
                     <HeaderCell>Email</HeaderCell>
                     <HeaderCell>Telefone</HeaderCell>
-                    {/* <HeaderCell>Estado</HeaderCell>
-                    <HeaderCell>Ações</HeaderCell> */}
+                    <HeaderCell>Projeto</HeaderCell>
+                    <HeaderCell>Escola</HeaderCell>
+                    <HeaderCell>Ações</HeaderCell>
                   </HeaderRow>
                 </Header>
                 <Body>
@@ -300,19 +308,22 @@ export const CoordinatorTable = ({
                               className="object-cover"
                             />
                           </div>
-                          {coordinator.user.name}
+                          {coordinator.name}
                         </div>
                       </Cell>
                       <Cell className="text-[20px] text-main hover:text-main">
-                        {coordinator.user.email}
+                        {coordinator.email}
                       </Cell>
                       <Cell className="text-[20px] text-main hover:text-main">
                         {coordinator.telephone}
                       </Cell>
-                      {/* <Cell className="text-[20px] text-main hover:text-main">
-                        {coordinator.address.state}
-                      </Cell> */}
-                      {/* <Cell className="text-center text-main hover:text-main">
+                      <Cell className="text-[20px] text-main hover:text-main">
+                        {coordinator.project.name}
+                      </Cell>
+                      <Cell className="text-[20px] text-main hover:text-main">
+                        {coordinator.school.name}
+                      </Cell>
+                      <Cell className="text-center text-main hover:text-main">
                         <div className="flex gap-[8px]">
                           <button
                             type="button"
@@ -332,7 +343,7 @@ export const CoordinatorTable = ({
                             <BiTrash size={20} />
                           </button>
                         </div>
-                      </Cell> */}
+                      </Cell>
                     </Row>
                   ))}
                 </Body>
@@ -358,7 +369,7 @@ export const CoordinatorTable = ({
       <ConfirmModal
         isOpen={deleteModal}
         setOpen={setDeleteModal}
-        text="Deseja realmente excluir essa escola?"
+        text="Deseja realmente excluir esse coordenador?"
         onConfirm={() => {
           mutate(coordinatorToDelete);
           setDeleteModal(false);

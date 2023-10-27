@@ -6,4 +6,5 @@ export type Coordinator = {
   password: string;
   telephone: string;
   school: { id: string; name: string; value: string };
+  project: { id: string; name: string; value: string };
 };
