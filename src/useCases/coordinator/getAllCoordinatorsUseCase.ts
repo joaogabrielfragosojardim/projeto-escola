@@ -4,10 +4,19 @@ import { toCoordinators } from '@/utils/coordinatorAdapter';
 interface GetAllCoordinatorsUseCaseRequest {
   perPage: number;
   page: number;
+  name?: string;
+  projectId?: string;
+  schoolId?: string;
 }
 
 export class GetAllCoordinatorsUseCase {
-  async execute({ page, perPage }: GetAllCoordinatorsUseCaseRequest) {
+  async execute({
+    page,
+    perPage,
+    name,
+    schoolId,
+    projectId,
+  }: GetAllCoordinatorsUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
 
@@ -17,6 +26,15 @@ export class GetAllCoordinatorsUseCase {
         take,
         orderBy: {
           createdAt: 'desc',
+        },
+        where: {
+          user: {
+            name: { contains: name, mode: 'insensitive' },
+          },
+          schoolId: { equals: schoolId },
+          school: {
+            projectId: { equals: projectId },
+          },
         },
         select: {
           id: true,
