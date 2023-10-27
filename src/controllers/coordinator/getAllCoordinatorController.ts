@@ -9,15 +9,22 @@ export class GetAllCoordinatorController {
       const getAllQuerySchema = z.object({
         page: z.coerce.number().default(1),
         perPage: z.coerce.number().default(10),
+        name: z.string().optional(),
+        projectId: z.string().optional(),
+        schoolId: z.string().optional(),
       });
 
-      const { page, perPage } = getAllQuerySchema.parse(req.query);
+      const { page, perPage, name, projectId, schoolId } =
+        getAllQuerySchema.parse(req.query);
 
       const getAllCoordinatorsUseCase = new GetAllCoordinatorsUseCase();
 
       const { data, meta } = await getAllCoordinatorsUseCase.execute({
         page,
         perPage,
+        name,
+        projectId,
+        schoolId,
       });
 
       return res.status(200).json({ data, meta });
