@@ -1,5 +1,16 @@
+import { Header } from '@/components/ui/site/Header';
+import { Hero } from '@/components/ui/site/Hero';
+import { HoWeAre } from '@/components/ui/site/HoWeAre';
+
 const Index = () => {
-  return <main>projetin</main>;
+  return (
+    <>
+      <Header />
+      <Hero />
+      <HoWeAre />
+      <div />
+    </>
+  );
 };
 
 export default Index;
