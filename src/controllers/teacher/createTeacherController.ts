@@ -13,7 +13,7 @@ export class CreateTeacherController {
         visualIdentity: z.string().url().optional(),
         telephone: z.string(),
         schoolId: z.string().uuid(),
-        coordinatorId: z.string().uuid(),
+        classRooms: z.array(z.object({ period: z.string(), year: z.number() })),
       });
 
       const {
@@ -22,8 +22,8 @@ export class CreateTeacherController {
         password,
         schoolId,
         telephone,
-        coordinatorId,
         visualIdentity,
+        classRooms,
       } = createBodySchema.parse(req.body);
 
       const createTeacherUseCase = new CreateTeacherUseCase();
@@ -34,8 +34,8 @@ export class CreateTeacherController {
         password,
         schoolId,
         telephone,
-        coordinatorId,
         visualIdentity,
+        classRooms,
       });
 
       return res.status(201).json({ teacher });

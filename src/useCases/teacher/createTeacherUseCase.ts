@@ -9,8 +9,8 @@ interface CreateTeacherUseCaseRequest {
   password: string;
   telephone: string;
   schoolId: string;
-  coordinatorId: string;
   visualIdentity?: string;
+  classRooms: { year: number; period: string }[];
 }
 
 export class CreateTeacherUseCase {
@@ -20,8 +20,8 @@ export class CreateTeacherUseCase {
     password,
     telephone,
     schoolId,
-    coordinatorId,
     visualIdentity,
+    classRooms,
   }: CreateTeacherUseCaseRequest) {
     const teacherRole = await prisma.role.findUnique({
       where: {
@@ -53,17 +53,14 @@ export class CreateTeacherUseCase {
       throw new AppError('Escola inexistente', 400);
     }
 
-    const coordinator = await prisma.coordinator.findUnique({
+    const coordinator = await prisma.coordinator.findMany({
       where: {
-        id: coordinatorId,
-      },
-      select: {
-        schoolId: true,
+        schoolId,
       },
     });
 
-    if (!coordinator || coordinator.schoolId !== schoolId) {
-      throw new AppError('Coordenador não vinculado à mesma escola', 400);
+    if (!coordinator.length || !coordinator[0]) {
+      throw new AppError('Coordenador não Existe', 400);
     }
 
     const passwordHash = await hash(password, 6);
@@ -86,9 +83,17 @@ export class CreateTeacherUseCase {
       data: {
         telephone,
         schoolId,
-        coordinatorId,
+        coordinatorId: coordinator[0]?.id,
         userId: user.id,
       },
+    });
+
+    const years = classRooms.map((item) => item.year);
+    const periods = classRooms.map((item) => item.period);
+
+    await prisma.classroom.updateMany({
+      where: { schoolId, year: { in: years }, period: { in: periods } },
+      data: { teacherId: teacher.id },
     });
 
     return {

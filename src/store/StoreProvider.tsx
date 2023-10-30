@@ -4,6 +4,7 @@ import React from 'react';
 import { CoordinatorFormProvider } from './coordinatorForm/context';
 import { InitialConfigs } from './InitialConfigs';
 import { SchoolFormProvider } from './schoolForm/context';
+import { SocialEducatorFormProvider } from './socialEducatorForm/context';
 import { UserProvider } from './user/context';
 
 export const StoreProvider = ({ children }: { children: ReactNode }) => {
@@ -11,7 +12,9 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
     <UserProvider>
       <SchoolFormProvider>
         <CoordinatorFormProvider>
-          <InitialConfigs>{children}</InitialConfigs>
+          <SocialEducatorFormProvider>
+            <InitialConfigs>{children}</InitialConfigs>
+          </SocialEducatorFormProvider>
         </CoordinatorFormProvider>
       </SchoolFormProvider>
     </UserProvider>

@@ -1,3 +1,4 @@
+import { allPeriods, allSeries } from '@/constants/classroom';
 import { prisma } from '@/lib/prisma';
 
 interface CreateSchoolUseCaseRequest {
@@ -38,6 +39,18 @@ export class CreateSchoolUseCase {
         projectId,
         visualIdentity,
       },
+    });
+
+    await prisma.classroom.createMany({
+      data: allSeries
+        .map((serie) => {
+          return allPeriods.map((period) => ({
+            schoolId: school.id,
+            year: serie,
+            period,
+          }));
+        })
+        .flat(),
     });
 
     return {
