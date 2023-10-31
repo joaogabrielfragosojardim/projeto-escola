@@ -22,7 +22,7 @@ export const Hero = () => {
           />
         </div>
         <div className="my-[32px] max-w-[561px] text-[16px] text-complement-200">
-          <p>
+          <p className="text-justify">
             Em 2020, durante o início da pandemia, um grupo de profissionais da
             educação, incluindo as professoras Ana Márcia de Sousa e Ana Flávia
             Vieira Rolim, juntamente com o professor Camilo Cazé, iniciou uma
