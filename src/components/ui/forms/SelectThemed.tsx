@@ -1,25 +1,27 @@
-import { type InputHTMLAttributes, useEffect } from 'react';
+import { useEffect } from 'react';
 import type {
   Control,
   FieldError,
-  FieldErrorsImpl,
   Merge,
   RegisterOptions,
   UseFormReset,
 } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
+import type { Props as ReactSelectProps } from 'react-select';
 
 import { Select } from './Select';
 
-interface SelectThemedProps extends InputHTMLAttributes<HTMLSelectElement> {
+interface SelectThemedProps extends ReactSelectProps {
   label?: string;
   control: Control<any, any>;
   name: string;
   validations?: RegisterOptions<any, string>;
-  error?: Merge<FieldError, FieldErrorsImpl<any>>;
+  error?: Merge<FieldError, any>;
   reset: UseFormReset<any>;
-  options: { value: string; label: string }[];
-  menuPlacement?: string;
+  options: { value: any; label: string }[];
+  isMulti?: boolean;
+  isLoading?: boolean;
+  isDisabled?: boolean;
 }
 
 const colourStyles: any = {
@@ -28,11 +30,6 @@ const colourStyles: any = {
     backgroundColor: 'white',
     borderColor: '#4D4D4D',
     fontSize: '16px',
-
-    '@media only screen and (max-width: 1023px)': {
-      ...styles['@media only screen and (max-width: 1023px)'],
-      fontSize: '12px',
-    },
   }),
   option: (styles: any) => ({
     ...styles,
@@ -86,7 +83,10 @@ export const SelectThemed = (props: SelectThemedProps) => {
           <Select
             {...props}
             options={options}
-            onChange={props.onChange ? props.onChange : onChange}
+            onChange={(newValue, actionMeta) => {
+              props?.onChange && props.onChange(newValue, actionMeta);
+              onChange(newValue);
+            }}
             onBlur={onBlur}
             styles={colourStyles}
             placeholder={placeholder}
