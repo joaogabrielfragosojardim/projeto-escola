@@ -23,15 +23,26 @@ const hoWeAreItems = [
 
 export const HoWeAre = () => {
   return (
-    <div className="mx-auto mt-[32px] max-w-[1194px]" id="hoWeAre">
+    <div
+      className="mx-auto mt-[32px] max-w-[1194px] px-[20px] xl:px-[0px]"
+      id="hoWeAre"
+    >
       <div>
-        <h2 className="text-[24px] font-bold  text-main">Quem Somos</h2>
-        <div className="mt-[32px] grid auto-cols-max grid-cols-3 justify-center gap-[30px]">
+        <h2 className=" text-[16px] font-bold text-main  xl:text-[24px]">
+          Quem Somos
+        </h2>
+        <div className="mt-[32px] grid auto-cols-max grid-cols-1 justify-center gap-[30px] xl:grid-cols-3">
           {hoWeAreItems.map((item, index) => (
             <div className="relative" key={item.name}>
               <div className="overflow-hidden rounded">
                 <div className="relative h-[277px] w-full">
-                  <Image src={item.src} alt={item.name} fill quality={100} />
+                  <Image
+                    src={item.src}
+                    alt={item.name}
+                    fill
+                    quality={100}
+                    className="object-cover"
+                  />
                 </div>
                 <div className="bg-main p-[16px] text-complement-100">
                   <p className="text-[16px] font-bold">{item.name}</p>

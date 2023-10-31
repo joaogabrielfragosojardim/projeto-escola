@@ -84,11 +84,13 @@ const projects = [
 
 export const OurProjects = () => {
   return (
-    <div className="mx-auto mt-[48px] max-w-[1194px]">
-      <div className="flex  gap-[30px]">
-        <div className="max-w-[563px]">
-          <h2 className="text-[24px] font-bold  text-main">Nossos projetos</h2>
-          <p className="my-[32px] text-justify text-[16px] text-complement-200">
+    <div className="mx-auto mt-[48px] max-w-[1194px] px-[20px] xl:px-[0px]">
+      <div className="flex flex-col gap-[30px]  xl:flex-row">
+        <div className="xl:max-w-[563px]">
+          <h2 className="text-[16px] font-bold text-main  xl:text-[24px]">
+            Nossos projetos
+          </h2>
+          <p className="my-[24px] text-justify text-[14px] text-complement-200 xl:my-[32px] xl:text-[16px]">
             Ao visitarmos as redes públicas de ensino, percebemos que muitos
             estudantes perderam a capacidade de acompanhar o respectivo grupo
             classe. Isto gerou inúmeras perdas de aprendizagens. Por outro lado,
@@ -99,13 +101,13 @@ export const OurProjects = () => {
           <Link
             href={phoneSite}
             target="_blank"
-            className="rounded bg-main px-[32px] py-[8px] text-complement-100"
+            className="hidden rounded bg-main px-[32px] py-[8px] text-complement-100 xl:inline"
           >
             Fale Conosco
           </Link>
         </div>
         <div>
-          <div className="grid auto-cols-max grid-cols-2 grid-rows-2 gap-[32px]">
+          <div className="lx:grid-cols-2 grid auto-cols-max grid-cols-1  gap-[32px] xl:grid-rows-2">
             <div className=" col-span-full w-full rounded bg-complement-100 p-[24px]">
               <div className="relative h-[25px] w-[80px]">
                 <Image
@@ -114,7 +116,7 @@ export const OurProjects = () => {
                   fill
                 />
               </div>
-              <p className="mt-[16px] text-[16px] text-main">
+              <p className="mt-[16px] text-[12px] text-main xl:text-[16px]">
                 A recomposição da aprendizagem com foco na alfabetização e o
                 letramento (numeracia e literacia).
               </p>
@@ -127,7 +129,7 @@ export const OurProjects = () => {
                   fill
                 />
               </div>
-              <p className="mt-[16px] text-[16px] text-complement-100">
+              <p className="mt-[16px] text-[12px] text-complement-100 xl:text-[16px]">
                 O Acolhimento dos professores com foco no socioemocional
               </p>
             </div>
@@ -139,17 +141,24 @@ export const OurProjects = () => {
                   fill
                 />
               </div>
-              <p className="mt-[10px] text-[16px] text-main">
+              <p className="mt-[16px] text-[12px] text-main xl:text-[16px]">
                 Estabelecimento de políticas de gestão por resultado.
               </p>
             </div>
+            <Link
+              href={phoneSite}
+              target="_blank"
+              className="max-w-max rounded bg-main px-[32px] py-[8px] text-complement-100 xl:hidden"
+            >
+              Fale Conosco
+            </Link>
           </div>
         </div>
       </div>
       <div className="mt-[52px] flex flex-col gap-[40px]">
         {projects.map((project, index) => (
           <div key={project.projectLogo}>
-            <div className="relative mb-[32px] h-[40px] w-[132px]">
+            <div className="relative mb-[32px] h-[15px] w-[68px] xl:h-[40px] xl:w-[132px]">
               <Image
                 src={project.projectLogo}
                 alt="logo do projeto"
@@ -160,12 +169,14 @@ export const OurProjects = () => {
             </div>
             <div
               className={`flex justify-between gap-[30px] ${
-                verifyIsOdd(index) ? 'flex-row-reverse' : ''
+                verifyIsOdd(index)
+                  ? 'flex-col xl:flex-row-reverse'
+                  : 'flex-col xl:flex-row'
               }`}
             >
-              <div className="flex w-full items-center gap-[24px]">
+              <div className="flex w-full items-center justify-center gap-[20px] xl:justify-start xl:gap-[24px]">
                 <div className="flex flex-col gap-[24px]">
-                  <div className="relative h-[200px] w-[200px] overflow-hidden rounded">
+                  <div className="lx:h-[200px] lx:w-[200px] relative h-[100px] w-[95px] overflow-hidden rounded">
                     <Image
                       src={project.images[0] || ''}
                       fill
@@ -174,7 +185,7 @@ export const OurProjects = () => {
                       objectFit="cover"
                     />
                   </div>
-                  <div className="relative h-[200px] w-[200px] overflow-hidden rounded">
+                  <div className="lx:h-[200px] lx:w-[200px] relative h-[100px] w-[95px] overflow-hidden rounded">
                     <Image
                       src={project.images[1] || ''}
                       fill
@@ -184,7 +195,7 @@ export const OurProjects = () => {
                     />
                   </div>
                 </div>
-                <div className="relative h-[424px] w-[361px] overflow-hidden rounded">
+                <div className="lx:h-[424px] lx:w-[361px] relative h-[224px] w-[154px] overflow-hidden rounded">
                   <Image
                     src={project.images[2] || ''}
                     fill
@@ -194,8 +205,8 @@ export const OurProjects = () => {
                   />
                 </div>
               </div>
-              <div className="max-w-[580px]">
-                <p className="text-justify text-[16px] text-complement-200">
+              <div className="lx:max-w-[580px]">
+                <p className="lx:text-[16px] text-justify text-[14px] text-complement-200">
                   {project.text}
                 </p>
                 <div className="mt-[24px] flex flex-col gap-[24px]">
@@ -207,7 +218,7 @@ export const OurProjects = () => {
                       <div className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-main text-[18px] text-complement-100">
                         {item.icon}
                       </div>
-                      <p className="text-[16px] text-complement-200">
+                      <p className="lx:text-[16px] text-[12px] text-complement-200">
                         {item.text}
                       </p>
                     </div>

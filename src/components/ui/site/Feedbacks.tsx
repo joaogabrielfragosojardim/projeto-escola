@@ -37,16 +37,16 @@ export const Feedbacks = () => {
 
   return (
     <div className="mt-[48px]">
-      <div className="mx-auto max-w-[1194px]">
-        <h2 className="text-[24px] font-bold  text-main">
+      <div className="mx-auto max-w-[1194px] px-[20px] xl:px-[0px]">
+        <h2 className="text-[16px] font-bold text-main  xl:text-[24px]">
           Com a palavra, quem conhece
         </h2>
       </div>
       <Swiper
-        slidesOffsetBefore={useWindowSize() < 800 ? 20 : gap}
-        slidesOffsetAfter={useWindowSize() < 800 ? 20 : gap}
+        slidesOffsetBefore={useWindowSize() < 1280 ? 20 : gap}
+        slidesOffsetAfter={useWindowSize() < 1280 ? 20 : gap}
         spaceBetween={32}
-        slidesPerView={3.7}
+        slidesPerView={useWindowSize() < 1280 ? 1.3 : 3.7}
         className="mt-[32px]"
       >
         {allFeedbacks.map((feedback) => (
@@ -64,7 +64,9 @@ export const Feedbacks = () => {
                   />
                 </div>
                 <div className="text-main">
-                  <p className="text-[14px] font-bold">{feedback.name}</p>
+                  <p className="text-[12px] font-bold xl:text-[14px]">
+                    {feedback.name}
+                  </p>
                   <p className="mt-[8px] text-[12px]">{feedback.job}</p>
                 </div>
               </div>

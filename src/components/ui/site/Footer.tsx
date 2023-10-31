@@ -28,7 +28,7 @@ export const Footer = () => {
               </div>
               <ul className="mt-[24px] flex flex-col gap-[16px]">
                 <li>
-                  <div className="flex items-center gap-[16px]">
+                  <div className="flex flex-col items-start gap-[16px] xl:flex-row xl:items-center">
                     <div className="rounded-[50%] bg-main p-[10px] text-complement-100">
                       <BsTelephone size={15} />
                     </div>
@@ -38,7 +38,7 @@ export const Footer = () => {
                   </div>
                 </li>
                 <li>
-                  <div className="flex items-center gap-[16px]">
+                  <div className="flex flex-col items-start gap-[16px] xl:flex-row xl:items-center">
                     <div className=" rounded-[50%] bg-main p-[10px] text-complement-100">
                       <FiMapPin size={15} />
                     </div>
@@ -50,7 +50,7 @@ export const Footer = () => {
               </ul>
             </div>
             <div>
-              <ul className="flex gap-[16px]">
+              <ul className="hidden gap-[16px] xl:flex">
                 <li className="rounded-[50%] bg-main p-[10px] text-complement-100">
                   <Link
                     href="https://www.youtube.com/@escolaprime"
@@ -75,7 +75,27 @@ export const Footer = () => {
               </ul>
             </div>
           </div>
-          <div className="mt-[32px] flex w-full justify-between text-[14px] text-complement-200">
+          <ul className="mt-[22px] flex gap-[16px] xl:hidden">
+            <li className="rounded-[50%] bg-main p-[10px] text-complement-100">
+              <Link href="https://www.youtube.com/@escolaprime" target="_blank">
+                <AiFillYoutube size={15} />
+              </Link>
+            </li>
+            <li className="rounded-[50%] bg-main p-[10px] text-complement-100">
+              <Link
+                href="https://www.instagram.com/escola.prime"
+                target="_blank"
+              >
+                <AiOutlineInstagram size={15} />
+              </Link>
+            </li>
+            <li className="rounded-[50%] bg-main p-[10px] text-complement-100">
+              <Link href={phoneSite} target="_blank">
+                <AiOutlineWhatsApp size={15} />
+              </Link>
+            </li>
+          </ul>
+          <div className="mt-[32px] flex w-full flex-col-reverse justify-between gap-[8px] text-[14px] text-complement-200 xl:flex-row">
             <div>
               <p>Todos os direitos reservados</p>
             </div>

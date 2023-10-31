@@ -6,13 +6,14 @@ import {
   AiOutlineInstagram,
   AiOutlineWhatsApp,
 } from 'react-icons/ai';
+import { GiHamburgerMenu } from 'react-icons/gi';
 
 import { phoneSite } from '@/constants/contacts';
 
 export const Header = () => {
   return (
     <header>
-      <div className="mx-auto flex max-w-[1194px] items-center justify-between">
+      <div className="mx-auto hidden max-w-[1194px] items-center justify-between xl:flex">
         <div className="relative h-[50px] w-[165px]">
           <Image src="/assets/images/logo.png" alt="Escola Prime Logo" fill />
         </div>
@@ -54,6 +55,29 @@ export const Header = () => {
           >
             Entrar
           </Link>
+        </div>
+      </div>
+      <div className="bg-main p-[8px] xl:hidden">
+        <div className="mx-auto flex max-w-[1194px] items-center justify-between ">
+          <div />
+          <div className="relative h-[49px] w-[136px]">
+            <Image
+              src="/assets/images/logo.png"
+              alt="Escola Prime Logo"
+              fill
+              className="brightness-0 invert"
+              quality={100}
+            />
+          </div>
+
+          <div className="flex items-center gap-[40px]">
+            <button
+              type="button"
+              className="rounded bg-main px-[32px] py-[8px] text-complement-100"
+            >
+              <GiHamburgerMenu size={30} />
+            </button>
+          </div>
         </div>
       </div>
     </header>
