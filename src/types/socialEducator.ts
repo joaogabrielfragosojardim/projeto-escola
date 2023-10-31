@@ -1,10 +1,11 @@
+import type { ClassRoom } from '@/constants/classroom';
+
 export type SocialEducator = {
-  visualIdentity?: string;
   name: string;
   email: string;
-  schoolId: string;
-  period: string;
-  year: string;
+  visualIdentity?: string;
+  schoolId: { label: string; value: string };
   password: string;
   telephone: string;
+  classRooms: ClassRoom[];
 };

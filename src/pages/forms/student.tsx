@@ -10,7 +10,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
-import { validateEmail, validatePhone } from 'validations-br';
+import { validateEmail } from 'validations-br';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { FormDefaultPage } from '@/components/ui/forms/FormDefaultPage';
@@ -19,7 +19,6 @@ import { InputPasswordThemed } from '@/components/ui/forms/InputPasswordThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { MultiStepForm } from '@/components/ui/forms/MultiStepForm';
 import { SelectThemed } from '@/components/ui/forms/SelectThemed';
-import { classrooms } from '@/constants/classroom';
 import {
   useSocialEducatorForm,
   useSocialEducatorFormDispatch,
@@ -27,9 +26,10 @@ import {
 import { SocialEducatorFormTypesEnum } from '@/store/socialEducatorForm/types';
 import type { PrismaError } from '@/types/prismaError';
 import { RoleEnum } from '@/types/roles';
-import type { SocialEducator } from '@/types/socialEducator';
+import type { Student as StudentProps } from '@/types/student';
+import { formatDateToISO } from '@/utils/formatDate';
 
-const SocialEducatorFirstStep = ({
+const StudentFirstStep = ({
   setStep,
 }: {
   setStep: Dispatch<SetStateAction<number>>;
@@ -39,12 +39,12 @@ const SocialEducatorFirstStep = ({
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<SocialEducator>();
+  } = useForm<StudentProps>();
 
   const socialEducatorFormDispatch = useSocialEducatorFormDispatch();
   const socialEdutatorForm = useSocialEducatorForm();
 
-  const onSubmit = (data: SocialEducator) => {
+  const onSubmit = (data: StudentProps) => {
     const { visualIdentity, name, email } = data;
     socialEducatorFormDispatch({
       type: SocialEducatorFormTypesEnum.ADD_SOCIAL_EDUCATOR_FORM,
@@ -71,7 +71,7 @@ const SocialEducatorFirstStep = ({
         <p className="hidden lg:inline">Voltar para o dashboard</p>
       </Link>
       <h1 className="mt-[32px] text-[16px] font-semibold text-complement-200 lg:text-[24px]">
-        Cadastro de Educador Social:
+        Cadastro de aluno:
       </h1>
       <form
         className="mt-[16px] w-full lg:max-w-[400px]"
@@ -88,7 +88,7 @@ const SocialEducatorFirstStep = ({
         />
         <div className="mt-[16px]">
           <InputThemed
-            label="Nome do educador"
+            label="Nome do aluno"
             placeholder="Nome exemplo..."
             register={register}
             name="name"
@@ -99,7 +99,7 @@ const SocialEducatorFirstStep = ({
         </div>
         <div className="mt-[16px]">
           <InputThemed
-            label="Email do educador"
+            label="Email do aluno"
             placeholder="Email exemplo..."
             register={register}
             name="email"
@@ -127,7 +127,7 @@ const SocialEducatorFirstStep = ({
   );
 };
 
-const SocialEducatorSecondStep = ({
+const StudentSecondStep = ({
   setStep,
   schools,
 }: {
@@ -140,28 +140,46 @@ const SocialEducatorSecondStep = ({
     reset,
     control,
     formState: { errors },
-  } = useForm<SocialEducator>();
+  } = useForm<StudentProps>();
 
   const socialEducatorFormDispatch = useSocialEducatorFormDispatch();
   const socialEducatorForm = useSocialEducatorForm();
   const route = useRouter();
 
-  const createSocialEducator = async (data: any) => {
-    return axiosApi.post('/teacher', data);
+  const optionsClass = async (schoolId: string) => {
+    const { data } = await axiosApi.get('/class/options', {
+      params: {
+        schoolId,
+      },
+    });
+
+    return data.options;
   };
 
-  const { mutate: mutateCreateSocialEducator, isLoading } = useMutation(
-    'createSocialEducatorMutation',
-    createSocialEducator,
+  const {
+    mutate: mutateOptionsClass,
+    data: options,
+    isLoading: IsLoadingOptions,
+  } = useMutation({
+    mutationFn: (schoolId: string) => optionsClass(schoolId),
+  });
+
+  const createStudent = async (data: any) => {
+    return axiosApi.post('/student', data);
+  };
+
+  const { mutate: mutateCreateStudent, isLoading } = useMutation(
+    'createStudent',
+    createStudent,
     {
       onError: (error: PrismaError) => {
         toast.error(
           error.response.data.message ||
-            'Algo de errado aconteceu ao criar o educador social!',
+            'Algo de errado aconteceu ao criar o aluno!',
         );
       },
       onSuccess: () => {
-        toast.success('Educador social criado com sucesso!');
+        toast.success('Aluno criado com sucesso!');
         socialEducatorFormDispatch({
           type: SocialEducatorFormTypesEnum.REMOVE_SOCIAL_EDUCATOR_FORM,
           payload: {},
@@ -171,24 +189,21 @@ const SocialEducatorSecondStep = ({
     },
   );
 
-  const onSubmit = (data: SocialEducator) => {
+  const onSubmit = (data: StudentProps) => {
     const { visualIdentity, name, email } = socialEducatorForm;
-    const { password, schoolId, telephone, classRooms } = data;
+    const { password, schoolId, birtday, classId } = data;
 
     const submitData = {
       name,
       visualIdentity,
       email,
       password,
-      telephone,
-      schoolId: schoolId.value,
-      classRooms: classRooms.map((classroom) => ({
-        period: classroom.value.period,
-        year: classroom.value.series,
-      })),
+      birtday: formatDateToISO(birtday),
+      schoolId: schoolId?.value,
+      classId: classId?.value,
     };
 
-    mutateCreateSocialEducator(submitData);
+    mutateCreateStudent(submitData);
   };
   return (
     <div className="mx-auto flex max-w-[345px] flex-col items-center lg:inline lg:max-w-[400px]">
@@ -217,45 +232,47 @@ const SocialEducatorSecondStep = ({
 
         <div className="mt-[16px]">
           <SelectThemed
-            name="schoolId"
             reset={reset}
             control={control}
             label="Escola"
+            name="schoolId"
             placeholder="Escola..."
             options={schools}
             error={errors.schoolId}
             validations={{ required: 'Campo obrigatório' }}
+            onChange={(option) => {
+              // @ts-ignore
+              mutateOptionsClass(option?.value);
+            }}
           />
         </div>
         <div className="mt-[16px] flex gap-[16px]">
           <div className="w-full">
             <SelectThemed
-              isMulti
-              name="classRooms"
+              isLoading={IsLoadingOptions}
+              isDisabled={!options}
+              name="classId"
               reset={reset}
+              error={errors.classId}
               control={control}
-              label="Turmas"
-              placeholder="Turmas..."
-              options={classrooms}
-              error={errors.classRooms}
+              label="Turma"
+              placeholder="Turma..."
+              options={options || []}
               validations={{ required: 'Campo obrigatório' }}
             />
           </div>
         </div>
         <div className="mt-[16px]">
           <InputThemed
-            label="Telefone"
-            placeholder="(99) 9 9999-9999"
-            mask="(99) 9 9999-9999"
+            label="Data de nascimento"
+            placeholder="00/00/0000"
+            mask="99/99/9999"
             register={register}
-            name="telephone"
+            name="birtday"
             validations={{
               required: 'Campo obrigatório',
-              validate: (value: string) => {
-                return validatePhone(value) || 'Telefone invalido';
-              },
             }}
-            error={errors.telephone}
+            error={errors.birtday}
           />
         </div>
         <div className="mt-[48px] text-[16px] lg:text-[20px]">
@@ -269,7 +286,7 @@ const SocialEducatorSecondStep = ({
                 <TbLoader size={24} />
               </div>
             ) : (
-              'Cadastrar Escola'
+              'Cadastrar Aluno'
             )}
           </button>
         </div>
@@ -278,7 +295,7 @@ const SocialEducatorSecondStep = ({
   );
 };
 
-const Educator = ({
+const Student = ({
   schools,
 }: {
   schools: { value: string; label: string }[];
@@ -291,12 +308,8 @@ const Educator = ({
         <MultiStepForm
           step={step}
           forms={[
-            <SocialEducatorFirstStep setStep={setStep} key={0} />,
-            <SocialEducatorSecondStep
-              setStep={setStep}
-              key={1}
-              schools={schools}
-            />,
+            <StudentFirstStep setStep={setStep} key={0} />,
+            <StudentSecondStep setStep={setStep} key={1} schools={schools} />,
           ]}
         />
       }
@@ -336,4 +349,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 };
 
-export default Educator;
+export default Student;

@@ -12,7 +12,6 @@ export class ChangeTeacherStatusController {
       });
 
       const { teacherId, status } = editBodySchema.parse(req.body);
-      console.log({ teacherId, status });
 
       const changeTeacherStatusUseCase = new ChangeTeacherStatusUseCase();
 

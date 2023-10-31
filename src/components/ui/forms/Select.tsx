@@ -1,8 +1,7 @@
-import type { InputHTMLAttributes } from 'react';
+import type { Props as ReactSelectProps } from 'react-select';
 import SelectTypeScript, { components } from 'react-select';
 
-interface ISelectProps extends InputHTMLAttributes<HTMLSelectElement> {
-  menuPlacement?: string;
+interface ISelectProps extends ReactSelectProps {
   options: { value: string; label: string }[];
   styles: any;
 }
