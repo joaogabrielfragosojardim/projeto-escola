@@ -9,11 +9,17 @@ export class GetAllTeacherController {
       const getAllQuerySchema = z.object({
         page: z.coerce.number().default(1),
         perPage: z.coerce.number().default(10),
+        name: z.string().optional(),
+        schoolId: z.string().uuid().optional(),
+        projectId: z.string().uuid().optional(),
+        period: z.enum(['Matutino', 'Vespertino', 'Noturno']).optional(),
+        year: z.coerce.number().optional(),
       });
 
       const { userId } = req;
 
-      const { page, perPage } = getAllQuerySchema.parse(req.query);
+      const { page, perPage, name, period, year, projectId, schoolId } =
+        getAllQuerySchema.parse(req.query);
 
       const getAllTeacherUseCase = new GetAllTeacherUseCase();
 
@@ -21,6 +27,11 @@ export class GetAllTeacherController {
         page,
         perPage,
         userId,
+        name,
+        period,
+        year,
+        projectId,
+        schoolId,
       });
 
       return res.status(200).json({ data, meta });

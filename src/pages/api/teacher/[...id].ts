@@ -20,7 +20,7 @@ const permissionMethods: Record<HttpMethod, Role[]> = {
   GET: [],
   POST: [],
   PUT: [],
-  DELETE: [],
+  DELETE: ['master', 'administrator'],
 };
 
 export default async function handler(
