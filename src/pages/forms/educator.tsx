@@ -19,7 +19,7 @@ import { InputPasswordThemed } from '@/components/ui/forms/InputPasswordThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { MultiStepForm } from '@/components/ui/forms/MultiStepForm';
 import { SelectThemed } from '@/components/ui/forms/SelectThemed';
-import { allPeriods, allSeries } from '@/constants/classroom';
+import { classrooms } from '@/constants/classroom';
 import {
   useSocialEducatorForm,
   useSocialEducatorFormDispatch,
@@ -172,15 +172,22 @@ const SocialEducatorSecondStep = ({
   );
 
   const onSubmit = (data: SocialEducator) => {
-    const { visualIdentity, name } = socialEducatorForm;
-    const { email, password } = data;
+    const { visualIdentity, name, email } = socialEducatorForm;
+    const { password, schoolId, telephone, classRooms } = data;
 
     const submitData = {
-      visualIdentity,
       name,
+      visualIdentity,
       email,
       password,
+      telephone,
+      schoolId: schoolId.value,
+      classRooms: classRooms.map((classroom) => ({
+        period: classroom.value.period,
+        year: classroom.value.series,
+      })),
     };
+
     mutateCreateSocialEducator(submitData);
   };
   return (
@@ -205,6 +212,7 @@ const SocialEducatorSecondStep = ({
           register={register}
           name="password"
           error={errors.password}
+          validations={{ required: 'Campo obrigatório' }}
         />
 
         <div className="mt-[16px]">
@@ -215,33 +223,22 @@ const SocialEducatorSecondStep = ({
             label="Escola"
             placeholder="Escola..."
             options={schools}
+            error={errors.schoolId}
+            validations={{ required: 'Campo obrigatório' }}
           />
         </div>
         <div className="mt-[16px] flex gap-[16px]">
-          <div className="w-[50%]">
+          <div className="w-full">
             <SelectThemed
-              name="year"
+              isMulti
+              name="classRooms"
               reset={reset}
               control={control}
-              label="Série"
-              placeholder="Série..."
-              options={allSeries.map((serie) => ({
-                label: `${serie}º Ano`,
-                value: serie.toString(),
-              }))}
-            />
-          </div>
-          <div className="w-[50%]">
-            <SelectThemed
-              name="period"
-              reset={reset}
-              control={control}
-              label="Período"
-              placeholder="Período..."
-              options={allPeriods.map((periods) => ({
-                label: periods,
-                value: periods,
-              }))}
+              label="Turmas"
+              placeholder="Turmas..."
+              options={classrooms}
+              error={errors.classRooms}
+              validations={{ required: 'Campo obrigatório' }}
             />
           </div>
         </div>
