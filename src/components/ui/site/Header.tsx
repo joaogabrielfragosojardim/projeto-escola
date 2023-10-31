@@ -18,13 +18,13 @@ export const Header = () => {
         </div>
         <ul className="flex gap-[40px] py-[24px] text-[16px] text-complement-200">
           <li>
-            <Link href="#">Quem somos</Link>
+            <Link href="#hoWeAre">Quem somos</Link>
           </li>
           <li>
-            <Link href="#">Projetos</Link>
+            <Link href="#hoWeAre">Projetos</Link>
           </li>
           <li>
-            <Link href="#">Depoimentos</Link>
+            <Link href="#hoWeAre">Depoimentos</Link>
           </li>
         </ul>
         <div className="flex items-center gap-[40px]">

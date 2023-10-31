@@ -4,12 +4,12 @@ import { HoWeAre } from '@/components/ui/site/HoWeAre';
 
 const Index = () => {
   return (
-    <>
+    <div>
       <Header />
       <Hero />
       <HoWeAre />
       <div />
-    </>
+    </div>
   );
 };
 

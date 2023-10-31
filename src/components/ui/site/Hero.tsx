@@ -3,9 +3,16 @@ import Link from 'next/link';
 
 import { phoneSite } from '@/constants/contacts';
 
+const partners = [
+  '/assets/images/fonte-cultural.png',
+  '/assets/images/fadurpe.png',
+  '/assets/images/abdesm.png',
+  '/assets/images/parceiros-acosta.png',
+];
+
 export const Hero = () => {
   return (
-    <div className="p-[24px]">
+    <div className="bg-[url('/assets/images/hero-image.png')] bg-right bg-no-repeat p-[24px]">
       <div className="mx-auto max-w-[1194px]">
         <div className="relative h-[55px] w-[155px]">
           <Image
@@ -36,8 +43,20 @@ export const Hero = () => {
         >
           Fale Conosco
         </Link>
-        <div>
-          <p>Nossos Parceiros:</p>
+        <div className="mt-[32px] font-serif text-main">
+          <p className="text-[16px]">Nossos Parceiros:</p>
+          <div className="ml-[-18px] mt-[24px] flex">
+            {partners.map((partner) => (
+              <div className="relative h-[40px] w-[152px]" key={partner}>
+                <Image
+                  src={partner}
+                  alt="logo parceiro"
+                  fill
+                  className="aspect-[3/2] object-contain"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
