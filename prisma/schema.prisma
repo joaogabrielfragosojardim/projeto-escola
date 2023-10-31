@@ -76,7 +76,7 @@ model Student {
   classId   String
   status    Boolean  @default(true)
 
-  user       User         @relation(fields: [userId], references: [id])
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   school     School       @relation(fields: [schoolId], references: [id])
   Classroom  Classroom    @relation(fields: [classId], references: [id])
   Attendance Attendance[]
@@ -95,7 +95,7 @@ model Teacher {
   coordinatorId String
 
   school      School      @relation(fields: [schoolId], references: [id])
-  user        User        @relation(fields: [userId], references: [id])
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   coordinator Coordinator @relation(fields: [coordinatorId], references: [id])
   Classroom   Classroom[]
 
@@ -109,7 +109,7 @@ model Coordinator {
   createdAt DateTime @default(now())
   schoolId  String
 
-  user             User               @relation(fields: [userId], references: [id])
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   school           School             @relation(fields: [schoolId], references: [id])
   Teacher          Teacher[]
   PegagogicalVisit PegagogicalVisit[]
@@ -120,22 +120,20 @@ model Coordinator {
 model Classroom {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
-  year Int
-  period String
+  year      Int
+  period    String
 
   schoolId  String
   teacherId String?
 
   school           School             @relation(fields: [schoolId], references: [id])
-  teacher          Teacher?            @relation(fields: [teacherId], references: [id])
+  teacher          Teacher?           @relation(fields: [teacherId], references: [id])
   students         Student[]
   Attendance       Attendance[]
   PegagogicalVisit PegagogicalVisit[]
 
   @@map("classroom")
 }
-
-
 
 model Address {
   id      String @id @default(uuid())
@@ -185,7 +183,7 @@ model Administrator {
   userId    String
   createdAt DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("administrator")
 }
