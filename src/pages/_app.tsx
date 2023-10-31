@@ -21,7 +21,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
-        <main className={`${notoSans.variable}`}>
+        <main className={`${notoSans.variable} font-sans`}>
           <Component {...pageProps} />
           <ToastContainer />
         </main>
