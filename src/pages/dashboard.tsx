@@ -17,6 +17,7 @@ import { CoordinatorTable } from '@/components/ui/tables/CoordinatorTable';
 import { DashBoardTable } from '@/components/ui/tables/DashboardTable';
 import { ProjectTable } from '@/components/ui/tables/ProjectTable';
 import { SchoolTable } from '@/components/ui/tables/SchoolTable';
+import { SocialEducatorTable } from '@/components/ui/tables/SocialEducatorTable';
 import { useUserIsAdm } from '@/hooks/useUserIsAdm';
 import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
 
@@ -90,7 +91,7 @@ const Dashboard = () => {
     },
     {
       table: (
-        <ProjectTable
+        <SocialEducatorTable
           page={page}
           setTotalPages={setTotalPages}
           setPage={setPage}
