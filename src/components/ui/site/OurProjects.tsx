@@ -87,7 +87,10 @@ export const OurProjects = () => {
     <div className="mx-auto mt-[48px] max-w-[1194px] px-[20px] xl:px-[0px]">
       <div className="flex flex-col gap-[30px]  xl:flex-row">
         <div className="xl:max-w-[563px]">
-          <h2 className="font-sans text-[16px] font-bold text-main xl:text-[24px]">
+          <h2
+            className="font-sans text-[16px] font-bold text-main xl:text-[24px]"
+            id="projects"
+          >
             Nossos projetos
           </h2>
           <p className="my-[24px] text-justify text-[14px] text-complement-200 xl:my-[32px] xl:text-[16px]">

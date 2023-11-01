@@ -30,6 +30,30 @@ const allFeedbacks = [
     name: 'Andréia Costa',
     job: 'Enfermeira, especialista em Saúde Mental.',
   },
+  {
+    text: '“A rotina de professor é algo extremamente exaustivo, eu tive a oportunidade de presenciar isso no meu consultório, então estar no Projeto Acolher, trazendo uma forma de abordagem mais preventiva de cuidados com o corpo no que se refere a melhora da alimentação...”',
+    src: '/assets/images/samuel-feitosa.png',
+    name: 'Dr. Samuel Feitosa',
+    job: 'Médico e formador do Projeto Acolher.',
+  },
+  {
+    text: '“No Projeto Acolher, fizemos uma capacitação com os professores sobre Saúde Vocal, o principal instrumento de trabalho de toda equipe docente. Trabalhamos Técnicas de Oratória, como: falar em público e ter uma fala dinâmica, para que a voz desses profissionais seja sempre de melhor qualidade.”',
+    src: '/assets/images/cirana-vasconcelos.png',
+    name: 'Cirana Vasconcelos',
+    job: 'Fonoaudióloga e formadora do Projeto Acolher',
+  },
+  {
+    text: '“Estive no Projeto Comer Bem para conversar um pouquinho com os profissionais da merenda e de serviços gerais sobre a importância da Alimentação Escolar na saúde de todos os estudantes da rede municipal de Garanhuns.”',
+    src: '/assets/images/drielly-costa.png',
+    name: 'Drielly Costa',
+    job: 'Nutricionista e formadora do Projeto Comer Bem',
+  },
+  {
+    text: 'Trabalhei com a equipe a importância do movimento e como a gente precisa manter nosso corpo em movimento para que ele tenha saúde e qualidade de vida, para que a gente possa trabalhar melhor, exercer nossas funções laborais e nossas funções de vida com mais felicidade e mais capacidade funcional.',
+    src: '/assets/images/cynara-raquel.png',
+    name: 'Cynara Raquel',
+    job: 'Fisioterapeuta, especialista em Pilates e formadora do Projeto Comer Bem',
+  },
 ];
 
 export const Feedbacks = () => {
@@ -38,7 +62,10 @@ export const Feedbacks = () => {
   return (
     <div className="mt-[48px]">
       <div className="mx-auto max-w-[1194px] px-[20px] xl:px-[0px]">
-        <h2 className="font-sans text-[16px] font-bold text-main xl:text-[24px]">
+        <h2
+          className="font-sans text-[16px] font-bold text-main xl:text-[24px]"
+          id="feedbacks"
+        >
           Com a palavra, quem conhece
         </h2>
       </div>

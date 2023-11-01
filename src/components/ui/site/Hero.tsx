@@ -66,7 +66,7 @@ export const Hero = () => {
           </div>
         </div>
       </div>
-      <div className="xl:hidden">
+      <div className="mt-[62px] xl:hidden">
         <div className="relative flex h-[134px] w-full items-center bg-[url('/assets/images/hero-image.png')] bg-cover bg-right bg-no-repeat px-[20px]">
           <div className="relative h-[40px] w-[98px]">
             <Image

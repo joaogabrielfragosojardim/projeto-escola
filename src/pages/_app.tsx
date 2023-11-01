@@ -2,6 +2,7 @@ import '@/styles/global.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import { parseCookies } from 'nookies';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer } from 'react-toastify';
@@ -21,6 +22,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
+        <Head>
+          <title>Escola Prime</title>
+        </Head>
         <main
           className={`${notoSans.variable} ${notoSerif.variable} font-sans`}
         >
