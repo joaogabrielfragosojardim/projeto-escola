@@ -10,7 +10,7 @@ export const Books = () => {
       <div className="mx-auto flex max-w-[1194px] flex-col-reverse items-center justify-between gap-[36px] px-[20px] text-main xl:flex-row xl:px-[0px]">
         <div className="xl:max-w-[660px]">
           <BiSolidQuoteAltLeft size={30} />
-          <p className="my-[32px] text-[14px] xl:text-[20px]">
+          <p className="my-[32px] text-justify text-[14px] xl:text-[20px]">
             Hoje, estamos montando um grupo de autores com a produção de
             material didático de suporte aos projetos e livros paradidáticos a
             exemplo da Coleção Educação e Cidadania voltada para a discussão dos

@@ -79,7 +79,9 @@ export const Feedbacks = () => {
         {allFeedbacks.map((feedback) => (
           <SwiperSlide key={feedback.name}>
             <div className="my-[16px] overflow-hidden rounded p-[22px] shadow-lg">
-              <p className="text-[16px] text-complement-200">{feedback.text}</p>
+              <p className="text-justify text-[16px] text-complement-200">
+                {feedback.text}
+              </p>
               <div className="mt-[24px] flex justify-start gap-[8px]">
                 <div className="relative h-[40px] w-[40px]  min-w-[40px] overflow-hidden rounded-full">
                   <Image
