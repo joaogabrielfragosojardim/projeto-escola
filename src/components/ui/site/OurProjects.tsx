@@ -88,7 +88,7 @@ export const OurProjects = () => {
       <div className="flex flex-col gap-[30px]  xl:flex-row">
         <div className="xl:max-w-[563px]">
           <h2
-            className="font-sans text-[16px] font-bold text-main xl:text-[24px]"
+            className="font-serif text-[16px] font-bold text-main xl:text-[24px]"
             id="projects"
           >
             Nossos projetos
