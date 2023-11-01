@@ -28,7 +28,7 @@ export const HoWeAre = () => {
       id="hoWeAre"
     >
       <div>
-        <h2 className=" text-[16px] font-bold text-main  xl:text-[24px]">
+        <h2 className="font-serif text-[16px] font-bold  text-main xl:text-[24px]">
           Quem Somos
         </h2>
         <div className="mt-[32px] grid auto-cols-max grid-cols-1 justify-center gap-[30px] xl:grid-cols-3">

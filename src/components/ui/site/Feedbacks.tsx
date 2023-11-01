@@ -38,7 +38,7 @@ export const Feedbacks = () => {
   return (
     <div className="mt-[48px]">
       <div className="mx-auto max-w-[1194px] px-[20px] xl:px-[0px]">
-        <h2 className="text-[16px] font-bold text-main  xl:text-[24px]">
+        <h2 className="font-sans text-[16px] font-bold text-main xl:text-[24px]">
           Com a palavra, quem conhece
         </h2>
       </div>

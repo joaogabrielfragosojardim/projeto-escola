@@ -48,7 +48,9 @@ export const Hero = () => {
             Fale Conosco
           </Link>
           <div className="mt-[32px] font-serif text-main">
-            <p className="text-[16px] text-main">Nossos Parceiros:</p>
+            <p className="font-serif text-[16px] text-main">
+              Nossos Parceiros:
+            </p>
             <div className="ml-[-18px] mt-[24px] flex">
               {partners.map((partner) => (
                 <div className="relative h-[40px] w-[152px]" key={partner}>
@@ -95,7 +97,9 @@ export const Hero = () => {
           >
             Fale Conosco
           </Link>
-          <p className="mt-[24px] text-[16px] text-main">Nossos Parceiros:</p>
+          <p className="mt-[24px] font-serif text-[16px] text-main">
+            Nossos Parceiros:
+          </p>
         </div>
         <Swiper
           slidesOffsetBefore={24}

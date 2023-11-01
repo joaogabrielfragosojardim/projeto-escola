@@ -8,7 +8,7 @@ import { ToastContainer } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { StoreProvider } from '@/store/StoreProvider';
-import { notoSans } from '@/styles/fonts';
+import { notoSans, notoSerif } from '@/styles/fonts';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();
@@ -21,7 +21,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
-        <main className={`${notoSans.variable} font-sans`}>
+        <main
+          className={`${notoSans.variable} ${notoSerif.variable} font-sans`}
+        >
           <Component {...pageProps} />
           <ToastContainer />
         </main>
