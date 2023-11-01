@@ -291,7 +291,7 @@ export const SocialEducatorTable = ({
             theme={theme}
             style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 0.4fr' }}
           >
-            {(teachers: Teacher[]) => (
+            {(socialEducators: Teacher[]) => (
               <>
                 <Header>
                   <HeaderRow>
@@ -305,7 +305,7 @@ export const SocialEducatorTable = ({
                   </HeaderRow>
                 </Header>
                 <Body>
-                  {teachers.map((teacher) => (
+                  {socialEducators.map((teacher) => (
                     <Row key={teacher.id} item={teacher}>
                       <Cell className="text-main hover:text-main">
                         <div className="flex items-center gap-[16px] text-[20px]">

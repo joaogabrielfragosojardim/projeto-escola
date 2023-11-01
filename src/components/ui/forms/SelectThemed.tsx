@@ -84,7 +84,7 @@ export const SelectThemed = (props: SelectThemedProps) => {
             {...props}
             options={options}
             onChange={(newValue, actionMeta) => {
-              props?.onChange && props.onChange(newValue, actionMeta);
+              if (props?.onChange) props.onChange(newValue, actionMeta);
               onChange(newValue);
             }}
             onBlur={onBlur}

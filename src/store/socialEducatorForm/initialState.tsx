@@ -1,12 +1,11 @@
-import type { SocialEducator } from '@/types/socialEducator';
+import type { SocialEducatorSchoolId } from '@/types/socialEducator';
 
-export const initialState: SocialEducator = {
+export const initialState: SocialEducatorSchoolId = {
   visualIdentity: '',
   name: '',
   email: '',
   schoolId: '',
   period: '',
-  year: '',
   password: '',
   telephone: '',
 };

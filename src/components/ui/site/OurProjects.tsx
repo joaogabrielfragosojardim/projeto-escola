@@ -107,7 +107,7 @@ export const OurProjects = () => {
           </Link>
         </div>
         <div>
-          <div className="lx:grid-cols-2 grid auto-cols-max grid-cols-1  gap-[32px] xl:grid-rows-2">
+          <div className="grid auto-cols-max grid-cols-1 gap-[32px]  xl:grid-cols-2 xl:grid-rows-2">
             <div className=" col-span-full w-full rounded bg-complement-100 p-[24px]">
               <div className="relative h-[25px] w-[80px]">
                 <Image
@@ -176,7 +176,7 @@ export const OurProjects = () => {
             >
               <div className="flex w-full items-center justify-center gap-[20px] xl:justify-start xl:gap-[24px]">
                 <div className="flex flex-col gap-[24px]">
-                  <div className="lx:h-[200px] lx:w-[200px] relative h-[100px] w-[95px] overflow-hidden rounded">
+                  <div className="relative h-[100px] w-[95px] overflow-hidden rounded xl:h-[200px] xl:w-[200px]">
                     <Image
                       src={project.images[0] || ''}
                       fill
@@ -185,7 +185,7 @@ export const OurProjects = () => {
                       objectFit="cover"
                     />
                   </div>
-                  <div className="lx:h-[200px] lx:w-[200px] relative h-[100px] w-[95px] overflow-hidden rounded">
+                  <div className="relative h-[100px] w-[95px] overflow-hidden rounded xl:h-[200px] xl:w-[200px]">
                     <Image
                       src={project.images[1] || ''}
                       fill
@@ -195,7 +195,7 @@ export const OurProjects = () => {
                     />
                   </div>
                 </div>
-                <div className="lx:h-[424px] lx:w-[361px] relative h-[224px] w-[154px] overflow-hidden rounded">
+                <div className="relative h-[224px] w-[154px] overflow-hidden rounded xl:h-[424px] xl:w-[361px]">
                   <Image
                     src={project.images[2] || ''}
                     fill
@@ -205,8 +205,8 @@ export const OurProjects = () => {
                   />
                 </div>
               </div>
-              <div className="lx:max-w-[580px]">
-                <p className="lx:text-[16px] text-justify text-[14px] text-complement-200">
+              <div className="xl:max-w-[580px]">
+                <p className="text-justify text-[14px] text-complement-200 xl:text-[16px]">
                   {project.text}
                 </p>
                 <div className="mt-[24px] flex flex-col gap-[24px]">
@@ -218,7 +218,7 @@ export const OurProjects = () => {
                       <div className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-main text-[18px] text-complement-100">
                         {item.icon}
                       </div>
-                      <p className="lx:text-[16px] text-[12px] text-complement-200">
+                      <p className="text-[12px] text-complement-200 xl:text-[16px]">
                         {item.text}
                       </p>
                     </div>

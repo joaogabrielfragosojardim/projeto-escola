@@ -13,7 +13,6 @@ export class GetOneClassUseCase {
       },
       select: {
         id: true,
-        session: true,
         school: {
           select: {
             id: true,
@@ -29,12 +28,6 @@ export class GetOneClassUseCase {
                 email: true,
               },
             },
-          },
-        },
-        grade: {
-          select: {
-            id: true,
-            name: true,
           },
         },
         students: {

@@ -13,7 +13,6 @@ export class GetAllClassUseCase {
     page,
     perPage,
     schoolId,
-    gradeId,
     teacherId,
   }: GetAllClassUseCaseRequest) {
     const skip = perPage * (page - 1);
@@ -28,12 +27,10 @@ export class GetAllClassUseCase {
         },
         where: {
           schoolId: { equals: schoolId },
-          gradeId: { equals: gradeId },
           teacherId: { equals: teacherId },
         },
         select: {
           id: true,
-          session: true,
           school: {
             select: {
               id: true,
@@ -49,12 +46,6 @@ export class GetAllClassUseCase {
                   email: true,
                 },
               },
-            },
-          },
-          grade: {
-            select: {
-              id: true,
-              name: true,
             },
           },
           students: {
