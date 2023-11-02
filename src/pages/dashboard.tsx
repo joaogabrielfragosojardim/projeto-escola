@@ -123,8 +123,8 @@ const Dashboard = () => {
 
   return (
     <SideNavMenuContainer title="Início">
-      <div className="p-[32px]">
-        <p className="mb-[32px] text-[24px] font-semibold text-complement-200">
+      <div className="p-[22px] 2xl:p-[32px]">
+        <p className="mb-[32px] text-[20px] font-semibold text-complement-200 2xl:text-[24px]">
           Informações
         </p>
         <DashBoardTable

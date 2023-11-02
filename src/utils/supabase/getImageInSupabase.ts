@@ -2,7 +2,7 @@ import { supabaseClient } from './supaBaseClient';
 
 export const getImageInSupabase = (url: string) => {
   const { data } = supabaseClient.storage
-    .from('project-school-bucket')
+    .from('escola-prime')
     .getPublicUrl(url);
 
   return data;

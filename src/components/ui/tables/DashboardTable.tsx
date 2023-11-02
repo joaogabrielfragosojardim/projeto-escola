@@ -1,5 +1,6 @@
 import { type Dispatch, type ReactNode, type SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 import { SelectThemed } from '../forms/SelectThemed';
 
@@ -34,13 +35,14 @@ export const DashBoardTable = ({
   const pagesArray = Array.from({ length: totalPages }, (_, i) => i + 1);
   const filteredTables = tables.filter((table) => table.userCanView);
   const slicedPagesArray = pagesArray.slice(0, 5);
+  const slicedPagesArrayMobile = pagesArray.slice(0, 2);
 
   const { control, reset } = useForm();
 
   return (
     <div>
-      <div className="overflow-hidden rounded border-[3px] border-solid border-main">
-        <div className="flex w-full">
+      <div className="overflow-hidden border-main 2xl:rounded 2xl:border-[3px] 2xl:border-solid">
+        <div className="hidden w-full 2xl:flex">
           {filteredTables.map((table, tableIndex) => (
             <button
               type="button"
@@ -59,98 +61,146 @@ export const DashBoardTable = ({
             </button>
           ))}
         </div>
+        <div className="flex w-full gap-[8px] overflow-auto 2xl:hidden">
+          {filteredTables.map((table, tableIndex) => (
+            <div key={table.name}>
+              <button
+                type="button"
+                className={`flex min-w-max items-center justify-center gap-[8px] rounded px-[16px] py-[8px] text-[12px] ${
+                  tableIndex === selectedTable
+                    ? 'bg-main text-complement-100'
+                    : 'bg-complement-100 text-complement-200'
+                }`}
+                key={table.name}
+                onClick={() => {
+                  setPage(1);
+                  setSelectedTable(tableIndex);
+                }}
+              >
+                {table.icon} <p>{table.name}</p>
+              </button>
+            </div>
+          ))}
+        </div>
         <div>{filteredTables[selectedTable]?.table}</div>
       </div>
       {totalPages !== 1 ? (
-        <div className="mt-[24px] flex w-full justify-between">
-          <button
-            type="button"
-            className="rounded bg-complement-100 px-[16px] py-[8px] text-[16px] text-complement-200 disabled:opacity-60"
-            onClick={() => {
-              setPage((prev) => prev - 1);
-            }}
-            disabled={page === 1}
-          >
-            Anterior
-          </button>
-          <div className="flex gap-[16px]">
-            {slicedPagesArray.map((pageArray) => (
-              <button
-                key={pageArray}
-                type="button"
-                className={`${
-                  page === pageArray
-                    ? 'bg-main text-complement-100'
-                    : 'bg-complement-100 text-complement-200'
-                } rounded px-[16px] py-[8px] text-[16px]`}
-                onClick={() => {
-                  setPage(pageArray);
-                }}
-              >
-                {pageArray}
-              </button>
-            ))}
-            {pagesArray.length > 5 && perPage > 10 ? (
-              <>
-                {!slicedPagesArray.includes(page) && page !== totalPages ? (
-                  <div className="rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100">
-                    {page}
-                  </div>
-                ) : (
-                  <div className="rounded bg-complement-100 px-[16px] py-[8px] text-[16px] text-complement-200">
-                    ...
-                  </div>
-                )}
-
+        <>
+          <div className="mt-[24px] flex w-full justify-between">
+            <button
+              type="button"
+              className="hidden rounded bg-complement-100 px-[16px] py-[8px] text-[16px] text-complement-200 disabled:opacity-60 2xl:inline"
+              onClick={() => {
+                setPage((prev) => prev - 1);
+              }}
+              disabled={page === 1}
+            >
+              Anterior
+            </button>
+            <div className="flex gap-[16px]">
+              {slicedPagesArrayMobile.map((pageArray) => (
                 <button
+                  key={pageArray}
                   type="button"
                   className={`${
-                    page === totalPages
+                    page === pageArray
                       ? 'bg-main text-complement-100'
                       : 'bg-complement-100 text-complement-200'
                   } rounded px-[16px] py-[8px] text-[16px]`}
                   onClick={() => {
-                    setPage(totalPages);
+                    setPage(pageArray);
                   }}
                 >
-                  {totalPages}
+                  {pageArray}
                 </button>
-              </>
-            ) : null}
-          </div>
-          <div className="flex gap-[16px]">
-            <div>
-              <SelectThemed
-                control={control}
-                reset={reset}
-                name="perPageSelect"
-                placeholder="quantidade"
-                menuPlacement="top"
-                options={[
-                  { label: '10', value: '10' },
-                  { label: '30', value: '30' },
-                  { label: '50', value: '50' },
-                ]}
-                onChange={(e: any) => {
-                  setPage(1);
-                  setPerPage(parseInt(e.value, 10));
-                }}
-              />
+              ))}
+              {pagesArray.length > 5 ? (
+                <>
+                  {!slicedPagesArray.includes(page) && page !== totalPages ? (
+                    <div className="rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100">
+                      {page}
+                    </div>
+                  ) : (
+                    <div className="rounded bg-complement-100 px-[16px] py-[8px] text-[16px] text-complement-200">
+                      ...
+                    </div>
+                  )}
+
+                  <button
+                    type="button"
+                    className={`${
+                      page === totalPages
+                        ? 'bg-main text-complement-100'
+                        : 'bg-complement-100 text-complement-200'
+                    } rounded px-[16px] py-[8px] text-[16px]`}
+                    onClick={() => {
+                      setPage(totalPages);
+                    }}
+                  >
+                    {totalPages}
+                  </button>
+                </>
+              ) : null}
             </div>
+            <div className="flex max-w-[120px]  gap-[16px] 2xl:max-w-[180px]">
+              <div>
+                <SelectThemed
+                  control={control}
+                  reset={reset}
+                  name="perPageSelect"
+                  placeholder="quantidade"
+                  menuPlacement="top"
+                  options={[
+                    { label: '10', value: '10' },
+                    { label: '30', value: '30' },
+                    { label: '50', value: '50' },
+                  ]}
+                  onChange={(e: any) => {
+                    setPage(1);
+                    setPerPage(parseInt(e.value, 10));
+                  }}
+                />
+              </div>
+              <button
+                type="button"
+                className="hidden rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100 disabled:opacity-60 2xl:inline"
+                onClick={() => {
+                  setPage((prev) => prev + 1);
+                }}
+                disabled={page === totalPages}
+              >
+                Próxima
+              </button>
+            </div>
+          </div>
+          <div className="mt-[24px] flex w-full justify-between 2xl:hidden">
             <button
               type="button"
-              className="rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100 disabled:opacity-60"
+              className="rounded bg-complement-100 px-[16px] py-[8px] text-[16px] text-complement-200 disabled:opacity-60"
               onClick={() => {
-                setPage((prev) => prev + 1);
+                setPage((prev) => prev - 1);
               }}
-              disabled={page === totalPages}
+              disabled={page === 1}
             >
-              Próxima
+              <IoIosArrowBack />
             </button>
+            <div className="flex gap-[16px]" />
+            <div className="flex max-w-[120px]  gap-[16px] 2xl:max-w-[180px]">
+              <button
+                type="button"
+                className="rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100 disabled:opacity-60"
+                onClick={() => {
+                  setPage((prev) => prev + 1);
+                }}
+                disabled={page === totalPages}
+              >
+                <IoIosArrowForward />
+              </button>
+            </div>
           </div>
-        </div>
+        </>
       ) : (
-        <div className="ml-auto mt-[32px] max-w-[180px]">
+        <div className="ml-auto mt-[32px] max-w-[120px] 2xl:max-w-[180px]">
           <SelectThemed
             control={control}
             reset={reset}

@@ -121,16 +121,16 @@ export const ProjectTable = ({
 
   return (
     <div>
-      <div className="p-[32px]">
+      <div className="py-[22px] 2xl:p-[32px]">
         <div className="flex items-center justify-between">
           <Popover
             triggerElement={
               <button
                 disabled={isLoading || isRefetching || !data?.data.length}
                 type="button"
-                className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
+                className="flex items-center gap-[8px] rounded bg-main px-[16px] py-[8px] text-[14px] text-complement-100 disabled:opacity-60 2xl:gap-[16px] 2xl:text-[20px]"
               >
-                <VscFilter size={20} /> Filtros <IoIosArrowDown size={20} />
+                <VscFilter /> Filtros <IoIosArrowDown />
               </button>
             }
           >
@@ -150,7 +150,7 @@ export const ProjectTable = ({
               <button
                 type="button"
                 disabled={isLoading || isRefetching || !data?.data.length}
-                className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
+                className="flex items-center gap-[8px] rounded bg-main px-[16px] py-[8px] text-[14px] text-complement-100 disabled:opacity-60 2xl:gap-[16px] 2xl:text-[20px]"
               >
                 Gerar Relatório <IoIosArrowDown size={20} />
               </button>
@@ -158,7 +158,7 @@ export const ProjectTable = ({
           >
             <button
               type="button"
-              className="flex items-center gap-[8px]"
+              className="flex items-center gap-[8px] text-[14px] 2xl:text-[16px]"
               onClick={() =>
                 createCSV(
                   data?.data.map((item: Project) => ({
@@ -175,7 +175,7 @@ export const ProjectTable = ({
             </button>
           </Popover>
         </div>
-        <div className="mt-[32px] grid grid-cols-2 items-end">
+        <div className="mt-[32px] 2xl:grid 2xl:grid-cols-2 2xl:items-end">
           {Object.keys(filters)
             .filter((item) => filters[item]?.view === true)
             .map((item) => (
@@ -194,64 +194,104 @@ export const ProjectTable = ({
           </div>
         )}
         {nodes?.nodes && nodes?.nodes.length && !(isLoading || isRefetching) ? (
-          <Table
-            data={nodes}
-            theme={theme}
-            style={{ gridTemplateColumns: '1fr 2fr 0.4fr' }}
-          >
-            {(tableList: Project[]) => (
-              <>
-                <Header>
-                  <HeaderRow>
-                    <HeaderCell>Nome</HeaderCell>
-                    <HeaderCell>Sobre</HeaderCell>
-                    <HeaderCell>Ações</HeaderCell>
-                  </HeaderRow>
-                </Header>
-                <Body>
-                  {tableList.map((project) => (
-                    <Row key={project.id} item={project}>
-                      <Cell className="text-main hover:text-main">
-                        <div className="flex items-center gap-[16px] text-[20px]">
-                          <div className="relative h-[62px] w-[62px] min-w-[62px] overflow-hidden rounded-full">
-                            <Image
-                              src={
-                                project?.visualIdentity ||
-                                '/assets/images/default-profile.png'
-                              }
-                              alt="logo do projeto"
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                          {project.name}
+          <>
+            <div className="hidden 2xl:inline">
+              <Table
+                data={nodes}
+                theme={theme}
+                style={{ gridTemplateColumns: '1fr 2fr 0.4fr' }}
+              >
+                {(tableList: Project[]) => (
+                  <>
+                    <Header>
+                      <HeaderRow>
+                        <HeaderCell>Nome</HeaderCell>
+                        <HeaderCell>Sobre</HeaderCell>
+                        <HeaderCell>Ações</HeaderCell>
+                      </HeaderRow>
+                    </Header>
+                    <Body>
+                      {tableList.map((project) => (
+                        <Row key={project.id} item={project}>
+                          <Cell className="text-main hover:text-main">
+                            <div className="flex items-center gap-[16px] text-[20px]">
+                              <div className="relative h-[62px] w-[62px] min-w-[62px] overflow-hidden rounded-full">
+                                <Image
+                                  src={
+                                    project?.visualIdentity ||
+                                    '/assets/images/default-profile.png'
+                                  }
+                                  alt="logo do projeto"
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                              {project.name}
+                            </div>
+                          </Cell>
+                          <Cell className="text-[20px] text-main hover:text-main">
+                            {project.about}
+                          </Cell>
+                          <Cell className="text-center text-main hover:text-main">
+                            <div className="flex gap-[8px]">
+                              <Link href={`/view/${project.id}/project`}>
+                                <FiEye size={20} />
+                              </Link>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setProjectToDelete(project.id);
+                                  setDeleteModal(true);
+                                }}
+                              >
+                                <BiTrash size={20} />
+                              </button>
+                            </div>
+                          </Cell>
+                        </Row>
+                      ))}
+                    </Body>
+                  </>
+                )}
+              </Table>
+            </div>
+            <div className="2xl:hidden">
+              <div className="rounded-[6px_6px_0px_0px] bg-main px-[16px] py-[18px] text-complement-100">
+                Escolas
+              </div>
+              <div className="overflow-hidden rounded border-2 border-main">
+                {data?.data.map((project: Project) => (
+                  <div
+                    className="border-b-2 border-b-complement-100 p-[14px]"
+                    key={project.id}
+                  >
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-[16px]">
+                        <div className="relative h-[36px] w-[36px] overflow-hidden">
+                          <Image
+                            src={
+                              project?.visualIdentity ||
+                              '/assets/images/default-profile.png'
+                            }
+                            alt="logo do projeto"
+                            fill
+                            className="object-cover"
+                          />
                         </div>
-                      </Cell>
-                      <Cell className="text-[20px] text-main hover:text-main">
-                        {project.about}
-                      </Cell>
-                      <Cell className="text-center text-main hover:text-main">
-                        <div className="flex gap-[8px]">
-                          <Link href={`/view/${project.id}/project`}>
-                            <FiEye size={20} />
-                          </Link>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setProjectToDelete(project.id);
-                              setDeleteModal(true);
-                            }}
-                          >
-                            <BiTrash size={20} />
-                          </button>
-                        </div>
-                      </Cell>
-                    </Row>
-                  ))}
-                </Body>
-              </>
-            )}
-          </Table>
+                        <p className="text-[16px]">{project.name}</p>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px]">
+                        <p className="text-[14px] text-main">Sobre:</p>
+                        <p className="text-[14px] text-complement-200">
+                          {project.about}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
         ) : null}
         {nodes?.nodes && !nodes?.nodes.length ? (
           <div className="p-[44px]">
