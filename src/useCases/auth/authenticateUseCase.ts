@@ -34,6 +34,7 @@ export class AuthenticateUseCase {
         name: true,
         email: true,
         password: true,
+        visualIdentity: true,
         role: {
           select: {
             name: true,

@@ -17,7 +17,7 @@ interface RouteInterface {
   children?: RouteInterface[];
 }
 
-const GenerateDropdown = ({
+export const GenerateDropdown = ({
   childrenRoute,
   routerDrop,
 }: {
@@ -54,7 +54,7 @@ const GenerateDropdown = ({
   );
 };
 
-const renderMenuWithChildren = (
+export const renderMenuWithChildren = (
   route: RouteInterface,
   router: { pathname: string },
 ) => {

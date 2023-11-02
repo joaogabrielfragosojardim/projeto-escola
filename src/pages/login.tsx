@@ -45,10 +45,14 @@ const Login = () => {
     onSuccess: (data) => {
       const {
         token,
-        user: { id, name, email, role },
+        user: { id, name, email, role, visualIdentity },
       } = data;
       setCookie(null, 'token', token);
-      setCookie(null, 'user', JSON.stringify({ id, name, email, role }));
+      setCookie(
+        null,
+        'user',
+        JSON.stringify({ id, name, email, role, visualIdentity }),
+      );
       axiosApi.defaults.headers.Authorization = `Bearer ${token}`;
       dispatch({
         type: UserTypesEnum.ADD_USER,
@@ -57,6 +61,7 @@ const Login = () => {
           name,
           email,
           role,
+          visualIdentity,
         },
       });
       router.push('/dashboard');
