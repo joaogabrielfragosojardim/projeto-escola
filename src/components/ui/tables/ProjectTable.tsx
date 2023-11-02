@@ -259,7 +259,7 @@ export const ProjectTable = ({
               <div className="rounded-[6px_6px_0px_0px] bg-main px-[16px] py-[18px] text-complement-100">
                 Escolas
               </div>
-              <div className="overflow-hidden rounded border-2 border-main">
+              <div className="overflow-hidden rounded-[0px_0px_6px_6px] border-2 border-main">
                 {data?.data.map((project: Project) => (
                   <div
                     className="border-b-2 border-b-complement-100 p-[14px]"

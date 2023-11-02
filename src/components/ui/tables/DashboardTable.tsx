@@ -19,7 +19,6 @@ interface IDashboardTable {
   setPage: Dispatch<SetStateAction<number>>;
   totalPages: number;
   setPerPage: Dispatch<SetStateAction<number>>;
-  perPage: number;
 }
 
 export const DashBoardTable = ({
@@ -30,12 +29,11 @@ export const DashBoardTable = ({
   setPage,
   totalPages,
   setPerPage,
-  perPage,
 }: IDashboardTable) => {
   const pagesArray = Array.from({ length: totalPages }, (_, i) => i + 1);
   const filteredTables = tables.filter((table) => table.userCanView);
   const slicedPagesArray = pagesArray.slice(0, 5);
-  const slicedPagesArrayMobile = pagesArray.slice(0, 2);
+  const slicedPagesArrayMobile = pagesArray.slice(0, 3);
 
   const { control, reset } = useForm();
 
