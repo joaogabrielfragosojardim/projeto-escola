@@ -22,7 +22,6 @@ export class ChangeTeacherStatusController {
 
       return res.status(200).json({ teacher });
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }

@@ -60,25 +60,31 @@ export const Header = ({ title }: { title: string }) => {
             <GiHamburgerMenu size={30} />
           </button>
         </div>
-        <div className="relative mt-[-8px] h-[32px] w-[92px] max-w-[92px] flex-1">
+        <Link
+          href="/dashboard"
+          className="relative mt-[-8px] h-[32px] w-[92px] max-w-[92px] flex-1"
+        >
           <Image
             src="/assets/images/logo-reduced-white.png"
             alt="logo branca"
             fill
             quality={100}
           />
-        </div>
+        </Link>
         <div className="flex flex-1 items-center justify-end gap-[16px] rounded-[8px] bg-main p-[16px] text-[20px] text-complement-100">
           <div className="cursor-pointer">
             <LuBell size={22} />
           </div>
-          <div className="relative flex h-[26px] w-[26px] items-center justify-center overflow-hidden rounded-[50%] bg-complement-100 text-complement-200">
+          <Link
+            href="/profile"
+            className="relative flex h-[26px] w-[26px] items-center justify-center overflow-hidden rounded-[50%] bg-complement-100 text-complement-200"
+          >
             <Image
               alt="imagem de usuario"
               fill
               src={user?.visualIdentity || '/assets/images/default-profile.png'}
             />
-          </div>
+          </Link>
         </div>
       </div>
       {menu && (
@@ -94,13 +100,13 @@ export const Header = ({ title }: { title: string }) => {
               <IoClose size={30} />
             </button>
           </div>
-          <div className="relative h-[60px] w-[172px]">
+          <Link href="/dashboard" className="relative h-[60px] w-[172px]">
             <Image
               alt="escola prime logo"
               src="/assets/images/logo-reduced-white.png"
               fill
             />
-          </div>
+          </Link>
           <div className="mt-[32px]">
             <ul className="flex flex-col gap-[8px]">
               {menuRoutes.map((route) => renderMenuWithChildren(route, router))}

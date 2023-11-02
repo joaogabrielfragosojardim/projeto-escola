@@ -23,8 +23,8 @@ import { classrooms } from '@/constants/classroom';
 import {
   useStudentForm,
   useStudentFormDispatch,
-} from '@/store/socialEducatorForm/context';
-import { StudentFormTypesEnum } from '@/store/socialEducatorForm/types';
+} from '@/store/studentForm/context';
+import { StudentFormTypesEnum } from '@/store/studentForm/types';
 import type { PrismaError } from '@/types/prismaError';
 import { RoleEnum } from '@/types/roles';
 import type {
@@ -50,7 +50,7 @@ const SocialEducatorFirstStep = ({
   const onSubmit = (data: SocialEducator) => {
     const { visualIdentity, name, email } = data;
     socialEducatorFormDispatch({
-      type: StudentFormTypesEnum.ADD_SOCIAL_EDUCATOR_FORM,
+      type: StudentFormTypesEnum.ADD_STUDENT_FORM,
       payload: {
         visualIdentity,
         name,
@@ -166,7 +166,7 @@ const SocialEducatorSecondStep = ({
       onSuccess: () => {
         toast.success('Educador social criado com sucesso!');
         socialEducatorFormDispatch({
-          type: StudentFormTypesEnum.REMOVE_SOCIAL_EDUCATOR_FORM,
+          type: StudentFormTypesEnum.REMOVE_STUDENT_FORM,
           payload: {},
         });
         route.push('/dashboard');
@@ -185,7 +185,7 @@ const SocialEducatorSecondStep = ({
       password,
       telephone,
       schoolId: schoolId.value,
-      classRooms: classRooms.map((classroom) => ({
+      classRooms: classRooms?.map((classroom) => ({
         period: classroom.value.period,
         year: classroom.value.series,
       })),
@@ -320,7 +320,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       RoleEnum.ADM,
       RoleEnum.COORDINATOR,
     ].includes(userObject?.role.name);
-    console.log(canView);
     if (canView) {
       const { data: dataSchool } = await axiosApi.get('/school/options', {
         headers: { Authorization: `Bearer ${token}` },

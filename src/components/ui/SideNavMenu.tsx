@@ -91,13 +91,13 @@ export const SideNavMenu = () => {
 
   return (
     <div className="sticky left-0 top-0 hidden h-[100vh] min-w-[296px] max-w-[296px] flex-col bg-main py-[32px] pl-[32px] 2xl:flex">
-      <div className="relative h-[60px] w-[172px]">
+      <Link href="/dashboard" className="relative h-[60px] w-[172px]">
         <Image
           alt="escola prime logo"
           src="/assets/images/logo-reduced-white.png"
           fill
         />
-      </div>
+      </Link>
       <div className="mt-[32px]">
         <ul className="flex flex-col gap-[8px]">
           {menuRoutes.map((route) => renderMenuWithChildren(route, router))}

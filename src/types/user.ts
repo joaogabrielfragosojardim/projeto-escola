@@ -6,4 +6,5 @@ export type User = {
     name: string;
   };
   visualIdentity?: string;
+  password?: string;
 };

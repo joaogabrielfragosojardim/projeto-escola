@@ -22,7 +22,7 @@ export const InitialConfigs = ({ children }: { children: ReactNode }) => {
         name: nameCookies,
         email: emailCookies,
         role: { name: roleNameCookies },
-        visualIdentity: { visualIdentityCookies },
+        visualIdentity: visualIdentityCookies,
       } = JSON.parse(userCookies || '');
       userDispatch({
         type: UserTypesEnum.ADD_USER,

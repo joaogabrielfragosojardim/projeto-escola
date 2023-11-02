@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BiDownload, BiTrash } from 'react-icons/bi';
 import { FiEye } from 'react-icons/fi';
-import { IoIosArrowDown } from 'react-icons/io';
+import { IoIosArrowDown, IoMdMore } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
 import { VscFilter } from 'react-icons/vsc';
 import { useMutation, useQuery } from 'react-query';
@@ -266,19 +266,50 @@ export const ProjectTable = ({
                     key={project.id}
                   >
                     <div className="flex flex-col">
-                      <div className="flex items-center gap-[16px]">
-                        <div className="relative h-[36px] w-[36px] overflow-hidden">
-                          <Image
-                            src={
-                              project?.visualIdentity ||
-                              '/assets/images/default-profile.png'
-                            }
-                            alt="logo do projeto"
-                            fill
-                            className="object-cover"
-                          />
+                      <div className="flex justify-between">
+                        <div className="flex items-center gap-[16px]">
+                          <div className="relative h-[36px] w-[36px] overflow-hidden">
+                            <Image
+                              src={
+                                project?.visualIdentity ||
+                                '/assets/images/default-profile.png'
+                              }
+                              alt="logo do projeto"
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <p className="text-[16px]">{project.name}</p>
                         </div>
-                        <p className="text-[16px]">{project.name}</p>
+                        <Popover
+                          triggerElement={
+                            <button type="button" className="text-main">
+                              <IoMdMore size={20} />
+                            </button>
+                          }
+                          eye
+                        >
+                          <div className="mt-[-30px] flex flex-col gap-[8px] text-main">
+                            <Link
+                              href={`/view/${project.id}/project`}
+                              className="flex items-center gap-[8px]"
+                            >
+                              <FiEye size={20} />
+                              <p>Visualizar</p>
+                            </Link>
+                            <button
+                              type="button"
+                              className="flex items-center gap-[8px]"
+                              onClick={() => {
+                                setProjectToDelete(project.id);
+                                setDeleteModal(true);
+                              }}
+                            >
+                              <BiTrash size={20} />
+                              <p>Deletar</p>
+                            </button>
+                          </div>
+                        </Popover>
                       </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">Sobre:</p>

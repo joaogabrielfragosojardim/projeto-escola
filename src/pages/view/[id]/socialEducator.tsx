@@ -191,8 +191,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 export default SocialEducator;
  */
 
-import { SocialEducator } from '@/types/socialEducator';
-
 const SocialEducator = () => {
   return <div>a</div>;
 };

@@ -44,7 +44,6 @@ export class EditAdmUseCase {
         userId: true,
       },
     });
-    console.log(administrator);
 
     if (!administrator) {
       throw new AppError('Adminstrador não encontrado');

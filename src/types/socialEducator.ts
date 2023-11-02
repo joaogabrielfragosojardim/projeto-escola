@@ -20,4 +20,5 @@ export type SocialEducatorSchoolId = {
   password: string;
   period: string;
   classRooms?: { value: { period: string; series: string } }[];
+  telephone?: string;
 };

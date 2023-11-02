@@ -214,22 +214,26 @@ export const SocialEducatorTable = ({
                   handleChangeFilters('namePopover', 'name', event);
                 }}
               />
-              <InputCheckBoxThemed
-                label="Projeto"
-                register={register}
-                name="projectPopover"
-                onClick={(event) => {
-                  handleChangeFilters('projectPopover', 'projectId', event);
-                }}
-              />
-              <InputCheckBoxThemed
-                label="Escola"
-                register={register}
-                name="schoolPopover"
-                onClick={(event) => {
-                  handleChangeFilters('schoolPopover', 'schoolId', event);
-                }}
-              />
+              {!userIsCoordinator ? (
+                <>
+                  <InputCheckBoxThemed
+                    label="Projeto"
+                    register={register}
+                    name="projectPopover"
+                    onClick={(event) => {
+                      handleChangeFilters('projectPopover', 'projectId', event);
+                    }}
+                  />
+                  <InputCheckBoxThemed
+                    label="Escola"
+                    register={register}
+                    name="schoolPopover"
+                    onClick={(event) => {
+                      handleChangeFilters('schoolPopover', 'schoolId', event);
+                    }}
+                  />{' '}
+                </>
+              ) : null}
               <InputCheckBoxThemed
                 label="Ano / Período"
                 register={register}
