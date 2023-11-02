@@ -1,56 +1,45 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useReducer } from 'react';
 
-import type {
-  SocialEducator,
-  SocialEducatorSchoolId,
-} from '@/types/socialEducator';
+import type { StudentId } from '@/types/student';
 
 import { initialState } from './initialState';
-import { socialEducatorFormReducer } from './reducer';
-import type { SocialEducatorFormAction } from './types';
+import { studentFormReducer } from './reducer';
+import type { StudentFormAction } from './types';
 
-type UseSocialEducatorDispatchType = (action: SocialEducatorFormAction) => any;
+type UseStudentFormDispatchType = (action: StudentFormAction) => any;
 
-const SocialEducatorFormContext =
-  createContext<SocialEducatorSchoolId>(initialState);
+const StudentFormDispatch = createContext<StudentId>(initialState);
 
-const SocialEducatorDispatchContext =
-  createContext<UseSocialEducatorDispatchType>(
-    {} as UseSocialEducatorDispatchType,
-  );
+const StudentFormDispatchContext = createContext<UseStudentFormDispatchType>(
+  {} as UseStudentFormDispatchType,
+);
 
-export const useSocialEducatorForm = () => {
-  return useContext(SocialEducatorFormContext) as unknown as SocialEducator;
+export const useStudentForm = () => {
+  return useContext(StudentFormDispatch) as unknown as StudentId;
 };
 
-export const useSocialEducatorFormDispatch = () => {
-  return useContext(SocialEducatorDispatchContext);
+export const useStudentFormDispatch = () => {
+  return useContext(StudentFormDispatchContext);
 };
 
 // apenas para context dev tools
-const displayName = { displayName: 'socialEducatorForm' };
+const displayName = { displayName: 'studentForm' };
 
-export function SocialEducatorFormProvider({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  const [socialEducatorForm, dispatch] = useReducer(
-    socialEducatorFormReducer as unknown as any,
+export function StudentFormProvider({ children }: { children: ReactNode }) {
+  const [studentForm, dispatch] = useReducer(
+    studentFormReducer as unknown as any,
     initialState,
   );
 
   return (
-    <SocialEducatorFormContext.Provider
-      value={socialEducatorForm as unknown as any}
+    <StudentFormDispatch.Provider
+      value={studentForm as unknown as any}
       {...displayName}
     >
-      <SocialEducatorDispatchContext.Provider
-        value={dispatch as unknown as any}
-      >
+      <StudentFormDispatchContext.Provider value={dispatch as unknown as any}>
         {children}
-      </SocialEducatorDispatchContext.Provider>
-    </SocialEducatorFormContext.Provider>
+      </StudentFormDispatchContext.Provider>
+    </StudentFormDispatch.Provider>
   );
 }

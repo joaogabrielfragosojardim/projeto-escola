@@ -7,3 +7,13 @@ export type Student = {
   birtday: string;
   classId: { label: string; value: string };
 };
+
+export type StudentId = {
+  name: string;
+  email: string;
+  visualIdentity?: string;
+  schoolId: string;
+  password: string;
+  birtday: string;
+  classId: string;
+};

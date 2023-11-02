@@ -1,38 +1,34 @@
 import type { SocialEducator } from '@/types/socialEducator';
 
-import {
-  type SocialEducatorFormAction,
-  SocialEducatorFormTypesEnum,
-} from './types';
+import type { StudentFormAction } from './types';
+import { StudentFormTypesEnum } from './types';
 
-export const socialEducatorFormReducer = (
+export const studentFormReducer = (
   _: SocialEducator,
-  action: SocialEducatorFormAction,
+  action: StudentFormAction,
 ) => {
   switch (action.type) {
-    case SocialEducatorFormTypesEnum.ADD_SOCIAL_EDUCATOR_FORM: {
+    case StudentFormTypesEnum.ADD_STUDENT_FORM: {
       const {
+        visualIdentity,
         name,
         email,
-        period,
         schoolId,
-        year,
-        visualIdentity,
-        telephone,
+        classId,
         password,
+        birtday,
       } = action.payload;
       return {
         name,
         email,
-        period,
+        classId,
         schoolId,
-        year,
+        birtday,
         visualIdentity,
-        telephone,
         password,
       };
     }
-    case SocialEducatorFormTypesEnum.REMOVE_SOCIAL_EDUCATOR_FORM: {
+    case StudentFormTypesEnum.REMOVE_STUDENT_FORM: {
       return {};
     }
     default: {

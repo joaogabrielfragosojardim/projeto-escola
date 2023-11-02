@@ -1,11 +1,11 @@
-import type { SocialEducator } from '@/types/socialEducator';
+import type { Student } from '@/types/student';
 
-export enum SocialEducatorFormTypesEnum {
-  ADD_SOCIAL_EDUCATOR_FORM = 'ADD_SOCIAL_EDUCATOR_FORM',
-  REMOVE_SOCIAL_EDUCATOR_FORM = 'REMOVE_SOCIAL_EDUCATOR_FORM',
+export enum StudentFormTypesEnum {
+  ADD_STUDENT_FORM = 'ADD_STUDENT_FORM',
+  REMOVE_STUDENT_FORM = 'REMOVE_STUDENT_FORM',
 }
 
-export interface SocialEducatorFormAction {
-  type: SocialEducatorFormTypesEnum;
-  payload: SocialEducator | any;
+export interface StudentFormAction {
+  type: StudentFormTypesEnum;
+  payload: Student | any;
 }

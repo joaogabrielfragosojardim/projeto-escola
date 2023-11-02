@@ -19,6 +19,5 @@ export type SocialEducatorSchoolId = {
   schoolId: { id: string; value: string };
   password: string;
   period: string;
-  telephone: string;
-  classRooms: { value: { period: string; series: string } }[];
+  classRooms?: { value: { period: string; series: string } }[];
 };

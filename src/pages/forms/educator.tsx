@@ -21,10 +21,10 @@ import { MultiStepForm } from '@/components/ui/forms/MultiStepForm';
 import { SelectThemed } from '@/components/ui/forms/SelectThemed';
 import { classrooms } from '@/constants/classroom';
 import {
-  useSocialEducatorForm,
-  useSocialEducatorFormDispatch,
+  useStudentForm,
+  useStudentFormDispatch,
 } from '@/store/socialEducatorForm/context';
-import { SocialEducatorFormTypesEnum } from '@/store/socialEducatorForm/types';
+import { StudentFormTypesEnum } from '@/store/socialEducatorForm/types';
 import type { PrismaError } from '@/types/prismaError';
 import { RoleEnum } from '@/types/roles';
 import type {
@@ -44,13 +44,13 @@ const SocialEducatorFirstStep = ({
     reset,
   } = useForm<SocialEducator>();
 
-  const socialEducatorFormDispatch = useSocialEducatorFormDispatch();
-  const socialEdutatorForm = useSocialEducatorForm();
+  const socialEducatorFormDispatch = useStudentFormDispatch();
+  const socialEdutatorForm = useStudentForm();
 
   const onSubmit = (data: SocialEducator) => {
     const { visualIdentity, name, email } = data;
     socialEducatorFormDispatch({
-      type: SocialEducatorFormTypesEnum.ADD_SOCIAL_EDUCATOR_FORM,
+      type: StudentFormTypesEnum.ADD_SOCIAL_EDUCATOR_FORM,
       payload: {
         visualIdentity,
         name,
@@ -145,8 +145,8 @@ const SocialEducatorSecondStep = ({
     formState: { errors },
   } = useForm<SocialEducatorSchoolId>();
 
-  const socialEducatorFormDispatch = useSocialEducatorFormDispatch();
-  const socialEducatorForm = useSocialEducatorForm();
+  const socialEducatorFormDispatch = useStudentFormDispatch();
+  const socialEducatorForm = useStudentForm();
   const route = useRouter();
 
   const createSocialEducator = async (data: any) => {
@@ -166,7 +166,7 @@ const SocialEducatorSecondStep = ({
       onSuccess: () => {
         toast.success('Educador social criado com sucesso!');
         socialEducatorFormDispatch({
-          type: SocialEducatorFormTypesEnum.REMOVE_SOCIAL_EDUCATOR_FORM,
+          type: StudentFormTypesEnum.REMOVE_SOCIAL_EDUCATOR_FORM,
           payload: {},
         });
         route.push('/dashboard');

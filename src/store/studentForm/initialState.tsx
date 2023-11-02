@@ -1,11 +1,11 @@
-import type { SocialEducatorSchoolId } from '@/types/socialEducator';
+import type { StudentId } from '@/types/student';
 
-export const initialState: SocialEducatorSchoolId = {
+export const initialState: StudentId = {
   visualIdentity: '',
   name: '',
   email: '',
   schoolId: '',
-  period: '',
+  classId: '',
   password: '',
-  telephone: '',
+  birtday: '',
 };
