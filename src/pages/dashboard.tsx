@@ -18,6 +18,7 @@ import { DashBoardTable } from '@/components/ui/tables/DashboardTable';
 import { ProjectTable } from '@/components/ui/tables/ProjectTable';
 import { SchoolTable } from '@/components/ui/tables/SchoolTable';
 import { SocialEducatorTable } from '@/components/ui/tables/SocialEducatorTable';
+import { StudentTable } from '@/components/ui/tables/StudentTable';
 import { useUserIsAdm } from '@/hooks/useUserIsAdm';
 import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
 import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
@@ -106,7 +107,7 @@ const Dashboard = () => {
     },
     {
       table: (
-        <ProjectTable
+        <StudentTable
           page={page}
           setTotalPages={setTotalPages}
           setPage={setPage}
@@ -114,7 +115,7 @@ const Dashboard = () => {
         />
       ),
 
-      userCanView: isAdmMaster || isAdm || isCoordinator,
+      userCanView: true,
       name: 'Alunos',
       icon: <IoSchoolOutline size={25} />,
     },
