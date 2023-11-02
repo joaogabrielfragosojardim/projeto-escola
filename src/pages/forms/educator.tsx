@@ -27,7 +27,10 @@ import {
 import { SocialEducatorFormTypesEnum } from '@/store/socialEducatorForm/types';
 import type { PrismaError } from '@/types/prismaError';
 import { RoleEnum } from '@/types/roles';
-import type { SocialEducator } from '@/types/socialEducator';
+import type {
+  SocialEducator,
+  SocialEducatorSchoolId,
+} from '@/types/socialEducator';
 
 const SocialEducatorFirstStep = ({
   setStep,
@@ -140,7 +143,7 @@ const SocialEducatorSecondStep = ({
     reset,
     control,
     formState: { errors },
-  } = useForm<SocialEducator>();
+  } = useForm<SocialEducatorSchoolId>();
 
   const socialEducatorFormDispatch = useSocialEducatorFormDispatch();
   const socialEducatorForm = useSocialEducatorForm();
@@ -171,7 +174,7 @@ const SocialEducatorSecondStep = ({
     },
   );
 
-  const onSubmit = (data: SocialEducator) => {
+  const onSubmit = (data: SocialEducatorSchoolId) => {
     const { visualIdentity, name, email } = socialEducatorForm;
     const { password, schoolId, telephone, classRooms } = data;
 
@@ -269,7 +272,7 @@ const SocialEducatorSecondStep = ({
                 <TbLoader size={24} />
               </div>
             ) : (
-              'Cadastrar Escola'
+              'Cadastrar Professor'
             )}
           </button>
         </div>
@@ -317,7 +320,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       RoleEnum.ADM,
       RoleEnum.COORDINATOR,
     ].includes(userObject?.role.name);
-
+    console.log(canView);
     if (canView) {
       const { data: dataSchool } = await axiosApi.get('/school/options', {
         headers: { Authorization: `Bearer ${token}` },

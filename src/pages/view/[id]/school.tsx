@@ -102,7 +102,7 @@ const School = ({
   );
 
   return (
-    <SideNavMenuContainer title="Projeto">
+    <SideNavMenuContainer title="Escola">
       <div className="p-[32px]">
         <form
           className="grid grid-cols-2 items-end gap-[32px]"
@@ -116,14 +116,6 @@ const School = ({
             defaultValue={school.visualIdentity}
             validations={{ required: 'Campo obrigatório' }}
             error={errors.visualIdentity}
-          />
-          <InputThemed
-            register={register}
-            name="name"
-            defaultValue={school.name}
-            label="Nome"
-            validations={{ required: 'Campo obrigatório' }}
-            error={errors.name}
           />
           <InputThemed
             label="CEP"
@@ -143,18 +135,19 @@ const School = ({
             onChange={(e) => mutateViaCep(e.target.value)}
           />
           <InputThemed
+            register={register}
+            name="name"
+            defaultValue={school.name}
+            label="Nome"
+            validations={{ required: 'Campo obrigatório' }}
+            error={errors.name}
+          />
+          <InputThemed
             disabled
             register={register}
             name="state"
             defaultValue={school.address.state}
             label="Estado"
-          />
-          <InputThemed
-            disabled
-            register={register}
-            name="city"
-            defaultValue={school.address.city}
-            label="Cidade"
           />
           <SelectThemed
             reset={reset}
@@ -172,6 +165,13 @@ const School = ({
               } as unknown as any
             }
             menuPlacement="top"
+          />
+          <InputThemed
+            disabled
+            register={register}
+            name="city"
+            defaultValue={school.address.city}
+            label="Cidade"
           />
           <InputThemed
             register={register}

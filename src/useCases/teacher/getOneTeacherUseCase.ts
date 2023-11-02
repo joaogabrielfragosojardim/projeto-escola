@@ -14,7 +14,7 @@ export class GetOneTeacherUseCase {
       select: {
         id: true,
         telephone: true,
-        schoolId: true,
+        school: { select: { id: true, name: true } },
         user: {
           select: {
             email: true,

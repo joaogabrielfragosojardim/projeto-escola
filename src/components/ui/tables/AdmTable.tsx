@@ -126,7 +126,7 @@ export const AdmTable = ({
           <Popover
             triggerElement={
               <button
-                disabled={isLoading}
+                disabled={isLoading || isRefetching || !data?.data.length}
                 type="button"
                 className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
               >
@@ -149,7 +149,7 @@ export const AdmTable = ({
             triggerElement={
               <button
                 type="button"
-                disabled={isLoading}
+                disabled={isLoading || isRefetching || !data?.data.length}
                 className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
               >
                 Gerar Relatório <IoIosArrowDown size={20} />
@@ -257,9 +257,10 @@ export const AdmTable = ({
           <div className="p-[44px]">
             <div className="relative mx-auto h-[370px] w-[313px]">
               <Image
-                src="/assets/images/without-projects.png"
-                alt="imagem dizendo que até agora estamos sem projetos"
+                src="/assets/images/without-adm.png"
+                alt="imagem dizendo que até agora estamos sem adms"
                 fill
+                objectFit="contain"
               />
             </div>
             <div className="text-center text-[22px] text-main">

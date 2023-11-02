@@ -66,7 +66,7 @@ export const SelectThemed = (props: SelectThemedProps) => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-[16px]">
+    <div className="flex w-full flex-col gap-[16px]">
       {label && (
         <label
           htmlFor={name}

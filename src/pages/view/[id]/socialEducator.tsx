@@ -1,4 +1,4 @@
-import { verify } from 'jsonwebtoken';
+/* import { verify } from 'jsonwebtoken';
 import type { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
 import { useForm } from 'react-hook-form';
@@ -12,18 +12,15 @@ import { InputImageThemed } from '@/components/ui/forms/InputImageThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { SelectThemed } from '@/components/ui/forms/SelectThemed';
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
-import type {
-  Coordinator as CoordinatorType,
-  CoordinatorEdit,
-} from '@/types/coordinator';
 import type { PrismaError } from '@/types/prismaError';
 import { RoleEnum } from '@/types/roles';
+import type { SocialEducator as SocialEducatorType } from '@/types/socialEducator';
 
-const Coordinator = ({
-  coordinator,
+const SocialEducator = ({
+  teacher,
   schoolOptions,
 }: {
-  coordinator: CoordinatorType;
+  teacher: SocialEducatorType;
   schoolOptions: { label: string; value: string }[];
 }) => {
   const {
@@ -32,15 +29,17 @@ const Coordinator = ({
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<CoordinatorType>();
+  } = useForm<SocialEducatorType>();
 
-  const editCoordinatorHandle = async (data: CoordinatorEdit): Promise<any> => {
-    return (await axiosApi.put(`/coordinator/${coordinator.id}`, data)).data;
+  const editSocialEducatorHandle = async (
+    data: SocialEducatorType,
+  ): Promise<any> => {
+    return (await axiosApi.put(`/coordinator/${teacher.id}`, data)).data;
   };
 
   const { isLoading, mutate } = useMutation(
     'editingSchoolMutation',
-    editCoordinatorHandle,
+    editSocialEducatorHandle,
     {
       onError: (error: PrismaError) => {
         toast.error(
@@ -54,19 +53,19 @@ const Coordinator = ({
     },
   );
 
-  const onSubmit = (data: CoordinatorType) => {
+  const onSubmit = (data: SocialEducatorType) => {
     const { visualIdentity, name, telephone, school } = data;
     const submitData = {
-      visualIdentity: visualIdentity || coordinator.visualIdentity,
-      name: name || coordinator.name,
-      telephone: telephone || coordinator.telephone,
-      schoolId: school?.value || coordinator.school.id,
+      visualIdentity: visualIdentity || teacher.visualIdentity,
+      name: name || teacher.name,
+      telephone: telephone || teacher.telephone,
+      schoolId: school?.value || teacher.school.id,
     };
     mutate(submitData);
   };
 
   return (
-    <SideNavMenuContainer title="Coordenador">
+    <SideNavMenuContainer title="Projeto">
       <div className="p-[32px]">
         <form
           className="grid grid-cols-2 items-end gap-[32px]"
@@ -77,13 +76,13 @@ const Coordinator = ({
             name="visualIdentity"
             label=""
             reset={reset}
-            defaultValue={coordinator?.visualIdentity}
+            defaultValue={teacher?.visualIdentity}
           />
           <InputThemed
             register={register}
             name="telephone"
             mask="(99) 9 9999-9999"
-            defaultValue={coordinator.telephone}
+            defaultValue={teacher.telephone}
             label="Telefone"
             validations={{
               required: 'Campo obrigatório',
@@ -96,7 +95,7 @@ const Coordinator = ({
           <InputThemed
             register={register}
             name="name"
-            defaultValue={coordinator.name}
+            defaultValue={teacher.name}
             label="Nome"
             validations={{ required: 'Campo obrigatório' }}
             error={errors.name}
@@ -110,8 +109,8 @@ const Coordinator = ({
             options={schoolOptions}
             defaultValue={
               {
-                value: coordinator.school.id,
-                label: coordinator.school.name,
+                value: teacher.school.id,
+                label: teacher.school.name,
               } as unknown as any
             }
             menuPlacement="top"
@@ -120,7 +119,7 @@ const Coordinator = ({
             register={register}
             name="email"
             disabled
-            defaultValue={coordinator.email}
+            defaultValue={teacher.email}
             label="Email"
           />
 
@@ -152,12 +151,18 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     verify(token || '', secret);
 
-    const canView = [RoleEnum.ADM_MASTER, RoleEnum.ADM].includes(
+    const canView = [
+      RoleEnum.ADM_MASTER,
+      RoleEnum.ADM,
+      RoleEnum.COORDINATOR,
+    ].includes(userObject?.role.name);
+
+    const userIsCoordinator = [RoleEnum.COORDINATOR].includes(
       userObject?.role.name,
     );
 
     if (canView) {
-      const { data } = await axiosApi.get(`/coordinator/${ctx?.params?.id}`, {
+      const { data } = await axiosApi.get(`/teacher/${ctx?.params?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -165,12 +170,13 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         `/school/options`,
         {
           headers: { Authorization: `Bearer ${token}` },
+          params: userIsCoordinator ? { coordinatorId: userObject?.id } : null,
         },
       );
 
       return {
         props: {
-          coordinator: data?.coordinator,
+          teacher: data?.teacher,
           schoolOptions: dataSchoolOptions?.options,
         },
       };
@@ -182,4 +188,13 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 };
 
-export default Coordinator;
+export default SocialEducator;
+ */
+
+import { SocialEducator } from '@/types/socialEducator';
+
+const SocialEducator = () => {
+  return <div>a</div>;
+};
+
+export default SocialEducator;

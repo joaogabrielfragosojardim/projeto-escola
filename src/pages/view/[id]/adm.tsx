@@ -34,12 +34,11 @@ const Adm = ({ adm }: { adm: ADM }) => {
     {
       onError: (error: PrismaError) => {
         toast.error(
-          error?.response?.data?.message ||
-            'Algo deu errado ao editar o projeto!',
+          error?.response?.data?.message || 'Algo deu errado ao editar o adm!',
         );
       },
       onSuccess: () => {
-        toast.success('Projeto editado');
+        toast.success('Adm editado');
       },
     },
   );
@@ -53,7 +52,7 @@ const Adm = ({ adm }: { adm: ADM }) => {
   }
 
   return (
-    <SideNavMenuContainer title="Projeto">
+    <SideNavMenuContainer title="Adm">
       <div className="p-[32px]">
         <form className="max-w-[430px]" onSubmit={handleSubmit(onSubmit)}>
           <InputImageThemed
@@ -82,8 +81,6 @@ const Adm = ({ adm }: { adm: ADM }) => {
               name="email"
               defaultValue={adm.email}
               label="Email"
-              validations={{ required: 'Campo obrigatório' }}
-              error={errors.email}
             />
           </div>
 
@@ -116,7 +113,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     verify(token || '', secret);
 
     const canView = [RoleEnum.ADM_MASTER].includes(userObject?.role.name);
-
     if (canView) {
       const { data } = await axiosApi.get(`/adm/${ctx?.params?.id}`, {
         headers: { Authorization: `Bearer ${token}` },

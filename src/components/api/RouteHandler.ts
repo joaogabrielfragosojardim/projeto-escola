@@ -48,7 +48,6 @@ export const RouteHandler = async (
     if (error instanceof ZodError) {
       return response.status(400).send({ message: error.format() });
     }
-
     return response.status(500).json({ message: 'Erro desconhecido.' });
   }
 };
