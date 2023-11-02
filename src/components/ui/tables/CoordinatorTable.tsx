@@ -236,7 +236,7 @@ export const CoordinatorTable = ({
             </button>
           </Popover>
         </div>
-        <div className="mt-[32px] grid grid-cols-2 items-end gap-[32px]">
+        <div className="mt-[32px] flex flex-col gap-[16px] 2xl:grid 2xl:grid-cols-2 2xl:items-end">
           {Object.keys(filters)
             .filter((item) => filters[item]?.view === true)
             .map((item) => (
@@ -363,13 +363,19 @@ export const CoordinatorTable = ({
                         </p>
                       </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">
+                        <p className="text-[14px] text-main">Telefone:</p>
+                        <p className="text-[14px] text-complement-200">
+                          {coordinator.telephone}
+                        </p>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">Projeto:</p>
                         <p className="text-[14px] text-complement-200">
                           {coordinator.project.name}
                         </p>
                       </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">
-                        <p className="text-[14px] text-main">Escoça:</p>
+                        <p className="text-[14px] text-main">Escola:</p>
                         <p className="text-[14px] text-complement-200">
                           {coordinator.school.name}
                         </p>
