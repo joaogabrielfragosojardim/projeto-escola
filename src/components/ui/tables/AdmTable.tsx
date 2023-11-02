@@ -175,7 +175,7 @@ export const AdmTable = ({
             </button>
           </Popover>
         </div>
-        <div className="mt-[32px] 2xl:grid 2xl:grid-cols-2 2xl:items-end">
+        <div className="mt-[32px] flex flex-col gap-[16px] 2xl:grid 2xl:grid-cols-2 2xl:items-end">
           {Object.keys(filters)
             .filter((item) => filters[item]?.view === true)
             .map((item) => (
