@@ -105,7 +105,7 @@ const School = ({
     <SideNavMenuContainer title="Escola">
       <div className="p-[32px]">
         <form
-          className="grid grid-cols-2 items-end gap-[32px]"
+          className="grid grid-cols-1 items-end gap-[32px] 2xl:grid-cols-2"
           onSubmit={handleSubmit(onSubmit)}
         >
           <InputImageThemed
