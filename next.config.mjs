@@ -33,6 +33,10 @@ export default bundleAnalyzer({
         protocol: 'https',
         hostname: 'jrgqdaonyjwefdaxvvjt.supabase.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'mhhrzbfinqvdjokvxgcs.supabase.co',
+      },
     ],
   },
 });

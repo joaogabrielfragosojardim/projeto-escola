@@ -7,10 +7,12 @@ import { axiosApi } from '@/components/api/axiosApi';
 import { SelectThemed } from '../../forms/SelectThemed';
 
 export const SchoolSelect = ({
+  coordinatorId,
   onChange,
   label,
   placeholder,
 }: {
+  coordinatorId?: string;
   onChange: (event: any) => void;
   label?: string;
   placeholder?: string;
@@ -18,7 +20,9 @@ export const SchoolSelect = ({
   const { control, reset } = useForm();
 
   const fetchSchoolOptions = async () => {
-    return axiosApi.get('/school/options');
+    return axiosApi.get('/school/options', {
+      params: { coordinatorId },
+    });
   };
 
   const { data, isLoading } = useQuery(

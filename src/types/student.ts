@@ -1,4 +1,5 @@
 export type Student = {
+  id: string;
   name: string;
   email: string;
   visualIdentity?: string;
@@ -6,4 +7,14 @@ export type Student = {
   password: string;
   birtday: string;
   classId: { label: string; value: string };
+};
+
+export type StudentId = {
+  name: string;
+  email: string;
+  visualIdentity?: string;
+  schoolId: string;
+  password: string;
+  birtday: string;
+  classId: string;
 };

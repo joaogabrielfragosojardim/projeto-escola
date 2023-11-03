@@ -21,13 +21,16 @@ import { MultiStepForm } from '@/components/ui/forms/MultiStepForm';
 import { SelectThemed } from '@/components/ui/forms/SelectThemed';
 import { classrooms } from '@/constants/classroom';
 import {
-  useSocialEducatorForm,
-  useSocialEducatorFormDispatch,
-} from '@/store/socialEducatorForm/context';
-import { SocialEducatorFormTypesEnum } from '@/store/socialEducatorForm/types';
+  useStudentForm,
+  useStudentFormDispatch,
+} from '@/store/studentForm/context';
+import { StudentFormTypesEnum } from '@/store/studentForm/types';
 import type { PrismaError } from '@/types/prismaError';
 import { RoleEnum } from '@/types/roles';
-import type { SocialEducator } from '@/types/socialEducator';
+import type {
+  SocialEducator,
+  SocialEducatorSchoolId,
+} from '@/types/socialEducator';
 
 const SocialEducatorFirstStep = ({
   setStep,
@@ -41,13 +44,13 @@ const SocialEducatorFirstStep = ({
     reset,
   } = useForm<SocialEducator>();
 
-  const socialEducatorFormDispatch = useSocialEducatorFormDispatch();
-  const socialEdutatorForm = useSocialEducatorForm();
+  const socialEducatorFormDispatch = useStudentFormDispatch();
+  const socialEdutatorForm = useStudentForm();
 
   const onSubmit = (data: SocialEducator) => {
     const { visualIdentity, name, email } = data;
     socialEducatorFormDispatch({
-      type: SocialEducatorFormTypesEnum.ADD_SOCIAL_EDUCATOR_FORM,
+      type: StudentFormTypesEnum.ADD_STUDENT_FORM,
       payload: {
         visualIdentity,
         name,
@@ -140,10 +143,10 @@ const SocialEducatorSecondStep = ({
     reset,
     control,
     formState: { errors },
-  } = useForm<SocialEducator>();
+  } = useForm<SocialEducatorSchoolId>();
 
-  const socialEducatorFormDispatch = useSocialEducatorFormDispatch();
-  const socialEducatorForm = useSocialEducatorForm();
+  const socialEducatorFormDispatch = useStudentFormDispatch();
+  const socialEducatorForm = useStudentForm();
   const route = useRouter();
 
   const createSocialEducator = async (data: any) => {
@@ -163,7 +166,7 @@ const SocialEducatorSecondStep = ({
       onSuccess: () => {
         toast.success('Educador social criado com sucesso!');
         socialEducatorFormDispatch({
-          type: SocialEducatorFormTypesEnum.REMOVE_SOCIAL_EDUCATOR_FORM,
+          type: StudentFormTypesEnum.REMOVE_STUDENT_FORM,
           payload: {},
         });
         route.push('/dashboard');
@@ -171,7 +174,7 @@ const SocialEducatorSecondStep = ({
     },
   );
 
-  const onSubmit = (data: SocialEducator) => {
+  const onSubmit = (data: SocialEducatorSchoolId) => {
     const { visualIdentity, name, email } = socialEducatorForm;
     const { password, schoolId, telephone, classRooms } = data;
 
@@ -182,7 +185,7 @@ const SocialEducatorSecondStep = ({
       password,
       telephone,
       schoolId: schoolId.value,
-      classRooms: classRooms.map((classroom) => ({
+      classRooms: classRooms?.map((classroom) => ({
         period: classroom.value.period,
         year: classroom.value.series,
       })),
@@ -269,7 +272,7 @@ const SocialEducatorSecondStep = ({
                 <TbLoader size={24} />
               </div>
             ) : (
-              'Cadastrar Escola'
+              'Cadastrar Professor'
             )}
           </button>
         </div>
@@ -317,7 +320,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       RoleEnum.ADM,
       RoleEnum.COORDINATOR,
     ].includes(userObject?.role.name);
-
     if (canView) {
       const { data: dataSchool } = await axiosApi.get('/school/options', {
         headers: { Authorization: `Bearer ${token}` },

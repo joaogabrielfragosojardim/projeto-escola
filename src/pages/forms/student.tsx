@@ -20,10 +20,10 @@ import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { MultiStepForm } from '@/components/ui/forms/MultiStepForm';
 import { SelectThemed } from '@/components/ui/forms/SelectThemed';
 import {
-  useSocialEducatorForm,
-  useSocialEducatorFormDispatch,
-} from '@/store/socialEducatorForm/context';
-import { SocialEducatorFormTypesEnum } from '@/store/socialEducatorForm/types';
+  useStudentForm,
+  useStudentFormDispatch,
+} from '@/store/studentForm/context';
+import { StudentFormTypesEnum } from '@/store/studentForm/types';
 import type { PrismaError } from '@/types/prismaError';
 import { RoleEnum } from '@/types/roles';
 import type { Student as StudentProps } from '@/types/student';
@@ -41,22 +41,20 @@ const StudentFirstStep = ({
     reset,
   } = useForm<StudentProps>();
 
-  const socialEducatorFormDispatch = useSocialEducatorFormDispatch();
-  const socialEdutatorForm = useSocialEducatorForm();
+  const studentFormDispatch = useStudentFormDispatch();
+  const studentForm = useStudentForm();
 
   const onSubmit = (data: StudentProps) => {
     const { visualIdentity, name, email } = data;
-    socialEducatorFormDispatch({
-      type: SocialEducatorFormTypesEnum.ADD_SOCIAL_EDUCATOR_FORM,
+    studentFormDispatch({
+      type: StudentFormTypesEnum.ADD_STUDENT_FORM,
       payload: {
         visualIdentity,
         name,
         email,
-        schoolId: '',
+        schoolId: { id: '', value: '' },
         period: '',
-        year: '',
         password: '',
-        telephone: '',
       },
     });
     setStep((prev) => prev + 1);
@@ -84,7 +82,7 @@ const StudentFirstStep = ({
           validations={{ required: 'Campo obrigatório' }}
           error={errors.visualIdentity}
           reset={reset}
-          defaultValue={socialEdutatorForm.visualIdentity}
+          defaultValue={studentForm.visualIdentity}
         />
         <div className="mt-[16px]">
           <InputThemed
@@ -94,7 +92,7 @@ const StudentFirstStep = ({
             name="name"
             validations={{ required: 'Campo obrigatório' }}
             error={errors.name}
-            defaultValue={socialEdutatorForm.name}
+            defaultValue={studentForm.name}
           />
         </div>
         <div className="mt-[16px]">
@@ -110,7 +108,7 @@ const StudentFirstStep = ({
               },
             }}
             error={errors.email}
-            defaultValue={socialEdutatorForm.email}
+            defaultValue={studentForm.email}
           />
         </div>
 
@@ -142,8 +140,8 @@ const StudentSecondStep = ({
     formState: { errors },
   } = useForm<StudentProps>();
 
-  const socialEducatorFormDispatch = useSocialEducatorFormDispatch();
-  const socialEducatorForm = useSocialEducatorForm();
+  const studentFormDispatch = useStudentFormDispatch();
+  const studentForm = useStudentForm();
   const route = useRouter();
 
   const optionsClass = async (schoolId: string) => {
@@ -180,8 +178,8 @@ const StudentSecondStep = ({
       },
       onSuccess: () => {
         toast.success('Aluno criado com sucesso!');
-        socialEducatorFormDispatch({
-          type: SocialEducatorFormTypesEnum.REMOVE_SOCIAL_EDUCATOR_FORM,
+        studentFormDispatch({
+          type: StudentFormTypesEnum.REMOVE_STUDENT_FORM,
           payload: {},
         });
         route.push('/dashboard');
@@ -190,7 +188,7 @@ const StudentSecondStep = ({
   );
 
   const onSubmit = (data: StudentProps) => {
-    const { visualIdentity, name, email } = socialEducatorForm;
+    const { visualIdentity, name, email } = studentForm;
     const { password, schoolId, birtday, classId } = data;
 
     const submitData = {
@@ -303,7 +301,7 @@ const Student = ({
   const [step, setStep] = useState(0);
   return (
     <FormDefaultPage
-      image="/assets/images/form-educator.png"
+      image="/assets/images/form-student.png"
       form={
         <MultiStepForm
           step={step}

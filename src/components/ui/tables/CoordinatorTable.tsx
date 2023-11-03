@@ -163,14 +163,14 @@ export const CoordinatorTable = ({
 
   return (
     <div>
-      <div className="p-[32px]">
+      <div className="py-[22px] 2xl:p-[32px]">
         <div className="flex items-center justify-between">
           <Popover
             triggerElement={
               <button
-                disabled={isLoading || isRefetching}
+                disabled={isLoading || isRefetching || !data?.data.length}
                 type="button"
-                className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
+                className="flex items-center gap-[8px] rounded bg-main px-[16px] py-[8px] text-[14px] text-complement-100 disabled:opacity-60 2xl:gap-[16px] 2xl:text-[20px]"
               >
                 <VscFilter size={20} /> Filtros <IoIosArrowDown size={20} />
               </button>
@@ -207,8 +207,8 @@ export const CoordinatorTable = ({
             triggerElement={
               <button
                 type="button"
-                disabled={isLoading}
-                className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
+                disabled={isLoading || isRefetching || !data?.data.length}
+                className="flex items-center gap-[8px] rounded bg-main px-[16px] py-[8px] text-[14px] text-complement-100 disabled:opacity-60 2xl:gap-[16px] 2xl:text-[20px]"
               >
                 Gerar Relatório <IoIosArrowDown size={20} />
               </button>
@@ -236,7 +236,7 @@ export const CoordinatorTable = ({
             </button>
           </Popover>
         </div>
-        <div className="mt-[32px] grid grid-cols-2 items-end gap-[32px]">
+        <div className="mt-[32px] flex flex-col gap-[16px] 2xl:grid 2xl:grid-cols-2 2xl:items-end">
           {Object.keys(filters)
             .filter((item) => filters[item]?.view === true)
             .map((item) => (
@@ -255,88 +255,150 @@ export const CoordinatorTable = ({
           </div>
         )}
         {nodes?.nodes && nodes?.nodes.length && !(isLoading || isRefetching) ? (
-          <Table
-            data={nodes}
-            theme={theme}
-            style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 0.4fr' }}
-          >
-            {(tableList: Coordinator[]) => (
-              <>
-                <Header>
-                  <HeaderRow>
-                    <HeaderCell>Nome</HeaderCell>
-                    <HeaderCell>Email</HeaderCell>
-                    <HeaderCell>Telefone</HeaderCell>
-                    <HeaderCell>Projeto</HeaderCell>
-                    <HeaderCell>Escola</HeaderCell>
-                    <HeaderCell>Ações</HeaderCell>
-                  </HeaderRow>
-                </Header>
-                <Body>
-                  {tableList.map((coordinator) => (
-                    <Row key={coordinator.id} item={coordinator}>
-                      <Cell className="text-main hover:text-main">
-                        <div className="flex items-center gap-[16px] text-[20px]">
-                          <div className="relative h-[62px] w-[62px] min-w-[62px] overflow-hidden rounded-full">
-                            <Image
-                              src={
-                                coordinator?.visualIdentity ||
-                                '/assets/images/default-profile.png'
-                              }
-                              alt="foto do coordenador"
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                          {coordinator.name}
+          <>
+            <div className="hidden 2xl:inline">
+              <Table
+                data={nodes}
+                theme={theme}
+                style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 0.4fr' }}
+              >
+                {(tableList: Coordinator[]) => (
+                  <>
+                    <Header>
+                      <HeaderRow>
+                        <HeaderCell>Nome</HeaderCell>
+                        <HeaderCell>Email</HeaderCell>
+                        <HeaderCell>Telefone</HeaderCell>
+                        <HeaderCell>Projeto</HeaderCell>
+                        <HeaderCell>Escola</HeaderCell>
+                        <HeaderCell>Ações</HeaderCell>
+                      </HeaderRow>
+                    </Header>
+                    <Body>
+                      {tableList.map((coordinator) => (
+                        <Row key={coordinator.id} item={coordinator}>
+                          <Cell className="text-main hover:text-main">
+                            <div className="flex items-center gap-[16px] text-[20px]">
+                              <div className="relative h-[62px] w-[62px] min-w-[62px] overflow-hidden rounded-full">
+                                <Image
+                                  src={
+                                    coordinator?.visualIdentity ||
+                                    '/assets/images/default-profile.png'
+                                  }
+                                  alt="foto do coordenador"
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                              {coordinator.name}
+                            </div>
+                          </Cell>
+                          <Cell className="text-[20px] text-main hover:text-main">
+                            {coordinator.email}
+                          </Cell>
+                          <Cell className="text-[20px] text-main hover:text-main">
+                            {coordinator.telephone}
+                          </Cell>
+                          <Cell className="text-[20px] text-main hover:text-main">
+                            {coordinator.project.name}
+                          </Cell>
+                          <Cell className="text-[20px] text-main hover:text-main">
+                            {coordinator.school.name}
+                          </Cell>
+                          <Cell className="text-center text-main hover:text-main">
+                            <div className="flex gap-[8px]">
+                              <Link
+                                href={`/view/${coordinator.id}/coordinator`}
+                              >
+                                <FiEye size={20} />
+                              </Link>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setCoordinatorToDelete(coordinator.id);
+                                  setDeleteModal(true);
+                                }}
+                              >
+                                <BiTrash size={20} />
+                              </button>
+                            </div>
+                          </Cell>
+                        </Row>
+                      ))}
+                    </Body>
+                  </>
+                )}
+              </Table>
+            </div>
+            <div className="2xl:hidden">
+              <div className="rounded-[6px_6px_0px_0px] bg-main px-[16px] py-[18px] text-complement-100">
+                Coordenadores
+              </div>
+              <div className="overflow-hidden rounded-[0px_0px_6px_6px] border-2 border-main">
+                {data?.data.map((coordinator: Coordinator) => (
+                  <div
+                    className="border-b-2 border-b-complement-100 p-[14px]"
+                    key={coordinator.id}
+                  >
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-[16px]">
+                        <div className="relative h-[36px] w-[36px] overflow-hidden">
+                          <Image
+                            src={
+                              coordinator?.visualIdentity ||
+                              '/assets/images/default-profile.png'
+                            }
+                            alt="logo do projeto"
+                            fill
+                            className="object-cover"
+                          />
                         </div>
-                      </Cell>
-                      <Cell className="text-[20px] text-main hover:text-main">
-                        {coordinator.email}
-                      </Cell>
-                      <Cell className="text-[20px] text-main hover:text-main">
-                        {coordinator.telephone}
-                      </Cell>
-                      <Cell className="text-[20px] text-main hover:text-main">
-                        {coordinator.project.name}
-                      </Cell>
-                      <Cell className="text-[20px] text-main hover:text-main">
-                        {coordinator.school.name}
-                      </Cell>
-                      <Cell className="text-center text-main hover:text-main">
-                        <div className="flex gap-[8px]">
-                          <Link href={`/view/${coordinator.id}/coordinator`}>
-                            <FiEye size={20} />
-                          </Link>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setCoordinatorToDelete(coordinator.id);
-                              setDeleteModal(true);
-                            }}
-                          >
-                            <BiTrash size={20} />
-                          </button>
-                        </div>
-                      </Cell>
-                    </Row>
-                  ))}
-                </Body>
-              </>
-            )}
-          </Table>
+                        <p className="text-[16px]">{coordinator.name}</p>
+                      </div>
+
+                      <div className="mt-[8px] flex items-center gap-[8px]">
+                        <p className="text-[14px] text-main">Email:</p>
+                        <p className="text-[14px] text-complement-200">
+                          {coordinator.email}
+                        </p>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px]">
+                        <p className="text-[14px] text-main">Telefone:</p>
+                        <p className="text-[14px] text-complement-200">
+                          {coordinator.telephone}
+                        </p>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px]">
+                        <p className="text-[14px] text-main">Projeto:</p>
+                        <p className="text-[14px] text-complement-200">
+                          {coordinator.project.name}
+                        </p>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px]">
+                        <p className="text-[14px] text-main">Escola:</p>
+                        <p className="text-[14px] text-complement-200">
+                          {coordinator.school.name}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
         ) : null}
         {nodes?.nodes && !nodes?.nodes.length ? (
           <div className="p-[44px]">
             <div className="relative mx-auto h-[370px] w-[313px]">
               <Image
-                src="/assets/images/without-projects.png"
-                alt="imagem dizendo que até agora estamos sem projetos"
+                src="/assets/images/without-coordinators.png"
+                alt="imagem dizendo que até agora estamos sem coordenadores"
                 fill
+                objectFit="contain"
               />
             </div>
             <div className="text-center text-[22px] text-main">
-              <p>Nenhum projeto encontrado!</p>
+              <p>Nenhum coordenador encontrado!</p>
             </div>
           </div>
         ) : null}

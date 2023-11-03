@@ -18,8 +18,10 @@ import { DashBoardTable } from '@/components/ui/tables/DashboardTable';
 import { ProjectTable } from '@/components/ui/tables/ProjectTable';
 import { SchoolTable } from '@/components/ui/tables/SchoolTable';
 import { SocialEducatorTable } from '@/components/ui/tables/SocialEducatorTable';
+import { StudentTable } from '@/components/ui/tables/StudentTable';
 import { useUserIsAdm } from '@/hooks/useUserIsAdm';
 import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
+import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
 
 const Dashboard = () => {
   const [selectedTable, setSelectedTable] = useState(0);
@@ -29,6 +31,7 @@ const Dashboard = () => {
 
   const isAdmMaster = useUserIsAdmMaster();
   const isAdm = useUserIsAdm();
+  const isCoordinator = useUserIsCoordinator();
 
   useEffect(() => {
     if (totalPages) {
@@ -98,13 +101,13 @@ const Dashboard = () => {
           perPage={perPage}
         />
       ),
-      userCanView: isAdmMaster || isAdm,
+      userCanView: isAdmMaster || isAdm || isCoordinator,
       name: 'Educadores Sociais',
       icon: <PiRulerLight size={25} />,
     },
     {
       table: (
-        <ProjectTable
+        <StudentTable
           page={page}
           setTotalPages={setTotalPages}
           setPage={setPage}
@@ -112,7 +115,7 @@ const Dashboard = () => {
         />
       ),
 
-      userCanView: isAdmMaster || isAdm,
+      userCanView: true,
       name: 'Alunos',
       icon: <IoSchoolOutline size={25} />,
     },
@@ -120,8 +123,8 @@ const Dashboard = () => {
 
   return (
     <SideNavMenuContainer title="Início">
-      <div className="p-[32px]">
-        <p className="mb-[32px] text-[24px] font-semibold text-complement-200">
+      <div className="p-[22px] 2xl:p-[32px]">
+        <p className="mb-[32px] text-[20px] font-semibold text-complement-200 2xl:text-[24px]">
           Informações
         </p>
         <DashBoardTable
@@ -132,7 +135,6 @@ const Dashboard = () => {
           setPage={setPage}
           totalPages={totalPages}
           setPerPage={setPerPage}
-          perPage={perPage}
         />
       </div>
     </SideNavMenuContainer>

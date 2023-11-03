@@ -5,4 +5,6 @@ export type User = {
   role: {
     name: string;
   };
+  visualIdentity?: string;
+  password?: string;
 };

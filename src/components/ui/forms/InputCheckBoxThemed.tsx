@@ -23,7 +23,7 @@ export const InputCheckBoxThemed = (props: InputCheckBoxThemedProps) => {
         <input
           {...props}
           type="checkbox"
-          className="h-[26px] w-[26px] rounded-[5px] text-[14px]"
+          className="h-[18px] w-[18px] rounded-[5px] text-[14px] 2xl:h-[26px] 2xl:w-[26px]"
           id={name}
           {...register(name, validations)}
         />

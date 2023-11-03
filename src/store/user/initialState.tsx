@@ -7,4 +7,5 @@ export const initialState: User = {
   role: {
     name: '',
   },
+  visualIdentity: '',
 };
