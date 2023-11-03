@@ -18,7 +18,7 @@ model User {
   password       String
   roleId         String
 
-  passwordToken       String?
+  passwordToken       String?   @unique
   passwordExpiresDate DateTime?
 
   role          Role            @relation(fields: [roleId], references: [id])
@@ -90,7 +90,7 @@ model Student {
 
 model Teacher {
   id        String   @id @default(uuid())
-  telephone String
+  telephone String   @unique
   createdAt DateTime @default(now())
   status    Boolean  @default(true)
 
@@ -109,7 +109,7 @@ model Teacher {
 model Coordinator {
   id        String   @id @default(uuid())
   userId    String
-  telephone String
+  telephone String   @unique
   createdAt DateTime @default(now())
   schoolId  String
 
