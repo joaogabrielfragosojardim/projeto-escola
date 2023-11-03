@@ -10,9 +10,13 @@ export class GetAllStudentController {
         page: z.coerce.number().default(1),
         perPage: z.coerce.number().default(10),
         classId: z.string().uuid().optional(),
+        schoolId: z.string().uuid().optional(),
+        projectId: z.string().uuid().optional(),
+        teacherId: z.string().uuid().optional(),
       });
 
-      const { page, perPage, classId } = getAllQuerySchema.parse(req.query);
+      const { page, perPage, classId, projectId, schoolId, teacherId } =
+        getAllQuerySchema.parse(req.query);
 
       const getAllStudentUseCase = new GetAllStudentUseCase();
 
@@ -20,6 +24,9 @@ export class GetAllStudentController {
         page,
         perPage,
         classId,
+        projectId,
+        schoolId,
+        teacherId,
       });
 
       return res.status(200).json({ data, meta });
