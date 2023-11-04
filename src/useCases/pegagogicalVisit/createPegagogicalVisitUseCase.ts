@@ -21,7 +21,7 @@ export class CreatePegagogicalVisitUseCase {
   }: CreatePegagogicalVisitUseCaseRequest) {
     const coordinator = await prisma.coordinator.findFirst({
       where: {
-        id: coordinatorId,
+        userId: coordinatorId,
       },
     });
 
