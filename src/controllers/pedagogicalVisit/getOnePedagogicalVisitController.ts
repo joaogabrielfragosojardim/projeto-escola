@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 
-import { GetOnePegagogicalVisitUseCase } from '@/useCases/pegagogicalVisit';
+import { GetOnePedagogicalVisitUseCase } from '@/useCases/pedagogicalVisit';
 
-export class GetOnePegagogicalVisitController {
+export class GetOnePedagogicalVisitController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
     try {
       const getOneQuerySchema = z.object({
@@ -12,13 +12,13 @@ export class GetOnePegagogicalVisitController {
 
       const { id } = getOneQuerySchema.parse(req.query);
 
-      const getOnePegagogicalVisitUseCase = new GetOnePegagogicalVisitUseCase();
+      const getOnePedagogicalVisitUseCase = new GetOnePedagogicalVisitUseCase();
 
-      const { pegagogicalVisit } = await getOnePegagogicalVisitUseCase.execute({
+      const { pedagogicalVisit } = await getOnePedagogicalVisitUseCase.execute({
         id: id[0],
       });
 
-      return res.status(200).json({ pegagogicalVisit });
+      return res.status(200).json({ pedagogicalVisit });
     } catch (error) {
       throw error;
     }

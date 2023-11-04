@@ -1,4 +1,5 @@
 import { GoPeople } from 'react-icons/go';
+import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { IoSchoolOutline } from 'react-icons/io5';
 import {
   PiBookBookmarkLight,
@@ -78,6 +79,12 @@ export const sideNavMenuRoutes = (role: RoleEnum) => {
           userCanView: [RoleEnum.ADM_MASTER, RoleEnum.ADM].includes(role),
         },
       ],
+    },
+    {
+      name: 'Relatórios',
+      icon: <HiOutlineDocumentReport size={25} />,
+      route: '/reports',
+      userCanView: true,
     },
   ];
 };

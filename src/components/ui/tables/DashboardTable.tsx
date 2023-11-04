@@ -140,7 +140,7 @@ export const DashBoardTable = ({
                 </>
               ) : null}
             </div>
-            <div className="flex max-w-[120px]  gap-[16px] 2xl:max-w-[180px]">
+            <div className="flex gap-[16px]">
               <div>
                 <SelectThemed
                   control={control}

@@ -1,7 +1,7 @@
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
 
-interface CreatePegagogicalVisitUseCaseRequest {
+interface CreatePedagogicalVisitUseCaseRequest {
   date: Date;
   frequency: number;
   observations: string;
@@ -10,7 +10,7 @@ interface CreatePegagogicalVisitUseCaseRequest {
   coordinatorId: string;
 }
 
-export class CreatePegagogicalVisitUseCase {
+export class CreatePedagogicalVisitUseCase {
   async execute({
     date,
     frequency,
@@ -18,7 +18,7 @@ export class CreatePegagogicalVisitUseCase {
     questions,
     classId,
     coordinatorId,
-  }: CreatePegagogicalVisitUseCaseRequest) {
+  }: CreatePedagogicalVisitUseCaseRequest) {
     const coordinator = await prisma.coordinator.findFirst({
       where: {
         userId: coordinatorId,
@@ -53,7 +53,7 @@ export class CreatePegagogicalVisitUseCase {
       throw new AppError('Essa turma não pertence a essa escola', 400);
     }
 
-    const pegagogicalVisit = await prisma.pegagogicalVisit.create({
+    const pedagogicalVisit = await prisma.pedagogicalVisit.create({
       data: {
         date,
         frequency,
@@ -66,7 +66,7 @@ export class CreatePegagogicalVisitUseCase {
     });
 
     return {
-      pegagogicalVisit,
+      pedagogicalVisit,
     };
   }
 }

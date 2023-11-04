@@ -54,7 +54,7 @@ model School {
   Teacher          Teacher[]
   Student          Student[]
   Classroom        Classroom[]
-  PegagogicalVisit PegagogicalVisit[]
+  PedagogicalVisit PedagogicalVisit[]
 
   @@map("school")
 }
@@ -116,7 +116,7 @@ model Coordinator {
   user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   school           School             @relation(fields: [schoolId], references: [id])
   Teacher          Teacher[]
-  PegagogicalVisit PegagogicalVisit[]
+  PedagogicalVisit PedagogicalVisit[]
 
   @@map("coordinator")
 }
@@ -134,7 +134,7 @@ model Classroom {
   teacher          Teacher?           @relation(fields: [teacherId], references: [id])
   students         Student[]
   Attendance       Attendance[]
-  PegagogicalVisit PegagogicalVisit[]
+  PedagogicalVisit PedagogicalVisit[]
 
   @@map("classroom")
 }
@@ -164,7 +164,7 @@ model Attendance {
   @@map("attendance")
 }
 
-model PegagogicalVisit {
+model PedagogicalVisit {
   id           String   @id @default(uuid())
   date         DateTime @default(now())
   frequency    Int
@@ -179,7 +179,7 @@ model PegagogicalVisit {
   Coodinator Coordinator @relation(fields: [coordinatorId], references: [id])
   School     School      @relation(fields: [schoolId], references: [id])
 
-  @@map("pegagogicalVisit")
+  @@map("pedagogicalVisit")
 }
 
 model Administrator {
