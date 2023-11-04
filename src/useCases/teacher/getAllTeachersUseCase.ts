@@ -76,6 +76,7 @@ export class GetAllTeacherUseCase {
           createdAt: 'desc',
         },
         select: {
+          status: true,
           id: true,
           telephone: true,
           school: {

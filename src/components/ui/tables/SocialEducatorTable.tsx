@@ -12,7 +12,8 @@ import Link from 'next/link';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { BiDownload, BiTrash } from 'react-icons/bi';
+import { AiOutlineBook } from 'react-icons/ai';
+import { BiBlock, BiDownload, BiTrash } from 'react-icons/bi';
 import { FiEye } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
@@ -53,7 +54,13 @@ export const SocialEducatorTable = ({
   const user = useUser();
   const userIsCoordinator = useUserIsCoordinator();
   const [deleteModal, setDeleteModal] = useState(false);
+  const [inativateModal, setInativateModal] = useState(false);
+
   const [socialEducatorId, setSocialEducatorId] = useState('');
+  const [socialEducatorInative, setSocialEducatorInativate] = useState<{
+    status: boolean;
+    teacherId: string;
+  }>({ status: true, teacherId: '' });
 
   const [filtersValues, setFiltersValues] = useState({
     name: '',
@@ -153,15 +160,37 @@ export const SocialEducatorTable = ({
     return (await axiosApi.delete(`/teacher/${id}`)).data;
   };
 
+  const inativateSocialEducator = async (data: {
+    teacherId: string;
+    status: boolean;
+  }) => {
+    const { teacherId, status } = data;
+    return (await axiosApi.put('/teacher/status', { teacherId, status })).data;
+  };
+
   const { mutate } = useMutation('deleteSocialEducator', deleteSocialEducator, {
     onSuccess: () => {
-      toast.success('Professor deletado!');
+      toast.success('Educador Social deletado!');
       refetch();
     },
     onError: () => {
-      toast.error('Algo de arrado aconteceu ao deletar o professor!');
+      toast.error('Algo de arrado aconteceu ao deletar o Educador Social!');
     },
   });
+
+  const { mutate: mutateInativate } = useMutation(
+    'inativateSocialEducator',
+    inativateSocialEducator,
+    {
+      onSuccess: () => {
+        toast.success('Status do Educador Social alterado!');
+        refetch();
+      },
+      onError: () => {
+        toast.error('Algo de arrado aconteceu ao inativar o Educador Social!');
+      },
+    },
+  );
 
   const nameDebounce = useDebounce((value: string) => {
     setPage(1);
@@ -231,11 +260,11 @@ export const SocialEducatorTable = ({
                     onClick={(event) => {
                       handleChangeFilters('schoolPopover', 'schoolId', event);
                     }}
-                  />{' '}
+                  />
                 </>
               ) : null}
               <InputCheckBoxThemed
-                label="Ano / Período"
+                label="Ano/Período"
                 register={register}
                 name="classroomPopover"
                 onClick={(event) => {
@@ -303,12 +332,13 @@ export const SocialEducatorTable = ({
         )}
         {nodes?.nodes && nodes?.nodes.length && !(isLoading || isRefetching) ? (
           <>
-            {' '}
             <div className="hidden 2xl:inline">
               <Table
                 data={nodes}
                 theme={theme}
-                style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 0.4fr' }}
+                style={{
+                  gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 0.4r 0.4fr',
+                }}
               >
                 {(socialEducators: Teacher[]) => (
                   <>
@@ -320,6 +350,7 @@ export const SocialEducatorTable = ({
                         <HeaderCell>Projeto</HeaderCell>
                         <HeaderCell>Escola</HeaderCell>
                         <HeaderCell>Turmas</HeaderCell>
+                        <HeaderCell>Status</HeaderCell>
                         <HeaderCell>Ações</HeaderCell>
                       </HeaderRow>
                     </Header>
@@ -363,7 +394,19 @@ export const SocialEducatorTable = ({
                               </p>
                             ))}
                           </Cell>
-
+                          <Cell className="text-[20px] text-main hover:text-main">
+                            {teacher.status ? (
+                              <div className="flex items-center gap-[8px]">
+                                <p>Ativo</p>
+                                <div className="h-[8px] w-[8px] rounded-full bg-right" />
+                              </div>
+                            ) : (
+                              <div className="flex items-center gap-[8px]">
+                                <p>Inativo</p>
+                                <div className="h-[8px] w-[8px] rounded-full bg-wrong" />
+                              </div>
+                            )}
+                          </Cell>
                           <Cell className="text-center text-main hover:text-main">
                             <div className="flex gap-[8px]">
                               <Link href={`/view/${teacher.id}/socialEducator`}>
@@ -380,6 +423,25 @@ export const SocialEducatorTable = ({
                                   <BiTrash size={20} />
                                 </button>
                               )}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setSocialEducatorInativate({
+                                    status: !teacher.status,
+                                    teacherId: teacher.id,
+                                  });
+                                  setInativateModal(true);
+                                }}
+                              >
+                                <BiBlock size={20} />
+                              </button>
+                              {userIsCoordinator ? (
+                                <Link
+                                  href={`/reports/${teacher.id}/pedagogical-visit`}
+                                >
+                                  <AiOutlineBook size={20} />
+                                </Link>
+                              ) : null}
                             </div>
                           </Cell>
                         </Row>
@@ -446,7 +508,7 @@ export const SocialEducatorTable = ({
                             <p key={`${classroom.year} - ${classroom.period}`}>
                               {classroom.year}º ano - {classroom.period}
                             </p>
-                          ))}{' '}
+                          ))}
                         </p>
                       </div>
                     </div>
@@ -479,6 +541,19 @@ export const SocialEducatorTable = ({
         onConfirm={() => {
           mutate(socialEducatorId);
           setDeleteModal(false);
+        }}
+      />
+      <ConfirmModal
+        isOpen={inativateModal}
+        setOpen={setInativateModal}
+        text={
+          socialEducatorInative.status
+            ? 'Deseja realmente ativar esse professor?'
+            : 'Deseja realmente inativar esse professor?'
+        }
+        onConfirm={() => {
+          mutateInativate(socialEducatorInative);
+          setInativateModal(false);
         }}
       />
     </div>
