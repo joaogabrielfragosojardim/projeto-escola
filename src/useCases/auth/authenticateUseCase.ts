@@ -27,6 +27,20 @@ export class AuthenticateUseCase {
     const user = await prisma.user.findUnique({
       where: {
         email,
+        Teacher: {
+          none: {
+            status: {
+              equals: false,
+            },
+          },
+        },
+        Student: {
+          none: {
+            status: {
+              equals: false,
+            },
+          },
+        },
       },
       select: {
         id: true,
