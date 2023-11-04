@@ -10,6 +10,7 @@ interface GetAllTeacherUseCaseRequest {
   projectId?: string;
   period?: string;
   year?: number;
+  status?: string;
 }
 
 export class GetAllTeacherUseCase {
@@ -22,6 +23,7 @@ export class GetAllTeacherUseCase {
     projectId,
     period,
     year,
+    status,
   }: GetAllTeacherUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
@@ -49,6 +51,9 @@ export class GetAllTeacherUseCase {
         where: {
           schoolId: {
             equals: coordinator?.schoolId || schoolId,
+          },
+          status: {
+            equals: status ? status === 'true' : undefined,
           },
           user: {
             name: { contains: name, mode: 'insensitive' },

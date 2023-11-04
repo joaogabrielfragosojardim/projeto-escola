@@ -4,7 +4,7 @@ export const initialState: SocialEducatorSchoolId = {
   visualIdentity: '',
   name: '',
   email: '',
-  schoolId: '',
+  schoolId: { id: '', value: '' },
   period: '',
   password: '',
   telephone: '',
