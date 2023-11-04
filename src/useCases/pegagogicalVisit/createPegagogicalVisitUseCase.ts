@@ -6,7 +6,6 @@ interface CreatePegagogicalVisitUseCaseRequest {
   frequency: number;
   observations: string;
   questions: Record<string, string>;
-  schoolId: string;
   classId: string;
   coordinatorId: string;
 }
@@ -17,7 +16,6 @@ export class CreatePegagogicalVisitUseCase {
     frequency,
     observations,
     questions,
-    schoolId,
     classId,
     coordinatorId,
   }: CreatePegagogicalVisitUseCaseRequest) {
@@ -31,13 +29,9 @@ export class CreatePegagogicalVisitUseCase {
       throw new AppError('Coordenador não encontrado', 400);
     }
 
-    if (coordinator.schoolId !== schoolId) {
-      throw new AppError('Coordenador não vinculado à mesma escola', 400);
-    }
-
     const school = await prisma.school.findFirst({
       where: {
-        id: schoolId,
+        id: coordinator.schoolId,
       },
     });
 

@@ -11,7 +11,6 @@ export class CreatePegagogicalVisitController {
         frequency: z.number(),
         observations: z.string(),
         questions: z.record(z.any(), z.any()),
-        schoolId: z.string().uuid(),
         classId: z.string().uuid(),
         coordinatorId: z.string().uuid(),
       });
@@ -23,7 +22,6 @@ export class CreatePegagogicalVisitController {
         questions,
         classId,
         coordinatorId,
-        schoolId,
       } = createBodySchema.parse(req.body);
 
       const createPegagogicalVisitUseCase = new CreatePegagogicalVisitUseCase();
@@ -35,7 +33,6 @@ export class CreatePegagogicalVisitController {
         questions,
         classId,
         coordinatorId,
-        schoolId,
       });
 
       return res.status(201).json(pegagogicalVisit);
