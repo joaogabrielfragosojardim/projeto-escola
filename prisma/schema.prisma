@@ -80,10 +80,11 @@ model Student {
   classId   String
   status    Boolean  @default(true)
 
-  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  school     School       @relation(fields: [schoolId], references: [id])
-  Classroom  Classroom    @relation(fields: [classId], references: [id])
-  Attendance Attendance[]
+  user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  school             School               @relation(fields: [schoolId], references: [id])
+  Classroom          Classroom            @relation(fields: [classId], references: [id])
+  Attendance         Attendance[]
+  LearningMonitoring LearningMonitoring[]
 
   @@map("student")
 }
@@ -98,10 +99,11 @@ model Teacher {
   userId        String
   coordinatorId String
 
-  school      School      @relation(fields: [schoolId], references: [id])
-  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  coordinator Coordinator @relation(fields: [coordinatorId], references: [id])
-  Classroom   Classroom[]
+  school             School               @relation(fields: [schoolId], references: [id])
+  user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coordinator        Coordinator          @relation(fields: [coordinatorId], references: [id])
+  Classroom          Classroom[]
+  LearningMonitoring LearningMonitoring[]
 
   @@map("teacher")
 }
@@ -130,11 +132,12 @@ model Classroom {
   schoolId  String
   teacherId String?
 
-  school           School             @relation(fields: [schoolId], references: [id])
-  teacher          Teacher?           @relation(fields: [teacherId], references: [id])
-  students         Student[]
-  Attendance       Attendance[]
-  PegagogicalVisit PegagogicalVisit[]
+  school             School               @relation(fields: [schoolId], references: [id])
+  teacher            Teacher?             @relation(fields: [teacherId], references: [id])
+  students           Student[]
+  Attendance         Attendance[]
+  PegagogicalVisit   PegagogicalVisit[]
+  LearningMonitoring LearningMonitoring[]
 
   @@map("classroom")
 }
@@ -190,4 +193,20 @@ model Administrator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("administrator")
+}
+
+model LearningMonitoring {
+  id           String @id @default(uuid())
+  questions    Json
+  writingLevel String
+
+  studentId   String
+  classroomId String
+  teacherId   String
+
+  student   Student   @relation(fields: [studentId], references: [id])
+  classroom Classroom @relation(fields: [classroomId], references: [id])
+  teacher   Teacher   @relation(fields: [teacherId], references: [id])
+
+  @@map("learningMonitoring")
 }
