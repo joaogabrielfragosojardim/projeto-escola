@@ -11,17 +11,21 @@ datasource db {
 }
 
 model User {
-  id             String          @id @default(uuid())
+  id             String  @id @default(uuid())
   name           String
-  email          String          @unique
+  email          String  @unique
   visualIdentity String?
   password       String
   roleId         String
-  role           Role            @relation(fields: [roleId], references: [id])
-  Student        Student[]
-  Teacher        Teacher[]
-  Coordinator    Coordinator[]
-  Administrator  Administrator[]
+
+  passwordToken       String?   @unique
+  passwordExpiresDate DateTime?
+
+  role          Role            @relation(fields: [roleId], references: [id])
+  Student       Student[]
+  Teacher       Teacher[]
+  Coordinator   Coordinator[]
+  Administrator Administrator[]
 
   @@map("user")
 }
@@ -86,7 +90,7 @@ model Student {
 
 model Teacher {
   id        String   @id @default(uuid())
-  telephone String
+  telephone String   @unique
   createdAt DateTime @default(now())
   status    Boolean  @default(true)
 
@@ -105,7 +109,7 @@ model Teacher {
 model Coordinator {
   id        String   @id @default(uuid())
   userId    String
-  telephone String
+  telephone String   @unique
   createdAt DateTime @default(now())
   schoolId  String
 
