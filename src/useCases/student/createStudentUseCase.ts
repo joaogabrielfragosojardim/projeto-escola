@@ -1,3 +1,5 @@
+import { hash } from 'bcryptjs';
+
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
 
@@ -41,11 +43,13 @@ export class CreateStudentUseCase {
       throw new AppError('Email já cadastrado', 400);
     }
 
+    const passwordHash = await hash(password, 6);
+
     const user = await prisma.user.create({
       data: {
         name,
         email,
-        password,
+        password: passwordHash,
         roleId: studentRole.id,
         visualIdentity,
       },
