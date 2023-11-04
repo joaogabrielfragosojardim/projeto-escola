@@ -24,7 +24,6 @@ import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useTableTheme } from '@/hooks/useTableTheme';
 import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
-import { useUserIsTeacher } from '@/hooks/useUserIsTeacher';
 import { useUser } from '@/store/user/context';
 import type { Student } from '@/types/student';
 
@@ -52,7 +51,6 @@ export const StudentTable = ({
   const theme = useTableTheme();
   const user = useUser();
   const userIsCoordinator = useUserIsCoordinator();
-  const userIsTeacher = useUserIsTeacher();
   const [deleteModal, setDeleteModal] = useState(false);
   const [studentId, setStudentId] = useState('');
 
@@ -140,15 +138,14 @@ export const StudentTable = ({
     return data;
   };
 
-  const {
-    isLoading,
-    data: students,
-    refetch,
-    isRefetching,
-  } = useQuery('students', fetchStudents, {
-    refetchOnWindowFocus: false,
-  });
-  const nodes = { nodes: students?.data };
+  const { isLoading, data, refetch, isRefetching } = useQuery(
+    'students',
+    fetchStudents,
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
+  const nodes = { nodes: data?.data };
 
   const deleteStudent = async (id: string) => {
     return (await axiosApi.delete(`/student/${id}`)).data;
@@ -174,8 +171,8 @@ export const StudentTable = ({
   }, [filtersValues, page, refetch]);
 
   useEffect(() => {
-    setTotalPages(students?.meta.totalPage);
-  }, [students, setTotalPages]);
+    setTotalPages(data?.meta.totalPage);
+  }, [data, setTotalPages]);
 
   const handleChangeFilters = (name: string, valueName: string, event: any) => {
     setFilters((prev) => ({
@@ -198,7 +195,7 @@ export const StudentTable = ({
           <Popover
             triggerElement={
               <button
-                disabled={isLoading || isRefetching || !students?.data.length}
+                disabled={isLoading || isRefetching || !data?.data.length}
                 type="button"
                 className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
               >
@@ -245,7 +242,7 @@ export const StudentTable = ({
             triggerElement={
               <button
                 type="button"
-                disabled={isLoading || isRefetching || !students?.data.length}
+                disabled={isLoading || isRefetching || !data?.data.length}
                 className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
               >
                 Gerar Relatório <IoIosArrowDown size={20} />
@@ -376,7 +373,7 @@ export const StudentTable = ({
             )}
           </Table>
         ) : null}
-        {!!students && !students?.data.length ? (
+        {!!data && !data?.data.length ? (
           <div className="p-[44px]">
             <div className="relative mx-auto h-[370px] w-[313px]">
               <Image

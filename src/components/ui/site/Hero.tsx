@@ -15,7 +15,7 @@ const partners = [
 export const Hero = () => {
   return (
     <>
-      <div className="hidden bg-right bg-[url('/assets/images/hero-image.png')] bg-no-repeat p-[24px] xl:block">
+      <div className="hidden bg-[url('/assets/images/hero-image.png')] bg-right bg-no-repeat p-[24px] xl:block">
         <div className="mx-auto max-w-[1194px]">
           <div className="relative h-[55px] w-[155px]">
             <Image
@@ -67,7 +67,7 @@ export const Hero = () => {
         </div>
       </div>
       <div className="mt-[62px] xl:hidden">
-        <div className="relative flex h-[134px] w-full items-center bg-right bg-[url('/assets/images/hero-image.png')] bg-cover bg-no-repeat px-[20px]">
+        <div className="relative flex h-[134px] w-full items-center bg-[url('/assets/images/hero-image.png')] bg-cover bg-right bg-no-repeat px-[20px]">
           <div className="relative h-[40px] w-[98px]">
             <Image
               src="/assets/images/educar-para-libertar-logo.png"
