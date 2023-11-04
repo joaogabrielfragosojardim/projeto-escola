@@ -232,7 +232,7 @@ export const StudentTable = ({
                 }}
               />
               <InputCheckBoxThemed
-                label="Ano / Período"
+                label="Ano/Período"
                 register={register}
                 name="classroomPopover"
                 onClick={(event) => {

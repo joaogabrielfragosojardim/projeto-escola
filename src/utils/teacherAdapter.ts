@@ -1,5 +1,6 @@
 export interface TeacherQuery {
   id: string;
+  status: boolean;
   telephone: string;
   school: School;
   Classroom: Classroom[];
@@ -31,6 +32,7 @@ export interface User {
 
 export interface Teacher {
   id: string;
+  status: boolean;
   visualIdentity: string | null;
   email: string;
   name: string;
@@ -46,6 +48,7 @@ export interface Teacher {
 export function toTeachers(teachers: TeacherQuery[]): Teacher[] {
   return teachers.map((teacher) => ({
     id: teacher.id,
+    status: teacher.status,
     name: teacher.user.name,
     visualIdentity: teacher.user.visualIdentity,
     email: teacher.user.email,
