@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import type { HttpMethod } from '@/components/api/RouteHandler';
 import { RouteHandler } from '@/components/api/RouteHandler';
-import { GetOnePegagogicalVisitController } from '@/controllers/pegagogicalVisit';
+import { GetOnePedagogicalVisitController } from '@/controllers/pedagogicalVisit';
 import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
@@ -23,8 +23,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const getOnePegagogicalVisitController =
-    new GetOnePegagogicalVisitController();
+  const getOnePedagogicalVisitController =
+    new GetOnePedagogicalVisitController();
 
   const method = req.method as HttpMethod;
 
@@ -32,7 +32,7 @@ export default async function handler(
     req,
     res,
     {
-      GET: getOnePegagogicalVisitController.handle,
+      GET: getOnePedagogicalVisitController.handle,
     },
     authMethods[method],
     permissionMethods[method],

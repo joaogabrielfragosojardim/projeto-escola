@@ -1,5 +1,6 @@
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
+import { toTeacher } from '@/utils/teacherAdapter';
 
 interface GetOneTeacherUseCaseRequest {
   id: string | undefined;
@@ -14,11 +15,25 @@ export class GetOneTeacherUseCase {
       select: {
         id: true,
         telephone: true,
-        school: { select: { id: true, name: true } },
+        status: true,
+        school: {
+          select: {
+            id: true,
+            name: true,
+            project: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        Classroom: { select: { id: true, period: true, year: true } },
         user: {
           select: {
             email: true,
             name: true,
+            visualIdentity: true,
           },
         },
       },
@@ -29,7 +44,7 @@ export class GetOneTeacherUseCase {
     }
 
     return {
-      teacher,
+      teacher: toTeacher(teacher),
     };
   }
 }

@@ -64,3 +64,23 @@ export function toTeachers(teachers: TeacherQuery[]): Teacher[] {
     classrooms: teacher.Classroom,
   }));
 }
+
+export function toTeacher(teacher: TeacherQuery): Teacher {
+  return {
+    id: teacher.id,
+    status: teacher.status,
+    name: teacher.user.name,
+    visualIdentity: teacher.user.visualIdentity,
+    email: teacher.user.email,
+    telephone: teacher.telephone,
+    project: {
+      id: teacher.school.project.id,
+      name: teacher.school.project.name,
+    },
+    school: {
+      id: teacher.school.id,
+      name: teacher.school.name,
+    },
+    classrooms: teacher.Classroom,
+  };
+}

@@ -1,13 +1,13 @@
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
 
-interface GetOnePegagogicalVisitUseCaseRequest {
+interface GetOnePedagogicalVisitUseCaseRequest {
   id: string | undefined;
 }
 
-export class GetOnePegagogicalVisitUseCase {
-  async execute({ id }: GetOnePegagogicalVisitUseCaseRequest) {
-    const pegagogicalVisit = await prisma.pegagogicalVisit.findUnique({
+export class GetOnePedagogicalVisitUseCase {
+  async execute({ id }: GetOnePedagogicalVisitUseCaseRequest) {
+    const pedagogicalVisit = await prisma.pedagogicalVisit.findUnique({
       where: {
         id,
       },
@@ -18,12 +18,12 @@ export class GetOnePegagogicalVisitUseCase {
       },
     });
 
-    if (!pegagogicalVisit) {
+    if (!pedagogicalVisit) {
       throw new AppError('Visita pedagógica não encontrada', 400);
     }
 
     return {
-      pegagogicalVisit,
+      pedagogicalVisit,
     };
   }
 }
