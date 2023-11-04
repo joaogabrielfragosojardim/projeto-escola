@@ -436,7 +436,9 @@ export const SocialEducatorTable = ({
                                 <BiBlock size={20} />
                               </button>
                               {userIsCoordinator ? (
-                                <Link href="/">
+                                <Link
+                                  href={`/reports/${teacher.id}/pedagogical-visit`}
+                                >
                                   <AiOutlineBook size={20} />
                                 </Link>
                               ) : null}
