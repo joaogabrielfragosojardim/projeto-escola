@@ -14,11 +14,12 @@ export class GetAllTeacherController {
         projectId: z.string().uuid().optional(),
         period: z.enum(['Matutino', 'Vespertino', 'Noturno']).optional(),
         year: z.coerce.number().optional(),
+        status: z.string().optional(),
       });
 
       const { userId } = req;
 
-      const { page, perPage, name, period, year, projectId, schoolId } =
+      const { page, perPage, name, period, year, projectId, schoolId, status } =
         getAllQuerySchema.parse(req.query);
 
       const getAllTeacherUseCase = new GetAllTeacherUseCase();
@@ -32,6 +33,7 @@ export class GetAllTeacherController {
         year,
         projectId,
         schoolId,
+        status,
       });
 
       return res.status(200).json({ data, meta });

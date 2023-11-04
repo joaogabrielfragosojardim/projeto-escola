@@ -21,7 +21,7 @@ export const theme = {
       200: '#4D4D4D',
     },
     wrong: '#AB2727',
-    right: '#439841',
+    correct: '#439841',
   },
   extend: {
     fontFamily: {

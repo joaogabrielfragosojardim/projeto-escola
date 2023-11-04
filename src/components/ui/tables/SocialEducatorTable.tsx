@@ -36,6 +36,7 @@ import { Popover } from '../Popover';
 import { PeriodSelect } from './Selects/PeriodSelect';
 import { ProjectSelect } from './Selects/ProjectSelect';
 import { SchoolSelect } from './Selects/SchoolSelect';
+import { StatusSelect } from './Selects/StatusSelect';
 import { YearSelect } from './Selects/YearSelect';
 
 export const SocialEducatorTable = ({
@@ -68,6 +69,7 @@ export const SocialEducatorTable = ({
     schoolId: '',
     year: '',
     period: '',
+    status: undefined,
   });
 
   const [filters, setFilters] = useState<{
@@ -109,6 +111,17 @@ export const SocialEducatorTable = ({
       ),
       view: false,
     },
+    statusPopover: {
+      element: (
+        <StatusSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
     classroomPopover: {
       element: (
         <div className="flex w-full items-center gap-[16px]">
@@ -141,6 +154,7 @@ export const SocialEducatorTable = ({
         schoolId: filtersValues.schoolId || null,
         year: filtersValues.year || null,
         period: filtersValues.period || null,
+        status: filtersValues.status,
       },
     });
     return data;
@@ -243,6 +257,14 @@ export const SocialEducatorTable = ({
                   handleChangeFilters('namePopover', 'name', event);
                 }}
               />
+              <InputCheckBoxThemed
+                label="Status"
+                register={register}
+                name="statusPopover"
+                onClick={(event) => {
+                  handleChangeFilters('statusPopover', 'status', event);
+                }}
+              />
               {!userIsCoordinator ? (
                 <>
                   <InputCheckBoxThemed
@@ -291,6 +313,7 @@ export const SocialEducatorTable = ({
                 createCSV(
                   teachers?.data.map((item: Teacher) => ({
                     name: item.name,
+                    status: item.status,
                     email: item.email,
                     telephone: item.telephone,
                     project: item.project.name,
@@ -302,7 +325,15 @@ export const SocialEducatorTable = ({
                       )
                       .join('/'),
                   })),
-                  ['Nome', 'Email', 'Telefone', 'Projeto', 'Escola', 'Turmas'],
+                  [
+                    'Nome',
+                    'Email',
+                    'Status',
+                    'Telefone',
+                    'Projeto',
+                    'Escola',
+                    'Turmas',
+                  ],
                   'relatorioEducadorSocial',
                 )
               }
@@ -398,7 +429,7 @@ export const SocialEducatorTable = ({
                             {teacher.status ? (
                               <div className="flex items-center gap-[8px]">
                                 <p>Ativo</p>
-                                <div className="h-[8px] w-[8px] rounded-full bg-right" />
+                                <div className="h-[8px] w-[8px] rounded-full bg-correct" />
                               </div>
                             ) : (
                               <div className="flex items-center gap-[8px]">
