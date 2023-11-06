@@ -24,7 +24,7 @@ export const sideNavMenuRoutes = (role: RoleEnum) => {
     {
       name: 'Perfil',
       icon: <RxPerson size={25} />,
-      route: '/dashboard/profile',
+      route: '/profile',
       userCanView: true,
     },
     {

@@ -215,7 +215,13 @@ const SocialEducatorSecondStep = ({
           register={register}
           name="password"
           error={errors.password}
-          validations={{ required: 'Campo obrigatório' }}
+          validations={{
+            required: 'Campo obrigatório',
+            minLength: {
+              value: 6,
+              message: 'a senha deve conter no mínimo 6 caracteres',
+            },
+          }}
         />
 
         <div className="mt-[16px]">
@@ -272,7 +278,7 @@ const SocialEducatorSecondStep = ({
                 <TbLoader size={24} />
               </div>
             ) : (
-              'Cadastrar Professor'
+              'Cadastrar Educador Social'
             )}
           </button>
         </div>

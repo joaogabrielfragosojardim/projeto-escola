@@ -80,17 +80,17 @@ export const PedagogicalVisitTable = ({
     },
   });
 
-  const fetchAdms = async () => {
+  const fetchPedagogicalVisit = async () => {
     return (
-      await axiosApi.get('/adm', {
+      await axiosApi.get('/pedagogicalVisit', {
         params: { page, name: filtersValues.name || null, perPage },
       })
     ).data;
   };
 
   const { isLoading, data, refetch, isRefetching } = useQuery(
-    'fetchAllAdmsQuery',
-    fetchAdms,
+    'fetchAllPedagogicalVisit',
+    fetchPedagogicalVisit,
     { refetchOnWindowFocus: false },
   );
   const nodes = { nodes: data?.data };

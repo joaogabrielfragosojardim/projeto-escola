@@ -39,6 +39,7 @@ export const Header = ({ title }: { title: string }) => {
               <Image
                 alt="imagem de usuario"
                 fill
+                objectFit="cover"
                 src={
                   user?.visualIdentity || '/assets/images/default-profile.png'
                 }

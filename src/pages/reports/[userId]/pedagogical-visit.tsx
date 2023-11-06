@@ -98,8 +98,12 @@ const PedagogicalVisit = ({
               />
               <InputCheckBoxThemed
                 register={register}
-                name="s"
-                label="O ritmo das orientações é adequado para atender aos estudantes que apresentam mais dificuldades?"
+                name={
+                  PedagogicalVisitEnumQuestions.oRitmosDasOrientacoesEAdequadoParaAtenderAosEstudantesQueApresentamMaisDificuldades
+                }
+                label={
+                  PedagogicalVisitEnumLabels.oRitmosDasOrientacoesEAdequadoParaAtenderAosEstudantesQueApresentamMaisDificuldades
+                }
               />
             </div>
           </div>

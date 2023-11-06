@@ -466,7 +466,7 @@ export const SocialEducatorTable = ({
                               >
                                 <BiBlock size={20} />
                               </button>
-                              {userIsCoordinator ? (
+                              {userIsCoordinator && teacher.status ? (
                                 <Link
                                   href={`/reports/${teacher.id}/pedagogical-visit`}
                                 >

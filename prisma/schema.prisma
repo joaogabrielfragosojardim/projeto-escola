@@ -179,7 +179,7 @@ model PedagogicalVisit {
   classId       String
 
   Classroom  Classroom   @relation(fields: [classId], references: [id])
-  Coodinator Coordinator @relation(fields: [coordinatorId], references: [id])
+  Coordinator Coordinator @relation(fields: [coordinatorId], references: [id])
   School     School      @relation(fields: [schoolId], references: [id])
 
   @@map("pedagogicalVisit")

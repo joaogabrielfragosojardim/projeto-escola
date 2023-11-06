@@ -1,38 +1,52 @@
 import { prisma } from '@/lib/prisma';
+import { toPedagogicalVisits } from '@/utils/pedagogicalVisitAdapter';
 
-interface GetAllProjectsUseCaseRequest {
+interface GetAllPedagogicalVisitUseCaseRequest {
   perPage: number;
   page: number;
   name?: string;
 }
 
-export class GetAllProjectsUseCase {
-  async execute({ page, perPage, name }: GetAllProjectsUseCaseRequest) {
+export class GetAllPedagogicalVisitsUseCase {
+  async execute({ page, perPage }: GetAllPedagogicalVisitUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
 
-    const [projects, total] = await prisma.$transaction([
-      prisma.project.findMany({
+    const [pedagogicalVisit, total] = await prisma.$transaction([
+      prisma.pedagogicalVisit.findMany({
         orderBy: {
-          createdAt: 'desc',
+          date: 'desc',
+        },
+        select: {
+          date: true,
+          Classroom: {
+            select: {
+              teacher: {
+                select: {
+                  user: true,
+                },
+              },
+              year: true,
+              period: true,
+              id: true,
+            },
+          },
+          Coordinator: {
+            select: {
+              user: true,
+            },
+          },
         },
         skip,
         take,
-        where: {
-          name: { contains: name, mode: 'insensitive' },
-        },
       }),
-      prisma.project.count({
-        where: {
-          name: { contains: name, mode: 'insensitive' },
-        },
-      }),
+      prisma.pedagogicalVisit.count({}),
     ]);
 
     const totalPage = Math.ceil(total / take);
 
     return {
-      data: projects,
+      data: toPedagogicalVisits(pedagogicalVisit),
       meta: {
         page,
         totalPage,
