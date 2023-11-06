@@ -35,3 +35,21 @@ export enum PedagogicalVisitEnumQuestions {
   frequency = 'frequency',
   observations = 'observations',
 }
+
+export interface PedagogicalVisit {
+  id: string;
+  date: Date;
+  teacher: {
+    id: string;
+    name: string;
+  };
+  coordinator: {
+    id: string;
+    name: string;
+  };
+  classroom: {
+    id: string;
+    year: number;
+    period: string;
+  };
+}

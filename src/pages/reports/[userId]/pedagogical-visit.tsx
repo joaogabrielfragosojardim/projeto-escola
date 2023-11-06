@@ -37,6 +37,9 @@ const PedagogicalVisit = ({
   >();
   const user = useUser();
 
+  const maxDate = new Date();
+  maxDate.setHours(maxDate.getHours() - 3);
+
   const createPedagogicalVisit = async (data: any): Promise<any> => {
     return (await axiosApi.post('/pedagogicalVisit', data)).data;
   };
@@ -256,7 +259,7 @@ const PedagogicalVisit = ({
             name="date"
             label="Data"
             type="date"
-            max={new Date().toISOString().split('T')[0]}
+            max={maxDate.toISOString().split('T')[0]}
             validations={{ required: 'Campo obrigatório' }}
             error={errors.date}
           />
@@ -293,8 +296,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       const { data } = await axiosApi.get(`/teacher/${ctx?.params?.userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      console.log(data?.teacher?.classrooms);
 
       const classrooms = data?.teacher?.classrooms.map(
         (item: { id: string; year: number; period: number }) => ({

@@ -11,6 +11,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
+import { DateRange } from 'react-date-range';
 import { useForm } from 'react-hook-form';
 import { BiDownload, BiTrash } from 'react-icons/bi';
 import { FiEye } from 'react-icons/fi';
@@ -24,11 +25,11 @@ import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useTableTheme } from '@/hooks/useTableTheme';
 import type { ADM } from '@/types/adm';
+import type { PedagogicalVisit } from '@/types/pedagogicalVisit';
 import { createCSV } from '@/utils/createCSV';
 
 import { ConfirmModal } from '../ConfirmModal';
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
-import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
 
 export const PedagogicalVisitTable = ({
@@ -51,15 +52,21 @@ export const PedagogicalVisitTable = ({
   const [filters, setFilters] = useState<{
     [key: string]: { element: ReactNode; view: boolean };
   }>({
-    namePopover: {
+    datePopopver: {
       element: (
-        <InputThemed
-          register={register}
-          name="name"
-          label="Nome do adm"
-          onChange={(event) => {
-            nameDebounce(event.target.value);
+        <DateRange
+          ranges={[
+            {
+              startDate: new Date(),
+              endDate: new Date(),
+              key: 'selection',
+            },
+          ]}
+          onChange={(e) => {
+            console.log(e);
           }}
+          editableDateInputs
+          moveRangeOnFirstSelection={false}
         />
       ),
       view: false,
@@ -138,9 +145,9 @@ export const PedagogicalVisitTable = ({
               <InputCheckBoxThemed
                 label="Nome"
                 register={register}
-                name="namePopover"
+                name="datePopopver"
                 onClick={(event) => {
-                  handleChangeFilters('namePopover', event);
+                  handleChangeFilters('datePopopver', event);
                 }}
               />
             </form>
@@ -199,57 +206,59 @@ export const PedagogicalVisitTable = ({
               <Table
                 data={nodes}
                 theme={theme}
-                style={{ gridTemplateColumns: '1fr 2fr 0.4fr' }}
+                style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 0.4fr' }}
               >
-                {(tableList: ADM[]) => (
+                {(tableList: PedagogicalVisit[]) => (
                   <>
                     <Header>
                       <HeaderRow>
-                        <HeaderCell>Nome</HeaderCell>
-                        <HeaderCell>Email</HeaderCell>
+                        <HeaderCell>Data</HeaderCell>
+                        <HeaderCell>Coordenador</HeaderCell>
+                        <HeaderCell>Professor</HeaderCell>
+                        <HeaderCell>Turma</HeaderCell>
                         <HeaderCell>Ações</HeaderCell>
                       </HeaderRow>
                     </Header>
                     <Body>
-                      {tableList.map((adm) => (
-                        <Row key={adm.id} item={adm}>
-                          <Cell className="text-main hover:text-main">
-                            <div className="flex items-center gap-[16px] text-[20px]">
-                              <div className="relative h-[62px] w-[62px] min-w-[62px] overflow-hidden rounded-full">
-                                <Image
-                                  src={
-                                    adm?.visualIdentity ||
-                                    '/assets/images/default-profile.png'
-                                  }
-                                  alt="Foto do adm"
-                                  fill
-                                  className="object-cover"
-                                />
+                      {tableList.map((pedagogicalVisit) => {
+                        const date = new Date(pedagogicalVisit.date);
+                        date.setHours(date.getHours() + 3);
+                        return (
+                          <Row
+                            key={pedagogicalVisit.id}
+                            item={pedagogicalVisit}
+                          >
+                            <Cell className="text-[20px] text-main hover:text-main">
+                              {date.toLocaleDateString()}
+                            </Cell>
+                            <Cell className="text-[20px] text-main hover:text-main">
+                              {pedagogicalVisit.coordinator.name}
+                            </Cell>
+                            <Cell className="text-[20px] text-main hover:text-main">
+                              {pedagogicalVisit.teacher.name}
+                            </Cell>
+                            <Cell className="text-[20px] text-main hover:text-main">
+                              {`${pedagogicalVisit.classroom.year}º - ${pedagogicalVisit.classroom.period}`}
+                            </Cell>
+                            <Cell className="text-center text-main hover:text-main">
+                              <div className="flex gap-[8px]">
+                                <Link href={`/view/${pedagogicalVisit.id}/adm`}>
+                                  <FiEye size={20} />
+                                </Link>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setAdmToDelete(pedagogicalVisit.id);
+                                    setDeleteModal(true);
+                                  }}
+                                >
+                                  <BiTrash size={20} />
+                                </button>
                               </div>
-                              {adm.name}
-                            </div>
-                          </Cell>
-                          <Cell className="text-[20px] text-main hover:text-main">
-                            {adm.email}
-                          </Cell>
-                          <Cell className="text-center text-main hover:text-main">
-                            <div className="flex gap-[8px]">
-                              <Link href={`/view/${adm.id}/adm`}>
-                                <FiEye size={20} />
-                              </Link>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setAdmToDelete(adm.id);
-                                  setDeleteModal(true);
-                                }}
-                              >
-                                <BiTrash size={20} />
-                              </button>
-                            </div>
-                          </Cell>
-                        </Row>
-                      ))}
+                            </Cell>
+                          </Row>
+                        );
+                      })}
                     </Body>
                   </>
                 )}

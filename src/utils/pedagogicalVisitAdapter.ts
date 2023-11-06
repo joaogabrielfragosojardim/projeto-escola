@@ -1,4 +1,5 @@
 interface PedagogicalVisit {
+  id: string;
   date: Date;
   Classroom: { teacher: User | null; year: number; period: string; id: string };
   Coordinator: User | null;
@@ -7,14 +8,22 @@ interface PedagogicalVisit {
 interface User {
   user: {
     name: string;
+    id: string;
   };
 }
 
 export const toPedagogicalVisits = (data: PedagogicalVisit[]) => {
   return data.map((item) => ({
+    id: item.id,
     date: item.date,
-    teacher: item?.Classroom?.teacher?.user.name,
-    coordinator: item?.Coordinator?.user.name,
+    teacher: {
+      name: item?.Classroom?.teacher?.user.name,
+      id: item?.Classroom?.teacher?.user.id,
+    },
+    coordinator: {
+      name: item?.Coordinator?.user.name,
+      id: item?.Coordinator?.user.id,
+    },
     classroom: {
       year: item.Classroom.year,
       period: item.Classroom.period,

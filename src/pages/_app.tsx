@@ -1,6 +1,8 @@
 import '@/styles/global.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'swiper/css';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 
 import type { AppProps } from 'next/app';
 import Head from 'next/head';

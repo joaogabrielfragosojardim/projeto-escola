@@ -19,6 +19,7 @@ export class GetAllPedagogicalVisitsUseCase {
         },
         select: {
           date: true,
+          id: true,
           Classroom: {
             select: {
               teacher: {
