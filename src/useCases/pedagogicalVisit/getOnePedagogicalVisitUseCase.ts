@@ -14,7 +14,7 @@ export class GetOnePedagogicalVisitUseCase {
       include: {
         School: true,
         Classroom: true,
-        Coodinator: true,
+        Coordinator: true,
       },
     });
 

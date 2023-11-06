@@ -13,14 +13,11 @@ export class EditTeacherController {
       const editBodySchema = z.object({
         schoolId: z.string().uuid(),
         telephone: z.string(),
-        coordinatorId: z.string().uuid(),
         name: z.string(),
       });
 
       const { id } = editQuerySchema.parse(req.query);
-      const { schoolId, telephone, name, coordinatorId } = editBodySchema.parse(
-        req.body,
-      );
+      const { schoolId, telephone, name } = editBodySchema.parse(req.body);
 
       const editTeacherUseCase = new EditTeacherUseCase();
 
@@ -29,7 +26,6 @@ export class EditTeacherController {
         schoolId,
         telephone,
         name,
-        coordinatorId,
       });
 
       return res.status(200).json({ teacher });

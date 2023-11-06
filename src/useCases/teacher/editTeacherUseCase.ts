@@ -5,37 +5,41 @@ interface EditTeacherUseCaseRequest {
   id: string | undefined;
   schoolId: string;
   telephone: string;
-  coordinatorId: string;
+
   name: string;
 }
 
 export class EditTeacherUseCase {
-  async execute({
-    id,
-    name,
-    schoolId,
-    telephone,
-    coordinatorId,
-  }: EditTeacherUseCaseRequest) {
-    const coordinator = await prisma.coordinator.findUnique({
+  async execute({ id, name, schoolId, telephone }: EditTeacherUseCaseRequest) {
+    const school = await prisma.school.findUnique({
       where: {
-        id: coordinatorId,
+        id: schoolId,
       },
       select: {
-        schoolId: true,
+        id: true,
       },
     });
 
-    if (!coordinator || coordinator.schoolId !== schoolId) {
-      throw new AppError('Coordenador não vinculado à mesma escola', 400);
+    if (!school) {
+      throw new AppError('Escola não encontrada', 400);
+    }
+
+    const coordinator = await prisma.coordinator.findFirst({
+      where: {
+        schoolId: school.id,
+      },
+    });
+
+    if (!coordinator) {
+      throw new AppError('Escola enviada não possui coordenador', 400);
     }
 
     const teacher = await prisma.teacher.update({
       where: { id },
       data: {
-        schoolId,
+        schoolId: school.id,
         telephone,
-        coordinatorId,
+        coordinatorId: coordinator.id,
       },
       select: {
         id: true,
