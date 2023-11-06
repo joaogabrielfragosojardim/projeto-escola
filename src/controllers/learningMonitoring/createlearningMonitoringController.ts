@@ -1,0 +1,35 @@
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { z } from 'zod';
+
+import { CreateLearningMonitoringUseCase } from '@/useCases/learningMonitoring';
+
+export class CreateLearningMonitoringController {
+  async handle(req: NextApiRequest, res: NextApiResponse) {
+    try {
+      const createBodySchema = z.object({
+        writingLevel: z.string(),
+        questions: z.record(z.any(), z.any()),
+        studentId: z.string().uuid(),
+      });
+
+      const { writingLevel, questions, studentId } = createBodySchema.parse(
+        req.body,
+      );
+
+      const createLearningMonitoringUseCase =
+        new CreateLearningMonitoringUseCase();
+
+      const { learningMonitor } = await createLearningMonitoringUseCase.execute(
+        {
+          writingLevel,
+          questions,
+          studentId,
+        },
+      );
+
+      return res.status(201).json(learningMonitor);
+    } catch (error) {
+      throw error;
+    }
+  }
+}
