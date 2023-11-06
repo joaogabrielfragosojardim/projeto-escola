@@ -4,11 +4,25 @@ import { toPedagogicalVisits } from '@/utils/pedagogicalVisitAdapter';
 interface GetAllPedagogicalVisitUseCaseRequest {
   perPage: number;
   page: number;
-  name?: string;
+  startDate?: Date;
+  finalDate?: Date;
+  coordinatorId?: string;
+  teacherId?: string;
+  period?: string;
+  year?: number;
 }
 
 export class GetAllPedagogicalVisitsUseCase {
-  async execute({ page, perPage }: GetAllPedagogicalVisitUseCaseRequest) {
+  async execute({
+    page,
+    perPage,
+    coordinatorId,
+    teacherId,
+    finalDate,
+    startDate,
+    year,
+    period,
+  }: GetAllPedagogicalVisitUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
 
@@ -16,6 +30,26 @@ export class GetAllPedagogicalVisitsUseCase {
       prisma.pedagogicalVisit.findMany({
         orderBy: {
           date: 'desc',
+        },
+        where: {
+          date: {
+            gte: startDate,
+            lte: finalDate,
+          },
+          coordinatorId: {
+            equals: coordinatorId,
+          },
+          Classroom: {
+            teacherId: {
+              equals: teacherId,
+            },
+            period: {
+              equals: period,
+            },
+            year: {
+              equals: year,
+            },
+          },
         },
         select: {
           date: true,
