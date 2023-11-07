@@ -14,7 +14,12 @@ export class OptionsTeacherController {
 
       const optionsTeacherUseCase = new OptionsTeacherUseCase();
 
-      const { options } = await optionsTeacherUseCase.execute({ schoolId });
+      const { userId } = req;
+
+      const { options } = await optionsTeacherUseCase.execute({
+        schoolId,
+        userId,
+      });
 
       return res.status(200).json({ options });
     } catch (error) {

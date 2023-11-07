@@ -2,10 +2,17 @@ import { prisma } from '@/lib/prisma';
 
 interface OptionsTeacherUseCaseRequest {
   schoolId?: string;
+  userId: string;
 }
 
 export class OptionsTeacherUseCase {
-  async execute({ schoolId }: OptionsTeacherUseCaseRequest) {
+  async execute({ schoolId, userId }: OptionsTeacherUseCaseRequest) {
+    const coordinator = await prisma.coordinator.findFirst({
+      where: {
+        userId,
+      },
+    });
+
     const teachers = await prisma.teacher.findMany({
       select: {
         id: true,
@@ -17,6 +24,7 @@ export class OptionsTeacherUseCase {
       },
       where: {
         schoolId: { equals: schoolId },
+        coordinatorId: { equals: coordinator?.id },
       },
     });
 
