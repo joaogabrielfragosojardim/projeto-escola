@@ -364,20 +364,13 @@ export const SocialEducatorTable = ({
         {nodes?.nodes && nodes?.nodes.length && !(isLoading || isRefetching) ? (
           <>
             <div className="hidden 2xl:inline">
-              <Table
-                data={nodes}
-                theme={theme}
-                style={{
-                  gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 0.4r 0.4fr',
-                }}
-              >
+              <Table data={nodes} theme={theme}>
                 {(socialEducators: Teacher[]) => (
                   <>
                     <Header>
                       <HeaderRow>
                         <HeaderCell>Nome</HeaderCell>
                         <HeaderCell>Email</HeaderCell>
-                        <HeaderCell>Telefone</HeaderCell>
                         <HeaderCell>Projeto</HeaderCell>
                         <HeaderCell>Escola</HeaderCell>
                         <HeaderCell>Turmas</HeaderCell>
@@ -406,9 +399,6 @@ export const SocialEducatorTable = ({
                           </Cell>
                           <Cell className="text-[20px] text-main hover:text-main">
                             {teacher.email}
-                          </Cell>
-                          <Cell className="text-[20px] text-main hover:text-main">
-                            {teacher.telephone}
                           </Cell>
                           <Cell className="text-[20px] text-main hover:text-main">
                             {teacher.project.name}
@@ -531,6 +521,20 @@ export const SocialEducatorTable = ({
                         <p className="text-[14px] text-complement-200">
                           {teacher.school.name}
                         </p>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px] ">
+                        <p className="text-[14px] text-main">Status:</p>
+                        {teacher.status ? (
+                          <div className="flex items-center gap-[8px]">
+                            <p className="text-[14px] text-main">Ativo</p>
+                            <div className="h-[8px] w-[8px] rounded-full bg-correct" />
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-[8px]">
+                            <p className="text-[14px] text-main">Inativo</p>
+                            <div className="h-[8px] w-[8px] rounded-full bg-wrong" />
+                          </div>
+                        )}
                       </div>
                       <div className="mt-[8px] flex flex-col gap-[8px]">
                         <p className="text-[14px] text-main">Turmas:</p>

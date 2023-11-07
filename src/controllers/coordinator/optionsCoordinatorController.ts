@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { OptionsCoordinatorUseCase } from '@/useCases/coordinator/optionsCoordinatorUseCase';
 
-export class OptionsProjectController {
+export class OptionsCoordinatorController {
   async handle(_: NextApiRequest, res: NextApiResponse) {
     try {
       const optionsCoordinatorUseCase = new OptionsCoordinatorUseCase();

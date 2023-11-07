@@ -11,7 +11,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
-import { DateRange } from 'react-date-range';
 import { useForm } from 'react-hook-form';
 import { BiDownload, BiTrash } from 'react-icons/bi';
 import { FiEye } from 'react-icons/fi';
@@ -22,15 +21,17 @@ import { useMutation, useQuery } from 'react-query';
 import { toast } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
-import { useDebounce } from '@/hooks/useDebounce';
 import { useTableTheme } from '@/hooks/useTableTheme';
+import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
 import type { ADM } from '@/types/adm';
 import type { PedagogicalVisit } from '@/types/pedagogicalVisit';
 import { createCSV } from '@/utils/createCSV';
 
 import { ConfirmModal } from '../ConfirmModal';
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
+import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
+import { CoordinatorSelect } from './Selects/CoordinatorSelect';
 
 export const PedagogicalVisitTable = ({
   page,
@@ -45,28 +46,87 @@ export const PedagogicalVisitTable = ({
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
-  const [filtersValues, setFiltersValues] = useState({ name: '' });
+  const [filtersValues, setFiltersValues] = useState({ coordinatorId: '' });
   const [deleteModal, setDeleteModal] = useState(false);
   const [admToDelete, setAdmToDelete] = useState('');
+  const [dateFilter, setDateFilter] = useState({
+    startDate: '',
+    finalDate: '',
+  });
+
+  const userIsCoordinator = useUserIsCoordinator();
+
+  const maxDate = new Date();
+  maxDate.setHours(maxDate.getHours() - 3);
 
   const [filters, setFilters] = useState<{
     [key: string]: { element: ReactNode; view: boolean };
   }>({
     datePopopver: {
       element: (
-        <DateRange
-          ranges={[
-            {
-              startDate: new Date(),
-              endDate: new Date(),
-              key: 'selection',
-            },
-          ]}
-          onChange={(e) => {
-            console.log(e);
+        <div className="flex items-center gap-[16px]">
+          <InputThemed
+            type="date"
+            label="Data Inicial"
+            name="startDate"
+            register={register}
+            max={maxDate.toISOString().split('T')[0]}
+            onChange={(e) => {
+              setDateFilter((prev) => ({ ...prev, startDate: e.target.value }));
+            }}
+          />
+          <InputThemed
+            type="date"
+            label="Data Final"
+            name="finalDate"
+            register={register}
+            max={maxDate.toISOString().split('T')[0]}
+            onChange={(e) => {
+              setDateFilter((prev) => ({ ...prev, finalDate: e.target.value }));
+            }}
+          />
+        </div>
+      ),
+      view: false,
+    },
+    coordinatorPopover: {
+      element: (
+        <CoordinatorSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({
+              ...prev,
+              coordinatorId: event.value,
+            }));
           }}
-          editableDateInputs
-          moveRangeOnFirstSelection={false}
+        />
+      ),
+      view: false,
+    },
+    periodPopover: {
+      element: (
+        <CoordinatorSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({
+              ...prev,
+              coordinatorId: event.value,
+            }));
+          }}
+        />
+      ),
+      view: false,
+    },
+    socialEducatorPopover: {
+      element: (
+        <CoordinatorSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({
+              ...prev,
+              coordinatorId: event.value,
+            }));
+          }}
         />
       ),
       view: false,
@@ -90,7 +150,13 @@ export const PedagogicalVisitTable = ({
   const fetchPedagogicalVisit = async () => {
     return (
       await axiosApi.get('/pedagogicalVisit', {
-        params: { page, name: filtersValues.name || null, perPage },
+        params: {
+          page,
+          perPage,
+          startDate: dateFilter.startDate || null,
+          finalDate: dateFilter.finalDate || null,
+          coordinatorId: filtersValues.coordinatorId || null,
+        },
       })
     ).data;
   };
@@ -102,10 +168,21 @@ export const PedagogicalVisitTable = ({
   );
   const nodes = { nodes: data?.data };
 
-  const nameDebounce = useDebounce((value: string) => {
-    setPage(1);
-    setFiltersValues((prev) => ({ ...prev, name: value }));
-  }, 600);
+  useEffect(() => {
+    if (dateFilter.startDate && dateFilter.finalDate) {
+      if (
+        new Date(dateFilter.finalDate).getTime() >=
+        new Date(dateFilter.startDate).getTime()
+      ) {
+        refetch();
+      } else {
+        toast.error('Data final maior que a data inicial');
+      }
+    }
+    if (!dateFilter.startDate && !dateFilter.finalDate) {
+      refetch();
+    }
+  }, [dateFilter, refetch]);
 
   useEffect(() => {
     refetch();
@@ -115,7 +192,7 @@ export const PedagogicalVisitTable = ({
     setTotalPages(data?.meta.totalPage);
   }, [data, setTotalPages]);
 
-  const handleChangeFilters = (name: string, event: any) => {
+  const handleChangeFilters = (name: string, valueName: string, event: any) => {
     setFilters((prev) => ({
       ...prev,
       [name]: {
@@ -124,6 +201,10 @@ export const PedagogicalVisitTable = ({
         value: '',
       },
     }));
+
+    if (!event.target?.checked) {
+      setFiltersValues((prev) => ({ ...prev, [valueName]: '' }));
+    }
   };
 
   return (
@@ -141,13 +222,47 @@ export const PedagogicalVisitTable = ({
               </button>
             }
           >
-            <form>
+            <form className="flex flex-col gap-[8px]">
               <InputCheckBoxThemed
-                label="Nome"
+                label="Data"
                 register={register}
                 name="datePopopver"
+                onClick={() => {
+                  setDateFilter({ startDate: '', finalDate: '' });
+                }}
+              />
+              {!userIsCoordinator && (
+                <InputCheckBoxThemed
+                  label="Coordenador"
+                  register={register}
+                  name="coordinatorPopover"
+                  onClick={(event) => {
+                    handleChangeFilters(
+                      'coordinatorPopover',
+                      'coordinatorId',
+                      event,
+                    );
+                  }}
+                />
+              )}
+              <InputCheckBoxThemed
+                label="Período"
+                register={register}
+                name="periodPopover"
                 onClick={(event) => {
-                  handleChangeFilters('datePopopver', event);
+                  handleChangeFilters('periodPopover', 'coordinatorId', event);
+                }}
+              />
+              <InputCheckBoxThemed
+                label="Educador Social"
+                register={register}
+                name="socialEducatorPopover"
+                onClick={(event) => {
+                  handleChangeFilters(
+                    'socialEducatorPopover',
+                    'teacherId',
+                    event,
+                  );
                 }}
               />
             </form>
@@ -214,7 +329,7 @@ export const PedagogicalVisitTable = ({
                       <HeaderRow>
                         <HeaderCell>Data</HeaderCell>
                         <HeaderCell>Coordenador</HeaderCell>
-                        <HeaderCell>Professor</HeaderCell>
+                        <HeaderCell>Educador Social</HeaderCell>
                         <HeaderCell>Turma</HeaderCell>
                         <HeaderCell>Ações</HeaderCell>
                       </HeaderRow>

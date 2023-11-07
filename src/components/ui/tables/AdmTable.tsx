@@ -108,7 +108,7 @@ export const AdmTable = ({
     setTotalPages(data?.meta.totalPage);
   }, [data, setTotalPages]);
 
-  const handleChangeFilters = (name: string, event: any) => {
+  const handleChangeFilters = (name: string, valueName: string, event: any) => {
     setFilters((prev) => ({
       ...prev,
       [name]: {
@@ -117,6 +117,10 @@ export const AdmTable = ({
         value: '',
       },
     }));
+
+    if (!event.target?.checked) {
+      setFiltersValues((prev) => ({ ...prev, [valueName]: '' }));
+    }
   };
 
   return (
@@ -140,7 +144,7 @@ export const AdmTable = ({
                 register={register}
                 name="namePopover"
                 onClick={(event) => {
-                  handleChangeFilters('namePopover', event);
+                  handleChangeFilters('namePopover', 'name', event);
                 }}
               />
             </form>
