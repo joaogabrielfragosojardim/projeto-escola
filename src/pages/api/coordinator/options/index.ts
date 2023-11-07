@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import type { HttpMethod } from '@/components/api/RouteHandler';
 import { RouteHandler } from '@/components/api/RouteHandler';
-import { OptionsProjectController } from '@/controllers/project';
+import { OptionsCoordinatorController } from '@/controllers/coordinator/optionsCoordinatorController';
 import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
@@ -25,13 +25,13 @@ export default async function handler(
 ) {
   const method = req.method as HttpMethod;
 
-  const optionsProjectController = new OptionsProjectController();
+  const optionsCoordinatorController = new OptionsCoordinatorController();
 
   await RouteHandler(
     req,
     res,
     {
-      GET: optionsProjectController.handle,
+      GET: optionsCoordinatorController.handle,
     },
     authMethods[method],
     permissionMethods[method],
