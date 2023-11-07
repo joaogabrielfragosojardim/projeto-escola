@@ -14,10 +14,12 @@ export class EditCoordinatorController {
         schoolId: z.string(),
         telephone: z.string(),
         name: z.string(),
+        visualIdentity: z.string().url().optional(),
       });
 
       const { id } = editQuerySchema.parse(req.query);
-      const { schoolId, telephone, name } = editBodySchema.parse(req.body);
+      const { schoolId, telephone, name, visualIdentity } =
+        editBodySchema.parse(req.body);
 
       const editCoordinatorUseCase = new EditCoordinatorUseCase();
 
@@ -26,6 +28,7 @@ export class EditCoordinatorController {
         schoolId,
         telephone,
         name,
+        visualIdentity,
       });
 
       return res.status(200).json({ coordinator });

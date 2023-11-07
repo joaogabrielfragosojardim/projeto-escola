@@ -5,6 +5,7 @@ interface EditCoordinatorUseCaseRequest {
   name: string;
   schoolId: string;
   telephone: string;
+  visualIdentity?: string;
 }
 
 export class EditCoordinatorUseCase {
@@ -13,6 +14,7 @@ export class EditCoordinatorUseCase {
     schoolId,
     name,
     telephone,
+    visualIdentity,
   }: EditCoordinatorUseCaseRequest) {
     const coordinator = await prisma.coordinator.update({
       where: { id },
@@ -36,6 +38,7 @@ export class EditCoordinatorUseCase {
       where: { id: coordinator.user.id },
       data: {
         name,
+        visualIdentity,
       },
       select: {
         name: true,
