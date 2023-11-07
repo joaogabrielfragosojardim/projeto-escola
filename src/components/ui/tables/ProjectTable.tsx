@@ -272,7 +272,7 @@ export const ProjectTable = ({
                     <div className="flex flex-col">
                       <div className="flex justify-between">
                         <div className="flex items-center gap-[16px]">
-                          <div className="relative h-[36px] w-[36px] overflow-hidden">
+                          <div className="relative h-[36px] w-[36px] overflow-hidden rounded-full">
                             <Image
                               src={
                                 project?.visualIdentity ||

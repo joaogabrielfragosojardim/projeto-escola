@@ -1,4 +1,4 @@
-/* import { verify } from 'jsonwebtoken';
+import { verify } from 'jsonwebtoken';
 import type { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
 import { useForm } from 'react-hook-form';
@@ -12,54 +12,61 @@ import { InputImageThemed } from '@/components/ui/forms/InputImageThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { SelectThemed } from '@/components/ui/forms/SelectThemed';
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
+import { allPeriods, allSeries } from '@/constants/classroom';
 import type { PrismaError } from '@/types/prismaError';
 import { RoleEnum } from '@/types/roles';
-import type { SocialEducator as SocialEducatorType } from '@/types/socialEducator';
+import type {
+  SocialEducator as SocialEducatorType,
+  SocialEducatorEdit,
+  SocialEducatorEditRequest,
+} from '@/types/socialEducator';
 
-const SocialEducator = ({
-  teacher,
-  schoolOptions,
-}: {
-  teacher: SocialEducatorType;
-  schoolOptions: { label: string; value: string }[];
-}) => {
+const SocialEducator = ({ teacher }: { teacher: SocialEducatorType }) => {
   const {
     register,
     reset,
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<SocialEducatorType>();
+  } = useForm<SocialEducatorEdit>();
 
   const editSocialEducatorHandle = async (
-    data: SocialEducatorType,
+    data: SocialEducatorEditRequest,
   ): Promise<any> => {
-    return (await axiosApi.put(`/coordinator/${teacher.id}`, data)).data;
+    return (await axiosApi.put(`/teacher/${teacher.id}`, data)).data;
   };
 
   const { isLoading, mutate } = useMutation(
-    'editingSchoolMutation',
+    'editinSocialEducatorMutation',
     editSocialEducatorHandle,
     {
       onError: (error: PrismaError) => {
         toast.error(
           error?.response?.data?.message ||
-            'Algo deu errado ao editar a escola!',
+            'Algo deu errado ao editar o Educador Social!',
         );
       },
       onSuccess: () => {
-        toast.success('Coordenador editado');
+        toast.success('Educador Social editado');
       },
     },
   );
 
-  const onSubmit = (data: SocialEducatorType) => {
-    const { visualIdentity, name, telephone, school } = data;
+  const onSubmit = (data: SocialEducatorEdit) => {
+    const { visualIdentity, name, telephone, classRooms } = data;
     const submitData = {
       visualIdentity: visualIdentity || teacher.visualIdentity,
       name: name || teacher.name,
       telephone: telephone || teacher.telephone,
-      schoolId: school?.value || teacher.school.id,
+      classRooms:
+        classRooms?.map((classroom) => ({
+          period: classroom.value.period,
+          year: classroom.value.year,
+        })) ||
+        teacher.classrooms.map((classroom) => ({
+          period: classroom.period,
+          year: classroom.year,
+        })),
     };
     mutate(submitData);
   };
@@ -100,20 +107,13 @@ const SocialEducator = ({
             validations={{ required: 'Campo obrigatório' }}
             error={errors.name}
           />
-          <SelectThemed
-            reset={reset}
-            control={control}
+          <InputThemed
+            register={register}
+            disabled
             name="school"
             label="Escola"
             placeholder="Escola"
-            options={schoolOptions}
-            defaultValue={
-              {
-                value: teacher.school.id,
-                label: teacher.school.name,
-              } as unknown as any
-            }
-            menuPlacement="top"
+            defaultValue={teacher.school.name}
           />
           <InputThemed
             register={register}
@@ -122,6 +122,30 @@ const SocialEducator = ({
             defaultValue={teacher.email}
             label="Email"
           />
+          <div>
+            <div className="flex w-full items-center gap-[16px]">
+              <SelectThemed
+                isMulti
+                control={control}
+                reset={reset}
+                name="classRooms"
+                label="Turmas"
+                placeholder="turmas"
+                options={allPeriods
+                  .map((period) =>
+                    allSeries.map((serie) => ({
+                      label: `${serie}º Ano - ${period}`,
+                      value: { year: serie, period },
+                    })),
+                  )
+                  .flat()}
+                defaultValue={teacher.classrooms.map((item) => ({
+                  label: `${item.year}º Ano - ${item.period}`,
+                  value: { year: item.year, period: item.period },
+                }))}
+              />
+            </div>
+          </div>
 
           <div className="mt-[48px] text-[16px] lg:text-[20px]">
             <button
@@ -157,27 +181,17 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       RoleEnum.COORDINATOR,
     ].includes(userObject?.role.name);
 
-    const userIsCoordinator = [RoleEnum.COORDINATOR].includes(
-      userObject?.role.name,
-    );
-
     if (canView) {
       const { data } = await axiosApi.get(`/teacher/${ctx?.params?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const { data: dataSchoolOptions } = await axiosApi.get(
-        `/school/options`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          params: userIsCoordinator ? { coordinatorId: userObject?.id } : null,
-        },
-      );
+      console.log('passou');
+      console.log(data.teacher);
 
       return {
         props: {
           teacher: data?.teacher,
-          schoolOptions: dataSchoolOptions?.options,
         },
       };
     }
@@ -186,13 +200,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   } catch (error) {
     return { redirect: { permanent: false, destination: '/login' } };
   }
-};
-
-export default SocialEducator;
- */
-
-const SocialEducator = () => {
-  return <div>a</div>;
 };
 
 export default SocialEducator;

@@ -354,7 +354,7 @@ export const SchoolTable = ({
                     <div className="flex flex-col">
                       <div className="flex justify-between">
                         <div className="flex items-center gap-[16px]">
-                          <div className="relative h-[36px] w-[36px] overflow-hidden">
+                          <div className="relative h-[36px] w-[36px] overflow-hidden rounded-full">
                             <Image
                               src={
                                 school?.visualIdentity ||
@@ -377,7 +377,7 @@ export const SchoolTable = ({
                         >
                           <div className="mt-[-30px] flex flex-col gap-[8px] text-main">
                             <Link
-                              href={`/view/${school.id}/project`}
+                              href={`/view/${school.id}/school`}
                               className="flex items-center gap-[8px]"
                             >
                               <FiEye size={20} />

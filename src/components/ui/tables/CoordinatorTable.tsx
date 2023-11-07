@@ -339,7 +339,7 @@ export const CoordinatorTable = ({
                     <div className="flex flex-col">
                       <div className="flex justify-between">
                         <div className="flex items-center gap-[16px]">
-                          <div className="relative h-[36px] w-[36px] overflow-hidden">
+                          <div className="relative h-[36px] w-[36px] overflow-hidden rounded-full">
                             <Image
                               src={
                                 coordinator?.visualIdentity ||
@@ -362,7 +362,7 @@ export const CoordinatorTable = ({
                         >
                           <div className="mt-[-30px] flex flex-col gap-[8px] text-main">
                             <Link
-                              href={`/view/${coordinator.id}/project`}
+                              href={`/view/${coordinator.id}/coordinator`}
                               className="flex items-center gap-[8px]"
                             >
                               <FiEye size={20} />
