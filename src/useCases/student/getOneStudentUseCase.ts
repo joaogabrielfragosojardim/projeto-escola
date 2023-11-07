@@ -14,11 +14,23 @@ export class GetOneStudentUseCase {
       select: {
         id: true,
         birtday: true,
-        schoolId: true,
         user: {
           select: {
             email: true,
             name: true,
+            visualIdentity: true,
+          },
+        },
+        school: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        Classroom: {
+          select: {
+            period: true,
+            year: true,
           },
         },
       },
