@@ -178,9 +178,9 @@ model PedagogicalVisit {
   coordinatorId String
   classId       String
 
-  Classroom  Classroom   @relation(fields: [classId], references: [id])
+  Classroom   Classroom   @relation(fields: [classId], references: [id])
   Coordinator Coordinator @relation(fields: [coordinatorId], references: [id])
-  School     School      @relation(fields: [schoolId], references: [id])
+  School      School      @relation(fields: [schoolId], references: [id])
 
   @@map("pedagogicalVisit")
 }
@@ -196,13 +196,13 @@ model Administrator {
 }
 
 model LearningMonitoring {
-  id           String @id @default(uuid())
+  id           String   @id @default(uuid())
   questions    Json
   writingLevel String
-
-  studentId   String
-  classroomId String
-  teacherId   String
+  createdAt    DateTime @default(now())
+  studentId    String
+  classroomId  String
+  teacherId    String
 
   student   Student   @relation(fields: [studentId], references: [id])
   classroom Classroom @relation(fields: [classroomId], references: [id])
