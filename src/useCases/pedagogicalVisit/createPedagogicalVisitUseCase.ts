@@ -53,6 +53,10 @@ export class CreatePedagogicalVisitUseCase {
       throw new AppError('Essa turma não pertence a essa escola', 400);
     }
 
+    if (!classroom.teacherId) {
+      throw new AppError('Turma sem professor', 400);
+    }
+
     const pedagogicalVisit = await prisma.pedagogicalVisit.create({
       data: {
         date,
