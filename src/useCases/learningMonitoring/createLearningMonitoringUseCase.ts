@@ -37,7 +37,7 @@ export class CreateLearningMonitoringUseCase {
       throw new AppError('Turma sem professor', 400);
     }
 
-    const learningMonitor = await prisma.learningMonitoring.create({
+    const learningMonitoring = await prisma.learningMonitoring.create({
       data: {
         questions,
         classroomId: student.classId,
@@ -48,7 +48,7 @@ export class CreateLearningMonitoringUseCase {
     });
 
     return {
-      learningMonitor,
+      learningMonitoring,
     };
   }
 }

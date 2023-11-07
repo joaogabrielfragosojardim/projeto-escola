@@ -1,23 +1,20 @@
-import type { NextApiRequest, NextApiResponse } from 'next/types';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 import type { HttpMethod } from '@/components/api/RouteHandler';
 import { RouteHandler } from '@/components/api/RouteHandler';
-import {
-  CreateLearningMonitoringController,
-  GetAllLearningMonitoringController,
-} from '@/controllers/learningMonitoring';
+import { GetOneLearningMonitoringController } from '@/controllers/learningMonitoring';
 import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
   GET: true,
-  POST: true,
+  POST: false,
   DELETE: false,
   PUT: false,
 };
 
 const permissionMethods: Record<HttpMethod, Role[]> = {
-  GET: [],
-  POST: ['master', 'administrator'],
+  GET: ['coordinator', 'administrator', 'master'],
+  POST: [],
   PUT: [],
   DELETE: [],
 };
@@ -26,10 +23,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const createlearningMonitoringController =
-    new CreateLearningMonitoringController();
-  const getAllLearningMonitoringController =
-    new GetAllLearningMonitoringController();
+  const getOneLearningMonitoringController =
+    new GetOneLearningMonitoringController();
 
   const method = req.method as HttpMethod;
 
@@ -37,8 +32,7 @@ export default async function handler(
     req,
     res,
     {
-      POST: createlearningMonitoringController.handle,
-      GET: getAllLearningMonitoringController.handle,
+      GET: getOneLearningMonitoringController.handle,
     },
     authMethods[method],
     permissionMethods[method],

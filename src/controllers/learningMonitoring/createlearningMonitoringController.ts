@@ -19,15 +19,14 @@ export class CreateLearningMonitoringController {
       const createLearningMonitoringUseCase =
         new CreateLearningMonitoringUseCase();
 
-      const { learningMonitor } = await createLearningMonitoringUseCase.execute(
-        {
+      const { learningMonitoring } =
+        await createLearningMonitoringUseCase.execute({
           writingLevel,
           questions,
           studentId,
-        },
-      );
+        });
 
-      return res.status(201).json(learningMonitor);
+      return res.status(201).json(learningMonitoring);
     } catch (error) {
       throw error;
     }
