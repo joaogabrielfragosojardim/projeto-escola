@@ -36,7 +36,6 @@ export class GetAllLearningMonitoringController {
 
       return res.status(200).json({ data, meta });
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }

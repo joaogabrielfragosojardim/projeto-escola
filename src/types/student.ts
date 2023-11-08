@@ -26,3 +26,31 @@ export type StudentId = {
   birtday: string;
   classId: string;
 };
+
+export interface StudentEdit {
+  id: string;
+  birtday: Date;
+  user: {
+    email: string;
+    name: string;
+    visualIdentity: string;
+  };
+  school: {
+    id: string;
+    name: string;
+  };
+  Classroom: {
+    period: string;
+    year: number;
+  };
+}
+
+export interface StudentEditForm {
+  birtday: Date;
+  name: string;
+  visualIdentity: string;
+  classRoom: {
+    period: string;
+    year: number;
+  };
+}

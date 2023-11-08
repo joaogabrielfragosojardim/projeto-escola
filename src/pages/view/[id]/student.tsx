@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { TbLoader } from 'react-icons/tb';
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
-import { validatePhone } from 'validations-br';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { InputImageThemed } from '@/components/ui/forms/InputImageThemed';
@@ -15,58 +14,47 @@ import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
 import { allPeriods, allSeries } from '@/constants/classroom';
 import type { PrismaError } from '@/types/prismaError';
 import { RoleEnum } from '@/types/roles';
-import type {
-  SocialEducator as SocialEducatorType,
-  SocialEducatorEdit,
-  SocialEducatorEditRequest,
-} from '@/types/socialEducator';
+import type { StudentEdit, StudentEditForm } from '@/types/student';
 
-const SocialEducator = ({ teacher }: { teacher: SocialEducatorType }) => {
+const SocialEducator = ({ student }: { student: StudentEdit }) => {
   const {
     register,
     reset,
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<SocialEducatorEdit>();
+  } = useForm<StudentEditForm>();
 
-  const editSocialEducatorHandle = async (
-    data: SocialEducatorEditRequest,
-  ): Promise<any> => {
-    return (await axiosApi.put(`/teacher/${teacher.id}`, data)).data;
+  const maxDate = new Date();
+  maxDate.setHours(maxDate.getHours() - 3);
+
+  const editStudentHandle = async (data: StudentEditForm): Promise<any> => {
+    return (await axiosApi.put(`/student/${student.id}`, data)).data;
   };
 
   const { isLoading, mutate } = useMutation(
-    'editinSocialEducatorMutation',
-    editSocialEducatorHandle,
+    'editStudentMutation',
+    editStudentHandle,
     {
       onError: (error: PrismaError) => {
         toast.error(
           error?.response?.data?.message ||
-            'Algo deu errado ao editar o Educador Social!',
+            'Algo deu errado ao editar o Estudante!',
         );
       },
       onSuccess: () => {
-        toast.success('Educador Social editado');
+        toast.success('Estudante editado');
       },
     },
   );
 
-  const onSubmit = (data: SocialEducatorEdit) => {
-    const { visualIdentity, name, telephone, classRooms } = data;
+  const onSubmit = (data: StudentEditForm) => {
+    const { visualIdentity, name, classRoom, birtday } = data;
     const submitData = {
-      visualIdentity: visualIdentity || teacher.visualIdentity,
-      name: name || teacher.name,
-      telephone: telephone || teacher.telephone,
-      classRooms:
-        classRooms?.map((classroom) => ({
-          period: classroom.value.period,
-          year: classroom.value.year,
-        })) ||
-        teacher.classrooms.map((classroom) => ({
-          period: classroom.period,
-          year: classroom.year,
-        })),
+      visualIdentity: visualIdentity || student.user.visualIdentity,
+      name: name || student.user.name,
+      classRoom: classRoom || student.Classroom,
+      birtday: birtday || student.birtday,
     };
     mutate(submitData);
   };
@@ -83,26 +71,13 @@ const SocialEducator = ({ teacher }: { teacher: SocialEducatorType }) => {
             name="visualIdentity"
             label=""
             reset={reset}
-            defaultValue={teacher?.visualIdentity}
+            defaultValue={student?.user.visualIdentity}
           />
-          <InputThemed
-            register={register}
-            name="telephone"
-            mask="(99) 9 9999-9999"
-            defaultValue={teacher.telephone}
-            label="Telefone"
-            validations={{
-              required: 'Campo obrigatório',
-              validate: (value: string) => {
-                return validatePhone(value) || 'Telefone invalido';
-              },
-            }}
-            error={errors.telephone}
-          />
+
           <InputThemed
             register={register}
             name="name"
-            defaultValue={teacher.name}
+            defaultValue={student.user.name}
             label="Nome"
             validations={{ required: 'Campo obrigatório' }}
             error={errors.name}
@@ -113,24 +88,31 @@ const SocialEducator = ({ teacher }: { teacher: SocialEducatorType }) => {
             name="school"
             label="Escola"
             placeholder="Escola"
-            defaultValue={teacher.school.name}
+            defaultValue={student.school.name}
           />
           <InputThemed
             register={register}
             name="email"
             disabled
-            defaultValue={teacher.email}
+            defaultValue={student.user.email}
             label="Email"
+          />
+          <InputThemed
+            register={register}
+            name="birtday"
+            defaultValue={new Date(student.birtday).toISOString().split('T')[0]}
+            type="date"
+            max={maxDate.toISOString().split('T')[0]}
+            label="Aniversário"
           />
           <div>
             <div className="flex w-full items-center gap-[16px]">
               <SelectThemed
-                isMulti
                 control={control}
                 reset={reset}
                 name="classRooms"
-                label="Turmas"
-                placeholder="turmas"
+                label="Turma"
+                placeholder="turma"
                 options={allPeriods
                   .map((period) =>
                     allSeries.map((serie) => ({
@@ -139,10 +121,9 @@ const SocialEducator = ({ teacher }: { teacher: SocialEducatorType }) => {
                     })),
                   )
                   .flat()}
-                defaultValue={teacher.classrooms.map((item) => ({
-                  label: `${item.year}º Ano - ${item.period}`,
-                  value: { year: item.year, period: item.period },
-                }))}
+                defaultValue={{
+                  label: `${student.Classroom.year}º Ano - ${student.Classroom.period}`,
+                }}
               />
             </div>
           </div>
@@ -179,19 +160,17 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       RoleEnum.ADM_MASTER,
       RoleEnum.ADM,
       RoleEnum.COORDINATOR,
+      RoleEnum.TEACHER,
     ].includes(userObject?.role.name);
 
     if (canView) {
-      const { data } = await axiosApi.get(`/teacher/${ctx?.params?.id}`, {
+      const { data } = await axiosApi.get(`/student/${ctx?.params?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log('passou');
-      console.log(data.teacher);
-
       return {
         props: {
-          teacher: data?.teacher,
+          student: data?.student,
         },
       };
     }

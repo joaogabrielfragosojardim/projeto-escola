@@ -9,13 +9,13 @@ const authMethods: Record<HttpMethod, boolean> = {
   GET: true,
   POST: true,
   DELETE: false,
-  PUT: false,
+  PUT: true,
 };
 
 const permissionMethods: Record<HttpMethod, Role[]> = {
   GET: [],
   POST: [],
-  PUT: ['teacher'],
+  PUT: ['administrator', 'master', 'coordinator', 'teacher'],
   DELETE: [],
 };
 
