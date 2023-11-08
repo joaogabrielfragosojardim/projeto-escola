@@ -2,7 +2,10 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import type { HttpMethod } from '@/components/api/RouteHandler';
 import { RouteHandler } from '@/components/api/RouteHandler';
-import { GetOneLearningMonitoringController } from '@/controllers/learningMonitoring';
+import {
+  DeleteLearningMonitoringController,
+  GetOneLearningMonitoringController,
+} from '@/controllers/learningMonitoring';
 import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
@@ -26,6 +29,9 @@ export default async function handler(
   const getOneLearningMonitoringController =
     new GetOneLearningMonitoringController();
 
+  const deleteLearningMonitoringController =
+    new DeleteLearningMonitoringController();
+
   const method = req.method as HttpMethod;
 
   await RouteHandler(
@@ -33,6 +39,7 @@ export default async function handler(
     res,
     {
       GET: getOneLearningMonitoringController.handle,
+      DELETE: deleteLearningMonitoringController.handle,
     },
     authMethods[method],
     permissionMethods[method],
