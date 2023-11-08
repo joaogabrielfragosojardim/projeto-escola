@@ -6,6 +6,7 @@ import {
   DeletePedagogicalVisitController,
   GetOnePedagogicalVisitController,
 } from '@/controllers/pedagogicalVisit';
+import { EditPedagogicalVisitController } from '@/controllers/pedagogicalVisit/editPedagogicalVisitController';
 import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
@@ -32,6 +33,8 @@ export default async function handler(
   const deletePedagogicalVisitController =
     new DeletePedagogicalVisitController();
 
+  const editPedagogicalVisitController = new EditPedagogicalVisitController();
+
   const method = req.method as HttpMethod;
 
   await RouteHandler(
@@ -40,6 +43,7 @@ export default async function handler(
     {
       GET: getOnePedagogicalVisitController.handle,
       DELETE: deletePedagogicalVisitController.handle,
+      PUT: editPedagogicalVisitController.handle,
     },
     authMethods[method],
     permissionMethods[method],
