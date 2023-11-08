@@ -17,7 +17,6 @@ export const permissions = async (
   if (!user) {
     return res.status(400).json({ message: 'Usuário inexistente' });
   }
-
   const permissionExists = roles.includes(user.role.name);
 
   if (!permissionExists) {

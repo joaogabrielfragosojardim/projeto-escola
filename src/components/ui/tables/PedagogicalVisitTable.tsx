@@ -48,7 +48,7 @@ export const PedagogicalVisitTable = ({
   const theme = useTableTheme();
   const [filtersValues, setFiltersValues] = useState({ coordinatorId: '' });
   const [deleteModal, setDeleteModal] = useState(false);
-  const [admToDelete, setAdmToDelete] = useState('');
+  const [pedagogicalVisitToDelete, setPedagogicalVisitToDelete] = useState('');
   const [dateFilter, setDateFilter] = useState({
     startDate: '',
     finalDate: '',
@@ -133,19 +133,23 @@ export const PedagogicalVisitTable = ({
     },
   });
 
-  const deleteAdm = async (id: string) => {
-    return (await axiosApi.delete(`/adm/${id}`)).data;
+  const deletePedagogicalVisit = async (id: string) => {
+    return (await axiosApi.delete(`/pedagogicalVisit/${id}`)).data;
   };
 
-  const { mutate } = useMutation('deleteAdmMutation', deleteAdm, {
-    onSuccess: () => {
-      toast.success('adm deletado!');
-      refetch();
+  const { mutate } = useMutation(
+    'deletePedagogicalVisitMutation',
+    deletePedagogicalVisit,
+    {
+      onSuccess: () => {
+        toast.success('Visita pedagógica deletada!');
+        refetch();
+      },
+      onError: () => {
+        toast.error('Algo de arrado aconteceu ao deletar a visita pedagógica!');
+      },
     },
-    onError: () => {
-      toast.error('Algo de arrado aconteceu ao deletar o adm!');
-    },
-  });
+  );
 
   const fetchPedagogicalVisit = async () => {
     return (
@@ -357,13 +361,17 @@ export const PedagogicalVisitTable = ({
                             </Cell>
                             <Cell className="text-center text-main hover:text-main">
                               <div className="flex gap-[8px]">
-                                <Link href={`/view/${pedagogicalVisit.id}/adm`}>
+                                <Link
+                                  href={`/view/${pedagogicalVisit.id}/pedagogicalVisit`}
+                                >
                                   <FiEye size={20} />
                                 </Link>
                                 <button
                                   type="button"
                                   onClick={() => {
-                                    setAdmToDelete(pedagogicalVisit.id);
+                                    setPedagogicalVisitToDelete(
+                                      pedagogicalVisit.id,
+                                    );
                                     setDeleteModal(true);
                                   }}
                                 >
@@ -425,7 +433,7 @@ export const PedagogicalVisitTable = ({
                               type="button"
                               className="flex items-center gap-[8px]"
                               onClick={() => {
-                                setAdmToDelete(adm.id);
+                                setPedagogicalVisitToDelete(adm.id);
                                 setDeleteModal(true);
                               }}
                             >
@@ -473,9 +481,9 @@ export const PedagogicalVisitTable = ({
       <ConfirmModal
         isOpen={deleteModal}
         setOpen={setDeleteModal}
-        text="Deseja realmente excluir esse Adm?"
+        text="Deseja realmente excluir essa visita pedagógica?"
         onConfirm={() => {
-          mutate(admToDelete);
+          mutate(pedagogicalVisitToDelete);
           setDeleteModal(false);
         }}
       />

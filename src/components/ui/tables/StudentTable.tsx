@@ -495,7 +495,7 @@ export const StudentTable = ({
                             )}
                             {userIsCoordinator && student.status ? (
                               <Link
-                                href={`/reports/${student.id}/pedagogical-visit`}
+                                href={`/reports/${student.id}/pedagogicalVisit`}
                                 className="flex items-center gap-[8px]"
                               >
                                 <AiOutlineBook size={20} />
