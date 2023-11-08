@@ -10,6 +10,7 @@ interface GetAllPedagogicalVisitUseCaseRequest {
   teacherId?: string;
   period?: string;
   year?: number;
+  userId?: string;
 }
 
 export class GetAllPedagogicalVisitsUseCase {
@@ -22,9 +23,16 @@ export class GetAllPedagogicalVisitsUseCase {
     startDate,
     year,
     period,
+    userId,
   }: GetAllPedagogicalVisitUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
+
+    const coordinator = await prisma.coordinator.findFirst({
+      where: {
+        userId,
+      },
+    });
 
     const [pedagogicalVisit, total] = await prisma.$transaction([
       prisma.pedagogicalVisit.findMany({
@@ -37,7 +45,7 @@ export class GetAllPedagogicalVisitsUseCase {
             lte: finalDate,
           },
           coordinatorId: {
-            equals: coordinatorId,
+            equals: coordinatorId || coordinator?.id,
           },
           Classroom: {
             teacherId: {

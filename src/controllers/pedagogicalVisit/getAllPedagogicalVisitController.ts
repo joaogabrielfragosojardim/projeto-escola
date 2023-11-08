@@ -11,10 +11,8 @@ export class GetAllPedagogicalVisitController {
         perPage: z.coerce.number().default(10),
         coordinatorId: z.string().uuid().optional(),
         teacherId: z.string().uuid().optional(),
-
         startDate: z.coerce.date().optional(),
         finalDate: z.coerce.date().optional(),
-
         period: z.string().optional(),
         year: z.coerce.number().optional(),
       });
@@ -30,6 +28,8 @@ export class GetAllPedagogicalVisitController {
         teacherId,
       } = getAllQuerySchema.parse(req.query);
 
+      const { userId } = req;
+
       const getAllPedagogicalUseCase = new GetAllPedagogicalVisitsUseCase();
 
       const { data, meta } = await getAllPedagogicalUseCase.execute({
@@ -41,6 +41,7 @@ export class GetAllPedagogicalVisitController {
         startDate,
         finalDate,
         teacherId,
+        userId,
       });
 
       return res.status(200).json({ data, meta });

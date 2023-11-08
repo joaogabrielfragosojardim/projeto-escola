@@ -7,14 +7,14 @@ import { GetAllPedagogicalVisitController } from '@/controllers/pedagogicalVisit
 import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
-  GET: false,
+  GET: true,
   POST: true,
   DELETE: false,
   PUT: false,
 };
 
 const permissionMethods: Record<HttpMethod, Role[]> = {
-  GET: [],
+  GET: ['coordinator', 'administrator', 'master'],
   POST: ['coordinator'],
   PUT: [],
   DELETE: [],
