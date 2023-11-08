@@ -7,6 +7,13 @@ export type Student = {
   password: string;
   birtday: string;
   classId: { label: string; value: string };
+  classroom: {
+    period: string;
+    year: number;
+  };
+  school: {
+    name: string;
+  };
 };
 
 export type StudentId = {

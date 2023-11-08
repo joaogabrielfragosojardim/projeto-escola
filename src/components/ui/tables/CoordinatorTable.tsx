@@ -63,7 +63,7 @@ export const CoordinatorTable = ({
         <InputThemed
           register={register}
           name="name"
-          label="Nome da escola"
+          label="Nome do coordenador"
           onChange={(event) => {
             nameDebounce(event.target.value);
           }}

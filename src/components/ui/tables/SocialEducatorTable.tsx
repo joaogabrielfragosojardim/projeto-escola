@@ -370,7 +370,6 @@ export const SocialEducatorTable = ({
                     <Header>
                       <HeaderRow>
                         <HeaderCell>Nome</HeaderCell>
-                        <HeaderCell>Email</HeaderCell>
                         <HeaderCell>Projeto</HeaderCell>
                         <HeaderCell>Escola</HeaderCell>
                         <HeaderCell>Turmas</HeaderCell>
@@ -396,9 +395,6 @@ export const SocialEducatorTable = ({
                               </div>
                               {teacher.name}
                             </div>
-                          </Cell>
-                          <Cell className="text-[20px] text-main hover:text-main">
-                            {teacher.email}
                           </Cell>
                           <Cell className="text-[20px] text-main hover:text-main">
                             {teacher.project.name}

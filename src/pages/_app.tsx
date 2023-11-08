@@ -1,6 +1,7 @@
 import '@/styles/global.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'swiper/css';
+import 'swiper/css/navigation';
 
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
