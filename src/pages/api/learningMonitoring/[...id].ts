@@ -4,6 +4,7 @@ import type { HttpMethod } from '@/components/api/RouteHandler';
 import { RouteHandler } from '@/components/api/RouteHandler';
 import {
   DeleteLearningMonitoringController,
+  EditLearningMonitoringController,
   GetOneLearningMonitoringController,
 } from '@/controllers/learningMonitoring';
 import type { Role } from '@/types/roles';
@@ -32,6 +33,9 @@ export default async function handler(
   const deleteLearningMonitoringController =
     new DeleteLearningMonitoringController();
 
+  const editLearningMonitoringController =
+    new EditLearningMonitoringController();
+
   const method = req.method as HttpMethod;
 
   await RouteHandler(
@@ -40,6 +44,7 @@ export default async function handler(
     {
       GET: getOneLearningMonitoringController.handle,
       DELETE: deleteLearningMonitoringController.handle,
+      PUT: editLearningMonitoringController.handle,
     },
     authMethods[method],
     permissionMethods[method],
