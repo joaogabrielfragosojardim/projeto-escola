@@ -32,6 +32,9 @@ import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
 import { CoordinatorSelect } from './Selects/CoordinatorSelect';
+import { PeriodSelect } from './Selects/PeriodSelect';
+import { TeacherSelect } from './Selects/TeacherSelect';
+import { YearSelect } from './Selects/YearSelect';
 
 export const PedagogicalVisitTable = ({
   page,
@@ -46,7 +49,12 @@ export const PedagogicalVisitTable = ({
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
-  const [filtersValues, setFiltersValues] = useState({ coordinatorId: '' });
+  const [filtersValues, setFiltersValues] = useState({
+    coordinatorId: '',
+    teacherId: '',
+    year: '',
+    period: '',
+  });
   const [deleteModal, setDeleteModal] = useState(false);
   const [pedagogicalVisitToDelete, setPedagogicalVisitToDelete] = useState('');
   const [dateFilter, setDateFilter] = useState({
@@ -105,26 +113,32 @@ export const PedagogicalVisitTable = ({
     },
     periodPopover: {
       element: (
-        <CoordinatorSelect
-          onChange={(event) => {
-            setPage(1);
-            setFiltersValues((prev) => ({
-              ...prev,
-              coordinatorId: event.value,
-            }));
-          }}
-        />
+        <div className="flex w-full items-center gap-[16px]">
+          <YearSelect
+            onChange={(event) => {
+              setPage(1);
+              setFiltersValues((prev) => ({ ...prev, year: event?.value }));
+            }}
+          />
+
+          <PeriodSelect
+            onChange={(event) => {
+              setPage(1);
+              setFiltersValues((prev) => ({ ...prev, period: event?.value }));
+            }}
+          />
+        </div>
       ),
       view: false,
     },
     socialEducatorPopover: {
       element: (
-        <CoordinatorSelect
+        <TeacherSelect
           onChange={(event) => {
             setPage(1);
             setFiltersValues((prev) => ({
               ...prev,
-              coordinatorId: event.value,
+              teacherId: event.value,
             }));
           }}
         />
@@ -160,6 +174,8 @@ export const PedagogicalVisitTable = ({
           startDate: dateFilter.startDate || null,
           finalDate: dateFilter.finalDate || null,
           coordinatorId: filtersValues.coordinatorId || null,
+          year: filtersValues.year || null,
+          period: filtersValues.period || null,
         },
       })
     ).data;
@@ -389,29 +405,25 @@ export const PedagogicalVisitTable = ({
             </div>
             <div className="2xl:hidden">
               <div className="rounded-[6px_6px_0px_0px] bg-main px-[16px] py-[18px] text-complement-100">
-                Adms
+                Visitas Pedagógicas
               </div>
               <div className="overflow-hidden rounded-[0px_0px_6px_6px] border-2 border-main">
-                {data?.data.map((adm: ADM) => (
+                {data?.data.map((pedagogicalVisit: PedagogicalVisit) => (
                   <div
                     className="border-b-2 border-b-complement-100 p-[14px]"
-                    key={adm.id}
+                    key={pedagogicalVisit.id}
                   >
                     <div className="flex flex-col">
                       <div className="flex w-full justify-between">
                         <div className="flex items-center gap-[16px]">
-                          <div className="relative h-[36px] w-[36px] overflow-hidden">
-                            <Image
-                              src={
-                                adm?.visualIdentity ||
-                                '/assets/images/default-profile.png'
-                              }
-                              alt="logo do projeto"
-                              fill
-                              className="object-cover"
-                            />
+                          <div className="mt-[8px] flex items-center gap-[8px]">
+                            <p className="text-[14px] text-main">Data:</p>
+                            <p className="text-[14px] text-complement-200">
+                              {new Date(
+                                pedagogicalVisit.date,
+                              ).toLocaleDateString()}
+                            </p>
                           </div>
-                          <p className="text-[16px]">{adm.name}</p>
                         </div>
                         <Popover
                           triggerElement={
@@ -423,7 +435,7 @@ export const PedagogicalVisitTable = ({
                         >
                           <div className="mt-[-30px] flex flex-col gap-[8px] text-main">
                             <Link
-                              href={`/view/${adm.id}/adm`}
+                              href={`/view/${pedagogicalVisit.id}/pedagogicalVisit`}
                               className="flex items-center gap-[8px]"
                             >
                               <FiEye size={20} />
@@ -433,7 +445,9 @@ export const PedagogicalVisitTable = ({
                               type="button"
                               className="flex items-center gap-[8px]"
                               onClick={() => {
-                                setPedagogicalVisitToDelete(adm.id);
+                                setPedagogicalVisitToDelete(
+                                  pedagogicalVisit.id,
+                                );
                                 setDeleteModal(true);
                               }}
                             >
@@ -443,16 +457,25 @@ export const PedagogicalVisitTable = ({
                           </div>
                         </Popover>
                       </div>
+
                       <div className="mt-[8px] flex items-center gap-[8px]">
-                        <p className="text-[14px] text-main">Nome:</p>
+                        <p className="text-[14px] text-main">Coordenador:</p>
                         <p className="text-[14px] text-complement-200">
-                          {adm.name}
+                          {pedagogicalVisit.coordinator.name}
                         </p>
                       </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">
-                        <p className="text-[14px] text-main">Email:</p>
+                        <p className="text-[14px] text-main">
+                          Educador Social:
+                        </p>
                         <p className="text-[14px] text-complement-200">
-                          {adm.email}
+                          {pedagogicalVisit.teacher.name}
+                        </p>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px]">
+                        <p className="text-[14px] text-main">Turma:</p>
+                        <p className="text-[14px] text-complement-200">
+                          {`${pedagogicalVisit.classroom.year}º Ano - ${pedagogicalVisit.classroom.period}`}
                         </p>
                       </div>
                     </div>
