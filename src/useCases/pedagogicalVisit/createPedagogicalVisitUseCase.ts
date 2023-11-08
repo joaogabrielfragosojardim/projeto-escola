@@ -54,7 +54,7 @@ export class CreatePedagogicalVisitUseCase {
     }
 
     if (!classroom.teacherId) {
-      throw new AppError('Turma sem professor', 400);
+      throw new AppError('Turma sem Educador Social', 400);
     }
 
     const pedagogicalVisit = await prisma.pedagogicalVisit.create({

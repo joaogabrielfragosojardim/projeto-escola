@@ -76,7 +76,10 @@ export const Hero = () => {
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="hidden min-h-[551px] bg-[url('/assets/images/seletivo.jpg')] bg-contain bg-center bg-no-repeat p-[24px] xl:block" />
+            <Link
+              href="https://forms.gle/9jDX2PAfMmnbRAJY6"
+              className="hidden min-h-[551px] bg-[url('/assets/images/seletivo.jpg')] bg-contain bg-center bg-no-repeat p-[24px] xl:block"
+            />
           </SwiperSlide>
         </Swiper>
       </div>
@@ -94,7 +97,10 @@ export const Hero = () => {
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="relative flex h-[134px] w-full items-center px-[20px]">
+            <Link
+              href="https://forms.gle/9jDX2PAfMmnbRAJY6"
+              className="relative flex h-[134px] w-full items-center px-[20px]"
+            >
               <div className="relative h-full w-full">
                 <Image
                   src="/assets/images/seletivo.jpg"
@@ -103,7 +109,7 @@ export const Hero = () => {
                   objectFit="contain"
                 />
               </div>
-            </div>
+            </Link>
           </SwiperSlide>
         </Swiper>
         <div className="my-[32px] px-[24px] text-[14px] text-complement-200">

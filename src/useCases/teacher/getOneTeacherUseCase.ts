@@ -40,7 +40,7 @@ export class GetOneTeacherUseCase {
     });
 
     if (!teacher) {
-      throw new AppError('Professor não encontrado', 400);
+      throw new AppError('Educador Social não encontrado', 400);
     }
 
     return {

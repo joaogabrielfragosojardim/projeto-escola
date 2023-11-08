@@ -34,7 +34,7 @@ export class CreateLearningMonitoringUseCase {
     }
 
     if (!student.Classroom.teacherId) {
-      throw new AppError('Turma sem professor', 400);
+      throw new AppError('Turma sem Educador Social', 400);
     }
 
     const learningMonitoring = await prisma.learningMonitoring.create({

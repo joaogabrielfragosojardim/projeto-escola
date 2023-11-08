@@ -623,7 +623,7 @@ export const SocialEducatorTable = ({
       <ConfirmModal
         isOpen={deleteModal}
         setOpen={setDeleteModal}
-        text="Deseja realmente excluir esse professor?"
+        text="Deseja realmente excluir esse Educador Social?"
         onConfirm={() => {
           mutate(socialEducatorId);
           setDeleteModal(false);
@@ -634,8 +634,8 @@ export const SocialEducatorTable = ({
         setOpen={setInativateModal}
         text={
           socialEducatorInative.status
-            ? 'Deseja realmente ativar esse professor?'
-            : 'Deseja realmente inativar esse professor?'
+            ? 'Deseja realmente ativar esse Educador Social?'
+            : 'Deseja realmente inativar esse Educador Social?'
         }
         onConfirm={() => {
           mutateInativate(socialEducatorInative);
