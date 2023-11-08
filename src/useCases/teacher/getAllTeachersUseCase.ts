@@ -114,6 +114,9 @@ export class GetAllTeacherUseCase {
       }),
       prisma.teacher.count({
         where: {
+          status: {
+            equals: status ? status === 'true' : undefined,
+          },
           schoolId: {
             equals: coordinator?.schoolId || schoolId,
           },

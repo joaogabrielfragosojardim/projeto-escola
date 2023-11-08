@@ -1,5 +1,6 @@
 export type Student = {
   id: string;
+  status: boolean;
   name: string;
   email: string;
   visualIdentity?: string;

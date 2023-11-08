@@ -24,6 +24,7 @@ import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useTableTheme } from '@/hooks/useTableTheme';
 import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
+import { useUser } from '@/store/user/context';
 import type { Student } from '@/types/student';
 import { createCSV } from '@/utils/createCSV';
 
@@ -32,6 +33,8 @@ import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
 import { PeriodSelect } from './Selects/PeriodSelect';
+import { SchoolSelect } from './Selects/SchoolSelect';
+import { StatusSelect } from './Selects/StatusSelect';
 import { YearSelect } from './Selects/YearSelect';
 
 export const StudentTable = ({
@@ -50,12 +53,14 @@ export const StudentTable = ({
   const userIsCoordinator = useUserIsCoordinator();
   const [deleteModal, setDeleteModal] = useState(false);
   const [studentId, setStudentId] = useState('');
+  const user = useUser();
 
   const [filtersValues, setFiltersValues] = useState({
     name: '',
     schoolId: '',
     year: '',
     period: '',
+    status: undefined,
   });
 
   const [filters, setFilters] = useState<{
@@ -69,6 +74,18 @@ export const StudentTable = ({
           label="Nome da escola"
           onChange={(event) => {
             nameDebounce(event.target.value);
+          }}
+        />
+      ),
+      view: false,
+    },
+    schoolPopover: {
+      element: (
+        <SchoolSelect
+          coordinatorId={userIsCoordinator ? user.id : undefined}
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, schoolId: event.value }));
           }}
         />
       ),
@@ -94,6 +111,17 @@ export const StudentTable = ({
       ),
       view: false,
     },
+    statusPopover: {
+      element: (
+        <StatusSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
   });
 
   const fetchStudents = async () => {
@@ -105,6 +133,7 @@ export const StudentTable = ({
         schoolId: filtersValues.schoolId || null,
         year: filtersValues.year || null,
         period: filtersValues.period || null,
+        status: filtersValues.status,
       },
     });
     return data;
@@ -200,6 +229,14 @@ export const StudentTable = ({
                   handleChangeFilters('classroomPopover', 'classId', event);
                 }}
               />
+              <InputCheckBoxThemed
+                label="Status"
+                register={register}
+                name="statusPopover"
+                onClick={(event) => {
+                  handleChangeFilters('statusPopover', 'status', event);
+                }}
+              />
             </form>
           </Popover>
           <Popover
@@ -256,13 +293,14 @@ export const StudentTable = ({
           <Table
             data={nodes}
             theme={theme}
-            style={{ gridTemplateColumns: '1fr 1fr 1fr 0.4fr' }}
+            style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 0.4fr' }}
           >
             {(students: Student[]) => (
               <>
                 <Header>
                   <HeaderRow>
                     <HeaderCell>Nome</HeaderCell>
+                    <HeaderCell>Status</HeaderCell>
                     <HeaderCell>Escola</HeaderCell>
                     <HeaderCell>Turma</HeaderCell>
                     <HeaderCell>Ações</HeaderCell>
@@ -286,6 +324,19 @@ export const StudentTable = ({
                           </div>
                           {student.name}
                         </div>
+                      </Cell>
+                      <Cell className="text-[20px] text-main hover:text-main">
+                        {student.status ? (
+                          <div className="flex items-center gap-[8px]">
+                            <p>Ativo</p>
+                            <div className="h-[8px] w-[8px] rounded-full bg-correct" />
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-[8px]">
+                            <p>Inativo</p>
+                            <div className="h-[8px] w-[8px] rounded-full bg-wrong" />
+                          </div>
+                        )}
                       </Cell>
                       <Cell className="text-[20px] text-main hover:text-main">
                         {`${student.school.name}`}
