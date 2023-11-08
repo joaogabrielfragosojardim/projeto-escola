@@ -63,6 +63,16 @@ export class CreateTeacherUseCase {
       throw new AppError('Coordenador não Existe', 400);
     }
 
+    const teacherWithSameTelephone = await prisma.teacher.findUnique({
+      where: {
+        telephone,
+      },
+    });
+
+    if (teacherWithSameTelephone) {
+      throw new AppError('Telefone já cadastrado', 400);
+    }
+
     const passwordHash = await hash(password, 6);
 
     const user = await prisma.user.create({

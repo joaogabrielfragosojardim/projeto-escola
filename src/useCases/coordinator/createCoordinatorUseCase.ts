@@ -51,6 +51,16 @@ export class CreateCoordinatorUseCase {
       throw new AppError('Email já cadastrado', 400);
     }
 
+    const coordinatorWithSameTelephone = await prisma.coordinator.findUnique({
+      where: {
+        telephone,
+      },
+    });
+
+    if (coordinatorWithSameTelephone) {
+      throw new AppError('Telefone já cadastrado', 400);
+    }
+
     const passwordHash = await hash(password, 6);
 
     const user = await prisma.user.create({
