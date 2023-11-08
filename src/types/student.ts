@@ -1,5 +1,6 @@
 export type Student = {
   id: string;
+  status: boolean;
   name: string;
   email: string;
   visualIdentity?: string;
@@ -7,6 +8,13 @@ export type Student = {
   password: string;
   birtday: string;
   classId: { label: string; value: string };
+  classroom: {
+    period: string;
+    year: number;
+  };
+  school: {
+    name: string;
+  };
 };
 
 export type StudentId = {

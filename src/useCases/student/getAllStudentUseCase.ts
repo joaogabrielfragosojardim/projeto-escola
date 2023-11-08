@@ -5,19 +5,25 @@ interface GetAllStudentUseCaseRequest {
   perPage: number;
   page: number;
   projectId?: string;
-  classId?: string;
+  year?: number;
+  period?: string;
   schoolId?: string;
   teacherId?: string;
+  name?: string;
+  status?: string;
 }
 
 export class GetAllStudentUseCase {
   async execute({
     page,
     perPage,
-    classId,
+    year,
+    period,
     projectId,
     schoolId,
     teacherId,
+    name,
+    status,
   }: GetAllStudentUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
@@ -30,17 +36,25 @@ export class GetAllStudentUseCase {
           createdAt: 'desc',
         },
         where: {
-          classId: { equals: classId },
+          status: {
+            equals: status ? status === 'true' : undefined,
+          },
           schoolId: { equals: schoolId },
           school: {
             projectId: { equals: projectId },
           },
           Classroom: {
             teacherId: { equals: teacherId },
+            year: { equals: year },
+            period: { equals: period },
+          },
+          user: {
+            name: { contains: name, mode: 'insensitive' },
           },
         },
         select: {
           id: true,
+          status: true,
           birtday: true,
           user: {
             select: {
@@ -71,13 +85,17 @@ export class GetAllStudentUseCase {
       }),
       prisma.student.count({
         where: {
-          classId: { equals: classId },
+          status: {
+            equals: status ? status === 'true' : undefined,
+          },
           schoolId: { equals: schoolId },
           school: {
             projectId: { equals: projectId },
           },
           Classroom: {
             teacherId: { equals: teacherId },
+            year: { equals: year },
+            period: { equals: period },
           },
         },
       }),

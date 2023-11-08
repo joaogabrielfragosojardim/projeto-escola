@@ -6,6 +6,7 @@ import {
   EditStudentController,
   GetOneStudentController,
 } from '@/controllers/student';
+import { DeleteStudentController } from '@/controllers/student/deleteStudentController';
 import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
@@ -28,6 +29,7 @@ export default async function handler(
 ) {
   const getOneStudentController = new GetOneStudentController();
   const editStudentController = new EditStudentController();
+  const deleteStudentController = new DeleteStudentController();
 
   const method = req.method as HttpMethod;
 
@@ -37,6 +39,7 @@ export default async function handler(
     {
       GET: getOneStudentController.handle,
       PUT: editStudentController.handle,
+      DELETE: deleteStudentController.handle,
     },
     authMethods[method],
     permissionMethods[method],

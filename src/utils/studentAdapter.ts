@@ -1,5 +1,6 @@
 export interface StudentQuery {
   id: string;
+  status: boolean;
   birtday: Date;
   user: User;
   Classroom: Classroom;
@@ -28,6 +29,7 @@ export interface School {
 
 type Student = {
   id: string;
+  status: boolean;
   name: string;
   birtday: Date;
   visualIdentity: string | null;
@@ -44,6 +46,7 @@ type Student = {
 export function toStudents(students: StudentQuery[]): Student[] {
   return students.map((student) => ({
     id: student.id,
+    status: student.status,
     name: student.user.name,
     birtday: student.birtday,
     email: student.user.email,

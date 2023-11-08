@@ -26,14 +26,15 @@ import { useTableTheme } from '@/hooks/useTableTheme';
 import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
 import { useUser } from '@/store/user/context';
 import type { Student } from '@/types/student';
+import { createCSV } from '@/utils/createCSV';
 
 import { ConfirmModal } from '../ConfirmModal';
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
 import { PeriodSelect } from './Selects/PeriodSelect';
-import { ProjectSelect } from './Selects/ProjectSelect';
 import { SchoolSelect } from './Selects/SchoolSelect';
+import { StatusSelect } from './Selects/StatusSelect';
 import { YearSelect } from './Selects/YearSelect';
 
 export const StudentTable = ({
@@ -49,17 +50,17 @@ export const StudentTable = ({
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
-  const user = useUser();
   const userIsCoordinator = useUserIsCoordinator();
   const [deleteModal, setDeleteModal] = useState(false);
   const [studentId, setStudentId] = useState('');
+  const user = useUser();
 
   const [filtersValues, setFiltersValues] = useState({
     name: '',
-    projectId: '',
     schoolId: '',
     year: '',
     period: '',
+    status: undefined,
   });
 
   const [filters, setFilters] = useState<{
@@ -73,17 +74,6 @@ export const StudentTable = ({
           label="Nome da escola"
           onChange={(event) => {
             nameDebounce(event.target.value);
-          }}
-        />
-      ),
-      view: false,
-    },
-    projectPopover: {
-      element: (
-        <ProjectSelect
-          onChange={(event) => {
-            setPage(1);
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
           }}
         />
       ),
@@ -121,6 +111,17 @@ export const StudentTable = ({
       ),
       view: false,
     },
+    statusPopover: {
+      element: (
+        <StatusSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
   });
 
   const fetchStudents = async () => {
@@ -129,10 +130,10 @@ export const StudentTable = ({
         page,
         perPage,
         name: filtersValues.name || null,
-        projectId: filtersValues.projectId || null,
         schoolId: filtersValues.schoolId || null,
         year: filtersValues.year || null,
         period: filtersValues.period || null,
+        status: filtersValues.status,
       },
     });
     return data;
@@ -213,14 +214,6 @@ export const StudentTable = ({
                 }}
               />
               <InputCheckBoxThemed
-                label="Projeto"
-                register={register}
-                name="projectPopover"
-                onClick={(event) => {
-                  handleChangeFilters('projectPopover', 'projectId', event);
-                }}
-              />
-              <InputCheckBoxThemed
                 label="Escola"
                 register={register}
                 name="schoolPopover"
@@ -234,6 +227,14 @@ export const StudentTable = ({
                 name="classroomPopover"
                 onClick={(event) => {
                   handleChangeFilters('classroomPopover', 'classId', event);
+                }}
+              />
+              <InputCheckBoxThemed
+                label="Status"
+                register={register}
+                name="statusPopover"
+                onClick={(event) => {
+                  handleChangeFilters('statusPopover', 'status', event);
                 }}
               />
             </form>
@@ -252,25 +253,18 @@ export const StudentTable = ({
             <button
               type="button"
               className="flex items-center gap-[8px]"
-              /*           onClick={() =>
+              onClick={() =>
                 createCSV(
-                  students?.data.map((item: Student) => ({
+                  data?.data.map((item: Student) => ({
                     name: item.name,
                     email: item.email,
-                    telephone: item.telephone,
-                    project: item.project.name,
                     school: item.school.name,
-                    classrooms: item.classrooms
-                      .map(
-                        (classroom) =>
-                          `${classroom.year}º ano - ${classroom.period}`,
-                      )
-                      .join('/'),
+                    classrooms: `${item.classroom.year}º ano - ${item.classroom.period}`,
                   })),
-                  ['Nome', 'Email', 'Telefone', 'Projeto', 'Escola', 'Turmas'],
-                  'relatorioEducadorSocial',
+                  ['Nome', 'Email', 'Escola', 'Turma'],
+                  'relatorioAlunos',
                 )
-              } */
+              }
             >
               <BiDownload size={16} />
               CSV
@@ -299,18 +293,16 @@ export const StudentTable = ({
           <Table
             data={nodes}
             theme={theme}
-            style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 0.4fr' }}
+            style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 0.4fr' }}
           >
             {(students: Student[]) => (
               <>
                 <Header>
                   <HeaderRow>
                     <HeaderCell>Nome</HeaderCell>
-                    <HeaderCell>Email</HeaderCell>
-                    <HeaderCell>Projeto</HeaderCell>
+                    <HeaderCell>Status</HeaderCell>
                     <HeaderCell>Escola</HeaderCell>
                     <HeaderCell>Turma</HeaderCell>
-                    <HeaderCell>Professor</HeaderCell>
                     <HeaderCell>Ações</HeaderCell>
                   </HeaderRow>
                 </Header>
@@ -334,19 +326,23 @@ export const StudentTable = ({
                         </div>
                       </Cell>
                       <Cell className="text-[20px] text-main hover:text-main">
-                        {student.email}
+                        {student.status ? (
+                          <div className="flex items-center gap-[8px]">
+                            <p>Ativo</p>
+                            <div className="h-[8px] w-[8px] rounded-full bg-correct" />
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-[8px]">
+                            <p>Inativo</p>
+                            <div className="h-[8px] w-[8px] rounded-full bg-wrong" />
+                          </div>
+                        )}
                       </Cell>
                       <Cell className="text-[20px] text-main hover:text-main">
-                        {student.email}
+                        {`${student.school.name}`}
                       </Cell>
                       <Cell className="text-[20px] text-main hover:text-main">
-                        {student.email}
-                      </Cell>
-                      <Cell className="text-[20px] text-main hover:text-main">
-                        {student.email}
-                      </Cell>
-                      <Cell className="text-[20px] text-main hover:text-main">
-                        {student.email}
+                        {`${student.classroom.year}º - ${student.classroom.period}`}
                       </Cell>
                       <Cell className="text-center text-main hover:text-main">
                         <div className="flex gap-[8px]">
