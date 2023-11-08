@@ -24,28 +24,6 @@ interface SelectThemedProps extends ReactSelectProps {
   isDisabled?: boolean;
 }
 
-const colourStyles: any = {
-  control: (styles: any) => ({
-    ...styles,
-    backgroundColor: 'white',
-    borderColor: '#4D4D4D',
-    fontSize: '16px',
-  }),
-  option: (styles: any) => ({
-    ...styles,
-    fontSize: '16px',
-    color: '#4D4D4D',
-    '@media only screen and (max-width: 1023px)': {
-      ...styles['@media only screen and (max-width: 1023px)'],
-      fontSize: '12px',
-    },
-  }),
-  singleValue: (styles: any) => ({
-    ...styles,
-    color: 'black',
-  }),
-};
-
 export const SelectThemed = (props: SelectThemedProps) => {
   const {
     label,
@@ -57,7 +35,30 @@ export const SelectThemed = (props: SelectThemedProps) => {
     defaultValue,
     placeholder,
     reset,
+    isDisabled,
   } = props;
+
+  const colourStyles: any = {
+    control: (styles: any) => ({
+      ...styles,
+      backgroundColor: !isDisabled ? 'white' : '#D9D9D9',
+      borderColor: '#4D4D4D',
+      fontSize: '16px',
+    }),
+    option: (styles: any) => ({
+      ...styles,
+      fontSize: '16px',
+      color: '#4D4D4D',
+      '@media only screen and (max-width: 1023px)': {
+        ...styles['@media only screen and (max-width: 1023px)'],
+        fontSize: '12px',
+      },
+    }),
+    singleValue: (styles: any) => ({
+      ...styles,
+      color: 'black',
+    }),
+  };
 
   useEffect(() => {
     if (defaultValue) {
@@ -91,6 +92,7 @@ export const SelectThemed = (props: SelectThemedProps) => {
             styles={colourStyles}
             placeholder={placeholder}
             defaultValue={defaultValue}
+            className={`${props.className}disabled:bg-complement-100 disabled:placeholder:text-complement-200`}
           />
         )}
       />

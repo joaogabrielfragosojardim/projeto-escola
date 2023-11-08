@@ -186,9 +186,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log('passou');
-      console.log(data.teacher);
-
       return {
         props: {
           teacher: data?.teacher,

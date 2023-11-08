@@ -8,7 +8,6 @@ import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
-import { InputCheckBoxThemed } from '@/components/ui/forms/InputCheckBoxThemed';
 import { InputPasswordThemed } from '@/components/ui/forms/InputPasswordThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { useUserDispatch } from '@/store/user/context';
@@ -113,12 +112,7 @@ const Login = () => {
             />
           </div>
           <div className="mt-[16px] flex justify-between">
-            <InputCheckBoxThemed
-              type="checkbox"
-              label="Lembrar de mim?"
-              register={register}
-              name="rememberMe"
-            />
+            <div />
             <Link href="/login" className="text-[14px] text-main">
               Esqueceu a senha?
             </Link>

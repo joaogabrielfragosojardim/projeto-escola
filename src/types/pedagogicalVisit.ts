@@ -53,3 +53,21 @@ export interface PedagogicalVisit {
     period: string;
   };
 }
+
+export interface GetOnePedagogicalVisit {
+  id: string;
+  date: Date;
+  frequency: number;
+  observations: string;
+  questions: Record<PedagogicalVisitEnumQuestions, boolean>;
+  School: {
+    name: string;
+  };
+  Classroom: {
+    period: string;
+    year: string;
+  };
+  Coordinator: {
+    user: { name: string };
+  };
+}

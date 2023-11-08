@@ -4,7 +4,6 @@ import router from 'next/router';
 import React, { useState } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { IoClose } from 'react-icons/io5';
-import { LuBell } from 'react-icons/lu';
 
 import { sideNavMenuRoutes } from '@/routes/sideNavMenuRoutes';
 import { sideNavMenuRoutesBottom } from '@/routes/sideNavMenuRoutesBottom';
@@ -28,9 +27,6 @@ export const Header = ({ title }: { title: string }) => {
           <span className="text-[34px]">{title}</span>
         </div>
         <div className="flex items-center gap-[16px]">
-          <div className="cursor-pointer">
-            <LuBell size={22} />
-          </div>
           <Link
             href="/profile"
             className="flex items-center gap-[16px] rounded-[8px] bg-main p-[16px] text-[20px] text-complement-100"
@@ -73,9 +69,6 @@ export const Header = ({ title }: { title: string }) => {
           />
         </Link>
         <div className="flex flex-1 items-center justify-end gap-[16px] rounded-[8px] bg-main p-[16px] text-[20px] text-complement-100">
-          <div className="cursor-pointer">
-            <LuBell size={22} />
-          </div>
           <Link
             href="/profile"
             className="relative flex h-[26px] w-[26px] items-center justify-center overflow-hidden rounded-[50%] bg-complement-100 text-complement-200"

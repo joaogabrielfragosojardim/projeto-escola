@@ -12,9 +12,10 @@ import Link from 'next/link';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { BiDownload, BiTrash } from 'react-icons/bi';
+import { AiOutlineBook } from 'react-icons/ai';
+import { BiBlock, BiDownload, BiTrash } from 'react-icons/bi';
 import { FiEye } from 'react-icons/fi';
-import { IoIosArrowDown } from 'react-icons/io';
+import { IoIosArrowDown, IoMdMore } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
 import { VscFilter } from 'react-icons/vsc';
 import { useMutation, useQuery } from 'react-query';
@@ -24,6 +25,7 @@ import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useTableTheme } from '@/hooks/useTableTheme';
 import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
+import { useUserIsTeacher } from '@/hooks/useUserIsTeacher';
 import { useUser } from '@/store/user/context';
 import type { Student } from '@/types/student';
 import { createCSV } from '@/utils/createCSV';
@@ -51,8 +53,16 @@ export const StudentTable = ({
   const { register } = useForm();
   const theme = useTableTheme();
   const userIsCoordinator = useUserIsCoordinator();
+  const userIsTeacher = useUserIsTeacher();
   const [deleteModal, setDeleteModal] = useState(false);
+  const [inativateModal, setInativateModal] = useState(false);
+
   const [studentId, setStudentId] = useState('');
+  const [studentInativate, setStudentInativate] = useState<{
+    status: boolean;
+    studentId: string;
+  }>({ status: true, studentId: '' });
+
   const user = useUser();
 
   const [filtersValues, setFiltersValues] = useState({
@@ -152,6 +162,14 @@ export const StudentTable = ({
     return (await axiosApi.delete(`/student/${id}`)).data;
   };
 
+  const inativateStudent = async (studentData: {
+    studentId: string;
+    status: boolean;
+  }) => {
+    const { studentId: id, status } = studentData;
+    return axiosApi.put('/student/status', { studentId: id, status });
+  };
+
   const { mutate } = useMutation('deleteStudent', deleteStudent, {
     onSuccess: () => {
       toast.success('Estudante deletado!');
@@ -161,6 +179,20 @@ export const StudentTable = ({
       toast.error('Algo de arrado aconteceu ao deletar o aluno!');
     },
   });
+
+  const { mutate: mutateInativate } = useMutation(
+    'inativateStudent',
+    inativateStudent,
+    {
+      onSuccess: () => {
+        toast.success('Status do Estudante alterado!');
+        refetch();
+      },
+      onError: () => {
+        toast.error('Algo de arrado aconteceu ao inativar o Estudante!');
+      },
+    },
+  );
 
   const nameDebounce = useDebounce((value: string) => {
     setPage(1);
@@ -191,14 +223,14 @@ export const StudentTable = ({
 
   return (
     <div>
-      <div className="p-[32px]">
+      <div className="py-[22px] 2xl:p-[32px]">
         <div className="flex items-center justify-between">
           <Popover
             triggerElement={
               <button
                 disabled={isLoading || isRefetching || !data?.data.length}
                 type="button"
-                className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
+                className="flex items-center gap-[8px] rounded bg-main px-[16px] py-[8px] text-[14px] text-complement-100 disabled:opacity-60 2xl:gap-[16px] 2xl:text-[20px]"
               >
                 <VscFilter size={20} /> Filtros <IoIosArrowDown size={20} />
               </button>
@@ -244,7 +276,7 @@ export const StudentTable = ({
               <button
                 type="button"
                 disabled={isLoading || isRefetching || !data?.data.length}
-                className="flex items-center gap-[16px] rounded bg-main px-[16px] py-[8px] text-[20px] text-complement-100 disabled:opacity-60"
+                className="flex items-center gap-[8px] rounded bg-main px-[16px] py-[8px] text-[14px] text-complement-100 disabled:opacity-60 2xl:gap-[16px] 2xl:text-[20px]"
               >
                 Gerar Relatório <IoIosArrowDown size={20} />
               </button>
@@ -257,11 +289,12 @@ export const StudentTable = ({
                 createCSV(
                   data?.data.map((item: Student) => ({
                     name: item.name,
+                    status: item.status,
                     email: item.email,
                     school: item.school.name,
                     classrooms: `${item.classroom.year}º ano - ${item.classroom.period}`,
                   })),
-                  ['Nome', 'Email', 'Escola', 'Turma'],
+                  ['Nome', 'Status', 'Email', 'Escola', 'Turma'],
                   'relatorioAlunos',
                 )
               }
@@ -290,84 +323,220 @@ export const StudentTable = ({
           </div>
         )}
         {nodes?.nodes && nodes?.nodes.length && !(isLoading || isRefetching) ? (
-          <Table
-            data={nodes}
-            theme={theme}
-            style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 0.4fr' }}
-          >
-            {(students: Student[]) => (
-              <>
-                <Header>
-                  <HeaderRow>
-                    <HeaderCell>Nome</HeaderCell>
-                    <HeaderCell>Status</HeaderCell>
-                    <HeaderCell>Escola</HeaderCell>
-                    <HeaderCell>Turma</HeaderCell>
-                    <HeaderCell>Ações</HeaderCell>
-                  </HeaderRow>
-                </Header>
-                <Body>
-                  {students.map((student) => (
-                    <Row key={student.id} item={student}>
-                      <Cell className="text-main hover:text-main">
-                        <div className="flex items-center gap-[16px] text-[20px]">
-                          <div className="relative h-[62px] w-[62px] min-w-[62px] overflow-hidden rounded-full">
+          <>
+            {' '}
+            <div className="hidden 2xl:inline">
+              <Table
+                data={nodes}
+                theme={theme}
+                style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 0.4fr' }}
+              >
+                {(students: Student[]) => (
+                  <>
+                    <Header>
+                      <HeaderRow>
+                        <HeaderCell>Nome</HeaderCell>
+                        <HeaderCell>Status</HeaderCell>
+                        <HeaderCell>Escola</HeaderCell>
+                        <HeaderCell>Turma</HeaderCell>
+                        <HeaderCell>Ações</HeaderCell>
+                      </HeaderRow>
+                    </Header>
+                    <Body>
+                      {students.map((student) => (
+                        <Row key={student.id} item={student}>
+                          <Cell className="text-main hover:text-main">
+                            <div className="flex items-center gap-[16px] text-[20px]">
+                              <div className="relative h-[62px] w-[62px] min-w-[62px] overflow-hidden rounded-full">
+                                <Image
+                                  src={
+                                    student?.visualIdentity ||
+                                    '/assets/images/default-profile.png'
+                                  }
+                                  alt="foto do coordenador"
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                              {student.name}
+                            </div>
+                          </Cell>
+                          <Cell className="text-[20px] text-main hover:text-main">
+                            {student.status ? (
+                              <div className="flex items-center gap-[8px]">
+                                <p>Ativo</p>
+                                <div className="h-[8px] w-[8px] rounded-full bg-correct" />
+                              </div>
+                            ) : (
+                              <div className="flex items-center gap-[8px]">
+                                <p>Inativo</p>
+                                <div className="h-[8px] w-[8px] rounded-full bg-wrong" />
+                              </div>
+                            )}
+                          </Cell>
+                          <Cell className="text-[20px] text-main hover:text-main">
+                            {`${student.school.name}`}
+                          </Cell>
+                          <Cell className="text-[20px] text-main hover:text-main">
+                            {`${student.classroom.year}º Ano - ${student.classroom.period}`}
+                          </Cell>
+                          <Cell className="text-center text-main hover:text-main">
+                            <div className="flex gap-[8px]">
+                              <Link href={`/view/${student.id}/student`}>
+                                <FiEye size={20} />
+                              </Link>
+                              {userIsCoordinator || userIsTeacher ? null : (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setStudentId(student.id);
+                                    setDeleteModal(true);
+                                  }}
+                                >
+                                  <BiTrash size={20} />
+                                </button>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setStudentInativate({
+                                    status: !student.status,
+                                    studentId: student.id,
+                                  });
+                                  setInativateModal(true);
+                                }}
+                              >
+                                <BiBlock size={20} />
+                              </button>
+                              {userIsCoordinator && student.status ? (
+                                <Link
+                                  href={`/reports/${student.id}/learning-monitoring`}
+                                >
+                                  <AiOutlineBook size={20} />
+                                </Link>
+                              ) : null}
+                            </div>
+                          </Cell>
+                        </Row>
+                      ))}
+                    </Body>
+                  </>
+                )}
+              </Table>
+            </div>
+            <div className="2xl:hidden">
+              <div className="rounded-[6px_6px_0px_0px] bg-main px-[16px] py-[18px] text-complement-100">
+                Estudantes
+              </div>
+              <div className="overflow-hidden rounded-[0px_0px_6px_6px] border-2 border-main">
+                {data?.data.map((student: Student) => (
+                  <div
+                    className="border-b-2 border-b-complement-100 p-[14px]"
+                    key={student.id}
+                  >
+                    <div className="flex flex-col">
+                      <div className="flex w-full justify-between">
+                        <div className="flex items-center gap-[16px]">
+                          <div className="relative h-[36px] w-[36px] overflow-hidden rounded-full">
                             <Image
                               src={
                                 student?.visualIdentity ||
                                 '/assets/images/default-profile.png'
                               }
-                              alt="foto do coordenador"
+                              alt="logo do projeto"
                               fill
                               className="object-cover"
                             />
                           </div>
-                          {student.name}
+                          <p className="text-[16px]">{student.name}</p>
                         </div>
-                      </Cell>
-                      <Cell className="text-[20px] text-main hover:text-main">
+                        <Popover
+                          triggerElement={
+                            <button type="button" className="text-main">
+                              <IoMdMore size={20} />
+                            </button>
+                          }
+                          eye
+                        >
+                          <div className="mt-[-30px] flex flex-col gap-[8px] text-main">
+                            <Link
+                              href={`/view/${student.id}/student`}
+                              className="flex items-center gap-[8px]"
+                            >
+                              <FiEye size={20} />
+                              <p>Visualizar</p>
+                            </Link>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setStudentInativate({
+                                  status: !student.status,
+                                  studentId: student.id,
+                                });
+                                setInativateModal(true);
+                              }}
+                              className="flex items-center gap-[8px]"
+                            >
+                              <BiBlock size={20} />
+                              <p>Inativar</p>
+                            </button>
+                            {userIsCoordinator ? null : (
+                              <button
+                                type="button"
+                                className="flex items-center gap-[8px]"
+                                onClick={() => {
+                                  setStudentId(student.id);
+                                  setDeleteModal(true);
+                                }}
+                              >
+                                <BiTrash size={20} />
+                                <p>Deletar</p>
+                              </button>
+                            )}
+                            {userIsCoordinator && student.status ? (
+                              <Link
+                                href={`/reports/${student.id}/pedagogicalVisit`}
+                                className="flex items-center gap-[8px]"
+                              >
+                                <AiOutlineBook size={20} />
+                                Acompanhamento de Aprendizagem
+                              </Link>
+                            ) : null}
+                          </div>
+                        </Popover>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px] ">
+                        <p className="text-[14px] text-main">Status:</p>
                         {student.status ? (
                           <div className="flex items-center gap-[8px]">
-                            <p>Ativo</p>
+                            <p className="text-[14px] text-main">Ativo</p>
                             <div className="h-[8px] w-[8px] rounded-full bg-correct" />
                           </div>
                         ) : (
                           <div className="flex items-center gap-[8px]">
-                            <p>Inativo</p>
+                            <p className="text-[14px] text-main">Inativo</p>
                             <div className="h-[8px] w-[8px] rounded-full bg-wrong" />
                           </div>
                         )}
-                      </Cell>
-                      <Cell className="text-[20px] text-main hover:text-main">
-                        {`${student.school.name}`}
-                      </Cell>
-                      <Cell className="text-[20px] text-main hover:text-main">
-                        {`${student.classroom.year}º - ${student.classroom.period}`}
-                      </Cell>
-                      <Cell className="text-center text-main hover:text-main">
-                        <div className="flex gap-[8px]">
-                          <Link href={`/view/${student.id}/socialEducator`}>
-                            <FiEye size={20} />
-                          </Link>
-                          {userIsCoordinator ? null : (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setStudentId(student.id);
-                                setDeleteModal(true);
-                              }}
-                            >
-                              <BiTrash size={20} />
-                            </button>
-                          )}
-                        </div>
-                      </Cell>
-                    </Row>
-                  ))}
-                </Body>
-              </>
-            )}
-          </Table>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px]">
+                        <p className="text-[14px] text-main">Escola:</p>
+                        <p className="text-[14px] text-complement-200">
+                          {student.school.name}
+                        </p>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px]">
+                        <p className="text-[14px] text-main">Turma:</p>
+                        <p className="text-[14px] text-complement-200">
+                          {`${student.classroom.year}º Ano - ${student.classroom.period}`}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
         ) : null}
         {!!data && !data?.data.length ? (
           <div className="p-[44px]">
@@ -392,6 +561,19 @@ export const StudentTable = ({
         onConfirm={() => {
           mutate(studentId);
           setDeleteModal(false);
+        }}
+      />
+      <ConfirmModal
+        isOpen={inativateModal}
+        setOpen={setInativateModal}
+        text={
+          studentInativate.status
+            ? 'Deseja realmente ativar esse Aluno?'
+            : 'Deseja realmente inativar esse Aluno?'
+        }
+        onConfirm={() => {
+          mutateInativate(studentInativate);
+          setInativateModal(false);
         }}
       />
     </div>

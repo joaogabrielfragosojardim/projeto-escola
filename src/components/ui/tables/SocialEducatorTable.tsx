@@ -454,7 +454,7 @@ export const SocialEducatorTable = ({
                               </button>
                               {userIsCoordinator && teacher.status ? (
                                 <Link
-                                  href={`/reports/${teacher.id}/pedagogical-visit`}
+                                  href={`/reports/${teacher.id}/pedagogicalVisit`}
                                 >
                                   <AiOutlineBook size={20} />
                                 </Link>
@@ -539,7 +539,7 @@ export const SocialEducatorTable = ({
                             )}
                             {userIsCoordinator && teacher.status ? (
                               <Link
-                                href={`/reports/${teacher.id}/pedagogical-visit`}
+                                href={`/reports/${teacher.id}/pedagogicalVisit`}
                                 className="flex items-center gap-[8px]"
                               >
                                 <AiOutlineBook size={20} />
