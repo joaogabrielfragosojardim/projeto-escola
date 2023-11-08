@@ -6,12 +6,20 @@ import {
   CreateCoordinatorController,
   GetAllCoordinatorController,
 } from '@/controllers/coordinator';
+import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
   GET: true,
   POST: true,
   DELETE: false,
   PUT: false,
+};
+
+const permissionMethods: Record<HttpMethod, Role[]> = {
+  GET: ['administrator', 'master'],
+  POST: ['administrator', 'master'],
+  PUT: [],
+  DELETE: [],
 };
 
 export default async function handler(
@@ -30,5 +38,6 @@ export default async function handler(
       GET: getAllCoordinatorController.handle,
     },
     authMethods[method],
+    permissionMethods[method],
   );
 }

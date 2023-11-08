@@ -17,10 +17,10 @@ const authMethods: Record<HttpMethod, boolean> = {
 };
 
 const permissionMethods: Record<HttpMethod, Role[]> = {
-  GET: [],
+  GET: ['administrator', 'master'],
   POST: [],
-  PUT: [],
-  DELETE: [],
+  PUT: ['administrator', 'master'],
+  DELETE: ['administrator', 'master'],
 };
 
 export default async function handler(
