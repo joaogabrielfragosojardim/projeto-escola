@@ -28,16 +28,6 @@ export class GetAllTeacherUseCase {
     const skip = perPage * (page - 1);
     const take = perPage;
 
-    // const user = await prisma.user.findUnique({
-    //   where: {
-    //     id: userId,
-    //   },
-    // });
-
-    // const role = await prisma.role.findUnique({
-    //   where: { id: user?.roleId },
-    // });
-
     const coordinator = await prisma.coordinator.findFirst({
       where: {
         userId,
