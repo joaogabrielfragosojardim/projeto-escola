@@ -1,7 +1,7 @@
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
 
-interface CreatePedagogicalVisitUseCaseRequest {
+interface CreateLearningMonitoringUseCaseRequest {
   writingLevel: string;
   questions: Record<string, string>;
   studentId: string;
@@ -12,7 +12,7 @@ export class CreateLearningMonitoringUseCase {
     questions,
     writingLevel,
     studentId,
-  }: CreatePedagogicalVisitUseCaseRequest) {
+  }: CreateLearningMonitoringUseCaseRequest) {
     const student = await prisma.student.findFirst({
       where: {
         id: studentId,
