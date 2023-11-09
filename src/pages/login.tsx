@@ -113,7 +113,7 @@ const Login = () => {
           </div>
           <div className="mt-[16px] flex justify-between">
             <div />
-            <Link href="/login" className="text-[14px] text-main">
+            <Link href="/forgot-password" className="text-[14px] text-main">
               Esqueceu a senha?
             </Link>
           </div>

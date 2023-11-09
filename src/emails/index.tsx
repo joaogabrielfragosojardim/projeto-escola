@@ -45,7 +45,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
       </Text>
       <Text style={{ fontSize: '16px', color: '#18181b', lineHeight: '24px' }}>
         Para continuar com a recuperação de senha clique no botão abaixo para
-        criar uma nova senha. Ah, esse link expira em 3hrs.
+        criar uma nova senha. Ah, esse link expira em 3 horas.
       </Text>
       <Text style={{ fontSize: '16px', color: '#18181b', lineHeight: '24px' }}>
         Equipe Escola Prime.

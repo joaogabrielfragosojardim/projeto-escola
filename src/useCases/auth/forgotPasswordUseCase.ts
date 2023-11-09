@@ -12,6 +12,8 @@ interface ForgotPasswordUseCaseRequest {
 
 const EXPIRATION_DURATION = 3;
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL?.replace('/api', '');
 export class ForgotPasswordUseCase {
   async execute({ email }: ForgotPasswordUseCaseRequest) {
     const user = await prisma.user.findUnique({
@@ -44,12 +46,12 @@ export class ForgotPasswordUseCase {
 
     const data = await resend.emails
       .send({
-        from: 'Escola Prime <onboarding@resend.dev>',
+        from: 'Escola Prime <adm@escolaprimepe.com.br>',
         to: [user.email],
-        subject: 'Recuperação de senha',
+        subject: 'Escola Prime - Recuperação de senha',
         react: EmailTemplate({
           email: user.email,
-          url: `http://localhost:3000/reset-password?token=${passwordToken}`,
+          url: `${BASE_URL}/reset-password?token=${passwordToken}`,
         }),
         text: '',
       })
