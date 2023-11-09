@@ -8,6 +8,7 @@ interface GetAllLearningMonitoringUseCaseRequest {
   teacherId?: string;
   period?: string;
   year?: number;
+  userId: string;
 }
 
 export class GetAllLearningMonitoringUseCase {
@@ -19,9 +20,19 @@ export class GetAllLearningMonitoringUseCase {
     startDate,
     year,
     period,
+    userId,
   }: GetAllLearningMonitoringUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
+
+    const teacher = await prisma.teacher.findFirst({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+      },
+    });
 
     const [learningMonitoring, total] = await prisma.$transaction([
       prisma.learningMonitoring.findMany({
@@ -35,7 +46,7 @@ export class GetAllLearningMonitoringUseCase {
           },
           classroom: {
             teacherId: {
-              equals: teacherId,
+              equals: teacherId || teacher?.id,
             },
             period: {
               equals: period,

@@ -24,6 +24,8 @@ export class GetAllLearningMonitoringController {
       const getAllLearningMonitoringUseCase =
         new GetAllLearningMonitoringUseCase();
 
+      const { userId } = req;
+
       const { data, meta } = await getAllLearningMonitoringUseCase.execute({
         page,
         perPage,
@@ -32,6 +34,7 @@ export class GetAllLearningMonitoringController {
         startDate,
         finalDate,
         teacherId,
+        userId,
       });
 
       return res.status(200).json({ data, meta });
