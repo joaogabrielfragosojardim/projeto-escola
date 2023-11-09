@@ -8,16 +8,17 @@ export class OptionsSchoolController {
     try {
       const optionsQuerySchema = z.object({
         projectId: z.string().uuid().optional(),
-        coordinatorId: z.string().uuid().optional(),
       });
 
-      const { projectId, coordinatorId } = optionsQuerySchema.parse(req.query);
+      const { projectId } = optionsQuerySchema.parse(req.query);
 
       const optionsSchoolUseCase = new OptionsSchoolUseCase();
 
+      const { userId } = req;
+
       const { options } = await optionsSchoolUseCase.execute({
         projectId,
-        coordinatorId,
+        userId,
       });
 
       return res.status(200).json({ options });
