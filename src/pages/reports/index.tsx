@@ -7,8 +7,8 @@ import { PiStudentLight } from 'react-icons/pi';
 
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
 import { DashBoardTable } from '@/components/ui/tables/DashboardTable';
+import { LearnMonitoringTable } from '@/components/ui/tables/LearningMonitoringTable';
 import { PedagogicalVisitTable } from '@/components/ui/tables/PedagogicalVisitTable';
-import { ProjectTable } from '@/components/ui/tables/ProjectTable';
 import { SchoolTable } from '@/components/ui/tables/SchoolTable';
 import { useUserIsAdm } from '@/hooks/useUserIsAdm';
 import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
@@ -46,7 +46,7 @@ const Dashboard = () => {
     },
     {
       table: (
-        <ProjectTable
+        <LearnMonitoringTable
           page={page}
           setTotalPages={setTotalPages}
           setPage={setPage}
