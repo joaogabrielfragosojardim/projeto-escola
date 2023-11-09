@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { z } from 'zod';
 
-import { CreateAttendanceUseCase } from '@/useCases/attendence/createAttendenceUseCase';
+import { CreateAttendanceUseCase } from '@/useCases/attendence';
 
 export class CreateAttendenceController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
