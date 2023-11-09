@@ -16,6 +16,8 @@ export class OptionsStudentController {
       const { projectId, classId, schoolId, teacherId } =
         optionsQuerySchema.parse(req.query);
 
+      const { userId } = req;
+
       const optionsStudentUseCase = new OptionsStudentUseCase();
 
       const { options } = await optionsStudentUseCase.execute({
@@ -23,6 +25,7 @@ export class OptionsStudentController {
         classId,
         schoolId,
         teacherId,
+        userId,
       });
 
       return res.status(200).json({ options });

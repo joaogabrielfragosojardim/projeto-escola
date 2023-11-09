@@ -30,6 +30,8 @@ export class GetAllStudentController {
         status,
       } = getAllQuerySchema.parse(req.query);
 
+      const { userId } = req;
+
       const getAllStudentUseCase = new GetAllStudentUseCase();
 
       const { data, meta } = await getAllStudentUseCase.execute({
@@ -42,6 +44,7 @@ export class GetAllStudentController {
         teacherId,
         name,
         status,
+        userId,
       });
 
       return res.status(200).json({ data, meta });

@@ -5,6 +5,7 @@ interface OptionStudentUseCaseRequest {
   classId?: string;
   schoolId?: string;
   teacherId?: string;
+  userId: string;
 }
 
 export class OptionsStudentUseCase {
@@ -13,7 +14,14 @@ export class OptionsStudentUseCase {
     classId,
     schoolId,
     teacherId,
+    userId,
   }: OptionStudentUseCaseRequest) {
+    const teacher = await prisma.teacher.findFirst({
+      where: {
+        userId,
+      },
+    });
+
     const students = await prisma.student.findMany({
       where: {
         schoolId: {
@@ -24,7 +32,7 @@ export class OptionsStudentUseCase {
             equals: classId,
           },
           teacherId: {
-            equals: teacherId,
+            equals: teacherId || teacher?.id,
           },
         },
         school: {

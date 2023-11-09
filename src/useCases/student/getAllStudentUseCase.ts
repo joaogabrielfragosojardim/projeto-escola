@@ -11,6 +11,7 @@ interface GetAllStudentUseCaseRequest {
   teacherId?: string;
   name?: string;
   status?: string;
+  userId: string;
 }
 
 export class GetAllStudentUseCase {
@@ -24,9 +25,16 @@ export class GetAllStudentUseCase {
     teacherId,
     name,
     status,
+    userId,
   }: GetAllStudentUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
+
+    const teacher = await prisma.teacher.findFirst({
+      where: {
+        userId,
+      },
+    });
 
     const [student, total] = await prisma.$transaction([
       prisma.student.findMany({
@@ -44,7 +52,7 @@ export class GetAllStudentUseCase {
             projectId: { equals: projectId },
           },
           Classroom: {
-            teacherId: { equals: teacherId },
+            teacherId: { equals: teacherId || teacher?.id },
             year: { equals: year },
             period: { equals: period },
           },
