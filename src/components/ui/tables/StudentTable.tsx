@@ -245,14 +245,17 @@ export const StudentTable = ({
                   handleChangeFilters('namePopover', 'name', event);
                 }}
               />
-              <InputCheckBoxThemed
-                label="Escola"
-                register={register}
-                name="schoolPopover"
-                onClick={(event) => {
-                  handleChangeFilters('schoolPopover', 'schoolId', event);
-                }}
-              />
+              {!userIsTeacher ||
+                (!userIsCoordinator && (
+                  <InputCheckBoxThemed
+                    label="Escola"
+                    register={register}
+                    name="schoolPopover"
+                    onClick={(event) => {
+                      handleChangeFilters('schoolPopover', 'schoolId', event);
+                    }}
+                  />
+                ))}
               <InputCheckBoxThemed
                 label="Ano/Período"
                 register={register}
@@ -324,7 +327,6 @@ export const StudentTable = ({
         )}
         {nodes?.nodes && nodes?.nodes.length && !(isLoading || isRefetching) ? (
           <>
-            {' '}
             <div className="hidden 2xl:inline">
               <Table
                 data={nodes}
@@ -408,9 +410,9 @@ export const StudentTable = ({
                               >
                                 <BiBlock size={20} />
                               </button>
-                              {userIsCoordinator && student.status ? (
+                              {userIsTeacher && student.status ? (
                                 <Link
-                                  href={`/reports/${student.id}/learning-monitoring`}
+                                  href={`/reports/${student.id}/learningMonitoring`}
                                 >
                                   <AiOutlineBook size={20} />
                                 </Link>

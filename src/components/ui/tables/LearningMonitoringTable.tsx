@@ -22,20 +22,19 @@ import { toast } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { useTableTheme } from '@/hooks/useTableTheme';
-import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
-import type { PedagogicalVisit } from '@/types/pedagogicalVisit';
+import { useUserIsTeacher } from '@/hooks/useUserIsTeacher';
+import type { LearningMonitoring } from '@/types/learningMonitoring';
 import { createCSV } from '@/utils/createCSV';
 
 import { ConfirmModal } from '../ConfirmModal';
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
-import { CoordinatorSelect } from './Selects/CoordinatorSelect';
 import { PeriodSelect } from './Selects/PeriodSelect';
 import { TeacherSelect } from './Selects/TeacherSelect';
 import { YearSelect } from './Selects/YearSelect';
 
-export const PedagogicalVisitTable = ({
+export const LearnMonitoringTable = ({
   page,
   setTotalPages,
   setPage,
@@ -49,19 +48,19 @@ export const PedagogicalVisitTable = ({
   const { register } = useForm();
   const theme = useTableTheme();
   const [filtersValues, setFiltersValues] = useState({
-    coordinatorId: '',
     teacherId: '',
     year: '',
     period: '',
   });
   const [deleteModal, setDeleteModal] = useState(false);
-  const [pedagogicalVisitToDelete, setPedagogicalVisitToDelete] = useState('');
+  const [learingMonitoringToDelete, setlearingMonitoringToDelete] =
+    useState('');
   const [dateFilter, setDateFilter] = useState({
     startDate: '',
     finalDate: '',
   });
 
-  const userIsCoordinator = useUserIsCoordinator();
+  const userIsTeacher = useUserIsTeacher();
 
   const maxDate = new Date();
   maxDate.setHours(maxDate.getHours() - 3);
@@ -69,7 +68,7 @@ export const PedagogicalVisitTable = ({
   const [filters, setFilters] = useState<{
     [key: string]: { element: ReactNode; view: boolean };
   }>({
-    datePopopver: {
+    datePopover: {
       element: (
         <div className="flex items-center gap-[16px]">
           <InputThemed
@@ -93,20 +92,6 @@ export const PedagogicalVisitTable = ({
             }}
           />
         </div>
-      ),
-      view: false,
-    },
-    coordinatorPopover: {
-      element: (
-        <CoordinatorSelect
-          onChange={(event) => {
-            setPage(1);
-            setFiltersValues((prev) => ({
-              ...prev,
-              coordinatorId: event.value,
-            }));
-          }}
-        />
       ),
       view: false,
     },
@@ -146,33 +131,35 @@ export const PedagogicalVisitTable = ({
     },
   });
 
-  const deletePedagogicalVisit = async (id: string) => {
-    return (await axiosApi.delete(`/pedagogicalVisit/${id}`)).data;
+  const deleteLearningMonitoring = async (id: string) => {
+    return (await axiosApi.delete(`/learningMonitoring/${id}`)).data;
   };
 
   const { mutate } = useMutation(
-    'deletePedagogicalVisitMutation',
-    deletePedagogicalVisit,
+    'deleteLearningMonitoringMutation',
+    deleteLearningMonitoring,
     {
       onSuccess: () => {
-        toast.success('Visita pedagógica deletada!');
+        toast.success('Acompanhamento de aprendizagem deletado!');
         refetch();
       },
       onError: () => {
-        toast.error('Algo de arrado aconteceu ao deletar a visita pedagógica!');
+        toast.error(
+          'Algo de arrado aconteceu ao deletar o acompanhamento de aprendizagem!',
+        );
       },
     },
   );
 
-  const fetchPedagogicalVisit = async () => {
+  const fetchLearningMonitoring = async () => {
     return (
-      await axiosApi.get('/pedagogicalVisit', {
+      await axiosApi.get('/learningMonitoring', {
         params: {
           page,
           perPage,
           startDate: dateFilter.startDate || null,
           finalDate: dateFilter.finalDate || null,
-          coordinatorId: filtersValues.coordinatorId || null,
+          teacherId: filtersValues.teacherId || null,
           year: filtersValues.year || null,
           period: filtersValues.period || null,
         },
@@ -181,8 +168,8 @@ export const PedagogicalVisitTable = ({
   };
 
   const { isLoading, data, refetch, isRefetching } = useQuery(
-    'fetchAllPedagogicalVisit',
-    fetchPedagogicalVisit,
+    'fetchLearningMonitoring',
+    fetchLearningMonitoring,
     { refetchOnWindowFocus: false },
   );
   const nodes = { nodes: data?.data };
@@ -245,26 +232,12 @@ export const PedagogicalVisitTable = ({
               <InputCheckBoxThemed
                 label="Data"
                 register={register}
-                name="datePopopver"
+                name="datePopover"
                 onClick={(event) => {
-                  handleChangeFilters('datePopopver', '', event);
+                  handleChangeFilters('datePopover', '', event);
                   setDateFilter({ startDate: '', finalDate: '' });
                 }}
               />
-              {!userIsCoordinator && (
-                <InputCheckBoxThemed
-                  label="Coordenador"
-                  register={register}
-                  name="coordinatorPopover"
-                  onClick={(event) => {
-                    handleChangeFilters(
-                      'coordinatorPopover',
-                      'coordinatorId',
-                      event,
-                    );
-                  }}
-                />
-              )}
               <InputCheckBoxThemed
                 label="Período"
                 register={register}
@@ -273,18 +246,20 @@ export const PedagogicalVisitTable = ({
                   handleChangeFilters('periodPopover', 'coordinatorId', event);
                 }}
               />
-              <InputCheckBoxThemed
-                label="Educador Social"
-                register={register}
-                name="socialEducatorPopover"
-                onClick={(event) => {
-                  handleChangeFilters(
-                    'socialEducatorPopover',
-                    'teacherId',
-                    event,
-                  );
-                }}
-              />
+              {!userIsTeacher ? (
+                <InputCheckBoxThemed
+                  label="Educador Social"
+                  register={register}
+                  name="socialEducatorPopover"
+                  onClick={(event) => {
+                    handleChangeFilters(
+                      'socialEducatorPopover',
+                      'teacherId',
+                      event,
+                    );
+                  }}
+                />
+              ) : null}
             </form>
           </Popover>
           <Popover
@@ -303,14 +278,13 @@ export const PedagogicalVisitTable = ({
               className="flex items-center gap-[8px]"
               onClick={() =>
                 createCSV(
-                  data?.data.map((item: PedagogicalVisit) => ({
-                    date: item.date,
-                    coordinator: item.coordinator.name,
-                    teacher: item.teacher.name,
+                  data?.data.map((item: LearningMonitoring) => ({
+                    date: item.createdAt,
+                    teacher: item.classroom.teacher.user.name,
                     classrooom: `${item.classroom.year}º Ano - ${item.classroom.period}`,
                   })),
-                  ['Data', 'Coordenador', 'Professor', 'Turma'],
-                  'relatorioVisitaPedagogica',
+                  ['Data', 'Educador Social', 'Turma'],
+                  'relatorioAprendizagem',
                 )
               }
             >
@@ -345,7 +319,7 @@ export const PedagogicalVisitTable = ({
                 theme={theme}
                 style={{ gridTemplateColumns: '1fr 1fr 1fr 0.4fr' }}
               >
-                {(tableList: PedagogicalVisit[]) => (
+                {(tableList: LearningMonitoring[]) => (
                   <>
                     <Header>
                       <HeaderRow>
@@ -356,36 +330,35 @@ export const PedagogicalVisitTable = ({
                       </HeaderRow>
                     </Header>
                     <Body>
-                      {tableList.map((pedagogicalVisit) => {
-                        const date = new Date(pedagogicalVisit.date);
+                      {tableList.map((laerningMonitoring) => {
+                        const date = new Date(laerningMonitoring.createdAt);
                         date.setHours(date.getHours() + 3);
                         return (
                           <Row
-                            key={pedagogicalVisit.id}
-                            item={pedagogicalVisit}
+                            key={laerningMonitoring.id}
+                            item={laerningMonitoring}
                           >
                             <Cell className="text-[20px] text-main hover:text-main">
                               {date.toLocaleDateString()}
                             </Cell>
-
                             <Cell className="text-[20px] text-main hover:text-main">
-                              {pedagogicalVisit.teacher.name}
+                              {laerningMonitoring.classroom.teacher.user.name}
                             </Cell>
                             <Cell className="text-[20px] text-main hover:text-main">
-                              {`${pedagogicalVisit.classroom.year}º - ${pedagogicalVisit.classroom.period}`}
+                              {`${laerningMonitoring.classroom.year}º - ${laerningMonitoring.classroom.period}`}
                             </Cell>
                             <Cell className="text-center text-main hover:text-main">
                               <div className="flex gap-[8px]">
                                 <Link
-                                  href={`/view/${pedagogicalVisit.id}/pedagogicalVisit`}
+                                  href={`/view/${laerningMonitoring.id}/learningMonitoring`}
                                 >
                                   <FiEye size={20} />
                                 </Link>
                                 <button
                                   type="button"
                                   onClick={() => {
-                                    setPedagogicalVisitToDelete(
-                                      pedagogicalVisit.id,
+                                    setlearingMonitoringToDelete(
+                                      laerningMonitoring.id,
                                     );
                                     setDeleteModal(true);
                                   }}
@@ -407,10 +380,10 @@ export const PedagogicalVisitTable = ({
                 Visitas Pedagógicas
               </div>
               <div className="overflow-hidden rounded-[0px_0px_6px_6px] border-2 border-main">
-                {data?.data.map((pedagogicalVisit: PedagogicalVisit) => (
+                {data?.data.map((learningMonitoring: LearningMonitoring) => (
                   <div
                     className="border-b-2 border-b-complement-100 p-[14px]"
-                    key={pedagogicalVisit.id}
+                    key={learningMonitoring.id}
                   >
                     <div className="flex flex-col">
                       <div className="flex w-full justify-between">
@@ -419,7 +392,7 @@ export const PedagogicalVisitTable = ({
                             <p className="text-[14px] text-main">Data:</p>
                             <p className="text-[14px] text-complement-200">
                               {new Date(
-                                pedagogicalVisit.date,
+                                learningMonitoring.createdAt,
                               ).toLocaleDateString()}
                             </p>
                           </div>
@@ -434,7 +407,7 @@ export const PedagogicalVisitTable = ({
                         >
                           <div className="mt-[-30px] flex flex-col gap-[8px] text-main">
                             <Link
-                              href={`/view/${pedagogicalVisit.id}/pedagogicalVisit`}
+                              href={`/view/${learningMonitoring.id}/learningMonitoring`}
                               className="flex items-center gap-[8px]"
                             >
                               <FiEye size={20} />
@@ -444,8 +417,8 @@ export const PedagogicalVisitTable = ({
                               type="button"
                               className="flex items-center gap-[8px]"
                               onClick={() => {
-                                setPedagogicalVisitToDelete(
-                                  pedagogicalVisit.id,
+                                setlearingMonitoringToDelete(
+                                  learningMonitoring.id,
                                 );
                                 setDeleteModal(true);
                               }}
@@ -456,25 +429,18 @@ export const PedagogicalVisitTable = ({
                           </div>
                         </Popover>
                       </div>
-
-                      <div className="mt-[8px] flex items-center gap-[8px]">
-                        <p className="text-[14px] text-main">Coordenador:</p>
-                        <p className="text-[14px] text-complement-200">
-                          {pedagogicalVisit.coordinator.name}
-                        </p>
-                      </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">
                           Educador Social:
                         </p>
                         <p className="text-[14px] text-complement-200">
-                          {pedagogicalVisit.teacher.name}
+                          {learningMonitoring.classroom.teacher.user.name}
                         </p>
                       </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">Turma:</p>
                         <p className="text-[14px] text-complement-200">
-                          {`${pedagogicalVisit.classroom.year}º Ano - ${pedagogicalVisit.classroom.period}`}
+                          {`${learningMonitoring.classroom.year}º Ano - ${learningMonitoring.classroom.period}`}
                         </p>
                       </div>
                     </div>
@@ -505,7 +471,7 @@ export const PedagogicalVisitTable = ({
         setOpen={setDeleteModal}
         text="Deseja realmente excluir essa visita pedagógica?"
         onConfirm={() => {
-          mutate(pedagogicalVisitToDelete);
+          mutate(learingMonitoringToDelete);
           setDeleteModal(false);
         }}
       />

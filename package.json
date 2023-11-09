@@ -2,7 +2,7 @@
   "name": "next-js-boilerplate",
   "version": "3.20.0",
   "scripts": {
-    "dev": "prisma generate && next dev",
+    "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
     "build-stats": "cross-env ANALYZE=true npm run build",

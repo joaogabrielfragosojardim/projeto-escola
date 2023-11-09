@@ -48,6 +48,7 @@ export class GetAllLearningMonitoringUseCase {
         select: {
           id: true,
           createdAt: true,
+          student: { select: { id: true, user: { select: { name: true } } } },
           classroom: {
             select: {
               id: true,

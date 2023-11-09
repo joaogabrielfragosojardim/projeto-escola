@@ -333,6 +333,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       RoleEnum.ADM_MASTER,
       RoleEnum.ADM,
       RoleEnum.COORDINATOR,
+      RoleEnum.TEACHER,
     ].includes(userObject?.role.name);
 
     if (canView) {
