@@ -48,7 +48,7 @@ export class ForgotPasswordUseCase {
       .send({
         from: 'Escola Prime <adm@escolaprimepe.com.br>',
         to: [user.email],
-        subject: 'Recuperação de senha',
+        subject: 'Escola Prime - Recuperação de senha',
         react: EmailTemplate({
           email: user.email,
           url: `${BASE_URL}/reset-password?token=${passwordToken}`,
