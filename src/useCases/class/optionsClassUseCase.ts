@@ -2,10 +2,20 @@ import { prisma } from '@/lib/prisma';
 
 interface OptionClassUseCaseRequest {
   schoolId?: string;
+  userId: string;
 }
 
 export class OptionsClassUseCase {
-  async execute({ schoolId }: OptionClassUseCaseRequest) {
+  async execute({ schoolId, userId }: OptionClassUseCaseRequest) {
+    const teacher = await prisma.teacher.findFirst({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
     const classRooms = await prisma.classroom.findMany({
       orderBy: {
         year: 'asc',
@@ -13,6 +23,9 @@ export class OptionsClassUseCase {
       where: {
         schoolId: {
           equals: schoolId,
+        },
+        teacherId: {
+          equals: teacher?.id,
         },
       },
       select: {
