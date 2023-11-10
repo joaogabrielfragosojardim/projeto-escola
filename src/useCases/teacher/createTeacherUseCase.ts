@@ -98,13 +98,47 @@ export class CreateTeacherUseCase {
       },
     });
 
-    const years = classRooms.map((item) => item.year);
-    const periods = classRooms.map((item) => item.period);
+    const updateTeachers = classRooms.map(async ({ period, year }) => {
+      const existingTeacherInClass = await prisma.classroom.findFirst({
+        where: {
+          schoolId: teacher.schoolId,
+          period,
+          year,
+          teacherId: { not: null },
+        },
+        select: {
+          year: true,
+          period: true,
+          teacher: {
+            select: {
+              user: {
+                select: { name: true },
+              },
+            },
+          },
+        },
+      });
 
-    await prisma.classroom.updateMany({
-      where: { schoolId, year: { in: years }, period: { in: periods } },
-      data: { teacherId: teacher.id },
+      if (existingTeacherInClass) {
+        throw new AppError(
+          `A turma ${existingTeacherInClass.year}º ano - ${existingTeacherInClass.period} já está atrelada ao professor ${existingTeacherInClass.teacher?.user.name}`,
+          400,
+        );
+      }
+
+      return prisma.classroom.updateMany({
+        where: {
+          schoolId: teacher.schoolId,
+          period,
+          year,
+        },
+        data: {
+          teacherId: teacher.id,
+        },
+      });
     });
+
+    await Promise.all(updateTeachers);
 
     return {
       teacher: { ...user, ...teacher },

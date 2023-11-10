@@ -1,3 +1,4 @@
+import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
 
 interface EditTeacherUseCaseRequest {
@@ -51,11 +52,38 @@ export class EditTeacherUseCase {
       });
     }
 
-    const updates = classRooms.map(({ period, year }) => {
+    const updates = classRooms.map(async ({ period, year }) => {
+      const existingTeacherInClass = await prisma.classroom.findFirst({
+        where: {
+          schoolId: teacher.schoolId,
+          period,
+          year,
+          teacherId: { not: null },
+        },
+        select: {
+          year: true,
+          period: true,
+          teacher: {
+            select: {
+              user: {
+                select: { name: true },
+              },
+            },
+          },
+        },
+      });
+
+      if (existingTeacherInClass) {
+        throw new AppError(
+          `A turma ${existingTeacherInClass.year}º ano - ${existingTeacherInClass.period} já está atrelada ao professor ${existingTeacherInClass.teacher?.user.name}`,
+          400,
+        );
+      }
+
       return prisma.classroom.updateMany({
         where: {
           schoolId: teacher.schoolId,
-          period, // Condição para encontrar os registros a serem atualizados
+          period,
           year,
         },
         data: {
