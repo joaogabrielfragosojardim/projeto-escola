@@ -37,12 +37,16 @@ export const Hero = () => {
                     mudanças de paradigma que estavam ocorrendo na educação
                     pública brasileira devido ao contexto da pandemia.
                     <br />
-                    <br />O desafio que nos preocupava era como lidar com os
+                    <br />
+                    "O desafio que nos preocupava era como lidar com os
                     problemas preexistentes na educação pública, agravados pela
                     pandemia. Sentíamos a necessidade de colaborar com o governo
                     para enfrentar as dificuldades decorrentes do distanciamento
                     social, incluindo a regressão da aprendizagem e as questões
-                    socioemocionais.
+                    socioemocionais." <br />
+                    <p className="mt-[16px] font-bold text-main">
+                      - Alexandre Costa
+                    </p>
                   </p>
                 </div>
                 <Link
@@ -124,7 +128,8 @@ export const Hero = () => {
             preexistentes na educação pública, agravados pela pandemia.
             Sentíamos a necessidade de colaborar com o governo para enfrentar as
             dificuldades decorrentes do distanciamento social, incluindo a
-            regressão da aprendizagem e as questões socioemocionais.
+            regressão da aprendizagem e as questões socioemocionais. <br />
+            <p className="mt-[16px] font-bold text-main">- Alexandre Costa</p>
           </p>
           <Link
             href={phoneSite}
