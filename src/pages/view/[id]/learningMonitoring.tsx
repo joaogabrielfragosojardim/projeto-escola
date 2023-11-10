@@ -48,7 +48,8 @@ const LearningMonitoring = ({
   };
 
   const editLearningMonitoring = async (data: any): Promise<any> => {
-    return (await axiosApi.post('/learningMonitoring', data)).data;
+    return (await axiosApi.put(`/learningMonitoring/${router.query.id}`, data))
+      .data;
   };
 
   const { mutate } = useMutation(
