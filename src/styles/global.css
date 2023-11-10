@@ -12,3 +12,7 @@
     font-size: 18px !important;
   }
 }
+
+.disable-scroll {
+  overflow-y: hidden;
+}

@@ -12,14 +12,19 @@ interface InputCheckBoxThemedProps
   name: string;
   validations?: RegisterOptions<any, string>;
   error?: FieldError | undefined;
+  reverse?: boolean;
 }
 
 export const InputCheckBoxThemed = (props: InputCheckBoxThemedProps) => {
-  const { label, register, name, validations, error } = props;
+  const { label, register, name, validations, error, reverse } = props;
 
   return (
     <div>
-      <div className="flex items-center gap-[16px]">
+      <div
+        className={`flex items-center ${
+          reverse ? 'flex-row-reverse' : ''
+        } gap-[16px]`}
+      >
         <input
           {...props}
           type="checkbox"

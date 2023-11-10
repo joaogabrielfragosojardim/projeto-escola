@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import router from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { IoClose } from 'react-icons/io5';
 
@@ -19,6 +19,14 @@ export const Header = ({ title }: { title: string }) => {
     ...user
   } = useUser();
   const menuRoutes = sideNavMenuRoutes(name as RoleEnum);
+
+  useEffect(() => {
+    if (menu) {
+      document.body.classList.add('disable-scroll');
+    } else {
+      document.body.classList.remove('disable-scroll');
+    }
+  }, [menu]);
 
   return (
     <>

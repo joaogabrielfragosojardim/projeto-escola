@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { InputCheckBoxThemed } from '@/components/ui/forms/InputCheckBoxThemed';
+import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
 import type { LearningMonitoringEdit } from '@/types/learningMonitoring';
 import {
@@ -84,6 +85,24 @@ const LearningMonitoring = ({
           className="flex max-w-[875px] flex-col gap-[22px]"
           onSubmit={handleSubmit(onSubmit)}
         >
+          <div>
+            <InputThemed
+              register={register}
+              name="student"
+              label="Aluno"
+              disabled
+              defaultValue={learningMonitoring.student.name}
+            />
+          </div>
+          <div>
+            <InputThemed
+              register={register}
+              name="classroom"
+              label="Turma"
+              disabled
+              defaultValue={`${learningMonitoring.classroom.year}º Ano - ${learningMonitoring.classroom.period}`}
+            />
+          </div>
           <div>
             <h3 className="text-[22px]">Observação direta da sala de aula</h3>
             <div className="mt-[16px] grid grid-cols-1 gap-[16px]">

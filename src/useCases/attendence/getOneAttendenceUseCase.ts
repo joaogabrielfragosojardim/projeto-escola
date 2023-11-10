@@ -20,6 +20,7 @@ export class GetOneAttendenceUseCase {
             id: true,
             user: {
               select: {
+                visualIdentity: true,
                 name: true,
               },
             },
@@ -47,6 +48,7 @@ export class GetOneAttendenceUseCase {
         student: {
           id: attendance.student.id,
           name: attendance.student.user.name,
+          visualIdentity: attendance.student.user.visualIdentity,
         },
         classroom: {
           id: attendance.Classroom.id,

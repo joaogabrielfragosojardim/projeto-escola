@@ -8,6 +8,7 @@ import {
   PiNotePencilLight,
   PiRulerLight,
   PiStackSimpleLight,
+  PiStudentLight,
 } from 'react-icons/pi';
 import { RxPerson } from 'react-icons/rx';
 
@@ -65,6 +66,12 @@ export const sideNavMenuRoutes = (role: RoleEnum) => {
             RoleEnum.COORDINATOR,
             RoleEnum.TEACHER,
           ].includes(role),
+        },
+        {
+          name: 'Frequência',
+          icon: <PiStudentLight size={25} />,
+          route: '/reports/frequency',
+          userCanView: [RoleEnum.TEACHER].includes(role),
         },
         {
           name: 'Escola',

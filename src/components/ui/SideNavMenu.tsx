@@ -90,7 +90,7 @@ export const SideNavMenu = () => {
   const menuRoutes = sideNavMenuRoutes(name as RoleEnum);
 
   return (
-    <div className="sticky left-0 top-0 hidden h-[100vh] min-w-[296px] max-w-[296px] flex-col bg-main py-[32px] pl-[32px] 2xl:flex">
+    <div className="sticky left-0 top-0 hidden h-full min-h-[100vh] min-w-[296px] max-w-[296px] flex-col bg-main py-[32px] pl-[32px] 2xl:flex">
       <Link href="/dashboard" className="relative h-[60px] w-[172px]">
         <Image
           alt="escola prime logo"
