@@ -11,10 +11,10 @@ import {
 import type { Role } from '@/types/roles';
 
 const authMethods: Record<HttpMethod, boolean> = {
-  GET: false,
+  GET: true,
   POST: true,
-  DELETE: false,
-  PUT: false,
+  DELETE: true,
+  PUT: true,
 };
 
 const permissionMethods: Record<HttpMethod, Role[]> = {

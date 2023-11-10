@@ -66,6 +66,7 @@ export class GetAllAttendenceUseCase {
         select: {
           id: true,
           date: true,
+          isPresent: true,
           student: { select: { id: true, user: { select: { name: true } } } },
           Classroom: {
             select: {

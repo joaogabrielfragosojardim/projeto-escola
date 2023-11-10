@@ -108,4 +108,7 @@ export interface LearningMonitoringEdit {
     period: string;
     year: number;
   };
+  student: {
+    name: string;
+  };
 }

@@ -7,9 +7,9 @@ import { PiStudentLight } from 'react-icons/pi';
 
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
 import { DashBoardTable } from '@/components/ui/tables/DashboardTable';
+import { FrequencyTable } from '@/components/ui/tables/FrequencyTable';
 import { LearnMonitoringTable } from '@/components/ui/tables/LearningMonitoringTable';
 import { PedagogicalVisitTable } from '@/components/ui/tables/PedagogicalVisitTable';
-import { SchoolTable } from '@/components/ui/tables/SchoolTable';
 import { useUserIsAdm } from '@/hooks/useUserIsAdm';
 import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
 import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
@@ -59,7 +59,7 @@ const Dashboard = () => {
     },
     {
       table: (
-        <SchoolTable
+        <FrequencyTable
           page={page}
           setTotalPages={setTotalPages}
           setPage={setPage}

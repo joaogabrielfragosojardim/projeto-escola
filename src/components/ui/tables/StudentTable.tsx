@@ -245,17 +245,16 @@ export const StudentTable = ({
                   handleChangeFilters('namePopover', 'name', event);
                 }}
               />
-              {!userIsTeacher ||
-                (!userIsCoordinator && (
-                  <InputCheckBoxThemed
-                    label="Escola"
-                    register={register}
-                    name="schoolPopover"
-                    onClick={(event) => {
-                      handleChangeFilters('schoolPopover', 'schoolId', event);
-                    }}
-                  />
-                ))}
+              {!(userIsTeacher || userIsCoordinator) && (
+                <InputCheckBoxThemed
+                  label="Escola"
+                  register={register}
+                  name="schoolPopover"
+                  onClick={(event) => {
+                    handleChangeFilters('schoolPopover', 'schoolId', event);
+                  }}
+                />
+              )}
               <InputCheckBoxThemed
                 label="Ano/Período"
                 register={register}
