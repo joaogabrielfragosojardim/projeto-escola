@@ -14,6 +14,7 @@ export class GetAllStudentController {
         schoolId: z.string().uuid().optional(),
         projectId: z.string().uuid().optional(),
         teacherId: z.string().uuid().optional(),
+        classId: z.string().uuid().optional(),
         name: z.string().optional(),
         status: z.string().optional(),
       });
@@ -26,6 +27,7 @@ export class GetAllStudentController {
         projectId,
         schoolId,
         teacherId,
+        classId,
         name,
         status,
       } = getAllQuerySchema.parse(req.query);
@@ -45,6 +47,7 @@ export class GetAllStudentController {
         name,
         status,
         userId,
+        classId,
       });
 
       return res.status(200).json({ data, meta });
