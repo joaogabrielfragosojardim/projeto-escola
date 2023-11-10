@@ -13,7 +13,7 @@ const authMethods: Record<HttpMethod, boolean> = {
 };
 
 const permissionMethods: Record<HttpMethod, Role[]> = {
-  GET: ['teacher'],
+  GET: ['teacher', 'coordinator', 'administrator', 'master'],
   POST: [],
   PUT: [],
   DELETE: [],

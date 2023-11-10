@@ -34,6 +34,15 @@ export class GetAllLearningMonitoringUseCase {
       },
     });
 
+    const coordinator = await prisma.coordinator.findFirst({
+      where: {
+        userId,
+      },
+      select: {
+        schoolId: true,
+      },
+    });
+
     const [learningMonitoring, total] = await prisma.$transaction([
       prisma.learningMonitoring.findMany({
         orderBy: {
@@ -45,6 +54,7 @@ export class GetAllLearningMonitoringUseCase {
             lte: finalDate,
           },
           classroom: {
+            schoolId: { equals: coordinator?.schoolId },
             teacherId: {
               equals: teacherId || teacher?.id,
             },

@@ -36,6 +36,15 @@ export class GetAllAttendenceUseCase {
       },
     });
 
+    const coordinator = await prisma.coordinator.findFirst({
+      where: {
+        userId,
+      },
+      select: {
+        schoolId: true,
+      },
+    });
+
     const [attendance, total] = await prisma.$transaction([
       prisma.attendance.findMany({
         orderBy: {
@@ -47,6 +56,7 @@ export class GetAllAttendenceUseCase {
             lte: finalDate,
           },
           Classroom: {
+            schoolId: { equals: coordinator?.schoolId },
             students: {
               some: {
                 id: studentId,
