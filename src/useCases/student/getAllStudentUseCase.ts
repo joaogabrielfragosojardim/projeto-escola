@@ -36,6 +36,12 @@ export class GetAllStudentUseCase {
       },
     });
 
+    const coordinator = await prisma.coordinator.findFirst({
+      where: {
+        userId,
+      },
+    });
+
     const [student, total] = await prisma.$transaction([
       prisma.student.findMany({
         skip,
@@ -47,7 +53,7 @@ export class GetAllStudentUseCase {
           status: {
             equals: status ? status === 'true' : undefined,
           },
-          schoolId: { equals: schoolId },
+          schoolId: { equals: schoolId || coordinator?.schoolId },
           school: {
             projectId: { equals: projectId },
           },
