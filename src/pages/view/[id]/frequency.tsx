@@ -6,6 +6,7 @@ import nookies from 'nookies';
 import { useForm } from 'react-hook-form';
 import { TbLoader } from 'react-icons/tb';
 import { useMutation } from 'react-query';
+import { toast } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { InputCheckBoxThemed } from '@/components/ui/forms/InputCheckBoxThemed';
@@ -24,9 +25,14 @@ const Frequency = ({ frequency }: any) => {
   const { mutate, isLoading: isLoadingMutate } = useMutation(
     'createFrequency',
     editFrequency,
+
     {
       onSuccess: () => {
+        toast.success('frequencia editada');
         route.push('/dashboard');
+      },
+      onError: () => {
+        toast.error('erro ao editar frequencia');
       },
     },
   );

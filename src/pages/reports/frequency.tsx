@@ -19,21 +19,21 @@ import type { Student } from '@/types/student';
 const Frequency = () => {
   const { register, handleSubmit } = useForm();
   const [dateFilter, setDateFilter] = useState('');
-  const [classRoomId, setClassRooomId] = useState('');
+  const [classId, setClassId] = useState('');
   const route = useRouter();
 
   const fetchStudents = async () => {
     const { data } = await axiosApi.get('/student', {
       params: {
         perPage: 200,
-        classRoomId,
+        classId,
       },
     });
     return data;
   };
 
   const createFrequency = async (data: any) => {
-    return axiosApi.post(`/attendance/${classRoomId}`, data);
+    return axiosApi.post(`/attendance/${classId}`, data);
   };
 
   const { isLoading, data, refetch, isRefetching } = useQuery(
@@ -45,10 +45,10 @@ const Frequency = () => {
   );
 
   useEffect(() => {
-    if (classRoomId) {
+    if (classId) {
       refetch();
     }
-  }, [classRoomId]);
+  }, [classId]);
 
   const { mutate, isLoading: isLoadingMutate } = useMutation(
     'createFrequency',
@@ -57,6 +57,9 @@ const Frequency = () => {
       onSuccess: () => {
         toast.success('frequencia cadastrada');
         route.push('/dashboard');
+      },
+      onError: () => {
+        toast.error('erro ao cadastrar frequencia');
       },
     },
   );
@@ -98,13 +101,13 @@ const Frequency = () => {
                 <div>
                   <ClassRoomSelect
                     onChange={(e) => {
-                      setClassRooomId(e.value);
+                      setClassId(e.value);
                     }}
                   />
                 </div>
               </div>
               <div>
-                {(isLoading || isRefetching) && dateFilter && classRoomId && (
+                {(isLoading || isRefetching) && dateFilter && classId && (
                   <div className="flex h-[420px] w-full items-center justify-center text-main">
                     <div>
                       <div className="animate-spin">
@@ -113,7 +116,7 @@ const Frequency = () => {
                     </div>
                   </div>
                 )}
-                {classRoomId && dateFilter && !isRefetching && (
+                {classId && dateFilter && !isRefetching && (
                   <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="mt-[16px] rounded border-[2px] border-main p-[22px]"
