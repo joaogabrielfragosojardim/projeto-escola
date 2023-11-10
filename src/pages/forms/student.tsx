@@ -144,6 +144,9 @@ const StudentSecondStep = ({
   const studentForm = useStudentForm();
   const route = useRouter();
 
+  const maxDate = new Date();
+  maxDate.setHours(maxDate.getHours() - 3);
+
   const optionsClass = async (schoolId: string) => {
     const { data } = await axiosApi.get('/class/options', {
       params: {
@@ -276,6 +279,7 @@ const StudentSecondStep = ({
             validations={{
               required: 'Campo obrigatório',
             }}
+            max={maxDate.toISOString().split('T')[0]}
             error={errors.birtday}
           />
         </div>

@@ -58,7 +58,7 @@ const LearningMonitoring = () => {
   };
 
   return (
-    <SideNavMenuContainer title="Visita Pedagógica">
+    <SideNavMenuContainer title="Acompanhamento de Aprendizagem">
       <div className="p-[32px] text-complement-200">
         <form
           className="flex max-w-[875px] flex-col gap-[22px]"

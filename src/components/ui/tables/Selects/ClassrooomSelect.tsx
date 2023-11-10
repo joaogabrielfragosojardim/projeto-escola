@@ -25,11 +25,16 @@ export const ClassRoomSelect = ({
 
   if (isLoading) {
     return (
-      <div className="flex h-[42px] w-full items-center justify-center rounded border-[1px] border-solid border-main">
-        <div className="w-[24px] animate-spin">
-          <TbLoader size={24} />
+      <>
+        <label className="text-[14px] text-complement-200 lg:text-[20px]">
+          {label || 'Turma'}
+        </label>
+        <div className="mt-[14px] flex h-[42px] w-full items-center justify-center rounded border-[1px] border-solid border-main">
+          <div className="w-[24px] animate-spin">
+            <TbLoader size={24} />
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
