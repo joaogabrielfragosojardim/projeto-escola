@@ -6,6 +6,7 @@ interface GetAllClassUseCaseRequest {
   schoolId?: string;
   gradeId?: string;
   teacherId?: string;
+  studentId?: string;
 }
 
 export class GetAllClassUseCase {
@@ -14,6 +15,7 @@ export class GetAllClassUseCase {
     perPage,
     schoolId,
     teacherId,
+    studentId,
   }: GetAllClassUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
@@ -26,6 +28,9 @@ export class GetAllClassUseCase {
           createdAt: 'desc',
         },
         where: {
+          students: {
+            some: { id: studentId },
+          },
           schoolId: { equals: schoolId },
           teacherId: { equals: teacherId },
         },

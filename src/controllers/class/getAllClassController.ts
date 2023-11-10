@@ -12,9 +12,10 @@ export class GetAllClassController {
         schoolId: z.string().uuid().optional(),
         gradeId: z.string().uuid().optional(),
         teacherId: z.string().uuid().optional(),
+        studentId: z.string().uuid().optional(),
       });
 
-      const { page, perPage, schoolId, gradeId, teacherId } =
+      const { page, perPage, schoolId, gradeId, teacherId, studentId } =
         getAllQuerySchema.parse(req.query);
 
       const getAllClassUseCase = new GetAllClassUseCase();
@@ -25,6 +26,7 @@ export class GetAllClassController {
         schoolId,
         gradeId,
         teacherId,
+        studentId,
       });
 
       return res.status(200).json({ data, meta });
