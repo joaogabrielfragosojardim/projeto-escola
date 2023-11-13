@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Navigation } from 'swiper/modules';
+import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { phoneSite } from '@/constants/contacts';
@@ -17,7 +17,20 @@ export const Hero = () => {
   return (
     <>
       <div className="hidden xl:block">
-        <Swiper navigation modules={[Navigation]}>
+        <Swiper
+          navigation
+          modules={[Autoplay, Navigation]}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+        >
+          <SwiperSlide>
+            <Link
+              href="https://drive.google.com/drive/folders/1Mb8wtQ8V8DUN5-51YADBa367Rj5-7Q0a"
+              className="hidden min-h-[551px] bg-[url('/assets/images/seletivo.jpg')] bg-contain bg-center bg-no-repeat p-[24px] xl:block"
+            />
+          </SwiperSlide>
           <SwiperSlide>
             <div className="bg-[url('/assets/images/hero-image.png')] bg-right bg-no-repeat p-[24px]">
               <div className="mx-auto max-w-[1194px]">
@@ -44,9 +57,9 @@ export const Hero = () => {
                     enfrentar as dificuldades decorrentes do distanciamento
                     social, incluindo a regressão da aprendizagem e as questões
                     socioemocionais. <br />
-                    <p className="mt-[16px] font-bold text-main">
+                    <span className="mt-[16px] font-bold text-main">
                       - Alexandre Costa
-                    </p>
+                    </span>
                   </p>
                 </div>
                 <Link
@@ -79,30 +92,20 @@ export const Hero = () => {
               </div>
             </div>
           </SwiperSlide>
-          <SwiperSlide>
-            <Link
-              href="https://forms.gle/9jDX2PAfMmnbRAJY6"
-              className="hidden min-h-[551px] bg-[url('/assets/images/seletivo.jpg')] bg-contain bg-center bg-no-repeat p-[24px] xl:block"
-            />
-          </SwiperSlide>
         </Swiper>
       </div>
       <div className="mt-[62px] xl:hidden">
-        <Swiper navigation modules={[Navigation]}>
-          <SwiperSlide>
-            <div className="relative flex h-[134px] w-full items-center bg-[url('/assets/images/hero-image.png')] bg-cover bg-right bg-no-repeat px-[20px]">
-              <div className="relative h-[40px] w-[98px]">
-                <Image
-                  src="/assets/images/educar-para-libertar-logo.png"
-                  fill
-                  alt="Logo educar para libertar"
-                />
-              </div>
-            </div>
-          </SwiperSlide>
+        <Swiper
+          navigation
+          modules={[Autoplay, Navigation]}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+        >
           <SwiperSlide>
             <Link
-              href="https://forms.gle/9jDX2PAfMmnbRAJY6"
+              href="https://drive.google.com/drive/folders/1Mb8wtQ8V8DUN5-51YADBa367Rj5-7Q0a"
               className="relative flex h-[134px] w-full items-center px-[20px]"
             >
               <div className="relative h-full w-full">
@@ -114,6 +117,17 @@ export const Hero = () => {
                 />
               </div>
             </Link>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="relative flex h-[134px] w-full items-center bg-[url('/assets/images/hero-image.png')] bg-cover bg-right bg-no-repeat px-[20px]">
+              <div className="relative h-[40px] w-[98px]">
+                <Image
+                  src="/assets/images/educar-para-libertar-logo.png"
+                  fill
+                  alt="Logo educar para libertar"
+                />
+              </div>
+            </div>
           </SwiperSlide>
         </Swiper>
         <div className="my-[32px] px-[24px] text-[14px] text-complement-200">
@@ -130,7 +144,9 @@ export const Hero = () => {
             dificuldades decorrentes do distanciamento social, incluindo a
             regressão da aprendizagem e as questões socioemocionais.
             <br />
-            <p className="mt-[16px] font-bold text-main">- Alexandre Costa</p>
+            <span className="mt-[16px] font-bold text-main">
+              - Alexandre Costa
+            </span>
           </p>
           <Link
             href={phoneSite}
