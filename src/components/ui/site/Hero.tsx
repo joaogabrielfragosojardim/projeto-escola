@@ -43,20 +43,20 @@ export const Hero = () => {
                 </div>
                 <div className="my-[32px] max-w-[561px] text-[16px] text-complement-200">
                   <p className="text-justify">
-                    Em 2020, durante o início da pandemia, um grupo de
-                    profissionais da educação, incluindo as professoras Ana
-                    Márcia de Sousa e Ana Flávia Vieira Rolim, juntamente com o
-                    professor Camilo Cazé, iniciou uma reflexão sobre as
-                    mudanças de paradigma que estavam ocorrendo na educação
-                    pública brasileira devido ao contexto da pandemia.
+                    Em 2020, durante o início da pandemia, iniciamos com um
+                    grupo de profissionais da educação, dentre eles as
+                    professoras Ana Márcia de Sousa e Ana Flávia Vieira Rolim e
+                    o professor Camilo Cazé, uma reflexão sobre as mudanças de
+                    paradigma que estavam ocorrendo na educação pública
+                    brasileira devido ao contexto da pandemia.
                     <br />
-                    <br />
-                    O desafio que nos preocupava era como lidar com os problemas
-                    preexistentes na educação pública, agravados pela pandemia.
-                    Sentíamos a necessidade de colaborar com o governo para
-                    enfrentar as dificuldades decorrentes do distanciamento
+                    <br />O desafio que nos preocupava era como lidar com os
+                    problemas preexistentes na educação pública, agravados pela
+                    pandemia. Sentíamos a necessidade de colaborar com o governo
+                    para enfrentar as dificuldades decorrentes do distanciamento
                     social, incluindo a regressão da aprendizagem e as questões
-                    socioemocionais. <br />
+                    socioemocionais.
+                    <br />
                     <span className="mt-[16px] font-bold text-main">
                       - Alexandre Costa
                     </span>
@@ -132,9 +132,9 @@ export const Hero = () => {
         </Swiper>
         <div className="my-[32px] px-[24px] text-[14px] text-complement-200">
           <p className="mb-[24px] text-justify">
-            Em 2020, durante o início da pandemia, um grupo de profissionais da
-            educação, incluindo as professoras Ana Márcia de Sousa e Ana Flávia
-            Vieira Rolim, juntamente com o professor Camilo Cazé, iniciou uma
+            Em 2020, durante o início da pandemia, iniciamos com um grupo de
+            profissionais da educação, dentre eles as professoras Ana Márcia de
+            Sousa e Ana Flávia Vieira Rolim e o professor Camilo Cazé, uma
             reflexão sobre as mudanças de paradigma que estavam ocorrendo na
             educação pública brasileira devido ao contexto da pandemia.
             <br />
