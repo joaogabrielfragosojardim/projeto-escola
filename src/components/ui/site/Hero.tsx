@@ -25,12 +25,12 @@ export const Hero = () => {
             disableOnInteraction: false,
           }}
         >
-          <SwiperSlide>
+          {/* <SwiperSlide>
             <Link
               href="https://drive.google.com/drive/folders/1Mb8wtQ8V8DUN5-51YADBa367Rj5-7Q0a"
               className="hidden min-h-[551px] bg-[url('/assets/images/seletivo.jpg')] bg-contain bg-center bg-no-repeat p-[24px] xl:block"
             />
-          </SwiperSlide>
+          </SwiperSlide> */}
           <SwiperSlide>
             <div className="bg-[url('/assets/images/hero-image.png')] bg-right bg-no-repeat p-[24px]">
               <div className="mx-auto max-w-[1194px]">
@@ -103,7 +103,7 @@ export const Hero = () => {
             disableOnInteraction: false,
           }}
         >
-          <SwiperSlide>
+          {/* <SwiperSlide>
             <Link
               href="https://drive.google.com/drive/folders/1Mb8wtQ8V8DUN5-51YADBa367Rj5-7Q0a"
               className="relative flex h-[134px] w-full items-center px-[20px]"
@@ -117,7 +117,7 @@ export const Hero = () => {
                 />
               </div>
             </Link>
-          </SwiperSlide>
+          </SwiperSlide> */}
           <SwiperSlide>
             <div className="relative flex h-[134px] w-full items-center bg-[url('/assets/images/hero-image.png')] bg-cover bg-right bg-no-repeat px-[20px]">
               <div className="relative h-[40px] w-[98px]">
