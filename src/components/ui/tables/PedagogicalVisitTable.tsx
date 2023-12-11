@@ -274,7 +274,7 @@ export const PedagogicalVisitTable = ({
                 }}
               />
               <InputCheckBoxThemed
-                label="Educador Social"
+                label="Educador"
                 register={register}
                 name="socialEducatorPopover"
                 onClick={(event) => {

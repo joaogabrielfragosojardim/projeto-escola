@@ -239,7 +239,7 @@ export const LearnMonitoringTable = ({
                 }}
               />
               <InputCheckBoxThemed
-                label="Período"
+                label="Turma"
                 register={register}
                 name="periodPopover"
                 onClick={(event) => {
@@ -248,7 +248,7 @@ export const LearnMonitoringTable = ({
               />
               {!userIsTeacher ? (
                 <InputCheckBoxThemed
-                  label="Educador Social"
+                  label="Educador"
                   register={register}
                   name="socialEducatorPopover"
                   onClick={(event) => {
@@ -317,7 +317,7 @@ export const LearnMonitoringTable = ({
               <Table
                 data={nodes}
                 theme={theme}
-                style={{ gridTemplateColumns: '1fr 1fr 1fr 0.4fr' }}
+                style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 0.4fr' }}
               >
                 {(tableList: LearningMonitoring[]) => (
                   <>
@@ -325,6 +325,7 @@ export const LearnMonitoringTable = ({
                       <HeaderRow>
                         <HeaderCell>Data</HeaderCell>
                         <HeaderCell>Educador Social</HeaderCell>
+                        <HeaderCell>Aluno</HeaderCell>
                         <HeaderCell>Turma</HeaderCell>
                         <HeaderCell>Ações</HeaderCell>
                       </HeaderRow>
@@ -343,6 +344,9 @@ export const LearnMonitoringTable = ({
                             </Cell>
                             <Cell className="text-[20px] text-main hover:text-main">
                               {laerningMonitoring.classroom.teacher.user.name}
+                            </Cell>
+                            <Cell className="text-[20px] text-main hover:text-main">
+                              {laerningMonitoring.student.user.name}
                             </Cell>
                             <Cell className="text-[20px] text-main hover:text-main">
                               {`${laerningMonitoring.classroom.year}º - ${laerningMonitoring.classroom.period}`}
@@ -377,7 +381,7 @@ export const LearnMonitoringTable = ({
             </div>
             <div className="2xl:hidden">
               <div className="rounded-[6px_6px_0px_0px] bg-main px-[16px] py-[18px] text-complement-100">
-                Visitas Pedagógicas
+                Acompanhamento de Aprendizagem
               </div>
               <div className="overflow-hidden rounded-[0px_0px_6px_6px] border-2 border-main">
                 {data?.data.map((learningMonitoring: LearningMonitoring) => (
@@ -438,6 +442,12 @@ export const LearnMonitoringTable = ({
                         </p>
                       </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">
+                        <p className="text-[14px] text-main">Aluno</p>
+                        <p className="text-[14px] text-complement-200">
+                          {learningMonitoring.student.user.name}
+                        </p>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">Turma:</p>
                         <p className="text-[14px] text-complement-200">
                           {`${learningMonitoring.classroom.year}º Ano - ${learningMonitoring.classroom.period}`}
@@ -455,7 +465,7 @@ export const LearnMonitoringTable = ({
             <div className="relative mx-auto h-[370px] w-[313px]">
               <Image
                 src="/assets/images/without-adm.png"
-                alt="imagem dizendo que até agora estamos sem visitas pedagógicas"
+                alt="imagem dizendo que até agora estamos sem acompanhamento de aprendizagem"
                 fill
                 objectFit="contain"
               />

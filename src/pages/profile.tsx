@@ -62,8 +62,6 @@ const Profile = ({ user: { name, email, visualIdentity } }: ProfileProps) => {
             label=""
             reset={reset}
             defaultValue={visualIdentity}
-            validations={{ required: 'Campo obrigatório' }}
-            error={errors.visualIdentity}
           />
           <div className="mt-[32px]">
             <InputThemed

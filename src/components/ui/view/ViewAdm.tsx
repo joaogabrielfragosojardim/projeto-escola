@@ -57,8 +57,6 @@ export const ViewAdm = ({ adm }: { adm: ADM }) => {
             label=""
             reset={reset}
             defaultValue={adm.visualIdentity}
-            validations={{ required: 'Campo obrigatório' }}
-            error={errors.visualIdentity}
           />
           <div className="mt-[32px]">
             <InputThemed

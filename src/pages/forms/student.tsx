@@ -79,8 +79,6 @@ const StudentFirstStep = ({
           label="Imagem"
           register={register}
           name="visualIdentity"
-          validations={{ required: 'Campo obrigatório' }}
-          error={errors.visualIdentity}
           reset={reset}
           defaultValue={studentForm.visualIdentity}
         />

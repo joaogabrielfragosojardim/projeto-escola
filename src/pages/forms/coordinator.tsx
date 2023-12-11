@@ -74,8 +74,6 @@ const CoordinatorFirstStep = ({
           label="Imagem"
           register={register}
           name="visualIdentity"
-          validations={{ required: 'Campo obrigatório' }}
-          error={errors.visualIdentity}
           reset={reset}
           defaultValue={coordinatorForm.visualIdentity}
         />
@@ -208,7 +206,7 @@ const CoordinatorSecondStep = ({
         </div>
         <div className="mt-[16px]">
           <InputThemed
-            label="Telefone"
+            label="Telefone - Prefencialmente Whatsapp"
             placeholder="(99) 9 9999-9999"
             mask="(99) 9 9999-9999"
             register={register}

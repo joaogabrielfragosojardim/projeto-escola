@@ -114,8 +114,6 @@ const School = ({
             label=""
             reset={reset}
             defaultValue={school.visualIdentity}
-            validations={{ required: 'Campo obrigatório' }}
-            error={errors.visualIdentity}
           />
           <InputThemed
             label="CEP"
