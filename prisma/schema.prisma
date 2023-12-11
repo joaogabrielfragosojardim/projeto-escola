@@ -143,11 +143,13 @@ model Classroom {
 }
 
 model Address {
-  id      String @id @default(uuid())
-  street  String
-  city    String
-  state   String
-  zipCode String
+  id           String @id @default(uuid())
+  street       String
+  city         String
+  state        String
+  zipCode      String
+  neighborhood String
+  houseNumber  String
 
   School School?
 
