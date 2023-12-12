@@ -163,7 +163,7 @@ const SocialEducatorSecondStep = ({
   );
 
   const findSchoolsByProject = async (projectId: string) => {
-    return axiosApi.get('/school', {
+    return axiosApi.get('/school/options', {
       params: {
         projectId,
       },
@@ -173,12 +173,7 @@ const SocialEducatorSecondStep = ({
   const { mutate: mutateFindSchoolByProjectMutation, isLoading: isMutating } =
     useMutation('findSchoolByProjectMutation', findSchoolsByProject, {
       onSuccess: (dataSchools) => {
-        setSchoolOptions(
-          dataSchools?.data.data.map((item: any) => ({
-            label: item.name,
-            value: item.id,
-          })),
-        );
+        setSchoolOptions(dataSchools?.data.options);
       },
       onError: () => {
         toast.error('Algo de arrado aconteceu');
@@ -260,6 +255,11 @@ const SocialEducatorSecondStep = ({
             options={projects.length ? schoolOptions : schools}
             error={errors.schoolId}
             validations={{ required: 'Campo obrigatório' }}
+            isDisabled={
+              (userIsAdmMaster || userIsAdm) &&
+              !!projects.length &&
+              !schoolOptions.length
+            }
             isLoading={isMutating}
           />
         </div>

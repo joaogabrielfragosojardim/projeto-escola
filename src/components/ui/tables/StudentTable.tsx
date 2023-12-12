@@ -20,6 +20,7 @@ import { TbLoader } from 'react-icons/tb';
 import { VscFilter } from 'react-icons/vsc';
 import { useMutation, useQuery } from 'react-query';
 import { toast } from 'react-toastify';
+import { Tooltip } from 'react-tooltip';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -383,19 +384,31 @@ export const StudentTable = ({
                           </Cell>
                           <Cell className="text-center text-main hover:text-main">
                             <div className="flex gap-[8px]">
-                              <Link href={`/view/${student.id}/student`}>
+                              <Link
+                                href={`/view/${student.id}/student`}
+                                data-tooltip-id="eye"
+                                data-tooltip-content="visualizar"
+                                data-tooltip-place="top"
+                              >
                                 <FiEye size={20} />
                               </Link>
+                              <Tooltip id="eye" />
                               {userIsCoordinator || userIsTeacher ? null : (
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setStudentId(student.id);
-                                    setDeleteModal(true);
-                                  }}
-                                >
-                                  <BiTrash size={20} />
-                                </button>
+                                <>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setStudentId(student.id);
+                                      setDeleteModal(true);
+                                    }}
+                                    data-tooltip-id="trash"
+                                    data-tooltip-content="remover"
+                                    data-tooltip-place="top"
+                                  >
+                                    <BiTrash size={20} />
+                                  </button>
+                                  <Tooltip id="trash" />
+                                </>
                               )}
                               <button
                                 type="button"
@@ -406,15 +419,25 @@ export const StudentTable = ({
                                   });
                                   setInativateModal(true);
                                 }}
+                                data-tooltip-id="inactivate"
+                                data-tooltip-content="inativar"
+                                data-tooltip-place="top"
                               >
                                 <BiBlock size={20} />
                               </button>
+                              <Tooltip id="inactivate" />
                               {userIsTeacher && student.status ? (
-                                <Link
-                                  href={`/reports/${student.id}/learningMonitoring`}
-                                >
-                                  <AiOutlineBook size={20} />
-                                </Link>
+                                <>
+                                  <Link
+                                    href={`/reports/${student.id}/learningMonitoring`}
+                                    data-tooltip-id="learningMonitoring"
+                                    data-tooltip-content="acompanhamento de aprendizagem"
+                                    data-tooltip-place="top"
+                                  >
+                                    <AiOutlineBook size={20} />
+                                  </Link>
+                                  <Tooltip id="learningMonitoring" />
+                                </>
                               ) : null}
                             </div>
                           </Cell>

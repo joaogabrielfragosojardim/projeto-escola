@@ -146,7 +146,7 @@ const CoordinatorSecondStep = ({
   );
 
   const findSchoolsByProject = async (projectId: string) => {
-    return axiosApi.get('/school', {
+    return axiosApi.get('/school/options', {
       params: {
         projectId,
       },
@@ -156,12 +156,7 @@ const CoordinatorSecondStep = ({
   const { mutate: mutateFindSchoolByProjectMutation, isLoading: isMutating } =
     useMutation('findSchoolByProjectMutation', findSchoolsByProject, {
       onSuccess: (dataSchools) => {
-        setSchoolOptions(
-          dataSchools?.data.data.map((item: any) => ({
-            label: item.name,
-            value: item.id,
-          })),
-        );
+        setSchoolOptions(dataSchools?.data.options);
       },
       onError: () => {
         toast.error('Algo de arrado aconteceu');
