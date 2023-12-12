@@ -15,7 +15,6 @@ import { validateEmail, validatePhone } from 'validations-br';
 import { axiosApi } from '@/components/api/axiosApi';
 import { FormDefaultPage } from '@/components/ui/forms/FormDefaultPage';
 import { InputImageThemed } from '@/components/ui/forms/InputImageThemed';
-import { InputPasswordThemed } from '@/components/ui/forms/InputPasswordThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { MultiStepForm } from '@/components/ui/forms/MultiStepForm';
 import { SelectThemed } from '@/components/ui/forms/SelectThemed';
@@ -74,8 +73,6 @@ const CoordinatorFirstStep = ({
           label="Imagem"
           register={register}
           name="visualIdentity"
-          validations={{ required: 'Campo obrigatório' }}
-          error={errors.visualIdentity}
           reset={reset}
           defaultValue={coordinatorForm.visualIdentity}
         />
@@ -105,10 +102,10 @@ const CoordinatorFirstStep = ({
 
 const CoordinatorSecondStep = ({
   setStep,
-  schools,
+  projects,
 }: {
   setStep: Dispatch<SetStateAction<number>>;
-  schools: { value: string; label: string }[];
+  projects: { value: string; label: string }[];
 }) => {
   const {
     register,
@@ -117,6 +114,7 @@ const CoordinatorSecondStep = ({
     control,
     reset,
   } = useForm<CoordinatorType>();
+  const [schoolOptions, setSchoolOptions] = useState([]);
 
   const coordinatorFormDispatch = useCoordinatorFormDispatch();
   const coordinatorForm = useCoordinatorForm();
@@ -147,15 +145,32 @@ const CoordinatorSecondStep = ({
     },
   );
 
+  const findSchoolsByProject = async (projectId: string) => {
+    return axiosApi.get('/school/options', {
+      params: {
+        projectId,
+      },
+    });
+  };
+
+  const { mutate: mutateFindSchoolByProjectMutation, isLoading: isMutating } =
+    useMutation('findSchoolByProjectMutation', findSchoolsByProject, {
+      onSuccess: (dataSchools) => {
+        setSchoolOptions(dataSchools?.data.options);
+      },
+      onError: () => {
+        toast.error('Algo de arrado aconteceu');
+      },
+    });
+
   const onSubmit = (data: CoordinatorType) => {
-    const { email, password, telephone, school } = data;
+    const { email, telephone, school } = data;
     const { visualIdentity, name } = coordinatorForm;
 
     const submitData = {
       visualIdentity,
       name,
       email,
-      password,
       telephone,
       schoolId: school.value,
     };
@@ -191,24 +206,8 @@ const CoordinatorSecondStep = ({
           error={errors.email}
         />
         <div className="mt-[16px]">
-          <InputPasswordThemed
-            label="Senha"
-            placeholder="*******"
-            register={register}
-            name="password"
-            validations={{
-              required: 'Campo obrigatório',
-              minLength: {
-                value: 6,
-                message: 'a senha deve conter no mínimo 6 caracteres',
-              },
-            }}
-            error={errors.password}
-          />
-        </div>
-        <div className="mt-[16px]">
           <InputThemed
-            label="Telefone"
+            label="Telefone - Prefencialmente Whatsapp"
             placeholder="(99) 9 9999-9999"
             mask="(99) 9 9999-9999"
             register={register}
@@ -226,14 +225,33 @@ const CoordinatorSecondStep = ({
           <SelectThemed
             control={control}
             reset={reset}
+            label="Projeto"
+            placeholder="Projeto"
+            name="project"
+            validations={{
+              required: 'Campo obrigatório',
+            }}
+            options={projects}
+            error={errors.project as unknown as any}
+            onChange={(option: any) => {
+              mutateFindSchoolByProjectMutation(option.value);
+            }}
+          />
+        </div>
+        <div className="mt-[16px]">
+          <SelectThemed
+            control={control}
+            reset={reset}
             label="Escola"
             placeholder="Escola"
             name="school"
             validations={{
               required: 'Campo obrigatório',
             }}
-            options={schools}
+            options={schoolOptions}
             error={errors.school as unknown as any}
+            isDisabled={!schoolOptions.length || isMutating}
+            isLoading={isMutating}
           />
         </div>
         <div className="mt-[48px] text-[16px] lg:text-[20px]">
@@ -257,7 +275,7 @@ const CoordinatorSecondStep = ({
 };
 
 const Coordinator = ({
-  schools,
+  schools: projects,
 }: {
   schools: { value: string; label: string }[];
 }) => {
@@ -273,7 +291,7 @@ const Coordinator = ({
             <CoordinatorSecondStep
               setStep={setStep}
               key={1}
-              schools={schools}
+              projects={projects}
             />,
           ]}
         />
@@ -295,7 +313,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     );
 
     if (canView) {
-      const { data } = await axiosApi.get('/school/options', {
+      const { data } = await axiosApi.get('/project/options', {
         headers: { Authorization: `Bearer ${token}` },
       });
 

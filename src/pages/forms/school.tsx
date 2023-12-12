@@ -77,11 +77,9 @@ const SchoolFormFirstStep = ({
         onSubmit={handleSubmit(onSubmit)}
       >
         <InputImageThemed
-          label="Imagem"
+          label=""
           register={register}
           name="visualIdentity"
-          validations={{ required: 'Campo obrigatório' }}
-          error={errors.visualIdentity}
           reset={reset}
           defaultValue={schoolForm.visualIdentity}
         />
@@ -195,7 +193,7 @@ const SchoolFormSecondStep = ({
       name,
       projectId: { value },
     } = schoolForm;
-    const { zipCode, city, state, street } = data;
+    const { zipCode, city, state, street, houseNumber, neighborhood } = data;
 
     const submitData = {
       visualIdentity,
@@ -206,6 +204,8 @@ const SchoolFormSecondStep = ({
         city,
         state,
         street,
+        houseNumber,
+        neighborhood,
       },
     };
     mutateCreateSchool(submitData);
@@ -272,6 +272,27 @@ const SchoolFormSecondStep = ({
             name="street"
             validations={{ required: 'Campo obrigatório' }}
             error={errors.street}
+          />
+        </div>
+        <div className="mt-[16px]">
+          <InputThemed
+            label="Bairro"
+            placeholder="Bairro Pinheiros"
+            register={register}
+            name="neighborhood"
+            validations={{ required: 'Campo obrigatório' }}
+            error={errors.neighborhood}
+          />
+        </div>
+        <div className="mt-[16px]">
+          <InputThemed
+            label="Número"
+            placeholder="100"
+            register={register}
+            name="houseNumber"
+            validations={{ required: 'Campo obrigatório' }}
+            error={errors.houseNumber}
+            type="number"
           />
         </div>
         <div className="mt-[48px] text-[16px] lg:text-[20px]">

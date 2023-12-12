@@ -26,6 +26,7 @@ export const ClassRoomSelect = ({
   if (isLoading) {
     return (
       <>
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label className="text-[14px] text-complement-200 lg:text-[20px]">
           {label || 'Turma'}
         </label>

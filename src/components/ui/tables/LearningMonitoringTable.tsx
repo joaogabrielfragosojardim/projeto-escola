@@ -19,6 +19,7 @@ import { TbLoader } from 'react-icons/tb';
 import { VscFilter } from 'react-icons/vsc';
 import { useMutation, useQuery } from 'react-query';
 import { toast } from 'react-toastify';
+import { Tooltip } from 'react-tooltip';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { useTableTheme } from '@/hooks/useTableTheme';
@@ -239,7 +240,7 @@ export const LearnMonitoringTable = ({
                 }}
               />
               <InputCheckBoxThemed
-                label="Período"
+                label="Turma"
                 register={register}
                 name="periodPopover"
                 onClick={(event) => {
@@ -248,7 +249,7 @@ export const LearnMonitoringTable = ({
               />
               {!userIsTeacher ? (
                 <InputCheckBoxThemed
-                  label="Educador Social"
+                  label="Educador"
                   register={register}
                   name="socialEducatorPopover"
                   onClick={(event) => {
@@ -317,7 +318,7 @@ export const LearnMonitoringTable = ({
               <Table
                 data={nodes}
                 theme={theme}
-                style={{ gridTemplateColumns: '1fr 1fr 1fr 0.4fr' }}
+                style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 0.4fr' }}
               >
                 {(tableList: LearningMonitoring[]) => (
                   <>
@@ -325,6 +326,7 @@ export const LearnMonitoringTable = ({
                       <HeaderRow>
                         <HeaderCell>Data</HeaderCell>
                         <HeaderCell>Educador Social</HeaderCell>
+                        <HeaderCell>Aluno</HeaderCell>
                         <HeaderCell>Turma</HeaderCell>
                         <HeaderCell>Ações</HeaderCell>
                       </HeaderRow>
@@ -345,15 +347,22 @@ export const LearnMonitoringTable = ({
                               {laerningMonitoring.classroom.teacher.user.name}
                             </Cell>
                             <Cell className="text-[20px] text-main hover:text-main">
+                              {laerningMonitoring.student.user.name}
+                            </Cell>
+                            <Cell className="text-[20px] text-main hover:text-main">
                               {`${laerningMonitoring.classroom.year}º - ${laerningMonitoring.classroom.period}`}
                             </Cell>
                             <Cell className="text-center text-main hover:text-main">
                               <div className="flex gap-[8px]">
                                 <Link
                                   href={`/view/${laerningMonitoring.id}/learningMonitoring`}
+                                  data-tooltip-id="eye"
+                                  data-tooltip-content="visualizar"
+                                  data-tooltip-place="top"
                                 >
                                   <FiEye size={20} />
                                 </Link>
+                                <Tooltip id="eye" />
                                 <button
                                   type="button"
                                   onClick={() => {
@@ -362,9 +371,13 @@ export const LearnMonitoringTable = ({
                                     );
                                     setDeleteModal(true);
                                   }}
+                                  data-tooltip-id="trash"
+                                  data-tooltip-content="remover"
+                                  data-tooltip-place="top"
                                 >
                                   <BiTrash size={20} />
                                 </button>
+                                <Tooltip id="trash" />
                               </div>
                             </Cell>
                           </Row>
@@ -377,7 +390,7 @@ export const LearnMonitoringTable = ({
             </div>
             <div className="2xl:hidden">
               <div className="rounded-[6px_6px_0px_0px] bg-main px-[16px] py-[18px] text-complement-100">
-                Visitas Pedagógicas
+                Acompanhamento de Aprendizagem
               </div>
               <div className="overflow-hidden rounded-[0px_0px_6px_6px] border-2 border-main">
                 {data?.data.map((learningMonitoring: LearningMonitoring) => (
@@ -438,6 +451,12 @@ export const LearnMonitoringTable = ({
                         </p>
                       </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">
+                        <p className="text-[14px] text-main">Aluno</p>
+                        <p className="text-[14px] text-complement-200">
+                          {learningMonitoring.student.user.name}
+                        </p>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">Turma:</p>
                         <p className="text-[14px] text-complement-200">
                           {`${learningMonitoring.classroom.year}º Ano - ${learningMonitoring.classroom.period}`}
@@ -455,7 +474,7 @@ export const LearnMonitoringTable = ({
             <div className="relative mx-auto h-[370px] w-[313px]">
               <Image
                 src="/assets/images/without-adm.png"
-                alt="imagem dizendo que até agora estamos sem visitas pedagógicas"
+                alt="imagem dizendo que até agora estamos sem acompanhamento de aprendizagem"
                 fill
                 objectFit="contain"
               />

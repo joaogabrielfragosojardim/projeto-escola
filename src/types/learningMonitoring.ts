@@ -98,6 +98,11 @@ export interface LearningMonitoring {
     year: number;
     period: string;
   };
+  student: {
+    user: {
+      name: string;
+    };
+  };
 }
 
 export interface LearningMonitoringEdit {

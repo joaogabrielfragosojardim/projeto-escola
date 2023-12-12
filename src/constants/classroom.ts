@@ -1,11 +1,11 @@
-export const allSeries = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+export const allSeries = [1, 2, 3, 4, 5, 6, 7, 8, 9, 'EJA III', 'EJA IV'];
 
 export const allPeriods = ['Matutino', 'Vespertino', 'Noturno'];
 
 export type ClassRoom = {
   label: string;
   value: {
-    series: number;
+    series: number | string;
     period: string;
   };
 };

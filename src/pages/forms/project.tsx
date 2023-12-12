@@ -72,8 +72,6 @@ const ProjectForm = () => {
           label="Identidade Visual"
           register={register}
           name="visualIdentity"
-          validations={{ required: 'Campo obrigatório' }}
-          error={errors.visualIdentity}
           reset={reset}
         />
         <div className="mt-[16px]">

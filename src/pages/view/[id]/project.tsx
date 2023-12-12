@@ -55,8 +55,6 @@ const Project = ({ project }: { project: ProjectType }) => {
             name="visualIdentity"
             label=""
             reset={reset}
-            defaultValue={project.visualIdentity}
-            validations={{ required: 'Campo obrigatório' }}
             error={errors.visualIdentity}
           />
           <div className="mt-[32px]">

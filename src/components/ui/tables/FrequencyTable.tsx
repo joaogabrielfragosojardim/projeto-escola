@@ -19,6 +19,7 @@ import { TbLoader } from 'react-icons/tb';
 import { VscFilter } from 'react-icons/vsc';
 import { useMutation, useQuery } from 'react-query';
 import { toast } from 'react-toastify';
+import { Tooltip } from 'react-tooltip';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { useTableTheme } from '@/hooks/useTableTheme';
@@ -344,18 +345,28 @@ export const FrequencyTable = ({
                             </Cell>
                             <Cell className="text-center text-main hover:text-main">
                               <div className="flex gap-[8px]">
-                                <Link href={`/view/${attendence.id}/frequency`}>
+                                <Link
+                                  href={`/view/${attendence.id}/frequency`}
+                                  data-tooltip-id="eye"
+                                  data-tooltip-content="visualizar"
+                                  data-tooltip-place="top"
+                                >
                                   <FiEye size={20} />
                                 </Link>
+                                <Tooltip id="eye" />
                                 <button
                                   type="button"
                                   onClick={() => {
                                     setFrequencyToDelete(attendence.id);
                                     setDeleteModal(true);
                                   }}
+                                  data-tooltip-id="trash"
+                                  data-tooltip-content="remover"
+                                  data-tooltip-place="top"
                                 >
                                   <BiTrash size={20} />
                                 </button>
+                                <Tooltip id="trash" />
                               </div>
                             </Cell>
                           </Row>
