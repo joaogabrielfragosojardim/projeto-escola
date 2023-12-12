@@ -14,7 +14,7 @@ export class EditCoordinatorController {
         schoolId: z.string(),
         telephone: z.string(),
         name: z.string(),
-        visualIdentity: z.string().url().optional(),
+        visualIdentity: z.string().optional(),
       });
 
       const { id } = editQuerySchema.parse(req.query);

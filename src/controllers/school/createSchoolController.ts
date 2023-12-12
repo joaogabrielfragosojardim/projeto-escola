@@ -9,7 +9,7 @@ export class CreateSchoolController {
       const createBodySchema = z.object({
         name: z.string(),
         projectId: z.string().uuid(),
-        visualIdentity: z.string().url().optional(),
+        visualIdentity: z.string().optional(),
         address: z.object({
           zipCode: z
             .string()

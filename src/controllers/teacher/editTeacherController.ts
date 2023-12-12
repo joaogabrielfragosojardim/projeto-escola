@@ -11,7 +11,7 @@ export class EditTeacherController {
       });
 
       const editBodySchema = z.object({
-        visualIdentity: z.string().url().optional(),
+        visualIdentity: z.string().optional(),
         telephone: z.string(),
         name: z.string(),
         classRooms: z.array(z.object({ period: z.string(), year: z.number() })),

@@ -13,7 +13,7 @@ export class EditAdmController {
       const editBodySchema = z.object({
         name: z.string(),
         password: z.string().optional(),
-        visualIdentity: z.string().url().optional(),
+        visualIdentity: z.string().optional(),
       });
 
       const { id } = editQuerySchema.parse(req.query);

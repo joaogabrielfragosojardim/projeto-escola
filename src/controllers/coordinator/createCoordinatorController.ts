@@ -10,7 +10,7 @@ export class CreateCoordinatorController {
         name: z.string(),
         email: z.string().email(),
         password: z.string().min(6),
-        visualIdentity: z.string().url().optional(),
+        visualIdentity: z.string().optional(),
         telephone: z.string(),
         schoolId: z.string().uuid(),
       });
