@@ -28,6 +28,8 @@ export class GetOneSchoolUseCase {
             state: true,
             street: true,
             zipCode: true,
+            neighborhood: true,
+            houseNumber: true,
           },
         },
       },

@@ -10,6 +10,8 @@ interface EditSchoolUseCaseRequest {
     city: string;
     state: string;
     street: string;
+    neighborhood: string;
+    houseNumber: string;
   };
 }
 
@@ -37,6 +39,8 @@ export class EditSchoolUseCase {
         state: address.state,
         zipCode: address.zipCode,
         street: address.street,
+        neighborhood: address.neighborhood,
+        houseNumber: address.houseNumber,
       },
     });
 

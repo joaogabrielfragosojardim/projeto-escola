@@ -53,6 +53,8 @@ export class GetAllSchoolsUseCase {
               state: true,
               street: true,
               zipCode: true,
+              neighborhood: true,
+              houseNumber: true,
             },
           },
         },

@@ -10,6 +10,8 @@ interface CreateSchoolUseCaseRequest {
     city: string;
     state: string;
     street: string;
+    neighborhood: string;
+    houseNumber: string;
   };
 }
 
@@ -26,6 +28,8 @@ export class CreateSchoolUseCase {
         city: address.city,
         state: address.state,
         street: address.street,
+        houseNumber: address.houseNumber,
+        neighborhood: address.neighborhood,
       },
       select: {
         id: true,

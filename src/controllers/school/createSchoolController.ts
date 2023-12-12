@@ -18,6 +18,8 @@ export class CreateSchoolController {
           city: z.string(),
           state: z.string(),
           street: z.string(),
+          neighborhood: z.string(),
+          houseNumber: z.string(),
         }),
       });
 

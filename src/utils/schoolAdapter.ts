@@ -11,6 +11,8 @@ type SchoolQuery = {
     city: string;
     state: string;
     street: string;
+    neighborhood: string;
+    houseNumber: string;
   };
 };
 
