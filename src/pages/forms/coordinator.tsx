@@ -156,7 +156,6 @@ const CoordinatorSecondStep = ({
   const { mutate: mutateFindSchoolByProjectMutation, isLoading: isMutating } =
     useMutation('findSchoolByProjectMutation', findSchoolsByProject, {
       onSuccess: (dataSchools) => {
-        console.log(dataSchools);
         setSchoolOptions(
           dataSchools?.data.data.map((item: any) => ({
             label: item.name,

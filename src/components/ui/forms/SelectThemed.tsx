@@ -60,6 +60,8 @@ export const SelectThemed = (props: SelectThemedProps) => {
     }),
   };
 
+  const optionsKey = JSON.stringify(options);
+
   useEffect(() => {
     if (defaultValue) {
       reset({ [name]: defaultValue });
@@ -77,6 +79,7 @@ export const SelectThemed = (props: SelectThemedProps) => {
         </label>
       )}
       <Controller
+        key={optionsKey}
         name={name}
         control={control}
         rules={validations}

@@ -19,6 +19,8 @@ import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { MultiStepForm } from '@/components/ui/forms/MultiStepForm';
 import { SelectThemed } from '@/components/ui/forms/SelectThemed';
 import { classrooms } from '@/constants/classroom';
+import { useUserIsAdm } from '@/hooks/useUserIsAdm';
+import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
 import {
   useStudentForm,
   useStudentFormDispatch,
@@ -113,9 +115,11 @@ const SocialEducatorFirstStep = ({
 const SocialEducatorSecondStep = ({
   setStep,
   schools,
+  projects,
 }: {
   setStep: Dispatch<SetStateAction<number>>;
   schools: { value: string; label: string }[];
+  projects: { value: string; label: string }[];
 }) => {
   const {
     register,
@@ -125,6 +129,10 @@ const SocialEducatorSecondStep = ({
     formState: { errors },
   } = useForm<SocialEducatorSchoolId>();
 
+  const [schoolOptions, setSchoolOptions] = useState([]);
+
+  const userIsAdmMaster = useUserIsAdmMaster();
+  const userIsAdm = useUserIsAdm();
   const socialEducatorFormDispatch = useStudentFormDispatch();
   const socialEducatorForm = useStudentForm();
   const route = useRouter();
@@ -154,9 +162,32 @@ const SocialEducatorSecondStep = ({
     },
   );
 
+  const findSchoolsByProject = async (projectId: string) => {
+    return axiosApi.get('/school', {
+      params: {
+        projectId,
+      },
+    });
+  };
+
+  const { mutate: mutateFindSchoolByProjectMutation, isLoading: isMutating } =
+    useMutation('findSchoolByProjectMutation', findSchoolsByProject, {
+      onSuccess: (dataSchools) => {
+        setSchoolOptions(
+          dataSchools?.data.data.map((item: any) => ({
+            label: item.name,
+            value: item.id,
+          })),
+        );
+      },
+      onError: () => {
+        toast.error('Algo de arrado aconteceu');
+      },
+    });
+
   const onSubmit = (data: SocialEducatorSchoolId) => {
-    const { visualIdentity, name, email } = socialEducatorForm;
-    const { schoolId, telephone, classRooms } = data;
+    const { visualIdentity, name } = socialEducatorForm;
+    const { schoolId, telephone, classRooms, email } = data;
 
     const submitData = {
       name,
@@ -204,6 +235,21 @@ const SocialEducatorSecondStep = ({
             defaultValue={socialEducatorForm.email}
           />
         </div>
+        {(userIsAdmMaster || userIsAdm) && (
+          <div className="mt-[16px]">
+            <SelectThemed
+              name="projectId"
+              reset={reset}
+              control={control}
+              label="Projeto"
+              placeholder="Projeto..."
+              options={projects}
+              onChange={(option: any) => {
+                mutateFindSchoolByProjectMutation(option.value);
+              }}
+            />
+          </div>
+        )}
         <div className="mt-[16px]">
           <SelectThemed
             name="schoolId"
@@ -211,9 +257,10 @@ const SocialEducatorSecondStep = ({
             control={control}
             label="Escola"
             placeholder="Escola..."
-            options={schools}
+            options={projects.length ? schoolOptions : schools}
             error={errors.schoolId}
             validations={{ required: 'Campo obrigatório' }}
+            isLoading={isMutating}
           />
         </div>
         <div className="mt-[16px] flex gap-[16px]">
@@ -269,8 +316,10 @@ const SocialEducatorSecondStep = ({
 
 const Educator = ({
   schools,
+  projects,
 }: {
   schools: { value: string; label: string }[];
+  projects: { value: string; label: string }[];
 }) => {
   const [step, setStep] = useState(0);
   return (
@@ -285,6 +334,7 @@ const Educator = ({
               setStep={setStep}
               key={1}
               schools={schools}
+              projects={projects}
             />,
           ]}
         />
@@ -306,14 +356,29 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       RoleEnum.ADM,
       RoleEnum.COORDINATOR,
     ].includes(userObject?.role.name);
+
+    const needToFetchProjects = [RoleEnum.ADM_MASTER, RoleEnum.ADM].includes(
+      userObject?.role.name,
+    );
+
     if (canView) {
       const { data: dataSchool } = await axiosApi.get('/school/options', {
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      let dataProjects = [];
+
+      if (needToFetchProjects) {
+        const { data } = await axiosApi.get('/project/options', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        dataProjects = data.options;
+      }
+
       return {
         props: {
           schools: dataSchool.options,
+          projects: dataProjects,
         },
       };
     }
