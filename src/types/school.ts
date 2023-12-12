@@ -5,6 +5,8 @@ export type School = {
   state: string;
   street: string;
   zipCode: string;
+  houseNumber: string;
+  neighborhood: string;
   visualIdentity: string;
   projectId: { value: string; label: string };
 };

@@ -15,7 +15,6 @@ import { validateEmail } from 'validations-br';
 import { axiosApi } from '@/components/api/axiosApi';
 import { FormDefaultPage } from '@/components/ui/forms/FormDefaultPage';
 import { InputImageThemed } from '@/components/ui/forms/InputImageThemed';
-import { InputPasswordThemed } from '@/components/ui/forms/InputPasswordThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { MultiStepForm } from '@/components/ui/forms/MultiStepForm';
 import { SelectThemed } from '@/components/ui/forms/SelectThemed';
@@ -190,13 +189,12 @@ const StudentSecondStep = ({
 
   const onSubmit = (data: StudentProps) => {
     const { visualIdentity, name, email } = studentForm;
-    const { password, schoolId, birtday, classId } = data;
+    const { schoolId, birtday, classId } = data;
 
     const submitData = {
       name,
       visualIdentity,
       email,
-      password,
       birtday: formatDateToISO(birtday),
       schoolId: schoolId?.value,
       classId: classId?.value,
@@ -220,21 +218,6 @@ const StudentSecondStep = ({
         className="mt-[16px] w-full lg:max-w-[400px]"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <InputPasswordThemed
-          label="Senha"
-          placeholder="******"
-          register={register}
-          name="password"
-          error={errors.password}
-          validations={{
-            required: 'Campo obrigatório',
-            minLength: {
-              value: 6,
-              message: 'a senha deve conter no mínimo 6 caracteres',
-            },
-          }}
-        />
-
         <div className="mt-[16px]">
           <SelectThemed
             reset={reset}

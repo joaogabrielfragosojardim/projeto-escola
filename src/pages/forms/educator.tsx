@@ -15,7 +15,6 @@ import { validateEmail, validatePhone } from 'validations-br';
 import { axiosApi } from '@/components/api/axiosApi';
 import { FormDefaultPage } from '@/components/ui/forms/FormDefaultPage';
 import { InputImageThemed } from '@/components/ui/forms/InputImageThemed';
-import { InputPasswordThemed } from '@/components/ui/forms/InputPasswordThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { MultiStepForm } from '@/components/ui/forms/MultiStepForm';
 import { SelectThemed } from '@/components/ui/forms/SelectThemed';
@@ -48,13 +47,13 @@ const SocialEducatorFirstStep = ({
   const socialEdutatorForm = useStudentForm();
 
   const onSubmit = (data: SocialEducator) => {
-    const { visualIdentity, name, email } = data;
+    const { visualIdentity, name } = data;
     socialEducatorFormDispatch({
       type: StudentFormTypesEnum.ADD_STUDENT_FORM,
       payload: {
         visualIdentity,
         name,
-        email,
+        email: '',
         schoolId: '',
         period: '',
         year: '',
@@ -98,23 +97,6 @@ const SocialEducatorFirstStep = ({
             defaultValue={socialEdutatorForm.name}
           />
         </div>
-        <div className="mt-[16px]">
-          <InputThemed
-            label="Email do educador"
-            placeholder="Email exemplo..."
-            register={register}
-            name="email"
-            validations={{
-              required: 'Campo obrigatório',
-              validate: (value: string) => {
-                return validateEmail(value) || 'Email invalido';
-              },
-            }}
-            error={errors.email}
-            defaultValue={socialEdutatorForm.email}
-          />
-        </div>
-
         <div className="mt-[48px] text-[16px] lg:text-[20px]">
           <button
             type="submit"
@@ -174,13 +156,12 @@ const SocialEducatorSecondStep = ({
 
   const onSubmit = (data: SocialEducatorSchoolId) => {
     const { visualIdentity, name, email } = socialEducatorForm;
-    const { password, schoolId, telephone, classRooms } = data;
+    const { schoolId, telephone, classRooms } = data;
 
     const submitData = {
       name,
       visualIdentity,
       email,
-      password,
       telephone,
       schoolId: schoolId.value,
       classRooms: classRooms?.map((classroom) => ({
@@ -207,21 +188,22 @@ const SocialEducatorSecondStep = ({
         className="mt-[16px] w-full lg:max-w-[400px]"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <InputPasswordThemed
-          label="Senha"
-          placeholder="******"
-          register={register}
-          name="password"
-          error={errors.password}
-          validations={{
-            required: 'Campo obrigatório',
-            minLength: {
-              value: 6,
-              message: 'a senha deve conter no mínimo 6 caracteres',
-            },
-          }}
-        />
-
+        <div className="mt-[16px]">
+          <InputThemed
+            label="Email do educador"
+            placeholder="Email exemplo..."
+            register={register}
+            name="email"
+            validations={{
+              required: 'Campo obrigatório',
+              validate: (value: string) => {
+                return validateEmail(value) || 'Email invalido';
+              },
+            }}
+            error={errors.email}
+            defaultValue={socialEducatorForm.email}
+          />
+        </div>
         <div className="mt-[16px]">
           <SelectThemed
             name="schoolId"

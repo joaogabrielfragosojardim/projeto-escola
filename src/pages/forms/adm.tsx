@@ -12,7 +12,6 @@ import { toast } from 'react-toastify';
 import { axiosApi } from '@/components/api/axiosApi';
 import { FormDefaultPage } from '@/components/ui/forms/FormDefaultPage';
 import { InputImageThemed } from '@/components/ui/forms/InputImageThemed';
-import { InputPasswordThemed } from '@/components/ui/forms/InputPasswordThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import type { ADM } from '@/types/adm';
 import type { PrismaError } from '@/types/prismaError';
@@ -93,16 +92,6 @@ const AdmForm = () => {
             name="email"
             validations={{ required: 'Campo obrigatório' }}
             error={errors.email}
-          />
-        </div>
-        <div className="mt-[16px]">
-          <InputPasswordThemed
-            label="Senha"
-            placeholder="******"
-            register={register}
-            name="password"
-            validations={{ required: 'Campo obrigatório' }}
-            error={errors.password}
           />
         </div>
         <div className="mt-[48px] text-[16px] lg:text-[20px]">
