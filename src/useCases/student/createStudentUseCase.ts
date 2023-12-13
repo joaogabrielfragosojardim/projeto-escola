@@ -2,26 +2,27 @@ import { hash } from 'bcryptjs';
 
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
+import { generateEmail } from '@/utils/gerateRandomEmail';
 
 interface CreateStudentUseCaseRequest {
   name: string;
-  email: string;
   password: string;
   classId: string;
   schoolId: string;
   visualIdentity?: string;
   birtday: Date;
+  registration: string;
 }
 
 export class CreateStudentUseCase {
   async execute({
     name,
-    email,
     password,
     visualIdentity,
     schoolId,
     classId,
     birtday,
+    registration,
   }: CreateStudentUseCaseRequest) {
     const studentRole = await prisma.role.findUnique({
       where: {
@@ -32,6 +33,8 @@ export class CreateStudentUseCase {
     if (!studentRole) {
       throw new AppError('Cargo inexistente', 400);
     }
+
+    const email = generateEmail(name);
 
     const userWithSameEmail = await prisma.user.findUnique({
       where: {
@@ -78,6 +81,7 @@ export class CreateStudentUseCase {
         schoolId,
         birtday,
         classId,
+        registration,
       },
     });
 

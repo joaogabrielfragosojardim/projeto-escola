@@ -2,6 +2,7 @@ export interface StudentQuery {
   id: string;
   status: boolean;
   birtday: Date;
+  registration: string;
   user: User;
   Classroom: Classroom;
   school: School;
@@ -32,6 +33,7 @@ type Student = {
   status: boolean;
   name: string;
   birtday: Date;
+  registration: string;
   visualIdentity: string | null;
   school: {
     id: string;
@@ -48,6 +50,7 @@ export function toStudents(students: StudentQuery[]): Student[] {
     id: student.id,
     status: student.status,
     name: student.user.name,
+    registration: student.registration,
     birtday: student.birtday,
     email: student.user.email,
     visualIdentity: student.user?.visualIdentity,

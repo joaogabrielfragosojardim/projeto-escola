@@ -14,6 +14,7 @@ export class GetOneStudentUseCase {
       select: {
         id: true,
         birtday: true,
+        registration: true,
         user: {
           select: {
             email: true,

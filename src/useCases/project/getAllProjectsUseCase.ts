@@ -13,11 +13,15 @@ export class GetAllProjectsUseCase {
 
     const [projects, total] = await prisma.$transaction([
       prisma.project.findMany({
-        orderBy: {
-          createdAt: 'desc',
-        },
         skip,
         take,
+        include: {
+          Schools: {
+            select: {
+              name: true, // Selecionar apenas o nome da escola para fins de ordenação
+            },
+          },
+        },
         where: {
           name: { contains: name, mode: 'insensitive' },
         },

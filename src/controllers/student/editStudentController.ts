@@ -14,13 +14,13 @@ export class EditStudentController {
         visualIdentity: z.string().optional(),
         birtday: z.coerce.date(),
         name: z.string(),
+        registration: z.string(),
         classRoom: z.object({ period: z.string(), year: z.number() }),
       });
 
       const { id } = editQuerySchema.parse(req.query);
-      const { visualIdentity, birtday, name, classRoom } = editBodySchema.parse(
-        req.body,
-      );
+      const { visualIdentity, birtday, name, classRoom, registration } =
+        editBodySchema.parse(req.body);
 
       const editStudentUseCase = new EditStudentUseCase();
 
@@ -30,6 +30,7 @@ export class EditStudentController {
         birtday,
         name,
         classRoom,
+        registration,
       });
 
       return res.status(200).json({ student });

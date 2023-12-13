@@ -27,7 +27,10 @@ export class GetAllSchoolsUseCase {
         skip,
         take,
         orderBy: {
-          createdAt: 'desc',
+          project: {
+            name: 'asc',
+          },
+          name: 'asc',
         },
         where: {
           name: { contains: name, mode: 'insensitive' },

@@ -8,34 +8,34 @@ export class CreateStudentController {
     try {
       const createBodySchema = z.object({
         name: z.string(),
-        email: z.string().email(),
         password: z.string().min(6),
         visualIdentity: z.string().optional(),
         birtday: z.coerce.date(),
         schoolId: z.string().uuid(),
         classId: z.string().uuid(),
+        registration: z.string(),
       });
 
       const {
         name,
-        email,
         password,
         schoolId,
         birtday,
         visualIdentity,
         classId,
+        registration,
       } = createBodySchema.parse(req.body);
 
       const createStudentUseCase = new CreateStudentUseCase();
 
       const { student } = await createStudentUseCase.execute({
         name,
-        email,
         password,
         schoolId,
         birtday,
         visualIdentity,
         classId,
+        registration,
       });
 
       return res.status(201).json({ student });

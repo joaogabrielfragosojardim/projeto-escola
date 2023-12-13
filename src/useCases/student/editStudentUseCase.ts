@@ -5,6 +5,7 @@ interface EditStudentUseCaseRequest {
   birtday: Date;
   name: string;
   visualIdentity?: string;
+  registration: string;
   classRoom: { year: number; period: string };
 }
 
@@ -15,11 +16,13 @@ export class EditStudentUseCase {
     name,
     visualIdentity,
     classRoom,
+    registration,
   }: EditStudentUseCaseRequest) {
     const student = await prisma.student.update({
       where: { id },
       data: {
         birtday,
+        registration,
         Classroom: {
           update: {
             period: classRoom.period,
@@ -30,6 +33,7 @@ export class EditStudentUseCase {
       select: {
         id: true,
         birtday: true,
+        registration: true,
         Classroom: {
           select: {
             period: true,
@@ -64,6 +68,7 @@ export class EditStudentUseCase {
         visualIdentity: user?.visualIdentity,
         email: user.email,
         birtday: student.birtday,
+        registration: student.registration,
         Classroom: {
           period: student.Classroom.period,
           year: student.Classroom.year,

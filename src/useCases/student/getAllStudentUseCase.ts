@@ -73,6 +73,7 @@ export class GetAllStudentUseCase {
           id: true,
           status: true,
           birtday: true,
+          registration: true,
           user: {
             select: {
               visualIdentity: true,
