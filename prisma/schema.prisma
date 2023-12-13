@@ -72,13 +72,14 @@ model Project {
 }
 
 model Student {
-  id        String   @id @default(uuid())
-  birtday   DateTime
-  createdAt DateTime @default(now())
-  userId    String
-  schoolId  String
-  classId   String
-  status    Boolean  @default(true)
+  id           String   @id @default(uuid())
+  birtday      DateTime
+  createdAt    DateTime @default(now())
+  userId       String
+  schoolId     String
+  classId      String
+  status       Boolean  @default(true)
+  registration String
 
   user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   school             School               @relation(fields: [schoolId], references: [id])
