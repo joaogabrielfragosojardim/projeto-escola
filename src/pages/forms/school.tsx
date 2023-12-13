@@ -267,7 +267,7 @@ const SchoolFormSecondStep = ({
         <div className="mt-[16px]">
           <InputThemed
             label="Rua"
-            placeholder="Rua Josevaldo, Bairro Romero, Número 10"
+            placeholder="Rua Josevaldo"
             register={register}
             name="street"
             validations={{ required: 'Campo obrigatório' }}
