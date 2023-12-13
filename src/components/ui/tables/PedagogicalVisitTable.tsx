@@ -267,7 +267,7 @@ export const PedagogicalVisitTable = ({
                 />
               )}
               <InputCheckBoxThemed
-                label="Período"
+                label="Turma"
                 register={register}
                 name="periodPopover"
                 onClick={(event) => {

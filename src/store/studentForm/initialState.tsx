@@ -8,4 +8,5 @@ export const initialState: StudentId = {
   classId: '',
   password: '',
   birtday: '',
+  registration: '',
 };

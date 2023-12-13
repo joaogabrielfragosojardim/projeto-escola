@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { setCookie } from 'nookies';
+import { destroyCookie, setCookie } from 'nookies';
 import { useForm } from 'react-hook-form';
 import { TbLoader } from 'react-icons/tb';
 import { useMutation } from 'react-query';
@@ -46,6 +46,8 @@ const Login = () => {
         token,
         user: { id, name, email, role, visualIdentity },
       } = data;
+      destroyCookie(null, 'token');
+      destroyCookie(null, 'user');
       setCookie(null, 'token', token);
       setCookie(
         null,

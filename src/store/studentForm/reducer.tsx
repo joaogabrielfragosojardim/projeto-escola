@@ -17,6 +17,7 @@ export const studentFormReducer = (
         classId,
         password,
         birtday,
+        registration,
       } = action.payload;
       return {
         name,
@@ -26,6 +27,7 @@ export const studentFormReducer = (
         birtday,
         visualIdentity,
         password,
+        registration,
       };
     }
     case StudentFormTypesEnum.REMOVE_STUDENT_FORM: {

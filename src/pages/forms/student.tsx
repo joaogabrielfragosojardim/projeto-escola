@@ -10,7 +10,6 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
-import { validateEmail } from 'validations-br';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { FormDefaultPage } from '@/components/ui/forms/FormDefaultPage';
@@ -44,13 +43,14 @@ const StudentFirstStep = ({
   const studentForm = useStudentForm();
 
   const onSubmit = (data: StudentProps) => {
-    const { visualIdentity, name, email } = data;
+    const { visualIdentity, name, email, registration } = data;
     studentFormDispatch({
       type: StudentFormTypesEnum.ADD_STUDENT_FORM,
       payload: {
         visualIdentity,
         name,
         email,
+        registration,
         schoolId: { id: '', value: '' },
         period: '',
         password: '',
@@ -94,18 +94,15 @@ const StudentFirstStep = ({
         </div>
         <div className="mt-[16px]">
           <InputThemed
-            label="Email do aluno"
-            placeholder="Email exemplo..."
+            label="Matricula do aluno"
+            placeholder="Matricula..."
             register={register}
-            name="email"
+            name="registration"
             validations={{
               required: 'Campo obrigatório',
-              validate: (value: string) => {
-                return validateEmail(value) || 'Email invalido';
-              },
             }}
-            error={errors.email}
-            defaultValue={studentForm.email}
+            error={errors.registration}
+            defaultValue={studentForm.registration}
           />
         </div>
 
@@ -188,13 +185,14 @@ const StudentSecondStep = ({
   );
 
   const onSubmit = (data: StudentProps) => {
-    const { visualIdentity, name, email } = studentForm;
+    const { visualIdentity, name, email, registration } = studentForm;
     const { schoolId, birtday, classId } = data;
 
     const submitData = {
       name,
       visualIdentity,
       email,
+      registration,
       birtday: formatDateToISO(birtday),
       schoolId: schoolId?.value,
       classId: classId?.value,

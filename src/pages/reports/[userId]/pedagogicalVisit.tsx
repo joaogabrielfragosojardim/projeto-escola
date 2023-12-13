@@ -292,6 +292,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     verify(token || '', secret);
 
     const canView = [RoleEnum.COORDINATOR].includes(userObject?.role.name);
+    console.log(canView)
     if (canView) {
       const { data } = await axiosApi.get(`/teacher/${ctx?.params?.userId}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -308,7 +309,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         props: { classrooms },
       };
     }
-
     return { redirect: { permanent: false, destination: '/login' } };
   } catch (error) {
     return { redirect: { permanent: false, destination: '/login' } };
