@@ -3,10 +3,10 @@ import { hash } from 'bcryptjs';
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
 import { generateEmail } from '@/utils/generateRandomEmail';
+import { generatePassword } from '@/utils/generateRandomPassword';
 
 interface CreateStudentUseCaseRequest {
   name: string;
-  password: string;
   classId: string;
   schoolId: string;
   visualIdentity?: string;
@@ -17,7 +17,6 @@ interface CreateStudentUseCaseRequest {
 export class CreateStudentUseCase {
   async execute({
     name,
-    password,
     visualIdentity,
     schoolId,
     classId,
@@ -45,6 +44,8 @@ export class CreateStudentUseCase {
     if (userWithSameEmail) {
       throw new AppError('Email já cadastrado', 400);
     }
+
+    const password = generatePassword();
 
     const passwordHash = await hash(password, 6);
 
