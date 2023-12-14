@@ -127,7 +127,7 @@ model Coordinator {
 model Classroom {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
-  year      Int
+  year      String
   period    String
 
   schoolId  String

@@ -3,6 +3,7 @@ export type Student = {
   status: boolean;
   name: string;
   email: string;
+  registration: string;
   visualIdentity?: string;
   schoolId: { label: string; value: string };
   password: string;
@@ -21,6 +22,7 @@ export type StudentId = {
   name: string;
   email: string;
   visualIdentity?: string;
+  registration: string;
   schoolId: string;
   password: string;
   birtday: string;

@@ -8,6 +8,7 @@ import { axiosApi } from '@/components/api/axiosApi';
 const Logout = () => {
   const route = useRouter();
   useEffect(() => {
+    destroyCookie(null, 'user');
     destroyCookie(null, 'token');
     axiosApi.defaults.headers.Authorization = null;
     route.push('/login');
