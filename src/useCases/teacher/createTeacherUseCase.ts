@@ -2,11 +2,12 @@ import { hash } from 'bcryptjs';
 
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
+import { generatePassword } from '@/utils/generateRandomPassword';
+import { sendPasswordEmail } from '@/utils/sendPasswordEmail';
 
 interface CreateTeacherUseCaseRequest {
   name: string;
   email: string;
-  password: string;
   telephone: string;
   schoolId: string;
   visualIdentity?: string;
@@ -17,7 +18,6 @@ export class CreateTeacherUseCase {
   async execute({
     name,
     email,
-    password,
     telephone,
     schoolId,
     visualIdentity,
@@ -73,6 +73,8 @@ export class CreateTeacherUseCase {
       throw new AppError('Telefone já cadastrado', 400);
     }
 
+    const password = generatePassword();
+
     const passwordHash = await hash(password, 6);
 
     const user = await prisma.user.create({
@@ -86,6 +88,8 @@ export class CreateTeacherUseCase {
       select: {
         password: false,
         id: true,
+        name: true,
+        email: true,
       },
     });
 
@@ -139,6 +143,8 @@ export class CreateTeacherUseCase {
     });
 
     await Promise.all(updateTeachers);
+
+    sendPasswordEmail({ password, name: user.name, email: user.email });
 
     return {
       teacher: { ...user, ...teacher },
