@@ -2,11 +2,12 @@ import { hash } from 'bcryptjs';
 
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
+import { generatePassword } from '@/utils/generateRandomPassword';
+import { sendPasswordEmail } from '@/utils/sendPasswordEmail';
 
 interface CreateCoordinatorUseCaseRequest {
   name: string;
   email: string;
-  password: string;
   telephone: string;
   schoolId: string;
   visualIdentity?: string;
@@ -16,7 +17,6 @@ export class CreateCoordinatorUseCase {
   async execute({
     name,
     email,
-    password,
     telephone,
     visualIdentity,
     schoolId,
@@ -61,6 +61,8 @@ export class CreateCoordinatorUseCase {
       throw new AppError('Telefone já cadastrado', 400);
     }
 
+    const password = generatePassword();
+
     const passwordHash = await hash(password, 6);
 
     const user = await prisma.user.create({
@@ -74,6 +76,8 @@ export class CreateCoordinatorUseCase {
       select: {
         password: false,
         id: true,
+        name: true,
+        email: true,
       },
     });
 
@@ -84,6 +88,8 @@ export class CreateCoordinatorUseCase {
         schoolId,
       },
     });
+
+    sendPasswordEmail({ password, name: user.name, email: user.email });
 
     return {
       coordinator: { ...user, ...coordinator },

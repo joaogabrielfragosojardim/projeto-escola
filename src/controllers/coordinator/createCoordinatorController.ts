@@ -9,13 +9,12 @@ export class CreateCoordinatorController {
       const createBodySchema = z.object({
         name: z.string(),
         email: z.string().email(),
-        password: z.string().min(6),
         visualIdentity: z.string().optional(),
         telephone: z.string(),
         schoolId: z.string().uuid(),
       });
 
-      const { name, email, password, schoolId, telephone, visualIdentity } =
+      const { name, email, schoolId, telephone, visualIdentity } =
         createBodySchema.parse(req.body);
 
       const createCoordinatorUseCase = new CreateCoordinatorUseCase();
@@ -23,7 +22,6 @@ export class CreateCoordinatorController {
       const { coordinator } = await createCoordinatorUseCase.execute({
         name,
         email,
-        password,
         schoolId,
         telephone,
         visualIdentity,
