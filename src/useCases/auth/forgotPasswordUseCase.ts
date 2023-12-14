@@ -1,17 +1,15 @@
 import crypto from 'node:crypto';
 
-import { Resend } from 'resend';
-
-import { EmailTemplate } from '@/emails';
+import { ForgotPasswordEmail } from '@/emails/forgotPasswordEmail';
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
+import { resend } from '@/lib/resend';
 
 interface ForgotPasswordUseCaseRequest {
   email: string;
 }
 
 const EXPIRATION_DURATION = 3;
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL?.replace('/api', '');
 export class ForgotPasswordUseCase {
@@ -49,7 +47,7 @@ export class ForgotPasswordUseCase {
         from: 'Escola Prime <adm@escolaprimepe.com.br>',
         to: [user.email],
         subject: 'Escola Prime - Recuperação de senha',
-        react: EmailTemplate({
+        react: ForgotPasswordEmail({
           email: user.email,
           url: `${BASE_URL}/reset-password?token=${passwordToken}`,
         }),
