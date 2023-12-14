@@ -2,7 +2,7 @@ import { hash } from 'bcryptjs';
 
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
-import { generateEmail } from '@/utils/gerateRandomEmail';
+import { generateEmail } from '@/utils/generateRandomEmail';
 
 interface CreateStudentUseCaseRequest {
   name: string;
