@@ -10,17 +10,16 @@ export class CreateAdmController {
         name: z.string(),
         visualIdentity: z.string().optional(),
         email: z.string().email(),
-        password: z.string().min(6),
       });
 
-      const { name, email, password, visualIdentity } =
-        registerBodySchema.parse(req.body);
+      const { name, email, visualIdentity } = registerBodySchema.parse(
+        req.body,
+      );
 
       const createAdmUseCase = new CreateAdmUseCase();
       const user = await createAdmUseCase.execute({
         name,
         email,
-        password,
         visualIdentity,
       });
 
