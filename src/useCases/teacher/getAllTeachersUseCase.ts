@@ -68,7 +68,12 @@ export class GetAllTeacherUseCase {
           },
         },
         orderBy: {
-          createdAt: 'desc',
+          school: {
+            project: {
+              name: 'asc',
+            },
+            name: 'asc',
+          },
         },
         select: {
           status: true,

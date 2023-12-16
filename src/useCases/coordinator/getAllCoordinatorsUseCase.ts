@@ -25,7 +25,12 @@ export class GetAllCoordinatorsUseCase {
         skip,
         take,
         orderBy: {
-          createdAt: 'desc',
+          school: {
+            project: {
+              name: 'asc',
+            },
+            name: 'asc',
+          },
         },
         where: {
           user: {
