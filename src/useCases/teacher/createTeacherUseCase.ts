@@ -11,7 +11,7 @@ interface CreateTeacherUseCaseRequest {
   telephone: string;
   schoolId: string;
   visualIdentity?: string;
-  classRooms: { year: number; period: string }[];
+  classRooms: { year: string; period: string }[];
 }
 
 export class CreateTeacherUseCase {

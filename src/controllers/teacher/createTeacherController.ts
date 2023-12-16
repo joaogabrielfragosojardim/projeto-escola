@@ -12,7 +12,7 @@ export class CreateTeacherController {
         visualIdentity: z.string().optional(),
         telephone: z.string(),
         schoolId: z.string().uuid(),
-        classRooms: z.array(z.object({ period: z.string(), year: z.number() })),
+        classRooms: z.array(z.object({ period: z.string(), year: z.string() })),
       });
 
       const { name, email, schoolId, telephone, visualIdentity, classRooms } =
