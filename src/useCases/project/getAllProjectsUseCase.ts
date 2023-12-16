@@ -13,6 +13,9 @@ export class GetAllProjectsUseCase {
 
     const [projects, total] = await prisma.$transaction([
       prisma.project.findMany({
+        orderBy: {
+          name: 'asc',
+        },
         skip,
         take,
         include: {
