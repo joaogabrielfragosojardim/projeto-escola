@@ -13,6 +13,7 @@ export class GetAllStudentController {
         period: z.string().optional(),
         schoolId: z.string().uuid().optional(),
         projectId: z.string().uuid().optional(),
+        coordinatorId: z.string().uuid().optional(),
         teacherId: z.string().uuid().optional(),
         classId: z.string().uuid().optional(),
         name: z.string().optional(),
@@ -27,6 +28,7 @@ export class GetAllStudentController {
         projectId,
         schoolId,
         teacherId,
+        coordinatorId,
         classId,
         name,
         status,
@@ -48,6 +50,7 @@ export class GetAllStudentController {
         status,
         userId,
         classId,
+        coordinatorId,
       });
 
       return res.status(200).json({ data, meta });

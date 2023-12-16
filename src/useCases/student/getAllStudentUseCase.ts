@@ -9,6 +9,7 @@ interface GetAllStudentUseCaseRequest {
   period?: string;
   schoolId?: string;
   teacherId?: string;
+  coordinatorId?: string;
   classId?: string;
   name?: string;
   status?: string;
@@ -24,6 +25,7 @@ export class GetAllStudentUseCase {
     projectId,
     schoolId,
     teacherId,
+    coordinatorId,
     classId,
     name,
     status,
@@ -58,6 +60,11 @@ export class GetAllStudentUseCase {
           schoolId: { equals: schoolId || coordinator?.schoolId },
           school: {
             projectId: { equals: projectId },
+            Coordinator: {
+              every: {
+                id: { equals: coordinatorId },
+              },
+            },
           },
           Classroom: {
             id: { equals: classId },
