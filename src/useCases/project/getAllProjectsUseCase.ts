@@ -18,13 +18,6 @@ export class GetAllProjectsUseCase {
         },
         skip,
         take,
-        include: {
-          Schools: {
-            select: {
-              name: true,
-            },
-          },
-        },
         where: {
           name: { contains: name, mode: 'insensitive' },
         },
@@ -36,17 +29,10 @@ export class GetAllProjectsUseCase {
       }),
     ]);
 
-    const projectsWithSortedSchools = projects.map((project) => {
-      const sortedSchools = project.Schools.sort((a, b) =>
-        a.name.localeCompare(b.name),
-      );
-      return { ...project, schools: sortedSchools };
-    });
-
     const totalPage = Math.ceil(total / take);
 
     return {
-      data: projectsWithSortedSchools,
+      data: projects,
       meta: {
         page,
         totalPage,
