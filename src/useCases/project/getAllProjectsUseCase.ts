@@ -21,7 +21,7 @@ export class GetAllProjectsUseCase {
         include: {
           Schools: {
             select: {
-              name: true, // Selecionar apenas o nome da escola para fins de ordenação
+              name: true,
             },
           },
         },
@@ -36,10 +36,17 @@ export class GetAllProjectsUseCase {
       }),
     ]);
 
+    const projectsWithSortedSchools = projects.map((project) => {
+      const sortedSchools = project.Schools.sort((a, b) =>
+        a.name.localeCompare(b.name),
+      );
+      return { ...project, schools: sortedSchools };
+    });
+
     const totalPage = Math.ceil(total / take);
 
     return {
-      data: projects,
+      data: projectsWithSortedSchools,
       meta: {
         page,
         totalPage,
