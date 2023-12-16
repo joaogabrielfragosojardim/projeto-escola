@@ -7,6 +7,7 @@ interface GetAllPedagogicalVisitUseCaseRequest {
   startDate?: Date;
   finalDate?: Date;
   coordinatorId?: string;
+  projectId?: string;
   teacherId?: string;
   period?: string;
   year?: number;
@@ -18,6 +19,7 @@ export class GetAllPedagogicalVisitsUseCase {
     page,
     perPage,
     coordinatorId,
+    projectId,
     teacherId,
     finalDate,
     startDate,
@@ -46,6 +48,11 @@ export class GetAllPedagogicalVisitsUseCase {
           },
           coordinatorId: {
             equals: coordinatorId || coordinator?.id,
+          },
+          School: {
+            projectId: {
+              equals: projectId,
+            },
           },
           Classroom: {
             teacherId: {

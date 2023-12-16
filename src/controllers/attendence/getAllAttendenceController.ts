@@ -11,7 +11,7 @@ export class GetAllAttendenceController {
         perPage: z.coerce.number().default(10),
         teacherId: z.string().uuid().optional(),
         studentId: z.string().uuid().optional(),
-
+        projectId: z.string().uuid().optional(),
         startDate: z.coerce.date().optional(),
         finalDate: z.coerce.date().optional(),
 
@@ -28,6 +28,7 @@ export class GetAllAttendenceController {
         finalDate,
         teacherId,
         studentId,
+        projectId,
       } = getAllQuerySchema.parse(req.query);
 
       const getAllAttendenceUseCase = new GetAllAttendenceUseCase();
@@ -44,6 +45,7 @@ export class GetAllAttendenceController {
         teacherId,
         userId,
         studentId,
+        projectId,
       });
 
       return res.status(200).json({ data, meta });

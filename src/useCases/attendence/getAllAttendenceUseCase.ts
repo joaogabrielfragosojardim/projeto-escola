@@ -7,6 +7,7 @@ interface GetAllAttendenceUseCaseRequest {
   finalDate?: Date;
   teacherId?: string;
   studentId?: string;
+  projectId?: string;
   period?: string;
   year?: number;
   userId: string;
@@ -18,6 +19,7 @@ export class GetAllAttendenceUseCase {
     perPage,
     teacherId,
     studentId,
+    projectId,
     finalDate,
     startDate,
     year,
@@ -56,6 +58,9 @@ export class GetAllAttendenceUseCase {
             lte: finalDate,
           },
           Classroom: {
+            school: {
+              projectId: { equals: projectId },
+            },
             schoolId: { equals: coordinator?.schoolId },
             students: {
               some: {

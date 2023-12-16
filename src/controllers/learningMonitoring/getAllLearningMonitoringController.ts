@@ -10,16 +10,25 @@ export class GetAllLearningMonitoringController {
         page: z.coerce.number().default(1),
         perPage: z.coerce.number().default(10),
         teacherId: z.string().uuid().optional(),
-
+        coordinatorId: z.string().uuid().optional(),
+        projectId: z.string().uuid().optional(),
         startDate: z.coerce.date().optional(),
         finalDate: z.coerce.date().optional(),
-
         period: z.string().optional(),
         year: z.coerce.number().optional(),
       });
 
-      const { page, perPage, period, year, startDate, finalDate, teacherId } =
-        getAllQuerySchema.parse(req.query);
+      const {
+        page,
+        perPage,
+        period,
+        year,
+        startDate,
+        finalDate,
+        teacherId,
+        coordinatorId,
+        projectId,
+      } = getAllQuerySchema.parse(req.query);
 
       const getAllLearningMonitoringUseCase =
         new GetAllLearningMonitoringUseCase();
@@ -34,6 +43,8 @@ export class GetAllLearningMonitoringController {
         startDate,
         finalDate,
         teacherId,
+        coordinatorId,
+        projectId,
         userId,
       });
 

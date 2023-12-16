@@ -10,6 +10,7 @@ export class GetAllPedagogicalVisitController {
         page: z.coerce.number().default(1),
         perPage: z.coerce.number().default(10),
         coordinatorId: z.string().uuid().optional(),
+        projectId: z.string().uuid().optional(),
         teacherId: z.string().uuid().optional(),
         startDate: z.coerce.date().optional(),
         finalDate: z.coerce.date().optional(),
@@ -21,6 +22,7 @@ export class GetAllPedagogicalVisitController {
         page,
         perPage,
         coordinatorId,
+        projectId,
         period,
         year,
         startDate,
@@ -41,6 +43,7 @@ export class GetAllPedagogicalVisitController {
         startDate,
         finalDate,
         teacherId,
+        projectId,
         userId,
       });
 
