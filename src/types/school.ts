@@ -15,7 +15,14 @@ export type SchollAddress = {
   id: string;
   name: string;
   visualIdentity: string;
-  address: { city: string; state: string; street: string; zipCode: string };
+  address: {
+    city: string;
+    state: string;
+    street: string;
+    zipCode: string;
+    neighborhood: string;
+    houseNumber: string;
+  };
   project: { name: string; id: string };
 };
 
