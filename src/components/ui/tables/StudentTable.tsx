@@ -25,6 +25,8 @@ import { Tooltip } from 'react-tooltip';
 import { axiosApi } from '@/components/api/axiosApi';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useTableTheme } from '@/hooks/useTableTheme';
+import { useUserIsAdm } from '@/hooks/useUserIsAdm';
+import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
 import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
 import { useUserIsTeacher } from '@/hooks/useUserIsTeacher';
 import { useUser } from '@/store/user/context';
@@ -35,9 +37,12 @@ import { ConfirmModal } from '../ConfirmModal';
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
+import { CoordinatorSelect } from './Selects/CoordinatorSelect';
 import { PeriodSelect } from './Selects/PeriodSelect';
+import { ProjectSelect } from './Selects/ProjectSelect';
 import { SchoolSelect } from './Selects/SchoolSelect';
 import { StatusSelect } from './Selects/StatusSelect';
+import { TeacherSelect } from './Selects/TeacherSelect';
 import { YearSelect } from './Selects/YearSelect';
 
 export const StudentTable = ({
@@ -53,6 +58,8 @@ export const StudentTable = ({
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
+  const userIsAdmMaster = useUserIsAdmMaster();
+  const userIsAdm = useUserIsAdm();
   const userIsCoordinator = useUserIsCoordinator();
   const userIsTeacher = useUserIsTeacher();
   const [deleteModal, setDeleteModal] = useState(false);
@@ -72,6 +79,9 @@ export const StudentTable = ({
     year: '',
     period: '',
     status: undefined,
+    projectId: '',
+    coordinatorId: '',
+    teacherId: '',
   });
 
   const [filters, setFilters] = useState<{
@@ -85,6 +95,31 @@ export const StudentTable = ({
           label="Nome da escola"
           onChange={(event) => {
             nameDebounce(event.target.value);
+          }}
+        />
+      ),
+      view: false,
+    },
+    projectPopover: {
+      element: (
+        <ProjectSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
+    coordinatorPopover: {
+      element: (
+        <CoordinatorSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({
+              ...prev,
+              coordinatorId: event.value,
+            }));
           }}
         />
       ),
@@ -122,6 +157,20 @@ export const StudentTable = ({
       ),
       view: false,
     },
+    socialEducatorPopover: {
+      element: (
+        <TeacherSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({
+              ...prev,
+              teacherId: event.value,
+            }));
+          }}
+        />
+      ),
+      view: false,
+    },
     statusPopover: {
       element: (
         <StatusSelect
@@ -141,7 +190,10 @@ export const StudentTable = ({
         page,
         perPage,
         name: filtersValues.name || null,
+        projectId: filtersValues.projectId || null,
         schoolId: filtersValues.schoolId || null,
+        coordinatorId: filtersValues.coordinatorId || null,
+        teacherId: filtersValues.teacherId || null,
         year: filtersValues.year || null,
         period: filtersValues.period || null,
         status: filtersValues.status,
@@ -246,6 +298,16 @@ export const StudentTable = ({
                   handleChangeFilters('namePopover', 'name', event);
                 }}
               />
+              {(userIsAdm || userIsAdmMaster) && (
+                <InputCheckBoxThemed
+                  label="Projeto"
+                  register={register}
+                  name="projectPopover"
+                  onClick={(event) => {
+                    handleChangeFilters('projectPopover', 'projectId', event);
+                  }}
+                />
+              )}
               {!(userIsTeacher || userIsCoordinator) && (
                 <InputCheckBoxThemed
                   label="Escola"
@@ -253,6 +315,34 @@ export const StudentTable = ({
                   name="schoolPopover"
                   onClick={(event) => {
                     handleChangeFilters('schoolPopover', 'schoolId', event);
+                  }}
+                />
+              )}
+              {(userIsAdm || userIsAdmMaster) && (
+                <InputCheckBoxThemed
+                  label="Coordenador"
+                  register={register}
+                  name="coordinatorPopover"
+                  onClick={(event) => {
+                    handleChangeFilters(
+                      'coordinatorPopover',
+                      'coordinatorId',
+                      event,
+                    );
+                  }}
+                />
+              )}
+              {(userIsAdm || userIsAdmMaster || userIsCoordinator) && (
+                <InputCheckBoxThemed
+                  label="Educador"
+                  register={register}
+                  name="socialEducatorPopover"
+                  onClick={(event) => {
+                    handleChangeFilters(
+                      'socialEducatorPopover',
+                      'teacherId',
+                      event,
+                    );
                   }}
                 />
               )}

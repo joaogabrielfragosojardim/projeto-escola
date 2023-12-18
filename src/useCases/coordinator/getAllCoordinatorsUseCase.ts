@@ -37,6 +37,11 @@ export class GetAllCoordinatorsUseCase {
               name: 'asc',
             },
           },
+          {
+            user: {
+              name: 'asc',
+            },
+          },
         ],
         where: {
           user: {

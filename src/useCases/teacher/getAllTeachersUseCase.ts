@@ -51,6 +51,11 @@ export class GetAllTeacherUseCase {
               name: 'asc',
             },
           },
+          {
+            user: {
+              name: 'asc',
+            },
+          },
         ],
         where: {
           schoolId: {

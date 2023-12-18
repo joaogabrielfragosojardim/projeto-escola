@@ -23,6 +23,8 @@ import { Tooltip } from 'react-tooltip';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { useTableTheme } from '@/hooks/useTableTheme';
+import { useUserIsAdm } from '@/hooks/useUserIsAdm';
+import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
 import { useUserIsTeacher } from '@/hooks/useUserIsTeacher';
 import type { LearningMonitoring } from '@/types/learningMonitoring';
 import { createCSV } from '@/utils/createCSV';
@@ -31,7 +33,9 @@ import { ConfirmModal } from '../ConfirmModal';
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
+import { CoordinatorSelect } from './Selects/CoordinatorSelect';
 import { PeriodSelect } from './Selects/PeriodSelect';
+import { ProjectSelect } from './Selects/ProjectSelect';
 import { TeacherSelect } from './Selects/TeacherSelect';
 import { YearSelect } from './Selects/YearSelect';
 
@@ -52,6 +56,8 @@ export const LearnMonitoringTable = ({
     teacherId: '',
     year: '',
     period: '',
+    projectId: '',
+    coordinatorId: '',
   });
   const [deleteModal, setDeleteModal] = useState(false);
   const [learingMonitoringToDelete, setlearingMonitoringToDelete] =
@@ -62,6 +68,8 @@ export const LearnMonitoringTable = ({
   });
 
   const userIsTeacher = useUserIsTeacher();
+  const userIsAdm = useUserIsAdm();
+  const userIsAdmMaster = useUserIsAdmMaster();
 
   const maxDate = new Date();
   maxDate.setHours(maxDate.getHours() - 3);
@@ -69,6 +77,17 @@ export const LearnMonitoringTable = ({
   const [filters, setFilters] = useState<{
     [key: string]: { element: ReactNode; view: boolean };
   }>({
+    projectPopover: {
+      element: (
+        <ProjectSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
     datePopover: {
       element: (
         <div className="flex items-center gap-[16px]">
@@ -113,6 +132,20 @@ export const LearnMonitoringTable = ({
             }}
           />
         </div>
+      ),
+      view: false,
+    },
+    coordinatorPopover: {
+      element: (
+        <CoordinatorSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({
+              ...prev,
+              coordinatorId: event.value,
+            }));
+          }}
+        />
       ),
       view: false,
     },
@@ -163,6 +196,8 @@ export const LearnMonitoringTable = ({
           teacherId: filtersValues.teacherId || null,
           year: filtersValues.year || null,
           period: filtersValues.period || null,
+          projectId: filtersValues.projectId || null,
+          coordinatorId: filtersValues.coordinatorId || null,
         },
       })
     ).data;
@@ -230,6 +265,16 @@ export const LearnMonitoringTable = ({
             }
           >
             <form className="flex flex-col gap-[8px]">
+              {!userIsTeacher && (
+                <InputCheckBoxThemed
+                  label="Projeto"
+                  register={register}
+                  name="projectPopover"
+                  onClick={(event) => {
+                    handleChangeFilters('projectPopover', 'projectId', event);
+                  }}
+                />
+              )}
               <InputCheckBoxThemed
                 label="Data"
                 register={register}
@@ -247,6 +292,20 @@ export const LearnMonitoringTable = ({
                   handleChangeFilters('periodPopover', 'coordinatorId', event);
                 }}
               />
+              {(userIsAdm || userIsAdmMaster) && (
+                <InputCheckBoxThemed
+                  label="Coordenador"
+                  register={register}
+                  name="coordinatorPopover"
+                  onClick={(event) => {
+                    handleChangeFilters(
+                      'coordinatorPopover',
+                      'coordinatorId',
+                      event,
+                    );
+                  }}
+                />
+              )}
               {!userIsTeacher ? (
                 <InputCheckBoxThemed
                   label="Educador"

@@ -63,6 +63,11 @@ export class GetAllStudentUseCase {
               name: 'asc',
             },
           },
+          {
+            user: {
+              name: 'asc',
+            },
+          },
         ],
         where: {
           status: {

@@ -222,10 +222,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     verify(token || '', secret);
 
+    console.log(userObject)
+
     const canView = [RoleEnum.ADM_MASTER, RoleEnum.ADM].includes(
       userObject?.role.name,
     );
-
+      console.log(canView)
     if (canView) {
       const { data } = await axiosApi.get(`/school/${ctx?.params?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -242,9 +244,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         },
       };
     }
-
+console.log(0)
     return { redirect: { permanent: false, destination: '/login' } };
   } catch (error) {
+    console.log(error)
     return { redirect: { permanent: false, destination: '/login' } };
   }
 };

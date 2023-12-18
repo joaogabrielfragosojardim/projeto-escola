@@ -33,6 +33,7 @@ import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
 import { CoordinatorSelect } from './Selects/CoordinatorSelect';
 import { PeriodSelect } from './Selects/PeriodSelect';
+import { ProjectSelect } from './Selects/ProjectSelect';
 import { TeacherSelect } from './Selects/TeacherSelect';
 import { YearSelect } from './Selects/YearSelect';
 
@@ -54,6 +55,7 @@ export const PedagogicalVisitTable = ({
     teacherId: '',
     year: '',
     period: '',
+    projectId: '',
   });
   const [deleteModal, setDeleteModal] = useState(false);
   const [pedagogicalVisitToDelete, setPedagogicalVisitToDelete] = useState('');
@@ -145,6 +147,17 @@ export const PedagogicalVisitTable = ({
       ),
       view: false,
     },
+    projectPopover: {
+      element: (
+        <ProjectSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
   });
 
   const deletePedagogicalVisit = async (id: string) => {
@@ -176,6 +189,7 @@ export const PedagogicalVisitTable = ({
           coordinatorId: filtersValues.coordinatorId || null,
           year: filtersValues.year || null,
           period: filtersValues.period || null,
+          projectId: filtersValues.projectId || null,
         },
       })
     ).data;
@@ -243,6 +257,16 @@ export const PedagogicalVisitTable = ({
             }
           >
             <form className="flex flex-col gap-[8px]">
+              {!userIsCoordinator && (
+                <InputCheckBoxThemed
+                  label="Projeto"
+                  register={register}
+                  name="projectPopover"
+                  onClick={(event) => {
+                    handleChangeFilters('projectPopover', 'projectId', event);
+                  }}
+                />
+              )}
               <InputCheckBoxThemed
                 label="Data"
                 register={register}

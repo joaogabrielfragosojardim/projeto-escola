@@ -32,6 +32,7 @@ import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
 import { PeriodSelect } from './Selects/PeriodSelect';
+import { ProjectSelect } from './Selects/ProjectSelect';
 import { TeacherSelect } from './Selects/TeacherSelect';
 import { YearSelect } from './Selects/YearSelect';
 
@@ -52,6 +53,7 @@ export const FrequencyTable = ({
     teacherId: '',
     year: '',
     period: '',
+    projectId: '',
   });
   const [deleteModal, setDeleteModal] = useState(false);
   const [frequencyToDelete, setFrequencyToDelete] = useState('');
@@ -68,6 +70,17 @@ export const FrequencyTable = ({
   const [filters, setFilters] = useState<{
     [key: string]: { element: ReactNode; view: boolean };
   }>({
+    projectPopover: {
+      element: (
+        <ProjectSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
     datePopover: {
       element: (
         <div className="flex items-center gap-[16px]">
@@ -156,6 +169,7 @@ export const FrequencyTable = ({
           teacherId: filtersValues.teacherId || null,
           year: filtersValues.year || null,
           period: filtersValues.period || null,
+          projectId: filtersValues.projectId || null,
         },
       })
     ).data;
@@ -223,6 +237,16 @@ export const FrequencyTable = ({
             }
           >
             <form className="flex flex-col gap-[8px]">
+              {!userIsTeacher && (
+                <InputCheckBoxThemed
+                  label="Projeto"
+                  register={register}
+                  name="projectPopover"
+                  onClick={(event) => {
+                    handleChangeFilters('projectPopover', 'projectId', event);
+                  }}
+                />
+              )}
               <InputCheckBoxThemed
                 label="Data"
                 register={register}
