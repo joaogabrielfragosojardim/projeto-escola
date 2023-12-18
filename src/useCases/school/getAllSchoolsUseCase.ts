@@ -26,12 +26,16 @@ export class GetAllSchoolsUseCase {
       prisma.school.findMany({
         skip,
         take,
-        orderBy: {
-          project: {
+        orderBy: [
+          {
+            project: {
+              name: 'asc',
+            },
+          },
+          {
             name: 'asc',
           },
-          name: 'asc',
-        },
+        ],
         where: {
           name: { contains: name, mode: 'insensitive' },
           projectId: { equals: projectId },

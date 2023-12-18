@@ -24,14 +24,20 @@ export class GetAllCoordinatorsUseCase {
       prisma.coordinator.findMany({
         skip,
         take,
-        orderBy: {
-          school: {
-            project: {
+        orderBy: [
+          {
+            school: {
+              project: {
+                name: 'asc',
+              },
+            },
+          },
+          {
+            school: {
               name: 'asc',
             },
-            name: 'asc',
           },
-        },
+        ],
         where: {
           user: {
             name: { contains: name, mode: 'insensitive' },

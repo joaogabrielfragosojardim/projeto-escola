@@ -38,6 +38,20 @@ export class GetAllTeacherUseCase {
       prisma.teacher.findMany({
         skip,
         take,
+        orderBy: [
+          {
+            school: {
+              project: {
+                name: 'asc',
+              },
+            },
+          },
+          {
+            school: {
+              name: 'asc',
+            },
+          },
+        ],
         where: {
           schoolId: {
             equals: coordinator?.schoolId || schoolId,
@@ -65,14 +79,6 @@ export class GetAllTeacherUseCase {
                 equals: year,
               },
             },
-          },
-        },
-        orderBy: {
-          school: {
-            project: {
-              name: 'asc',
-            },
-            name: 'asc',
           },
         },
         select: {

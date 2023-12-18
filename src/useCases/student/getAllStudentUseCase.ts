@@ -50,14 +50,20 @@ export class GetAllStudentUseCase {
       prisma.student.findMany({
         skip,
         take,
-        orderBy: {
-          school: {
-            project: {
+        orderBy: [
+          {
+            school: {
+              project: {
+                name: 'desc',
+              },
+            },
+          },
+          {
+            school: {
               name: 'asc',
             },
-            name: 'asc',
           },
-        },
+        ],
         where: {
           status: {
             equals: status ? status === 'true' : undefined,
