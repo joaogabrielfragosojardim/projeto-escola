@@ -41,7 +41,6 @@ export const RouteHandler = async (
 
     await handler!(request, response);
   } catch (error) {
-    console.log(error);
     if (error instanceof AppError) {
       return response.status(error.status).send({ message: error.message });
     }

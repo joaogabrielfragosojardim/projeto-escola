@@ -30,6 +30,5 @@ export async function sendPasswordEmail({ password, name, email }: Props) {
       throw new AppError('Ocorreu um erro ao enviar o e-mail.');
     });
 
-  console.log(data);
   return data;
 }

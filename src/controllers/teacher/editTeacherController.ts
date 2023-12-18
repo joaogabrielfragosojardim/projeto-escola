@@ -14,7 +14,7 @@ export class EditTeacherController {
         visualIdentity: z.string().optional(),
         telephone: z.string(),
         name: z.string(),
-        classRooms: z.array(z.object({ period: z.string(), year: z.number() })),
+        classRooms: z.array(z.object({ period: z.string(), year: z.string() })),
       });
 
       const { id } = editQuerySchema.parse(req.query);

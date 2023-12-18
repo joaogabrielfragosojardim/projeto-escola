@@ -8,5 +8,7 @@ export const initialState: School = {
   street: '',
   zipCode: '',
   visualIdentity: '',
+  houseNumber: '',
+  neighborhood: '',
   projectId: { value: '', label: '' },
 };

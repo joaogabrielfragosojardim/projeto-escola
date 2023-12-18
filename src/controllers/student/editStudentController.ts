@@ -15,7 +15,7 @@ export class EditStudentController {
         birtday: z.coerce.date(),
         name: z.string(),
         registration: z.string(),
-        classRoom: z.object({ period: z.string(), year: z.number() }),
+        classRoom: z.object({ period: z.string(), year: z.string() }),
       });
 
       const { id } = editQuerySchema.parse(req.query);
