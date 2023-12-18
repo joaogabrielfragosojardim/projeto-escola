@@ -6,7 +6,7 @@ import nookies from 'nookies';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TbLoader } from 'react-icons/tb';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
@@ -36,19 +36,17 @@ const Frequency = () => {
     return axiosApi.post(`/attendance/${classId}`, data);
   };
 
-  const { isLoading, data, refetch, isRefetching } = useQuery(
-    'fetchStudentsFrequency',
-    fetchStudents,
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
+  const {
+    isLoading,
+    data,
+    mutate: mutateStudents,
+  } = useMutation('fetchStudentsFrequency', fetchStudents);
 
   useEffect(() => {
     if (classId) {
-      refetch();
+      mutateStudents();
     }
-  }, [classId]);
+  }, [classId, mutateStudents]);
 
   const { mutate, isLoading: isLoadingMutate } = useMutation(
     'createFrequency',
@@ -107,7 +105,7 @@ const Frequency = () => {
                 </div>
               </div>
               <div>
-                {(isLoading || isRefetching) && dateFilter && classId && (
+                {isLoading && dateFilter && classId && (
                   <div className="flex h-[420px] w-full items-center justify-center text-main">
                     <div>
                       <div className="animate-spin">
@@ -116,7 +114,7 @@ const Frequency = () => {
                     </div>
                   </div>
                 )}
-                {classId && dateFilter && !isRefetching && (
+                {classId && dateFilter && (
                   <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="mt-[16px] rounded border-[2px] border-main p-[22px]"
