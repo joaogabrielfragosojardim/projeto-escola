@@ -96,25 +96,6 @@ const main = {
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
 };
 
-const containerButton = {
-  display: 'flex',
-  justifyContent: 'center',
-  width: '100%',
-};
-
-const button = {
-  padding: '16px',
-  borderRadius: '8px',
-  fontSize: '16px',
-  color: '#ffffff',
-  lineHeight: '24px',
-  backgroundColor: '#5C6189',
-  textDecoration: 'none',
-  textAlign: 'center' as const,
-  display: 'block',
-  width: '100%',
-};
-
 const img = {
   width: '230px',
   textAlign: 'center' as const,
