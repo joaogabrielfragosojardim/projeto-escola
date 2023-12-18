@@ -64,6 +64,8 @@ const School = ({
       city,
       state,
       street,
+      neighborhood,
+      houseNumber,
     } = data;
 
     const submitData = {
@@ -75,6 +77,8 @@ const School = ({
         city: city || school.address.city,
         state: state || school.address.state,
         street: street || school.address.street,
+        neighborhood: neighborhood || school.address.neighborhood,
+        houseNumber: houseNumber || school.address.houseNumber,
       },
     };
     mutate(submitData);
@@ -176,6 +180,19 @@ const School = ({
             name="street"
             defaultValue={school.address.street}
             label="Rua"
+          />
+          <InputThemed
+            register={register}
+            name="neighborhood"
+            defaultValue={school.address.neighborhood}
+            label="Bairro"
+          />
+          <InputThemed
+            register={register}
+            name="houseNumber"
+            defaultValue={school.address.houseNumber}
+            label="Número"
+            type="number"
           />
           <div className="mt-[48px] text-[16px] lg:text-[20px]">
             <button

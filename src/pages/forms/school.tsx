@@ -106,7 +106,7 @@ const SchoolFormFirstStep = ({
             error={errors.projectId}
             options={projects}
             defaultValue={
-              schoolForm.projectId.label && schoolForm.projectId.value
+              schoolForm?.projectId?.label && schoolForm?.projectId?.value
                 ? ({
                     label: schoolForm.projectId.label,
                     value: schoolForm.projectId.value,
