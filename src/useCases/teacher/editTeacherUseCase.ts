@@ -6,7 +6,7 @@ interface EditTeacherUseCaseRequest {
   telephone: string;
   name: string;
   visualIdentity?: string;
-  classRooms: { year: number; period: string }[];
+  classRooms: { year: string; period: string }[];
 }
 
 export class EditTeacherUseCase {

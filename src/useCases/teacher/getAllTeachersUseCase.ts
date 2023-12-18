@@ -9,7 +9,7 @@ interface GetAllTeacherUseCaseRequest {
   schoolId?: string;
   projectId?: string;
   period?: string;
-  year?: number;
+  year?: string;
   status?: string;
 }
 

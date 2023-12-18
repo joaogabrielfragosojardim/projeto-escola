@@ -5,7 +5,7 @@ interface GetAllStudentUseCaseRequest {
   perPage: number;
   page: number;
   projectId?: string;
-  year?: number;
+  year?: string;
   period?: string;
   schoolId?: string;
   teacherId?: string;

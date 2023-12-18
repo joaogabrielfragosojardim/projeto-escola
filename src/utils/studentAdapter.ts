@@ -16,7 +16,7 @@ export interface User {
 
 export interface Classroom {
   period: string;
-  year: number;
+  year: string;
 }
 
 export interface School {
@@ -41,7 +41,7 @@ type Student = {
   };
   classroom: {
     period: string;
-    year: number;
+    year: string;
   };
 };
 

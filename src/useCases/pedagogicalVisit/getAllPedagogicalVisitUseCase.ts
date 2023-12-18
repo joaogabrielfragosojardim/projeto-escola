@@ -10,7 +10,7 @@ interface GetAllPedagogicalVisitUseCaseRequest {
   projectId?: string;
   teacherId?: string;
   period?: string;
-  year?: number;
+  year?: string;
   userId?: string;
 }
 

@@ -21,7 +21,7 @@ export interface Project {
 export interface Classroom {
   id: string;
   period: string;
-  year: number;
+  year: string;
 }
 
 export interface User {

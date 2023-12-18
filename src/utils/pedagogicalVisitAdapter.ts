@@ -1,7 +1,7 @@
 interface PedagogicalVisit {
   id: string;
   date: Date;
-  Classroom: { teacher: User | null; year: number; period: string; id: string };
+  Classroom: { teacher: User | null; year: string; period: string; id: string };
   Coordinator: User | null;
 }
 

@@ -9,7 +9,7 @@ export class GetAllStudentController {
       const getAllQuerySchema = z.object({
         page: z.coerce.number().default(1),
         perPage: z.coerce.number().default(10),
-        year: z.coerce.number().optional(),
+        year: z.coerce.string().optional(),
         period: z.string().optional(),
         schoolId: z.string().uuid().optional(),
         projectId: z.string().uuid().optional(),

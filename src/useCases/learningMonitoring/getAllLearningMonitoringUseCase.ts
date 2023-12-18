@@ -9,7 +9,7 @@ interface GetAllLearningMonitoringUseCaseRequest {
   coordinatorId?: string;
   projectId?: string;
   period?: string;
-  year?: number;
+  year?: string;
   userId: string;
 }
 

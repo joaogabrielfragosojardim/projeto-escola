@@ -15,7 +15,7 @@ export class GetAllPedagogicalVisitController {
         startDate: z.coerce.date().optional(),
         finalDate: z.coerce.date().optional(),
         period: z.string().optional(),
-        year: z.coerce.number().optional(),
+        year: z.coerce.string().optional(),
       });
 
       const {

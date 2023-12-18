@@ -6,7 +6,7 @@ interface EditStudentUseCaseRequest {
   name: string;
   visualIdentity?: string;
   registration: string;
-  classRoom: { year: number; period: string };
+  classRoom: { year: string; period: string };
 }
 
 export class EditStudentUseCase {
