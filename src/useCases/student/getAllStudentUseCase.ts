@@ -77,7 +77,7 @@ export class GetAllStudentUseCase {
           school: {
             projectId: { equals: projectId },
             Coordinator: {
-              every: {
+              some: {
                 id: { equals: coordinatorId },
               },
             },
@@ -114,6 +114,16 @@ export class GetAllStudentUseCase {
             select: {
               id: true,
               name: true,
+              Coordinator: {
+                select: {
+                  id: true,
+                  user: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
               project: {
                 select: {
                   id: true,
