@@ -80,7 +80,7 @@ model Student {
   schoolId     String
   classId      String
   status       Boolean  @default(true)
-  registration String
+  registration String   @unique
 
   user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   school             School               @relation(fields: [schoolId], references: [id])
