@@ -17,6 +17,7 @@ model User {
   visualIdentity String?
   password       String
   roleId         String
+  isFirstAccess  Boolean
 
   passwordToken       String?   @unique
   passwordExpiresDate DateTime?
