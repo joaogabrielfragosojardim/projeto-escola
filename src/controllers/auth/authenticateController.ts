@@ -8,7 +8,7 @@ export class AuthenticateController {
     try {
       const authenticateBodySchema = z.object({
         email: z.string().email(),
-        password: z.string().min(6),
+        password: z.string().min(8),
       });
 
       const { email, password } = authenticateBodySchema.parse(req.body);

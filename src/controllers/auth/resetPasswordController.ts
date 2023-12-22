@@ -8,7 +8,7 @@ export class ResetPasswordController {
     try {
       const resetPasswordBodySchema = z.object({
         token: z.string().uuid(),
-        password: z.string().min(6),
+        password: z.string().min(8),
       });
 
       const { token, password } = resetPasswordBodySchema.parse(req.body);
