@@ -1,6 +1,6 @@
-export function generatePassword(length: number = 6): string {
+export function generatePassword(length: number = 8): string {
   const characters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*+?';
 
   let password = '';
 
