@@ -49,12 +49,13 @@ const SocialEducator = ({ student }: { student: StudentEdit }) => {
   );
 
   const onSubmit = (data: StudentEditForm) => {
-    const { visualIdentity, name, classRoom, birtday } = data;
+    const { visualIdentity, name, classRoom, birtday, registration } = data;
     const submitData = {
       visualIdentity: visualIdentity || student.user.visualIdentity,
       name: name || student.user.name,
       classRoom: classRoom || student.Classroom,
       birtday: birtday || student.birtday,
+      registration: registration || student.registration,
     };
     mutate(submitData);
   };
@@ -104,6 +105,12 @@ const SocialEducator = ({ student }: { student: StudentEdit }) => {
             type="date"
             max={maxDate.toISOString().split('T')[0]}
             label="Aniversário"
+          />
+          <InputThemed
+            register={register}
+            name="registration"
+            defaultValue={student.registration}
+            label="Matrícula"
           />
           <div>
             <div className="flex w-full items-center gap-[16px]">
