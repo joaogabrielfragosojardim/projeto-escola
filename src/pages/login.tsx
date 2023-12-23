@@ -44,7 +44,7 @@ const Login = () => {
     onSuccess: (data) => {
       const {
         token,
-        user: { id, name, email, role, visualIdentity },
+        user: { id, name, email, role, visualIdentity, isFirstAccess },
       } = data;
       destroyCookie(null, 'token');
       destroyCookie(null, 'user');
@@ -63,6 +63,7 @@ const Login = () => {
           email,
           role,
           visualIdentity,
+          isFirstAccess,
         },
       });
       router.push('/dashboard');
