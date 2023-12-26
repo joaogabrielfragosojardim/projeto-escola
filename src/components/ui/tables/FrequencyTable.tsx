@@ -299,10 +299,11 @@ export const FrequencyTable = ({
                   data?.data.map((item: Frequency) => ({
                     date: item.date,
                     student: item.student.user.name,
+                    registration: item.student.registration,
                     classrooom: `${item.Classroom.year}º Ano - ${item.Classroom.period}`,
-                    present: item.isPresent,
+                    present: item.isPresent ? 'Presente' : 'Ausente',
                   })),
-                  ['Data', 'Estudante', 'Turma', 'Presente'],
+                  ['Data', 'Matrícula', 'Estudante', 'Turma', 'Presente'],
                   'relatorioFrequencia',
                 )
               }
@@ -336,13 +337,14 @@ export const FrequencyTable = ({
               <Table
                 data={nodes}
                 theme={theme}
-                style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 0.4fr' }}
+                style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 0.4fr' }}
               >
                 {(tableList: Frequency[]) => (
                   <>
                     <Header>
                       <HeaderRow>
                         <HeaderCell>Aluno</HeaderCell>
+                        <HeaderCell>Matrícula</HeaderCell>
                         <HeaderCell>Data</HeaderCell>
                         <HeaderCell>Turma</HeaderCell>
                         <HeaderCell>Presente</HeaderCell>
@@ -357,6 +359,9 @@ export const FrequencyTable = ({
                           <Row key={attendence.id} item={attendence}>
                             <Cell className="text-[20px] text-main hover:text-main">
                               {attendence.student.user.name}
+                            </Cell>
+                            <Cell className="text-[20px] text-main hover:text-main">
+                              {attendence.student.registration}
                             </Cell>
                             <Cell className="text-[20px] text-main hover:text-main">
                               {date.toLocaleDateString()}
@@ -455,6 +460,12 @@ export const FrequencyTable = ({
                         <p className="text-[14px] text-main">Aluno:</p>
                         <p className="text-[14px] text-complement-200">
                           {frequency.student.user.name}
+                        </p>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px]">
+                        <p className="text-[14px] text-main">Matrícula:</p>
+                        <p className="text-[14px] text-complement-200">
+                          {frequency.student.registration}
                         </p>
                       </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">

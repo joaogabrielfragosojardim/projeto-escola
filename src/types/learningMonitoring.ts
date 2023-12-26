@@ -99,6 +99,7 @@ export interface LearningMonitoring {
     period: string;
   };
   student: {
+    registration: string;
     user: {
       name: string;
     };
