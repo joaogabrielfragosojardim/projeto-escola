@@ -124,6 +124,8 @@ export class CreateTeacherUseCase {
       });
 
       if (existingTeacherInClass) {
+        await prisma.user.delete({ where: { id: user.id } });
+
         throw new AppError(
           `A turma ${existingTeacherInClass.year}º ano - ${existingTeacherInClass.period} já está atrelada ao professor ${existingTeacherInClass.teacher?.user.name}`,
           400,
