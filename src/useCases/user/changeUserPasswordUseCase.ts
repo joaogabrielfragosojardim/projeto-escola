@@ -39,6 +39,7 @@ export class ChangeUserPasswordUseCase {
       where: { id: userId },
       data: {
         password: newPassword,
+        isFirstAccess: false,
       },
     });
 
