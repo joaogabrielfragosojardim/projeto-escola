@@ -63,10 +63,13 @@ const Login = () => {
           email,
           role,
           visualIdentity,
-          isFirstAccess,
+          isFirstAccess: false,
         },
       });
-      router.push('/dashboard');
+      if (isFirstAccess) {
+        return router.push('/first-access');
+      }
+      return router.push('/dashboard');
     },
   });
 
