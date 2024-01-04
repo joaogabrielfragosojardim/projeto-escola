@@ -134,7 +134,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     verify(token || '', secret);
 
-    const canView = [RoleEnum.TEACHER].includes(userObject?.role.name);
+    const canView = [
+      RoleEnum.ADM_MASTER,
+      RoleEnum.ADM,
+      RoleEnum.COORDINATOR,
+      RoleEnum.TEACHER,
+    ].includes(userObject?.role.name);
     if (canView) {
       const { data } = await axiosApi.get(`/attendance/${ctx?.params?.id}`, {
         headers: { Authorization: `Bearer ${token}` },

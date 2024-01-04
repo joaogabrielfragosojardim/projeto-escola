@@ -12,7 +12,7 @@ export const allSeries = [
   'EJA IV',
 ];
 
-export const allPeriods = ['Matutino', 'Vespertino', 'Noturno'];
+export const allPeriods = ['Manhã', 'Tarde', 'Noite'];
 
 export type ClassRoom = {
   label: string;

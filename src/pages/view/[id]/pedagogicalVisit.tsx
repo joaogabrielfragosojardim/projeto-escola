@@ -271,7 +271,7 @@ const PedagogicalVisit = ({
             </div>
           </div>
           <div>
-            <h3 className="text-[22px]">Interação do estudante na aula</h3>
+            <h3 className="text-[22px]">Alfabetização em Matemática</h3>
             <div className="mt-[16px] grid grid-cols-1 gap-[16px]">
               <InputCheckBoxThemed
                 register={register}

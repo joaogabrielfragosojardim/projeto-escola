@@ -79,17 +79,14 @@ const Login = () => {
             <Image src="/assets/images/logo.png" alt="" fill />
           </div>
         </div>
-        <div className="text-center text-[24px] text-main">
-          <p>Seja bem vindo(a) a Escola Prime</p>
-        </div>
-        <div className="mt-[16px] text-center text-[16px] text-main">
+        <div className="text-center text-[16px] text-main">
           <p>
             Parece que é seu primeiro login! será necessário definir uma nova
             senha
           </p>
         </div>
-        <form className="mt-[52px]" onSubmit={handleSubmit(onSubmit)}>
-          <div className="mt-[32px]">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="mt-[16px]">
             <InputPasswordThemed
               label="Senha Atual"
               type="password"
