@@ -1,4 +1,4 @@
-import { compare } from 'bcryptjs';
+import { compare, hash } from 'bcryptjs';
 
 import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
@@ -35,13 +35,18 @@ export class ChangeUserPasswordUseCase {
       throw new AppError('Senha incorreta');
     }
 
-    const newUser = prisma.user.update({
+    const passwordHash = await hash(newPassword, 6);
+
+    const newUser = await prisma.user.update({
       where: { id: userId },
       data: {
-        password: newPassword,
+        password: passwordHash,
         isFirstAccess: false,
       },
     });
+
+    // @ts-ignore
+    newUser.password = undefined;
 
     return {
       user: newUser,
