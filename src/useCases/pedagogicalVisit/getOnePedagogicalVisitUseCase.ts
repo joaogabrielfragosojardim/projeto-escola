@@ -13,7 +13,17 @@ export class GetOnePedagogicalVisitUseCase {
       },
       include: {
         School: true,
-        Classroom: true,
+        Classroom: {
+          select: {
+            id: true,
+            createdAt: true,
+            year: true,
+            period: true,
+            schoolId: true,
+            teacherId: true,
+            teacher: { select: { user: { select: { name: true } } } },
+          },
+        },
         Coordinator: { select: { user: { select: { name: true } } } },
       },
     });

@@ -13,11 +13,13 @@ export class GetOneLearningMonitogingUseCase {
       },
       select: {
         id: true,
+        createdAt: true,
         questions: true,
         writingLevel: true,
         student: {
           select: {
             id: true,
+            registration: true,
             user: {
               select: {
                 name: true,
@@ -30,6 +32,7 @@ export class GetOneLearningMonitogingUseCase {
             id: true,
             period: true,
             year: true,
+            teacher: { select: { user: { select: { name: true } } } },
           },
         },
       },
@@ -42,16 +45,19 @@ export class GetOneLearningMonitogingUseCase {
     return {
       learningMonitoring: {
         id: learningMonitoring.id,
+        createdAt: learningMonitoring.createdAt,
         questions: learningMonitoring.questions,
         writingLevel: learningMonitoring.writingLevel,
         student: {
           id: learningMonitoring.student.id,
           name: learningMonitoring.student.user.name,
+          registration: learningMonitoring.student.registration,
         },
         classroom: {
           id: learningMonitoring.classroom.id,
           period: learningMonitoring.classroom.period,
           year: learningMonitoring.classroom.year,
+          teacher: learningMonitoring.classroom.teacher?.user.name,
         },
       },
     };
