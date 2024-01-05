@@ -1,12 +1,19 @@
 import { prisma } from '@/lib/prisma';
 
 interface OptionsTeacherUseCaseRequest {
+  projectId?: string;
   schoolId?: string;
+  coordinatorId?: string;
   userId: string;
 }
 
 export class OptionsTeacherUseCase {
-  async execute({ schoolId, userId }: OptionsTeacherUseCaseRequest) {
+  async execute({
+    projectId,
+    schoolId,
+    userId,
+    coordinatorId,
+  }: OptionsTeacherUseCaseRequest) {
     const coordinator = await prisma.coordinator.findFirst({
       where: {
         userId,
@@ -23,8 +30,11 @@ export class OptionsTeacherUseCase {
         },
       },
       where: {
+        school: {
+          projectId: { equals: projectId },
+        },
         schoolId: { equals: schoolId },
-        coordinatorId: { equals: coordinator?.id },
+        coordinatorId: { equals: coordinator?.id || coordinatorId },
       },
     });
 

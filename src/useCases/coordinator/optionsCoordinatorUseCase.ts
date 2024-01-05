@@ -1,8 +1,17 @@
 import { prisma } from '@/lib/prisma';
 
+interface OptionCoordinatorUseCaseRequest {
+  schoolId?: string;
+  projectId?: string;
+}
+
 export class OptionsCoordinatorUseCase {
-  async execute() {
+  async execute({ schoolId, projectId }: OptionCoordinatorUseCaseRequest) {
     const coordinators = await prisma.coordinator.findMany({
+      where: {
+        schoolId: { equals: schoolId },
+        school: { projectId: { equals: projectId } },
+      },
       select: {
         id: true,
         user: {

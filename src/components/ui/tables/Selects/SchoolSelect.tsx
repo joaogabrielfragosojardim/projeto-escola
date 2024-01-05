@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { TbLoader } from 'react-icons/tb';
 import { useQuery } from 'react-query';
@@ -7,11 +8,13 @@ import { axiosApi } from '@/components/api/axiosApi';
 import { SelectThemed } from '../../forms/SelectThemed';
 
 export const SchoolSelect = ({
+  projectId,
   coordinatorId,
   onChange,
   label,
   placeholder,
 }: {
+  projectId?: string;
   coordinatorId?: string;
   onChange: (event: any) => void;
   label?: string;
@@ -21,14 +24,20 @@ export const SchoolSelect = ({
 
   const fetchSchoolOptions = async () => {
     return axiosApi.get('/school/options', {
-      params: { coordinatorId },
+      params: { coordinatorId, projectId },
     });
   };
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     'fetchSchoolOptionsTable',
     fetchSchoolOptions,
   );
+
+  useEffect(() => {
+    if (projectId) {
+      refetch();
+    }
+  }, [projectId, refetch]);
 
   if (isLoading) {
     return (

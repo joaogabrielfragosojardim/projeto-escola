@@ -96,6 +96,29 @@ export const CoordinatorTable = ({
     },
   });
 
+  useEffect(() => {
+    if (filtersValues.projectId) {
+      setFilters((prev) => ({
+        ...prev,
+        schoolPopover: {
+          view: prev.schoolPopover?.view || false,
+          element: (
+            <SchoolSelect
+              onChange={(event) => {
+                setPage(1);
+                setFiltersValues((prevFIlters) => ({
+                  ...prevFIlters,
+                  schoolId: event.value,
+                }));
+              }}
+              projectId={filtersValues.projectId}
+            />
+          ),
+        },
+      }));
+    }
+  }, [filtersValues, setPage]);
+
   const fetchCoordinators = async () => {
     return (
       await axiosApi.get('/coordinator', {

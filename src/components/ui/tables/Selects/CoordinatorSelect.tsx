@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { TbLoader } from 'react-icons/tb';
 import { useQuery } from 'react-query';
@@ -7,10 +8,14 @@ import { axiosApi } from '@/components/api/axiosApi';
 import { SelectThemed } from '../../forms/SelectThemed';
 
 export const CoordinatorSelect = ({
+  projectId,
+  schoolId,
   onChange,
   label,
   placeholder,
 }: {
+  projectId?: string;
+  schoolId?: string;
   onChange: (event: any) => void;
   label?: string;
   placeholder?: string;
@@ -18,13 +23,21 @@ export const CoordinatorSelect = ({
   const { control, reset } = useForm();
 
   const fetchCoordinatorOptions = async () => {
-    return axiosApi.get('/coordinator/options');
+    return axiosApi.get('/coordinator/options', {
+      params: { schoolId, projectId },
+    });
   };
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     'fetchCoordinatorOptions',
     fetchCoordinatorOptions,
   );
+
+  useEffect(() => {
+    if (schoolId || projectId) {
+      refetch();
+    }
+  }, [schoolId, refetch, projectId]);
 
   if (isLoading) {
     return (
