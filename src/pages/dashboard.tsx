@@ -114,7 +114,6 @@ const Dashboard = () => {
           perPage={perPage}
         />
       ),
-
       userCanView: true,
       name: 'Alunos',
       icon: <IoSchoolOutline size={25} />,

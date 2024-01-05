@@ -99,6 +99,13 @@ const PedagogicalVisit = ({
         >
           <InputThemed
             register={register}
+            name="teacher"
+            label="Educador Social"
+            disabled
+            defaultValue={pedagogicalVisit.Classroom.teacher.user.name}
+          />
+          <InputThemed
+            register={register}
             name="coordinator"
             label="Coordenador"
             disabled
@@ -271,7 +278,7 @@ const PedagogicalVisit = ({
             </div>
           </div>
           <div>
-            <h3 className="text-[22px]">Interação do estudante na aula</h3>
+            <h3 className="text-[22px]">Alfabetização em Matemática</h3>
             <div className="mt-[16px] grid grid-cols-1 gap-[16px]">
               <InputCheckBoxThemed
                 register={register}

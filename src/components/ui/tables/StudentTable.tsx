@@ -111,6 +111,18 @@ export const StudentTable = ({
       ),
       view: false,
     },
+    schoolPopover: {
+      element: (
+        <SchoolSelect
+          coordinatorId={userIsCoordinator ? user.id : undefined}
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, schoolId: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
     coordinatorPopover: {
       element: (
         <CoordinatorSelect
@@ -120,18 +132,6 @@ export const StudentTable = ({
               ...prev,
               coordinatorId: event.value,
             }));
-          }}
-        />
-      ),
-      view: false,
-    },
-    schoolPopover: {
-      element: (
-        <SchoolSelect
-          coordinatorId={userIsCoordinator ? user.id : undefined}
-          onChange={(event) => {
-            setPage(1);
-            setFiltersValues((prev) => ({ ...prev, schoolId: event.value }));
           }}
         />
       ),
@@ -183,6 +183,76 @@ export const StudentTable = ({
       view: false,
     },
   });
+
+  useEffect(() => {
+    if (filtersValues.projectId) {
+      setFilters((prev) => ({
+        ...prev,
+        schoolPopover: {
+          view: prev.schoolPopover?.view || false,
+          element: (
+            <SchoolSelect
+              onChange={(event) => {
+                setPage(1);
+                setFiltersValues((prevFIlters) => ({
+                  ...prevFIlters,
+                  schoolId: event.value,
+                }));
+              }}
+              projectId={filtersValues.projectId}
+            />
+          ),
+        },
+      }));
+    }
+    if (filtersValues.projectId || filtersValues.schoolId) {
+      setFilters((prev) => ({
+        ...prev,
+        coordinatorPopover: {
+          view: prev.coordinatorPopover?.view || false,
+          element: (
+            <CoordinatorSelect
+              onChange={(event) => {
+                setPage(1);
+                setFiltersValues((prevFilters) => ({
+                  ...prevFilters,
+                  coordinatorId: event.value,
+                }));
+              }}
+              projectId={filtersValues.projectId || undefined}
+              schoolId={filtersValues.schoolId || undefined}
+            />
+          ),
+        },
+      }));
+    }
+    if (
+      filtersValues.projectId ||
+      filtersValues.schoolId ||
+      filtersValues.coordinatorId
+    ) {
+      setFilters((prev) => ({
+        ...prev,
+        socialEducatorPopover: {
+          view: prev.socialEducatorPopover?.view || false,
+          element: (
+            <TeacherSelect
+              onChange={(event) => {
+                setPage(1);
+                setFiltersValues((prevFilters) => ({
+                  ...prevFilters,
+                  teacherId: event.value,
+                }));
+              }}
+              projectId={filtersValues.projectId || undefined}
+              schoolId={filtersValues.schoolId || undefined}
+              coordinatorId={filtersValues.coordinatorId || undefined}
+            />
+          ),
+        },
+      }));
+    }
+  }, [filtersValues, setPage]);
 
   const fetchStudents = async () => {
     const { data } = await axiosApi.get('/student', {

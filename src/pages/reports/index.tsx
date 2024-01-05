@@ -54,7 +54,7 @@ const Dashboard = () => {
         />
       ),
       userCanView: true,
-      name: 'Aprendizagem',
+      name: 'Acompanhamento de Aprendizagem',
       icon: <LiaSchoolSolid size={25} />,
     },
     {

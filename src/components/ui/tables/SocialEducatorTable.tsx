@@ -145,6 +145,29 @@ export const SocialEducatorTable = ({
     },
   });
 
+  useEffect(() => {
+    if (filtersValues.projectId) {
+      setFilters((prev) => ({
+        ...prev,
+        schoolPopover: {
+          view: prev.schoolPopover?.view || false,
+          element: (
+            <SchoolSelect
+              onChange={(event) => {
+                setPage(1);
+                setFiltersValues((prevFIlters) => ({
+                  ...prevFIlters,
+                  schoolId: event.value,
+                }));
+              }}
+              projectId={filtersValues.projectId}
+            />
+          ),
+        },
+      }));
+    }
+  }, [filtersValues, setPage]);
+
   const fetchSocialEducators = async () => {
     const { data } = await axiosApi.get('/teacher', {
       params: {

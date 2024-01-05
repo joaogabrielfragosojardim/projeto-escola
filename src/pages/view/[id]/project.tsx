@@ -119,7 +119,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         },
       };
     }
-
     return { redirect: { permanent: false, destination: '/login' } };
   } catch (error) {
     return { redirect: { permanent: false, destination: '/login' } };

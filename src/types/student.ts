@@ -32,6 +32,7 @@ export type StudentId = {
 export interface StudentEdit {
   id: string;
   birtday: Date;
+  registration: string;
   user: {
     email: string;
     name: string;
@@ -50,6 +51,7 @@ export interface StudentEdit {
 export interface StudentEditForm {
   birtday: Date;
   name: string;
+  registration: string;
   visualIdentity: string;
   classRoom: {
     period: string;

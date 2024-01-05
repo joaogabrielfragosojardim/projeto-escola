@@ -45,6 +45,16 @@ export class CreateStudentUseCase {
       throw new AppError('Email já cadastrado', 400);
     }
 
+    const studentWithSameRegistration = await prisma.student.findUnique({
+      where: {
+        registration,
+      },
+    });
+
+    if (studentWithSameRegistration) {
+      throw new AppError('Matrícula já cadastrada', 400);
+    }
+
     const password = generatePassword();
 
     const passwordHash = await hash(password, 6);

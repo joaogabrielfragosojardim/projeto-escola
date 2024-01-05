@@ -76,7 +76,17 @@ export class GetAllCoordinatorsUseCase {
           },
         },
       }),
-      prisma.coordinator.count(),
+      prisma.coordinator.count({
+        where: {
+          user: {
+            name: { contains: name, mode: 'insensitive' },
+          },
+          schoolId: { equals: schoolId },
+          school: {
+            projectId: { equals: projectId },
+          },
+        },
+      }),
     ]);
 
     const totalPage = Math.ceil(total / take);

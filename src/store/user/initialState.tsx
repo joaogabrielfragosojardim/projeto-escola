@@ -4,6 +4,7 @@ export const initialState: User = {
   id: '',
   name: '',
   email: '',
+  isFirstAccess: false,
   role: {
     name: '',
   },

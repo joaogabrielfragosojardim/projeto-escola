@@ -20,9 +20,11 @@ interface RouteInterface {
 export const GenerateDropdown = ({
   childrenRoute,
   routerDrop,
+  setMenu,
 }: {
   childrenRoute: RouteInterface;
   routerDrop: { pathname: string };
+  setMenu?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [closed, setClosed] = useState(false);
 
@@ -47,7 +49,7 @@ export const GenerateDropdown = ({
         }`}
       >
         {childrenRoute?.children?.map((children) =>
-          renderMenuWithChildren(children, routerDrop),
+          renderMenuWithChildren(children, routerDrop, setMenu),
         )}
       </ul>
     </button>
@@ -57,6 +59,7 @@ export const GenerateDropdown = ({
 export const renderMenuWithChildren = (
   route: RouteInterface,
   router: { pathname: string },
+  setMenu?: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   return (
     <li
@@ -68,9 +71,16 @@ export const renderMenuWithChildren = (
       } ${route.userCanView ? '' : 'hidden'}`}
     >
       {route.children ? (
-        <GenerateDropdown childrenRoute={route} routerDrop={router} />
+        <GenerateDropdown
+          childrenRoute={route}
+          routerDrop={router}
+          setMenu={setMenu}
+        />
       ) : (
-        <Link href={route.route}>
+        <Link
+          href={route.route}
+          onClick={() => (setMenu ? setMenu(false) : null)}
+        >
           <div className="flex items-center gap-[16px] ">
             {route.icon}
             <span className="text-[20px]">{route.name}</span>

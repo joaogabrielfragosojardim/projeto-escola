@@ -20,10 +20,10 @@ const schema = z
   .object({
     password: z
       .string()
-      .min(6, { message: 'Digite uma senha com no mínimo 6 caracteres' }),
+      .min(8, { message: 'Digite uma senha com no mínimo 6 caracteres' }),
     confirm_password: z
       .string()
-      .min(6, { message: 'Digite uma senha com no mínimo 6 caracteres' }),
+      .min(8, { message: 'Digite uma senha com no mínimo 6 caracteres' }),
   })
   .refine((data) => data.password === data.confirm_password, {
     path: ['confirm_password'],

@@ -54,6 +54,7 @@ export class AuthenticateUseCase {
         email: true,
         password: true,
         visualIdentity: true,
+        isFirstAccess: true,
         role: {
           select: {
             name: true,

@@ -7,4 +7,5 @@ export type User = {
   };
   visualIdentity?: string;
   password?: string;
+  isFirstAccess: boolean;
 };

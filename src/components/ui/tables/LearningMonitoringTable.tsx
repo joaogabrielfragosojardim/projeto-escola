@@ -341,9 +341,11 @@ export const LearnMonitoringTable = ({
                   data?.data.map((item: LearningMonitoring) => ({
                     date: item.createdAt,
                     teacher: item.classroom.teacher.user.name,
+                    student: item.student.user.name,
+                    registration: item.student.registration,
                     classrooom: `${item.classroom.year}º Ano - ${item.classroom.period}`,
                   })),
-                  ['Data', 'Educador Social', 'Turma'],
+                  ['Data', 'Educador Social', 'Aluno', 'Matrícula', 'Turma'],
                   'relatorioAprendizagem',
                 )
               }
@@ -377,7 +379,7 @@ export const LearnMonitoringTable = ({
               <Table
                 data={nodes}
                 theme={theme}
-                style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 0.4fr' }}
+                style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 0.4fr' }}
               >
                 {(tableList: LearningMonitoring[]) => (
                   <>
@@ -386,6 +388,7 @@ export const LearnMonitoringTable = ({
                         <HeaderCell>Data</HeaderCell>
                         <HeaderCell>Educador Social</HeaderCell>
                         <HeaderCell>Aluno</HeaderCell>
+                        <HeaderCell>Matrícula</HeaderCell>
                         <HeaderCell>Turma</HeaderCell>
                         <HeaderCell>Ações</HeaderCell>
                       </HeaderRow>
@@ -407,6 +410,9 @@ export const LearnMonitoringTable = ({
                             </Cell>
                             <Cell className="text-[20px] text-main hover:text-main">
                               {laerningMonitoring.student.user.name}
+                            </Cell>
+                            <Cell className="text-[20px] text-main hover:text-main">
+                              {laerningMonitoring.student.registration}
                             </Cell>
                             <Cell className="text-[20px] text-main hover:text-main">
                               {`${laerningMonitoring.classroom.year}º - ${laerningMonitoring.classroom.period}`}
@@ -513,6 +519,12 @@ export const LearnMonitoringTable = ({
                         <p className="text-[14px] text-main">Aluno</p>
                         <p className="text-[14px] text-complement-200">
                           {learningMonitoring.student.user.name}
+                        </p>
+                      </div>
+                      <div className="mt-[8px] flex items-center gap-[8px]">
+                        <p className="text-[14px] text-main">Matrícula</p>
+                        <p className="text-[14px] text-complement-200">
+                          {learningMonitoring.student.registration}
                         </p>
                       </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">

@@ -111,7 +111,9 @@ export const Header = ({ title }: { title: string }) => {
           </Link>
           <div className="mt-[32px]">
             <ul className="flex flex-col gap-[8px]">
-              {menuRoutes.map((route) => renderMenuWithChildren(route, router))}
+              {menuRoutes.map((route) =>
+                renderMenuWithChildren(route, router, setMenu),
+              )}
             </ul>
           </div>
           <div className="mt-auto">

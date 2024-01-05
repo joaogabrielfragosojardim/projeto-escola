@@ -99,6 +99,7 @@ export interface LearningMonitoring {
     period: string;
   };
   student: {
+    registration: string;
     user: {
       name: string;
     };
@@ -107,13 +108,16 @@ export interface LearningMonitoring {
 
 export interface LearningMonitoringEdit {
   id: string;
+  createdAt: Date;
   questions: Record<LearningMonitoringValuesEnum, boolean>;
   writingLevel: string;
   classroom: {
     period: string;
     year: number;
+    teacher: string;
   };
   student: {
     name: string;
+    registration: string;
   };
 }

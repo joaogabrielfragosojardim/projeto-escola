@@ -82,7 +82,13 @@ export class GetAllAttendenceUseCase {
           id: true,
           date: true,
           isPresent: true,
-          student: { select: { id: true, user: { select: { name: true } } } },
+          student: {
+            select: {
+              id: true,
+              registration: true,
+              user: { select: { name: true } },
+            },
+          },
           Classroom: {
             select: {
               id: true,

@@ -9,6 +9,7 @@ export const InitialConfigs = ({ children }: { children: ReactNode }) => {
     id,
     name,
     email,
+    isFirstAccess,
     role: { name: roleName },
   } = useUser();
   const userDispatch = useUserDispatch();
@@ -32,10 +33,20 @@ export const InitialConfigs = ({ children }: { children: ReactNode }) => {
           email: emailCookies,
           role: { name: roleNameCookies },
           visualIdentity: visualIdentityCookies,
+          isFirstAccess,
         },
       });
     }
-  }, [email, id, name, roleName, token, userCookies, userDispatch]);
+  }, [
+    email,
+    id,
+    name,
+    roleName,
+    token,
+    userCookies,
+    isFirstAccess,
+    userDispatch,
+  ]);
 
   return <div>{children}</div>;
 };

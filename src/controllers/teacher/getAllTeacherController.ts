@@ -12,7 +12,7 @@ export class GetAllTeacherController {
         name: z.string().optional(),
         schoolId: z.string().uuid().optional(),
         projectId: z.string().uuid().optional(),
-        period: z.enum(['Matutino', 'Vespertino', 'Noturno']).optional(),
+        period: z.enum(['Manhã', 'Tarde', 'Noite']).optional(),
         year: z.coerce.string().optional(),
         status: z.string().optional(),
       });

@@ -280,7 +280,7 @@ const SocialEducatorSecondStep = ({
         </div>
         <div className="mt-[16px]">
           <InputThemed
-            label="Telefone"
+            label="Telefone - Prefencialmente Whatsapp"
             placeholder="(99) 9 9999-9999"
             mask="(99) 9 9999-9999"
             register={register}

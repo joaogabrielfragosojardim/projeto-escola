@@ -66,6 +66,9 @@ export interface GetOnePedagogicalVisit {
   Classroom: {
     period: string;
     year: string;
+    teacher: {
+      user: { name: string };
+    };
   };
   Coordinator: {
     user: { name: string };

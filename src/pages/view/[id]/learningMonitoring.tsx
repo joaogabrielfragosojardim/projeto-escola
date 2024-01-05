@@ -79,8 +79,11 @@ const LearningMonitoring = ({
     mutate(formatedData);
   };
 
+  const maxDate = new Date();
+  maxDate.setHours(maxDate.getHours() - 3);
+
   return (
-    <SideNavMenuContainer title="Visita Pedagógica">
+    <SideNavMenuContainer title="Acompanhamento de Aprendizagem">
       <div className="p-[32px] text-complement-200" id="pageContent">
         <form
           className="flex max-w-[875px] flex-col gap-[22px]"
@@ -89,10 +92,43 @@ const LearningMonitoring = ({
           <div>
             <InputThemed
               register={register}
+              name="date"
+              label="Data"
+              type="date"
+              max={maxDate.toISOString().split('T')[0]}
+              defaultValue={
+                new Date(learningMonitoring.createdAt)
+                  .toISOString()
+                  .split('T')[0]
+              }
+              disabled
+            />
+          </div>
+          <div>
+            <InputThemed
+              register={register}
+              name="teacher"
+              label="Educador Social"
+              disabled
+              defaultValue={learningMonitoring.classroom.teacher}
+            />
+          </div>
+          <div>
+            <InputThemed
+              register={register}
               name="student"
               label="Aluno"
               disabled
               defaultValue={learningMonitoring.student.name}
+            />
+          </div>
+          <div>
+            <InputThemed
+              register={register}
+              name="registration"
+              label="Matrícula"
+              disabled
+              defaultValue={learningMonitoring.student.registration}
             />
           </div>
           <div>

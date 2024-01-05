@@ -44,7 +44,7 @@ const Login = () => {
     onSuccess: (data) => {
       const {
         token,
-        user: { id, name, email, role, visualIdentity },
+        user: { id, name, email, role, visualIdentity, isFirstAccess },
       } = data;
       destroyCookie(null, 'token');
       destroyCookie(null, 'user');
@@ -63,9 +63,13 @@ const Login = () => {
           email,
           role,
           visualIdentity,
+          isFirstAccess: false,
         },
       });
-      router.push('/dashboard');
+      if (isFirstAccess) {
+        return router.push('/first-access');
+      }
+      return router.push('/dashboard');
     },
   });
 
