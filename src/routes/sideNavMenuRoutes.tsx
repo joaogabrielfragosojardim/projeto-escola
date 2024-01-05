@@ -1,6 +1,7 @@
 import { GoPeople } from 'react-icons/go';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { IoSchoolOutline } from 'react-icons/io5';
+import { MdOutlineDashboard } from 'react-icons/md';
 import {
   PiBookBookmarkLight,
   PiFolderMinusLight,
@@ -11,6 +12,7 @@ import {
   PiStudentLight,
 } from 'react-icons/pi';
 import { RxPerson } from 'react-icons/rx';
+import { SlGraph } from 'react-icons/sl';
 
 import { RoleEnum } from '@/types/roles';
 
@@ -92,6 +94,26 @@ export const sideNavMenuRoutes = (role: RoleEnum) => {
       icon: <HiOutlineDocumentReport size={25} />,
       route: '/reports',
       userCanView: true,
+    },
+    {
+      name: 'Gráficos',
+      icon: <SlGraph size={25} />,
+      route: '',
+      userCanView: [RoleEnum.ADM_MASTER, RoleEnum.ADM].includes(role),
+      children: [
+        {
+          name: 'Geral',
+          icon: <MdOutlineDashboard size={25} />,
+          route: '/graphs/geral',
+          userCanView: [RoleEnum.ADM_MASTER, RoleEnum.ADM].includes(role),
+        },
+        {
+          name: 'Relatórios',
+          icon: <HiOutlineDocumentReport size={25} />,
+          route: '/graphs/relatory',
+          userCanView: [RoleEnum.ADM_MASTER, RoleEnum.ADM].includes(role),
+        },
+      ],
     },
   ];
 };
