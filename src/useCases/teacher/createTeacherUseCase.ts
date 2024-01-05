@@ -93,58 +93,29 @@ export class CreateTeacherUseCase {
       },
     });
 
+    const classRooomsToConnect: any = await Promise.all(
+      classRooms.map(async ({ period, year }) => {
+        return prisma.classroom.findFirst({
+          where: {
+            schoolId,
+            period,
+            year,
+          },
+        });
+      }),
+    );
+
     const teacher = await prisma.teacher.create({
       data: {
         telephone,
         schoolId,
         coordinatorId: coordinator[0]?.id,
         userId: user.id,
+        Classroom: {
+          connect: classRooomsToConnect,
+        },
       },
     });
-
-    const updateTeachers = classRooms.map(async ({ period, year }) => {
-      const existingTeacherInClass = await prisma.classroom.findFirst({
-        where: {
-          schoolId: teacher.schoolId,
-          period,
-          year,
-          teacherId: { not: null },
-        },
-        select: {
-          year: true,
-          period: true,
-          teacher: {
-            select: {
-              user: {
-                select: { name: true },
-              },
-            },
-          },
-        },
-      });
-
-      if (existingTeacherInClass) {
-        await prisma.user.delete({ where: { id: user.id } });
-
-        throw new AppError(
-          `A turma ${existingTeacherInClass.year}º ano - ${existingTeacherInClass.period} já está atrelada ao professor ${existingTeacherInClass.teacher?.user.name}`,
-          400,
-        );
-      }
-
-      return prisma.classroom.updateMany({
-        where: {
-          schoolId: teacher.schoolId,
-          period,
-          year,
-        },
-        data: {
-          teacherId: teacher.id,
-        },
-      });
-    });
-
-    await Promise.all(updateTeachers);
 
     sendPasswordEmail({ password, name: user.name, email: user.email });
 

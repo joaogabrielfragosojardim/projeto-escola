@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,22 +8,20 @@ datasource db {
 }
 
 model User {
-  id             String  @id @default(uuid())
-  name           String
-  email          String  @unique
-  visualIdentity String?
-  password       String
-  roleId         String
-  isFirstAccess  Boolean @default(true)
-
-  passwordToken       String?   @unique
+  id                  String          @id @default(uuid())
+  name                String
+  email               String          @unique
+  visualIdentity      String?
+  password            String
+  roleId              String
+  isFirstAccess       Boolean         @default(true)
+  passwordToken       String?         @unique
   passwordExpiresDate DateTime?
-
-  role          Role            @relation(fields: [roleId], references: [id])
-  Student       Student[]
-  Teacher       Teacher[]
-  Coordinator   Coordinator[]
-  Administrator Administrator[]
+  Administrator       Administrator[] @relation("AdministratorToUser")
+  Coordinator         Coordinator[]   @relation("CoordinatorToUser")
+  Student             Student[]       @relation("StudentToUser")
+  Teacher             Teacher[]       @relation("TeacherToUser")
+  role                Role            @relation("RoleToUser", fields: [roleId], references: [id])
 
   @@map("user")
 }
@@ -36,26 +31,25 @@ model Role {
   name        String  @unique
   description String?
   level       Int     @default(1)
-  User        User[]
+  User        User[]  @relation("RoleToUser")
 
   @@map("role")
 }
 
 model School {
-  id             String   @id @default(uuid())
-  name           String
-  projectId      String
-  visualIdentity String?
-  createdAt      DateTime @default(now())
-  addressId      String   @unique
-
-  Address          Address            @relation(fields: [addressId], references: [id], onDelete: Cascade)
-  project          Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  Coordinator      Coordinator[]
-  Teacher          Teacher[]
-  Student          Student[]
-  Classroom        Classroom[]
-  PedagogicalVisit PedagogicalVisit[]
+  id               String             @id @default(uuid())
+  name             String
+  projectId        String
+  visualIdentity   String?
+  createdAt        DateTime           @default(now())
+  addressId        String             @unique
+  Classroom        Classroom[]        @relation("ClassroomToSchool")
+  Coordinator      Coordinator[]      @relation("CoordinatorToSchool")
+  PedagogicalVisit PedagogicalVisit[] @relation("PedagogicalVisitToSchool")
+  Address          Address            @relation("AddressToSchool", fields: [addressId], references: [id])
+  project          Project            @relation("ProjectToSchool", fields: [projectId], references: [id])
+  Student          Student[]          @relation("SchoolToStudent")
+  Teacher          Teacher[]          @relation("SchoolToTeacher")
 
   @@map("school")
 }
@@ -66,125 +60,113 @@ model Project {
   visualIdentity String
   about          String
   createdAt      DateTime @default(now())
-
-  Schools School[]
+  Schools        School[] @relation("ProjectToSchool")
 
   @@map("project")
 }
 
 model Student {
-  id           String   @id @default(uuid())
-  birtday      DateTime
-  createdAt    DateTime @default(now())
-  userId       String
-  schoolId     String
-  classId      String
-  status       Boolean  @default(true)
-  registration String   @unique
-
-  user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  school             School               @relation(fields: [schoolId], references: [id])
-  Classroom          Classroom            @relation(fields: [classId], references: [id])
-  Attendance         Attendance[]
-  LearningMonitoring LearningMonitoring[]
+  id                 String               @id @default(uuid())
+  birtday            DateTime
+  createdAt          DateTime             @default(now())
+  userId             String
+  schoolId           String
+  classId            String
+  status             Boolean              @default(true)
+  registration       String               @unique
+  Attendance         Attendance[]         @relation("AttendanceToStudent")
+  LearningMonitoring LearningMonitoring[] @relation("LearningMonitoringToStudent")
+  Classroom          Classroom            @relation("ClassroomToStudent", fields: [classId], references: [id])
+  school             School               @relation("SchoolToStudent", fields: [schoolId], references: [id])
+  user               User                 @relation("StudentToUser", fields: [userId], references: [id])
 
   @@map("student")
 }
 
 model Teacher {
-  id        String   @id @default(uuid())
-  telephone String   @unique
-  createdAt DateTime @default(now())
-  status    Boolean  @default(true)
-
-  schoolId      String
-  userId        String
-  coordinatorId String
-
-  school             School               @relation(fields: [schoolId], references: [id])
-  user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  coordinator        Coordinator          @relation(fields: [coordinatorId], references: [id])
-  Classroom          Classroom[]
-  LearningMonitoring LearningMonitoring[]
+  id                 String               @id @default(uuid())
+  telephone          String               @unique
+  createdAt          DateTime             @default(now())
+  status             Boolean              @default(true)
+  schoolId           String
+  userId             String
+  coordinatorId      String
+  LearningMonitoring LearningMonitoring[] @relation("LearningMonitoringToTeacher")
+  coordinator        Coordinator          @relation("CoordinatorToTeacher", fields: [coordinatorId], references: [id])
+  school             School               @relation("SchoolToTeacher", fields: [schoolId], references: [id])
+  user               User                 @relation("TeacherToUser", fields: [userId], references: [id])
+  Classroom          Classroom[]          @relation("ClassroomToTeacher")
 
   @@map("teacher")
 }
 
 model Coordinator {
-  id        String   @id @default(uuid())
-  userId    String
-  telephone String   @unique
-  createdAt DateTime @default(now())
-  schoolId  String
-
-  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  school           School             @relation(fields: [schoolId], references: [id])
-  Teacher          Teacher[]
-  PedagogicalVisit PedagogicalVisit[]
+  id               String             @id @default(uuid())
+  userId           String
+  telephone        String             @unique
+  createdAt        DateTime           @default(now())
+  schoolId         String
+  school           School             @relation("CoordinatorToSchool", fields: [schoolId], references: [id])
+  user             User               @relation("CoordinatorToUser", fields: [userId], references: [id])
+  PedagogicalVisit PedagogicalVisit[] @relation("CoordinatorToPedagogicalVisit")
+  Teacher          Teacher[]          @relation("CoordinatorToTeacher")
 
   @@map("coordinator")
 }
 
 model Classroom {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  year      String
-  period    String
-
-  schoolId  String
-  teacherId String?
-
-  school             School               @relation(fields: [schoolId], references: [id])
-  teacher            Teacher?             @relation(fields: [teacherId], references: [id])
-  students           Student[]
-  Attendance         Attendance[]
-  PedagogicalVisit   PedagogicalVisit[]
-  LearningMonitoring LearningMonitoring[]
+  id                 String               @id @default(uuid())
+  createdAt          DateTime             @default(now())
+  year               String
+  period             String
+  schoolId           String
+  Attendance         Attendance[]         @relation("AttendanceToClassroom")
+  school             School               @relation("ClassroomToSchool", fields: [schoolId], references: [id])
+  LearningMonitoring LearningMonitoring[] @relation("ClassroomToLearningMonitoring")
+  PedagogicalVisit   PedagogicalVisit[]   @relation("ClassroomToPedagogicalVisit")
+  students           Student[]            @relation("ClassroomToStudent")
+  teachers           Teacher[]            @relation("ClassroomToTeacher")
 
   @@map("classroom")
 }
 
 model Address {
-  id           String @id @default(uuid())
+  id           String  @id @default(uuid())
   street       String
   city         String
   state        String
   zipCode      String
   neighborhood String
   houseNumber  String
-
-  School School?
+  School       School? @relation("AddressToSchool")
 
   @@map("address")
 }
 
 model Attendance {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   date      DateTime
-  isPresent Boolean  @default(false)
+  isPresent Boolean   @default(false)
   studentId String
   classId   String
-
-  student   Student   @relation(fields: [studentId], references: [id])
-  Classroom Classroom @relation(fields: [classId], references: [id])
+  Classroom Classroom @relation("AttendanceToClassroom", fields: [classId], references: [id])
+  student   Student   @relation("AttendanceToStudent", fields: [studentId], references: [id])
 
   @@map("attendance")
 }
 
 model PedagogicalVisit {
-  id           String   @id @default(uuid())
-  date         DateTime @default(now())
-  frequency    Int
-  observations String
-  questions    Json
-
+  id            String      @id @default(uuid())
+  date          DateTime    @default(now())
+  frequency     Int
+  observations  String
+  questions     Json
   schoolId      String
   coordinatorId String
   classId       String
-
-  Classroom   Classroom   @relation(fields: [classId], references: [id])
-  Coordinator Coordinator @relation(fields: [coordinatorId], references: [id])
-  School      School      @relation(fields: [schoolId], references: [id])
+  Classroom     Classroom   @relation("ClassroomToPedagogicalVisit", fields: [classId], references: [id])
+  Coordinator   Coordinator @relation("CoordinatorToPedagogicalVisit", fields: [coordinatorId], references: [id])
+  School        School      @relation("PedagogicalVisitToSchool", fields: [schoolId], references: [id])
 
   @@map("pedagogicalVisit")
 }
@@ -193,24 +175,22 @@ model Administrator {
   id        String   @id @default(uuid())
   userId    String
   createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation("AdministratorToUser", fields: [userId], references: [id])
 
   @@map("administrator")
 }
 
 model LearningMonitoring {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   questions    Json
   writingLevel String
-  createdAt    DateTime @default(now())
+  createdAt    DateTime  @default(now())
   studentId    String
   classroomId  String
   teacherId    String
-
-  student   Student   @relation(fields: [studentId], references: [id])
-  classroom Classroom @relation(fields: [classroomId], references: [id])
-  teacher   Teacher   @relation(fields: [teacherId], references: [id])
+  classroom    Classroom @relation("ClassroomToLearningMonitoring", fields: [classroomId], references: [id])
+  student      Student   @relation("LearningMonitoringToStudent", fields: [studentId], references: [id])
+  teacher      Teacher   @relation("LearningMonitoringToTeacher", fields: [teacherId], references: [id])
 
   @@map("learningMonitoring")
 }
