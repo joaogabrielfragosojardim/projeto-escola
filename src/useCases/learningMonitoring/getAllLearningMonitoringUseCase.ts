@@ -85,6 +85,8 @@ export class GetAllLearningMonitoringUseCase {
         select: {
           id: true,
           createdAt: true,
+          questions: true,
+          writingLevel: true,
           student: {
             select: {
               id: true,
