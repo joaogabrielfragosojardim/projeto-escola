@@ -4,10 +4,11 @@ interface GetAllProjectsUseCaseRequest {
   perPage: number;
   page: number;
   name?: string;
+  status?: string;
 }
 
 export class GetAllProjectsUseCase {
-  async execute({ page, perPage, name }: GetAllProjectsUseCaseRequest) {
+  async execute({ page, perPage, name, status }: GetAllProjectsUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
 
@@ -20,11 +21,17 @@ export class GetAllProjectsUseCase {
         take,
         where: {
           name: { contains: name, mode: 'insensitive' },
+          status: {
+            equals: status ? status === 'true' : undefined,
+          },
         },
       }),
       prisma.project.count({
         where: {
           name: { contains: name, mode: 'insensitive' },
+          status: {
+            equals: status ? status === 'true' : undefined,
+          },
         },
       }),
     ]);

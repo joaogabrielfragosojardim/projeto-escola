@@ -10,9 +10,12 @@ export class GetAllProjectsController {
         page: z.coerce.number().default(1),
         perPage: z.coerce.number().default(10),
         name: z.string().optional(),
+        status: z.string().optional(),
       });
 
-      const { page, perPage, name } = getAllQuerySchema.parse(req.query);
+      const { page, perPage, name, status } = getAllQuerySchema.parse(
+        req.query,
+      );
 
       const getAllProjectsUseCase = new GetAllProjectsUseCase();
 
@@ -20,6 +23,7 @@ export class GetAllProjectsController {
         page,
         perPage,
         name,
+        status,
       });
 
       return res.status(200).json({ data, meta });

@@ -12,7 +12,7 @@ import Link from 'next/link';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { BiDownload, BiTrash } from 'react-icons/bi';
+import { BiBlock, BiDownload, BiTrash } from 'react-icons/bi';
 import { FiEye } from 'react-icons/fi';
 import { IoIosArrowDown, IoMdMore } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
@@ -31,6 +31,7 @@ import { ConfirmModal } from '../ConfirmModal';
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
+import { StatusSelect } from './Selects/StatusSelect';
 
 export const ProjectTable = ({
   page,
@@ -45,9 +46,17 @@ export const ProjectTable = ({
 }) => {
   const { register } = useForm();
   const theme = useTableTheme();
-  const [filtersValues, setFiltersValues] = useState({ name: '' });
+  const [filtersValues, setFiltersValues] = useState({
+    name: '',
+    status: undefined,
+  });
   const [deleteModal, setDeleteModal] = useState(false);
+  const [inativateModal, setInativateModal] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState('');
+  const [projectInativate, setProjectInativate] = useState<{
+    status: boolean;
+    projectId: string;
+  }>({ status: true, projectId: '' });
 
   const [filters, setFilters] = useState<{
     [key: string]: { element: ReactNode; view: boolean };
@@ -65,10 +74,29 @@ export const ProjectTable = ({
       ),
       view: false,
     },
+    statusPopover: {
+      element: (
+        <StatusSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
   });
 
   const deleteProject = async (id: string) => {
     return (await axiosApi.delete(`/project/${id}`)).data;
+  };
+
+  const inativateProject = async (projectData: {
+    projectId: string;
+    status: boolean;
+  }) => {
+    const { projectId: id, status } = projectData;
+    return axiosApi.put('/project/status', { projectId: id, status });
   };
 
   const { mutate } = useMutation('fdeleteProjectMutation', deleteProject, {
@@ -81,10 +109,29 @@ export const ProjectTable = ({
     },
   });
 
+  const { mutate: mutateInativate } = useMutation(
+    'inativateProject',
+    inativateProject,
+    {
+      onSuccess: () => {
+        toast.success('Status do Projeto alterado!');
+        refetch();
+      },
+      onError: () => {
+        toast.error('Algo de arrado aconteceu ao inativar o Projeto!');
+      },
+    },
+  );
+
   const fetchProjects = async () => {
     return (
       await axiosApi.get('/project', {
-        params: { page, name: filtersValues.name || null, perPage },
+        params: {
+          page,
+          name: filtersValues.name || null,
+          perPage,
+          status: filtersValues.status,
+        },
       })
     ).data;
   };
@@ -139,13 +186,21 @@ export const ProjectTable = ({
               </button>
             }
           >
-            <form>
+            <form className="flex flex-col gap-[16px]">
               <InputCheckBoxThemed
                 label="Nome"
                 register={register}
                 name="namePopover"
                 onClick={(event) => {
                   handleChangeFilters('namePopover', 'name', event);
+                }}
+              />
+              <InputCheckBoxThemed
+                label="Status"
+                register={register}
+                name="statusPopover"
+                onClick={(event) => {
+                  handleChangeFilters('statusPopover', 'status', event);
                 }}
               />
             </form>
@@ -169,8 +224,9 @@ export const ProjectTable = ({
                   data?.data.map((item: Project) => ({
                     name: item.name,
                     about: item.about,
+                    status: item.status ? 'Ativo' : 'Inativo',
                   })),
-                  ['Nome', 'Sobre'],
+                  ['Nome', 'Sobre', 'Status'],
                   'relatorioProjetos',
                 )
               }
@@ -204,13 +260,14 @@ export const ProjectTable = ({
               <Table
                 data={nodes}
                 theme={theme}
-                style={{ gridTemplateColumns: '1fr 2fr 0.4fr' }}
+                style={{ gridTemplateColumns: '1.3fr 1fr  2fr 0.4fr' }}
               >
                 {(tableList: Project[]) => (
                   <>
                     <Header>
                       <HeaderRow>
                         <HeaderCell>Nome</HeaderCell>
+                        <HeaderCell>Status</HeaderCell>
                         <HeaderCell>Sobre</HeaderCell>
                         <HeaderCell>Ações</HeaderCell>
                       </HeaderRow>
@@ -233,6 +290,19 @@ export const ProjectTable = ({
                               </div>
                               {project.name}
                             </div>
+                          </Cell>
+                          <Cell className="text-[20px] text-main hover:text-main">
+                            {project.status ? (
+                              <div className="flex items-center gap-[8px]">
+                                <p>Ativo</p>
+                                <div className="h-[8px] w-[8px] rounded-full bg-correct" />
+                              </div>
+                            ) : (
+                              <div className="flex items-center gap-[8px]">
+                                <p>Inativo</p>
+                                <div className="h-[8px] w-[8px] rounded-full bg-wrong" />
+                              </div>
+                            )}
                           </Cell>
                           <Cell className="text-[20px] text-main hover:text-main">
                             {project.about}
@@ -261,6 +331,22 @@ export const ProjectTable = ({
                                 <BiTrash size={20} />
                               </button>
                               <Tooltip id="trash" />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setProjectInativate({
+                                    status: !project.status,
+                                    projectId: project.id,
+                                  });
+                                  setInativateModal(true);
+                                }}
+                                data-tooltip-id="inactivate"
+                                data-tooltip-content="inativar"
+                                data-tooltip-place="top"
+                              >
+                                <BiBlock size={20} />
+                              </button>
+                              <Tooltip id="inactivate" />
                             </div>
                           </Cell>
                         </Row>
@@ -326,6 +412,20 @@ export const ProjectTable = ({
                           </div>
                         </Popover>
                       </div>
+                      <div className="mt-[8px] flex items-center gap-[8px] ">
+                        <p className="text-[14px] text-main">Status:</p>
+                        {project.status ? (
+                          <div className="flex items-center gap-[8px]">
+                            <p className="text-[14px] text-main">Ativo</p>
+                            <div className="h-[8px] w-[8px] rounded-full bg-correct" />
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-[8px]">
+                            <p className="text-[14px] text-main">Inativo</p>
+                            <div className="h-[8px] w-[8px] rounded-full bg-wrong" />
+                          </div>
+                        )}
+                      </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">Sobre:</p>
                         <p className="text-[14px] text-complement-200">
@@ -362,6 +462,19 @@ export const ProjectTable = ({
         onConfirm={() => {
           mutate(projectToDelete);
           setDeleteModal(false);
+        }}
+      />
+      <ConfirmModal
+        isOpen={inativateModal}
+        setOpen={setInativateModal}
+        text={
+          projectInativate.status
+            ? 'Deseja realmente ativar esse Projeto?'
+            : 'Deseja realmente inativar esse Projeto?'
+        }
+        onConfirm={() => {
+          mutateInativate(projectInativate);
+          setInativateModal(false);
         }}
       />
     </div>

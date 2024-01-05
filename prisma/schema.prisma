@@ -43,6 +43,7 @@ model School {
   visualIdentity   String?
   createdAt        DateTime           @default(now())
   addressId        String             @unique
+  status           Boolean            @default(true)
   Classroom        Classroom[]        @relation("ClassroomToSchool")
   Coordinator      Coordinator[]      @relation("CoordinatorToSchool")
   PedagogicalVisit PedagogicalVisit[] @relation("PedagogicalVisitToSchool")
@@ -59,6 +60,7 @@ model Project {
   name           String
   visualIdentity String
   about          String
+  status         Boolean  @default(true)
   createdAt      DateTime @default(now())
   Schools        School[] @relation("ProjectToSchool")
 
@@ -106,6 +108,7 @@ model Coordinator {
   telephone        String             @unique
   createdAt        DateTime           @default(now())
   schoolId         String
+  status           Boolean            @default(true)
   school           School             @relation("CoordinatorToSchool", fields: [schoolId], references: [id])
   user             User               @relation("CoordinatorToUser", fields: [userId], references: [id])
   PedagogicalVisit PedagogicalVisit[] @relation("CoordinatorToPedagogicalVisit")
