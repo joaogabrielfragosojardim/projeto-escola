@@ -84,7 +84,14 @@ export class GetAllStudentUseCase {
           },
           Classroom: {
             id: { equals: classId },
-            teacherId: { equals: teacherId || teacher?.id },
+            teachers:
+              teacherId || teacher?.id
+                ? {
+                    some: {
+                      id: { equals: teacherId || teacher?.id },
+                    },
+                  }
+                : undefined,
             year: { equals: year },
             period: { equals: period },
           },
@@ -144,7 +151,15 @@ export class GetAllStudentUseCase {
             projectId: { equals: projectId },
           },
           Classroom: {
-            teacherId: { equals: teacherId },
+            id: { equals: classId },
+            teachers:
+              teacherId || teacher?.id
+                ? {
+                    some: {
+                      id: { equals: teacherId || teacher?.id },
+                    },
+                  }
+                : undefined,
             year: { equals: year },
             period: { equals: period },
           },
