@@ -1,5 +1,6 @@
 export type Coordinator = {
   id: string;
+  status: boolean;
   name: string;
   visualIdentity: string;
   email: string;

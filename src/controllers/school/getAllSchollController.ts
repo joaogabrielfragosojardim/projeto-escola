@@ -13,9 +13,10 @@ export class GetAllSchoolsController {
         projectId: z.string().uuid().optional(),
         city: z.string().optional(),
         state: z.string().optional(),
+        status: z.string().optional(),
       });
 
-      const { page, perPage, name, projectId, city, state } =
+      const { page, perPage, name, projectId, city, state, status } =
         getAllQuerySchema.parse(req.query);
 
       const getAllSchoolsUseCase = new GetAllSchoolsUseCase();
@@ -27,6 +28,7 @@ export class GetAllSchoolsController {
         projectId,
         city,
         state,
+        status
       });
 
       return res.status(200).json({ data, meta });

@@ -2,6 +2,7 @@ interface CoordinatorQuery {
   id: string;
   telephone: string;
   school: School;
+  status: boolean;
   user: User;
 }
 
@@ -41,6 +42,7 @@ export function toCoordinators(
   return coordinators.map((coordinator) => ({
     id: coordinator.id,
     name: coordinator.user.name,
+    status: coordinator.status,
     visualIdentity: coordinator.user.visualIdentity,
     email: coordinator.user.email,
     telephone: coordinator.telephone,

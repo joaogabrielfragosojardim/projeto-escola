@@ -12,9 +12,10 @@ export class GetAllCoordinatorController {
         name: z.string().optional(),
         projectId: z.string().optional(),
         schoolId: z.string().optional(),
+        status: z.string().optional(),
       });
 
-      const { page, perPage, name, projectId, schoolId } =
+      const { page, perPage, name, projectId, schoolId, status } =
         getAllQuerySchema.parse(req.query);
 
       const getAllCoordinatorsUseCase = new GetAllCoordinatorsUseCase();
@@ -25,6 +26,7 @@ export class GetAllCoordinatorController {
         name,
         projectId,
         schoolId,
+        status,
       });
 
       return res.status(200).json({ data, meta });

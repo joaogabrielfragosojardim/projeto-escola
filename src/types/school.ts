@@ -15,6 +15,7 @@ export type SchollAddress = {
   id: string;
   name: string;
   visualIdentity: string;
+  status: boolean;
   address: {
     city: string;
     state: string;

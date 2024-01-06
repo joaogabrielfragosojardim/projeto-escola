@@ -409,6 +409,20 @@ export const ProjectTable = ({
                               <BiTrash size={20} />
                               <p>Deletar</p>
                             </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setProjectInativate({
+                                  status: !project.status,
+                                  projectId: project.id,
+                                });
+                                setInativateModal(true);
+                              }}
+                              className="flex items-center gap-[8px]"
+                            >
+                              <BiBlock size={20} />
+                              <p>Inativar</p>
+                            </button>
                           </div>
                         </Popover>
                       </div>

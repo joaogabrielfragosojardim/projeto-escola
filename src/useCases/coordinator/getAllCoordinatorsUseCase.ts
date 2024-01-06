@@ -7,6 +7,7 @@ interface GetAllCoordinatorsUseCaseRequest {
   name?: string;
   projectId?: string;
   schoolId?: string;
+  status?: string;
 }
 
 export class GetAllCoordinatorsUseCase {
@@ -16,6 +17,7 @@ export class GetAllCoordinatorsUseCase {
     name,
     schoolId,
     projectId,
+    status,
   }: GetAllCoordinatorsUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
@@ -51,10 +53,14 @@ export class GetAllCoordinatorsUseCase {
           school: {
             projectId: { equals: projectId },
           },
+          status: {
+            equals: status ? status === 'true' : undefined,
+          },
         },
         select: {
           id: true,
           telephone: true,
+          status: true,
           school: {
             select: {
               id: true,
@@ -84,6 +90,9 @@ export class GetAllCoordinatorsUseCase {
           schoolId: { equals: schoolId },
           school: {
             projectId: { equals: projectId },
+          },
+          status: {
+            equals: status ? status === 'true' : undefined,
           },
         },
       }),

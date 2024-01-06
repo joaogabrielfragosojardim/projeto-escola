@@ -12,7 +12,7 @@ import Link from 'next/link';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { BiDownload, BiTrash } from 'react-icons/bi';
+import { BiBlock, BiDownload, BiTrash } from 'react-icons/bi';
 import { FiEye } from 'react-icons/fi';
 import { IoIosArrowDown, IoMdMore } from 'react-icons/io';
 import { TbLoader } from 'react-icons/tb';
@@ -33,6 +33,7 @@ import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
 import { ProjectSelect } from './Selects/ProjectSelect';
 import { SchoolSelect } from './Selects/SchoolSelect';
+import { StatusSelect } from './Selects/StatusSelect';
 
 export const CoordinatorTable = ({
   page,
@@ -48,12 +49,18 @@ export const CoordinatorTable = ({
   const { register } = useForm();
   const theme = useTableTheme();
   const [deleteModal, setDeleteModal] = useState(false);
+  const [inativateModal, setInativateModal] = useState(false);
+  const [coordinatorInativate, setCoordinatorInativate] = useState<{
+    status: boolean;
+    coordinatorId: string;
+  }>({ status: true, coordinatorId: '' });
   const [coordinatorToDelete, setCoordinatorToDelete] = useState('');
 
   const [filtersValues, setFiltersValues] = useState({
     name: '',
     projectId: '',
     schoolId: '',
+    status: undefined,
   });
 
   const [filters, setFilters] = useState<{
@@ -67,6 +74,17 @@ export const CoordinatorTable = ({
           label="Nome do coordenador"
           onChange={(event) => {
             nameDebounce(event.target.value);
+          }}
+        />
+      ),
+      view: false,
+    },
+    statusPopover: {
+      element: (
+        <StatusSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, status: event.value }));
           }}
         />
       ),
@@ -128,6 +146,7 @@ export const CoordinatorTable = ({
           name: filtersValues.name || null,
           projectId: filtersValues.projectId || null,
           schoolId: filtersValues.schoolId || null,
+          status: filtersValues.status,
         },
       })
     ).data;
@@ -144,6 +163,14 @@ export const CoordinatorTable = ({
     return (await axiosApi.delete(`/coordinator/${id}`)).data;
   };
 
+  const inativateCoordinator = async (projectData: {
+    coordinatorId: string;
+    status: boolean;
+  }) => {
+    const { coordinatorId: id, status } = projectData;
+    return axiosApi.put('/coordinator/status', { coordinatorId: id, status });
+  };
+
   const { mutate } = useMutation(
     'deleteCoordinatorMutation',
     deleteCoordinator,
@@ -154,6 +181,20 @@ export const CoordinatorTable = ({
       },
       onError: () => {
         toast.error('Algo de arrado aconteceu ao deletar o coordenador!');
+      },
+    },
+  );
+
+  const { mutate: mutateInativate } = useMutation(
+    'inativateCoordinator',
+    inativateCoordinator,
+    {
+      onSuccess: () => {
+        toast.success('Status do Coordenador alterado!');
+        refetch();
+      },
+      onError: () => {
+        toast.error('Algo de arrado aconteceu ao inativar o Coordenador!');
       },
     },
   );
@@ -210,6 +251,14 @@ export const CoordinatorTable = ({
                 }}
               />
               <InputCheckBoxThemed
+                label="Status"
+                register={register}
+                name="statusPopover"
+                onClick={(event) => {
+                  handleChangeFilters('statusPopover', 'status', event);
+                }}
+              />
+              <InputCheckBoxThemed
                 label="Projeto"
                 register={register}
                 name="projectPopover"
@@ -245,12 +294,13 @@ export const CoordinatorTable = ({
                 createCSV(
                   data?.data.map((item: Coordinator) => ({
                     name: item.name,
+                    status: item.status,
                     email: item.email,
                     telephone: item.telephone,
                     project: item.project.name,
                     school: item.school.name,
                   })),
-                  ['Nome', 'Email', 'Telefone', 'Projeto', 'Escola'],
+                  ['Nome', 'Status', 'Email', 'Telefone', 'Projeto', 'Escola'],
                   'relatorioCoordenadores',
                 )
               }
@@ -284,13 +334,14 @@ export const CoordinatorTable = ({
               <Table
                 data={nodes}
                 theme={theme}
-                style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr 0.4fr' }}
+                style={{ gridTemplateColumns: '1fr 0.5fr 1fr 1fr 1fr 0.4fr' }}
               >
                 {(tableList: Coordinator[]) => (
                   <>
                     <Header>
                       <HeaderRow>
                         <HeaderCell>Nome</HeaderCell>
+                        <HeaderCell>Status</HeaderCell>
                         <HeaderCell>Email</HeaderCell>
                         <HeaderCell>Projeto</HeaderCell>
                         <HeaderCell>Escola</HeaderCell>
@@ -315,6 +366,19 @@ export const CoordinatorTable = ({
                               </div>
                               {coordinator.name}
                             </div>
+                          </Cell>
+                          <Cell className="text-[20px] text-main hover:text-main">
+                            {coordinator.status ? (
+                              <div className="flex items-center gap-[8px]">
+                                <p>Ativo</p>
+                                <div className="h-[8px] w-[8px] rounded-full bg-correct" />
+                              </div>
+                            ) : (
+                              <div className="flex items-center gap-[8px]">
+                                <p>Inativo</p>
+                                <div className="h-[8px] w-[8px] rounded-full bg-wrong" />
+                              </div>
+                            )}
                           </Cell>
                           <Cell className="text-[20px] text-main hover:text-main">
                             {coordinator.email}
@@ -349,6 +413,22 @@ export const CoordinatorTable = ({
                                 <BiTrash size={20} />
                               </button>
                               <Tooltip id="trash" />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setCoordinatorInativate({
+                                    status: !coordinator.status,
+                                    coordinatorId: coordinator.id,
+                                  });
+                                  setInativateModal(true);
+                                }}
+                                data-tooltip-id="inactivate"
+                                data-tooltip-content="inativar"
+                                data-tooltip-place="top"
+                              >
+                                <BiBlock size={20} />
+                              </button>
+                              <Tooltip id="inactivate" />
                             </div>
                           </Cell>
                         </Row>
@@ -411,10 +491,37 @@ export const CoordinatorTable = ({
                               <BiTrash size={20} />
                               <p>Deletar</p>
                             </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setCoordinatorInativate({
+                                  status: !coordinator.status,
+                                  coordinatorId: coordinator.id,
+                                });
+                                setInativateModal(true);
+                              }}
+                              className="flex items-center gap-[8px]"
+                            >
+                              <BiBlock size={20} />
+                              <p>Inativar</p>
+                            </button>
                           </div>
                         </Popover>
                       </div>
-
+                      <div className="mt-[8px] flex items-center gap-[8px] ">
+                        <p className="text-[14px] text-main">Status:</p>
+                        {coordinator.status ? (
+                          <div className="flex items-center gap-[8px]">
+                            <p className="text-[14px] text-main">Ativo</p>
+                            <div className="h-[8px] w-[8px] rounded-full bg-correct" />
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-[8px]">
+                            <p className="text-[14px] text-main">Inativo</p>
+                            <div className="h-[8px] w-[8px] rounded-full bg-wrong" />
+                          </div>
+                        )}
+                      </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">Email:</p>
                         <p className="text-[14px] text-complement-200">
@@ -469,6 +576,19 @@ export const CoordinatorTable = ({
         onConfirm={() => {
           mutate(coordinatorToDelete);
           setDeleteModal(false);
+        }}
+      />
+      <ConfirmModal
+        isOpen={inativateModal}
+        setOpen={setInativateModal}
+        text={
+          coordinatorInativate.status
+            ? 'Deseja realmente ativar esse Coordenador?'
+            : 'Deseja realmente inativar esse Coordenador?'
+        }
+        onConfirm={() => {
+          mutateInativate(coordinatorInativate);
+          setInativateModal(false);
         }}
       />
     </div>

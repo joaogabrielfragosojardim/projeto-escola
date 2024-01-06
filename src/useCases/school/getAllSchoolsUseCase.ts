@@ -8,6 +8,7 @@ interface GetAllSchoolsUseCaseRequest {
   projectId?: string;
   city?: string;
   state?: string;
+  status?: string;
 }
 
 export class GetAllSchoolsUseCase {
@@ -18,6 +19,7 @@ export class GetAllSchoolsUseCase {
     projectId,
     city,
     state,
+    status,
   }: GetAllSchoolsUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
@@ -43,10 +45,14 @@ export class GetAllSchoolsUseCase {
             city: { contains: city, mode: 'insensitive' },
             state: { contains: state, mode: 'insensitive' },
           },
+          status: {
+            equals: status ? status === 'true' : undefined,
+          },
         },
         select: {
           id: true,
           name: true,
+          status: true,
           visualIdentity: true,
           project: {
             select: {
