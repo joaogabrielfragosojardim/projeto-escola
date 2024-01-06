@@ -55,9 +55,13 @@ export class GetAllPedagogicalVisitsUseCase {
             },
           },
           Classroom: {
-            teacherId: {
-              equals: teacherId,
-            },
+            teachers: teacherId
+              ? {
+                  some: {
+                    id: { equals: teacherId },
+                  },
+                }
+              : undefined,
             period: {
               equals: period,
             },

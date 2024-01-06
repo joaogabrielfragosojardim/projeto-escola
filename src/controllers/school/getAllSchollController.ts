@@ -28,7 +28,7 @@ export class GetAllSchoolsController {
         projectId,
         city,
         state,
-        status
+        status,
       });
 
       return res.status(200).json({ data, meta });
