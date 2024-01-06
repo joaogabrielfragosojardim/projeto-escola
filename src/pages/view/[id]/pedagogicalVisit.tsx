@@ -102,7 +102,7 @@ const PedagogicalVisit = ({
             name="teacher"
             label="Educador Social"
             disabled
-            defaultValue={pedagogicalVisit.Classroom.teacher.user.name}
+            defaultValue={pedagogicalVisit.Teacher.user.name}
           />
           <InputThemed
             register={register}

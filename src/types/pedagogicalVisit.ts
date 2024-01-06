@@ -39,6 +39,8 @@ export enum PedagogicalVisitEnumQuestions {
 export interface PedagogicalVisit {
   id: string;
   date: Date;
+  frequency: number;
+  observations: string;
   teacher: {
     id: string;
     name: string;
@@ -52,6 +54,7 @@ export interface PedagogicalVisit {
     year: number;
     period: string;
   };
+  questions: any;
 }
 
 export interface GetOnePedagogicalVisit {
@@ -66,9 +69,9 @@ export interface GetOnePedagogicalVisit {
   Classroom: {
     period: string;
     year: string;
-    teacher: {
-      user: { name: string };
-    };
+  };
+  Teacher: {
+    user: { name: string };
   };
   Coordinator: {
     user: { name: string };

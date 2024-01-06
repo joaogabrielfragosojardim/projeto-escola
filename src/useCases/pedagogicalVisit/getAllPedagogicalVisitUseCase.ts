@@ -49,19 +49,13 @@ export class GetAllPedagogicalVisitsUseCase {
           coordinatorId: {
             equals: coordinatorId || coordinator?.id,
           },
+          teacherId: { equals: teacherId },
           School: {
             projectId: {
               equals: projectId,
             },
           },
           Classroom: {
-            teachers: teacherId
-              ? {
-                  some: {
-                    id: { equals: teacherId },
-                  },
-                }
-              : undefined,
             period: {
               equals: period,
             },
@@ -75,6 +69,9 @@ export class GetAllPedagogicalVisitsUseCase {
           frequency: true,
           observations: true,
           questions: true,
+          Teacher: {
+            select: { id: true, user: { select: { name: true } } },
+          },
           School: {
             select: {
               id: true,
@@ -84,11 +81,6 @@ export class GetAllPedagogicalVisitsUseCase {
           id: true,
           Classroom: {
             select: {
-              teacher: {
-                select: {
-                  user: true,
-                },
-              },
               year: true,
               period: true,
               id: true,

@@ -6,7 +6,8 @@ interface PedagogicalVisit {
   frequency: number;
   observations: string;
   questions: JsonValue;
-  Classroom: { teacher: User | null; year: string; period: string; id: string };
+  Teacher: { id: string; user: { name: string } };
+  Classroom: { year: string; period: string; id: string };
   Coordinator: User | null;
   School: School;
 }
@@ -35,8 +36,8 @@ export const toPedagogicalVisits = (data: PedagogicalVisit[]) => {
       name: item.School.name,
     },
     teacher: {
-      name: item?.Classroom?.teacher?.user.name,
-      id: item?.Classroom?.teacher?.user.id,
+      name: item?.Teacher?.user.name,
+      id: item?.Teacher?.id,
     },
     coordinator: {
       name: item?.Coordinator?.user.name,

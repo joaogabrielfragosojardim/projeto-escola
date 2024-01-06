@@ -24,7 +24,11 @@ import { Tooltip } from 'react-tooltip';
 import { axiosApi } from '@/components/api/axiosApi';
 import { useTableTheme } from '@/hooks/useTableTheme';
 import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
-import type { PedagogicalVisit } from '@/types/pedagogicalVisit';
+import {
+  type PedagogicalVisit,
+  PedagogicalVisitEnumLabels,
+  PedagogicalVisitEnumQuestions,
+} from '@/types/pedagogicalVisit';
 import { createCSV } from '@/utils/createCSV';
 
 import { ConfirmModal } from '../ConfirmModal';
@@ -187,6 +191,7 @@ export const PedagogicalVisitTable = ({
           startDate: dateFilter.startDate || null,
           finalDate: dateFilter.finalDate || null,
           coordinatorId: filtersValues.coordinatorId || null,
+          teacherId: filtersValues.teacherId || null,
           year: filtersValues.year || null,
           period: filtersValues.period || null,
           projectId: filtersValues.projectId || null,
@@ -333,8 +338,36 @@ export const PedagogicalVisitTable = ({
                     coordinator: item.coordinator.name,
                     teacher: item.teacher.name,
                     classrooom: `${item.classroom.year}º Ano - ${item.classroom.period}`,
+                    ...Object.fromEntries(
+                      Object.entries(PedagogicalVisitEnumQuestions).map(
+                        ([_, value]) => [
+                          PedagogicalVisitEnumLabels[
+                            value as keyof typeof PedagogicalVisitEnumLabels
+                          ],
+                          typeof item.questions[
+                            value as keyof typeof PedagogicalVisitEnumQuestions
+                          ] === 'boolean'
+                            ? item.questions[
+                                value as keyof typeof PedagogicalVisitEnumQuestions
+                              ]
+                              ? 'Sim'
+                              : 'Não'
+                            : item.questions[
+                                value as keyof typeof PedagogicalVisitEnumQuestions
+                              ],
+                        ],
+                      ),
+                    ),
                   })),
-                  ['Data', 'Coordenador', 'Professor', 'Turma'],
+                  [
+                    'Data',
+                    'Coordenador',
+                    'Professor',
+                    'Turma',
+                    ...Object.values(PedagogicalVisitEnumLabels),
+                    'Quantidade de alunos presentes',
+                    'Observações',
+                  ],
                   'relatorioVisitaPedagogica',
                 )
               }

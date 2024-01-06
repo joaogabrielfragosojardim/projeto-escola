@@ -23,8 +23,10 @@ import { RoleEnum } from '@/types/roles';
 
 const PedagogicalVisit = ({
   classrooms,
+  teacherId,
 }: {
   classrooms: { label: string; value: string }[];
+  teacherId: string;
 }) => {
   const {
     register,
@@ -41,7 +43,8 @@ const PedagogicalVisit = ({
   maxDate.setHours(maxDate.getHours() - 3);
 
   const createPedagogicalVisit = async (data: any): Promise<any> => {
-    return (await axiosApi.post('/pedagogicalVisit', data)).data;
+    return (await axiosApi.post('/pedagogicalVisit', { ...data, teacherId }))
+      .data;
   };
 
   const { isLoading, mutate } = useMutation(
@@ -66,7 +69,6 @@ const PedagogicalVisit = ({
       date: data.date,
       frequency: parseInt(data.frequency as string, 10),
       observations: data[PedagogicalVisitEnumQuestions.observations],
-      coordiantorId: user.id,
       questions: { ...data },
       classId: data.classroom.value,
       coordinatorId: user.id,
@@ -305,7 +307,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       );
 
       return {
-        props: { classrooms },
+        props: { classrooms, teacherId: ctx?.params?.userId },
       };
     }
     return { redirect: { permanent: false, destination: '/login' } };

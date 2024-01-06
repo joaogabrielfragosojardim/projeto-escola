@@ -8,6 +8,7 @@ interface CreatePedagogicalVisitUseCaseRequest {
   questions: Record<string, string>;
   classId: string;
   coordinatorId: string;
+  teacherId: string;
 }
 
 export class CreatePedagogicalVisitUseCase {
@@ -18,6 +19,7 @@ export class CreatePedagogicalVisitUseCase {
     questions,
     classId,
     coordinatorId,
+    teacherId,
   }: CreatePedagogicalVisitUseCaseRequest) {
     const coordinator = await prisma.coordinator.findFirst({
       where: {
@@ -43,6 +45,11 @@ export class CreatePedagogicalVisitUseCase {
       where: {
         id: classId,
       },
+      select: {
+        id: true,
+        teachers: true,
+        schoolId: true,
+      },
     });
 
     if (!classroom) {
@@ -53,8 +60,8 @@ export class CreatePedagogicalVisitUseCase {
       throw new AppError('Essa turma não pertence a essa escola', 400);
     }
 
-    if (!classroom.teacherId) {
-      throw new AppError('Turma sem Educador Social', 400);
+    if (!classroom.teachers.some((item) => item.id)) {
+      throw new AppError('Professor não esta na turma!', 400);
     }
 
     const pedagogicalVisit = await prisma.pedagogicalVisit.create({
@@ -66,6 +73,7 @@ export class CreatePedagogicalVisitUseCase {
         schoolId: school.id,
         classId: classroom.id,
         coordinatorId: coordinator.id,
+        teacherId,
       },
     });
 

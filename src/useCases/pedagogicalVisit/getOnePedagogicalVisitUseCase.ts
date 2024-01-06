@@ -20,11 +20,10 @@ export class GetOnePedagogicalVisitUseCase {
             year: true,
             period: true,
             schoolId: true,
-            teacherId: true,
-            teacher: { select: { user: { select: { name: true } } } },
           },
         },
         Coordinator: { select: { user: { select: { name: true } } } },
+        Teacher: { select: { user: { select: { name: true } } } },
       },
     });
 

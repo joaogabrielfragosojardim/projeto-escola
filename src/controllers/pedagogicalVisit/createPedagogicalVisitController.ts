@@ -13,6 +13,7 @@ export class CreatePedagogicalVisitController {
         questions: z.record(z.any(), z.any()),
         classId: z.string().uuid(),
         coordinatorId: z.string().uuid(),
+        teacherId: z.string().uuid(),
       });
 
       const {
@@ -22,6 +23,7 @@ export class CreatePedagogicalVisitController {
         questions,
         classId,
         coordinatorId,
+        teacherId,
       } = createBodySchema.parse(req.body);
 
       const createPedagogicalVisitUseCase = new CreatePedagogicalVisitUseCase();
@@ -33,6 +35,7 @@ export class CreatePedagogicalVisitController {
         questions,
         classId,
         coordinatorId,
+        teacherId
       });
 
       return res.status(201).json(pedagogicalVisit);

@@ -98,6 +98,7 @@ model Teacher {
   school             School               @relation("SchoolToTeacher", fields: [schoolId], references: [id])
   user               User                 @relation("TeacherToUser", fields: [userId], references: [id])
   Classroom          Classroom[]          @relation("ClassroomToTeacher")
+  PedagogicalVisit   PedagogicalVisit[]
 
   @@map("teacher")
 }
@@ -167,9 +168,11 @@ model PedagogicalVisit {
   schoolId      String
   coordinatorId String
   classId       String
+  teacherId     String
   Classroom     Classroom   @relation("ClassroomToPedagogicalVisit", fields: [classId], references: [id])
   Coordinator   Coordinator @relation("CoordinatorToPedagogicalVisit", fields: [coordinatorId], references: [id])
   School        School      @relation("PedagogicalVisitToSchool", fields: [schoolId], references: [id])
+  Teacher       Teacher     @relation(fields: [teacherId], references: [id])
 
   @@map("pedagogicalVisit")
 }
