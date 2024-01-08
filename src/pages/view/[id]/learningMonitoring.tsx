@@ -110,7 +110,7 @@ const LearningMonitoring = ({
               name="teacher"
               label="Educador Social"
               disabled
-              defaultValue={learningMonitoring.classroom.teacher}
+              defaultValue={learningMonitoring.teacher.user.name}
             />
           </div>
           <div>

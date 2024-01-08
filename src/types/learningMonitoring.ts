@@ -85,16 +85,13 @@ export interface LearningMonitoring {
   createdAt: Date;
   teacher: {
     id: string;
-    name: string;
+    user: { name: string };
   };
   coordinator: {
     id: string;
     name: string;
   };
   classroom: {
-    teacher: {
-      user: { name: string };
-    };
     year: number;
     period: string;
   };
@@ -104,6 +101,8 @@ export interface LearningMonitoring {
       name: string;
     };
   };
+  questions: any;
+  writingLevel: string;
 }
 
 export interface LearningMonitoringEdit {
@@ -119,5 +118,9 @@ export interface LearningMonitoringEdit {
   student: {
     name: string;
     registration: string;
+  };
+  teacher: {
+    id: string;
+    user: { name: string };
   };
 }

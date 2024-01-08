@@ -32,9 +32,9 @@ export class GetOneLearningMonitogingUseCase {
             id: true,
             period: true,
             year: true,
-            teacher: { select: { user: { select: { name: true } } } },
           },
         },
+        teacher: { select: { id: true, user: { select: { name: true } } } },
       },
     });
 
@@ -57,7 +57,10 @@ export class GetOneLearningMonitogingUseCase {
           id: learningMonitoring.classroom.id,
           period: learningMonitoring.classroom.period,
           year: learningMonitoring.classroom.year,
-          teacher: learningMonitoring.classroom.teacher?.user.name,
+        },
+        teacher: {
+          id: learningMonitoring.teacher?.id,
+          user: { name: learningMonitoring.teacher?.user.name },
         },
       },
     };

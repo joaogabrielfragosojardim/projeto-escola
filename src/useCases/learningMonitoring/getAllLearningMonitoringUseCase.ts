@@ -71,9 +71,6 @@ export class GetAllLearningMonitoringUseCase {
                 },
               },
             },
-            teacherId: {
-              equals: teacherId || teacher?.id,
-            },
             period: {
               equals: period,
             },
@@ -81,6 +78,7 @@ export class GetAllLearningMonitoringUseCase {
               equals: year,
             },
           },
+          teacher: { id: { equals: teacherId || teacher?.id } },
         },
         select: {
           id: true,
@@ -99,17 +97,10 @@ export class GetAllLearningMonitoringUseCase {
               id: true,
               year: true,
               period: true,
-              teacher: {
-                select: {
-                  user: {
-                    select: {
-                      id: true,
-                      name: true,
-                    },
-                  },
-                },
-              },
             },
+          },
+          teacher: {
+            select: { id: true, user: { select: { name: true } } },
           },
         },
         skip,
@@ -122,9 +113,6 @@ export class GetAllLearningMonitoringUseCase {
             lte: finalDate,
           },
           classroom: {
-            teacherId: {
-              equals: teacherId,
-            },
             period: {
               equals: period,
             },
@@ -132,6 +120,7 @@ export class GetAllLearningMonitoringUseCase {
               equals: year,
             },
           },
+          teacher: { id: { equals: teacherId || teacher?.id } },
         },
       }),
     ]);

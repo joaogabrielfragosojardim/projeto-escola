@@ -27,6 +27,10 @@ import { useUserIsAdm } from '@/hooks/useUserIsAdm';
 import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
 import { useUserIsTeacher } from '@/hooks/useUserIsTeacher';
 import type { LearningMonitoring } from '@/types/learningMonitoring';
+import {
+  LearningMonitoringLabelsEnum,
+  LearningMonitoringValuesEnum,
+} from '@/types/learningMonitoring';
 import { createCSV } from '@/utils/createCSV';
 
 import { ConfirmModal } from '../ConfirmModal';
@@ -340,12 +344,40 @@ export const LearnMonitoringTable = ({
                 createCSV(
                   data?.data.map((item: LearningMonitoring) => ({
                     date: item.createdAt,
-                    teacher: item.classroom.teacher.user.name,
+                    teacher: item.teacher.user.name,
                     student: item.student.user.name,
                     registration: item.student.registration,
                     classrooom: `${item.classroom.year}º Ano - ${item.classroom.period}`,
+                    writingLevel: item.writingLevel,
+                    ...Object.fromEntries(
+                      Object.entries(LearningMonitoringValuesEnum).map(
+                        ([_, value]) => [
+                          LearningMonitoringLabelsEnum[
+                            value as keyof typeof LearningMonitoringLabelsEnum
+                          ],
+                          typeof item.questions[
+                            value as keyof typeof LearningMonitoringValuesEnum
+                          ] === 'boolean'
+                            ? item.questions[
+                                value as keyof typeof LearningMonitoringValuesEnum
+                              ]
+                              ? 'Sim'
+                              : 'Não'
+                            : item.questions[
+                                value as keyof typeof LearningMonitoringValuesEnum
+                              ],
+                        ],
+                      ),
+                    ),
                   })),
-                  ['Data', 'Educador Social', 'Aluno', 'Matrícula', 'Turma'],
+                  [
+                    'Data',
+                    'Educador Social',
+                    'Aluno',
+                    'Matrícula',
+                    'Turma',
+                    ...Object.values(LearningMonitoringLabelsEnum),
+                  ],
                   'relatorioAprendizagem',
                 )
               }
@@ -406,7 +438,7 @@ export const LearnMonitoringTable = ({
                               {date.toLocaleDateString()}
                             </Cell>
                             <Cell className="text-[20px] text-main hover:text-main">
-                              {laerningMonitoring.classroom.teacher.user.name}
+                              {laerningMonitoring.teacher.user.name}
                             </Cell>
                             <Cell className="text-[20px] text-main hover:text-main">
                               {laerningMonitoring.student.user.name}
@@ -512,7 +544,7 @@ export const LearnMonitoringTable = ({
                           Educador Social:
                         </p>
                         <p className="text-[14px] text-complement-200">
-                          {learningMonitoring.classroom.teacher.user.name}
+                          {learningMonitoring.teacher.user.name}
                         </p>
                       </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">

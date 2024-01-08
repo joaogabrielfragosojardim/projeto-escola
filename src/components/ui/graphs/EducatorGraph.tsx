@@ -45,7 +45,7 @@ export const EducatorGraph = () => {
         <InputThemed
           register={register}
           name="name"
-          label="Nome da escola"
+          label="Nome"
           onChange={(event) => {
             nameDebounce(event.target.value);
           }}

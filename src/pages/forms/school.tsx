@@ -85,7 +85,7 @@ const SchoolFormFirstStep = ({
         />
         <div className="mt-[16px]">
           <InputThemed
-            label="Nome da escola"
+            label="Nome"
             placeholder="Escola exemplo..."
             register={register}
             name="name"
