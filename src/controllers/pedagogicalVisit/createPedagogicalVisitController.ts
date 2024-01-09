@@ -35,7 +35,7 @@ export class CreatePedagogicalVisitController {
         questions,
         classId,
         coordinatorId,
-        teacherId
+        teacherId,
       });
 
       return res.status(201).json(pedagogicalVisit);

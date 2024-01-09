@@ -70,6 +70,8 @@ const LearningMonitoring = ({
   );
 
   const onSubmit = (data: any) => {
+    console.log(data.resolveSituacoesComAsQuatro);
+
     const formatedData = {
       writingLevel: data.writingLevel,
       questions: { ...data },
@@ -475,10 +477,12 @@ const LearningMonitoring = ({
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.resolveSituacoesComAsQuatro
+                    LearningMonitoringValuesEnum.calculaMultiplicacoesEDivisoes
                   ]
                 }
-                name={LearningMonitoringValuesEnum.resolveSituacoesComAsQuatro}
+                name={
+                  LearningMonitoringValuesEnum.calculaMultiplicacoesEDivisoes
+                }
                 label={
                   LearningMonitoringLabelsEnum.calculaMultiplicacoesEDivisoes
                 }

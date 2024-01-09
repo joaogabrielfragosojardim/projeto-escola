@@ -28,8 +28,8 @@ import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
 import { useUserIsTeacher } from '@/hooks/useUserIsTeacher';
 import type { LearningMonitoring } from '@/types/learningMonitoring';
 import {
-  LearningMonitoringLabelsEnum,
-  LearningMonitoringValuesEnum,
+  learningMonitoringColumns,
+  learningMonitoringValues,
 } from '@/types/learningMonitoring';
 import { createCSV } from '@/utils/createCSV';
 
@@ -349,26 +349,7 @@ export const LearnMonitoringTable = ({
                     registration: item.student.registration,
                     classrooom: `${item.classroom.year}º Ano - ${item.classroom.period}`,
                     writingLevel: item.writingLevel,
-                    ...Object.fromEntries(
-                      Object.entries(LearningMonitoringValuesEnum).map(
-                        ([_, value]) => [
-                          LearningMonitoringLabelsEnum[
-                            value as keyof typeof LearningMonitoringLabelsEnum
-                          ],
-                          typeof item.questions[
-                            value as keyof typeof LearningMonitoringValuesEnum
-                          ] === 'boolean'
-                            ? item.questions[
-                                value as keyof typeof LearningMonitoringValuesEnum
-                              ]
-                              ? 'Sim'
-                              : 'Não'
-                            : item.questions[
-                                value as keyof typeof LearningMonitoringValuesEnum
-                              ],
-                        ],
-                      ),
-                    ),
+                    ...learningMonitoringValues(item.questions),
                   })),
                   [
                     'Data',
@@ -376,7 +357,8 @@ export const LearnMonitoringTable = ({
                     'Aluno',
                     'Matrícula',
                     'Turma',
-                    ...Object.values(LearningMonitoringLabelsEnum),
+                    'Nivel de sistema de escrita alfabética - SEA',
+                    ...learningMonitoringColumns,
                   ],
                   'relatorioAprendizagem',
                 )

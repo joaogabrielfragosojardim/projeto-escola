@@ -5,6 +5,7 @@ interface CreateLearningMonitoringUseCaseRequest {
   writingLevel: string;
   questions: Record<string, string>;
   studentId: string;
+  teacherId: string;
 }
 
 export class CreateLearningMonitoringUseCase {
@@ -12,6 +13,7 @@ export class CreateLearningMonitoringUseCase {
     questions,
     writingLevel,
     studentId,
+    teacherId,
   }: CreateLearningMonitoringUseCaseRequest) {
     const student = await prisma.student.findFirst({
       where: {
@@ -21,19 +23,28 @@ export class CreateLearningMonitoringUseCase {
         id: true,
         schoolId: true,
         classId: true,
-        Classroom: {
-          select: {
-            teacherId: true,
-          },
-        },
       },
     });
+
+    const teacher = await prisma.teacher.findFirst({
+      where: { userId: { equals: teacherId } },
+    });
+
+    const classroomHaveTeacher = await prisma.classroom.findFirst({
+      where: {
+        teachers: { some: { id: teacher?.id } },
+      },
+    });
+
+    if (!teacher) {
+      throw new AppError('Educador Social não encontrado', 400);
+    }
 
     if (!student) {
       throw new AppError('Estudante não encontrado', 400);
     }
 
-    if (!student.Classroom.teacherId) {
+    if (!classroomHaveTeacher) {
       throw new AppError('Turma sem Educador Social', 400);
     }
 
@@ -41,7 +52,7 @@ export class CreateLearningMonitoringUseCase {
       data: {
         questions,
         classroomId: student.classId,
-        teacherId: student.Classroom.teacherId,
+        teacherId: teacher?.id,
         studentId: student.id,
         writingLevel,
       },

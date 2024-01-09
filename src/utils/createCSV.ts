@@ -1,8 +1,8 @@
 export const createCSV = (data: any, columns: string[], name?: string) => {
-  const columnsCSV = columns.join(';');
+  const columnsCSV = `${columns.toString()}\n`;
   const dataArrayCSV = data.map((item: any) => Object.values(item));
   const dataCSV = dataArrayCSV
-    .map((subArray: any) => subArray.join(';'))
+    .map((subArray: any) => subArray.join(','))
     .join('\n');
   const csvContent = `data:text/csv;charset=utf-8,${encodeURIComponent(
     columnsCSV + dataCSV,

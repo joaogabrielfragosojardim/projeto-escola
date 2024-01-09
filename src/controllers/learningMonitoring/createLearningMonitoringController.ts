@@ -10,11 +10,11 @@ export class CreateLearningMonitoringController {
         writingLevel: z.string(),
         questions: z.record(z.any(), z.any()),
         studentId: z.string().uuid(),
+        teacherId: z.string().uuid(),
       });
 
-      const { writingLevel, questions, studentId } = createBodySchema.parse(
-        req.body,
-      );
+      const { writingLevel, questions, studentId, teacherId } =
+        createBodySchema.parse(req.body);
 
       const createLearningMonitoringUseCase =
         new CreateLearningMonitoringUseCase();
@@ -24,6 +24,7 @@ export class CreateLearningMonitoringController {
           writingLevel,
           questions,
           studentId,
+          teacherId,
         });
 
       return res.status(201).json(learningMonitoring);

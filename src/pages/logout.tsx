@@ -18,6 +18,7 @@ const Logout = () => {
 
 export const getServerSideProps = (ctx: GetServerSidePropsContext) => {
   nookies.destroy(ctx, 'token');
+  nookies.destroy(ctx, 'user');
 
   return {
     props: {},

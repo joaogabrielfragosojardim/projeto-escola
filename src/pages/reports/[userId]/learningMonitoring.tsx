@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { axiosApi } from '@/components/api/axiosApi';
 import { InputCheckBoxThemed } from '@/components/ui/forms/InputCheckBoxThemed';
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
+import { useUser } from '@/store/user/context';
 import {
   LearningMonitoringLabelsEnum,
   LearningMonitoringValuesEnum,
@@ -25,6 +26,7 @@ const LearningMonitoring = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<any>();
+  const user = useUser();
 
   const createLearningMonitoring = async (data: any): Promise<any> => {
     return (await axiosApi.post('/learningMonitoring', data)).data;
@@ -49,6 +51,7 @@ const LearningMonitoring = () => {
 
   const onSubmit = (data: any) => {
     const formatedData = {
+      teacherId: user.id,
       writingLevel: data.writingLevel,
       questions: { ...data },
       studentId: router.query.userId,
@@ -262,7 +265,9 @@ const LearningMonitoring = () => {
               />
               <InputCheckBoxThemed
                 register={register}
-                name={LearningMonitoringValuesEnum.resolveSituacoesComAsQuatro}
+                name={
+                  LearningMonitoringValuesEnum.calculaMultiplicacoesEDivisoes
+                }
                 label={
                   LearningMonitoringLabelsEnum.calculaMultiplicacoesEDivisoes
                 }

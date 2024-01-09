@@ -677,9 +677,9 @@ export const StudentTable = ({
                                 <p>Deletar</p>
                               </button>
                             )}
-                            {userIsCoordinator && student.status ? (
+                            {userIsTeacher && student.status ? (
                               <Link
-                                href={`/reports/${student.id}/pedagogicalVisit`}
+                                href={`/reports/${student.id}/learningMonitoring`}
                                 className="flex items-center gap-[8px]"
                               >
                                 <AiOutlineBook size={20} />

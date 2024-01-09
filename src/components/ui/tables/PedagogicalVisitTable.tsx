@@ -365,8 +365,6 @@ export const PedagogicalVisitTable = ({
                     'Professor',
                     'Turma',
                     ...Object.values(PedagogicalVisitEnumLabels),
-                    'Quantidade de alunos presentes',
-                    'Observações',
                   ],
                   'relatorioVisitaPedagogica',
                 )
