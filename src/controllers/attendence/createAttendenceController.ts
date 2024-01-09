@@ -20,9 +20,10 @@ export class CreateAttendenceController {
           }),
         ),
         date: z.coerce.date(),
+        teacherId: z.string().uuid(),
       });
 
-      const { students, date } = createBodySchema.parse(req.body);
+      const { students, date, teacherId } = createBodySchema.parse(req.body);
 
       const createAttendanceUseCase = new CreateAttendanceUseCase();
 
@@ -30,6 +31,7 @@ export class CreateAttendenceController {
         date,
         students,
         classId: id[0],
+        teacherId,
       });
 
       return res

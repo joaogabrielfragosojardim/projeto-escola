@@ -67,9 +67,6 @@ export class GetAllAttendenceUseCase {
                 id: studentId,
               },
             },
-            teacherId: {
-              equals: teacherId || teacher?.id,
-            },
             period: {
               equals: period,
             },
@@ -77,6 +74,7 @@ export class GetAllAttendenceUseCase {
               equals: year,
             },
           },
+          Teacher: { id: { equals: teacherId || teacher?.id } },
         },
         select: {
           id: true,
@@ -94,7 +92,7 @@ export class GetAllAttendenceUseCase {
               id: true,
               year: true,
               period: true,
-              teacher: {
+              teachers: {
                 select: {
                   user: {
                     select: {
@@ -106,6 +104,7 @@ export class GetAllAttendenceUseCase {
               },
             },
           },
+          Teacher: { select: { id: true, user: { select: { name: true } } } },
         },
         skip,
         take,
@@ -117,9 +116,10 @@ export class GetAllAttendenceUseCase {
             lte: finalDate,
           },
           Classroom: {
-            teacherId: {
-              equals: teacherId,
-            },
+            teachers:
+              teacherId || teacher?.id
+                ? { some: { id: { equals: teacherId || teacher?.id } } }
+                : undefined,
             period: {
               equals: period,
             },
@@ -127,6 +127,7 @@ export class GetAllAttendenceUseCase {
               equals: year,
             },
           },
+          Teacher: { id: { equals: teacherId || teacher?.id } },
         },
       }),
     ]);

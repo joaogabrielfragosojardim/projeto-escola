@@ -70,7 +70,6 @@ const LearningMonitoring = ({
   );
 
   const onSubmit = (data: any) => {
-    console.log(data.resolveSituacoesComAsQuatro);
 
     const formatedData = {
       writingLevel: data.writingLevel,

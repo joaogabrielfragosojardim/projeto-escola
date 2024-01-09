@@ -9,10 +9,16 @@ interface CreateAttendanceUseCaseRequest {
     id: string;
     isPresent: boolean;
   }[];
+  teacherId: string;
 }
 
 export class CreateAttendanceUseCase {
-  async execute({ students, date, classId }: CreateAttendanceUseCaseRequest) {
+  async execute({
+    students,
+    date,
+    classId,
+    teacherId,
+  }: CreateAttendanceUseCaseRequest) {
     const classroom = await prisma.classroom.findFirst({
       where: {
         id: classId,
@@ -24,6 +30,14 @@ export class CreateAttendanceUseCase {
 
     if (!classroom) {
       throw new AppError('Turma não encontrada', 400);
+    }
+
+    const teacher = await prisma.teacher.findFirst({
+      where: { userId: { equals: teacherId } },
+    });
+
+    if (!teacher) {
+      throw new AppError('Educador não encontrado', 400);
     }
 
     for (const { id: studentId } of students) {
@@ -43,6 +57,7 @@ export class CreateAttendanceUseCase {
           isPresent,
           studentId: id,
           classId: classroom.id,
+          teacherId: teacher.id,
         },
       });
     }

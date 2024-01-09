@@ -24,9 +24,9 @@ export class OptionsClassUseCase {
         schoolId: {
           equals: schoolId,
         },
-        teacherId: {
-          equals: teacher?.id,
-        },
+        teachers: teacher?.id
+          ? { some: { id: { equals: teacher?.id } } }
+          : undefined,
       },
       select: {
         id: true,

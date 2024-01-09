@@ -14,6 +14,7 @@ import { InputCheckBoxThemed } from '@/components/ui/forms/InputCheckBoxThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
 import { ClassRoomSelect } from '@/components/ui/tables/Selects/ClassrooomSelect';
+import { useUser } from '@/store/user/context';
 import type { Student } from '@/types/student';
 
 const Frequency = () => {
@@ -21,6 +22,7 @@ const Frequency = () => {
   const [dateFilter, setDateFilter] = useState('');
   const [classId, setClassId] = useState('');
   const route = useRouter();
+  const user = useUser();
 
   const fetchStudents = async () => {
     const { data } = await axiosApi.get('/student', {
@@ -33,7 +35,10 @@ const Frequency = () => {
   };
 
   const createFrequency = async (data: any) => {
-    return axiosApi.post(`/attendance/${classId}`, data);
+    return axiosApi.post(`/attendance/${classId}`, {
+      ...data,
+      teacherId: user.id,
+    });
   };
 
   const {
