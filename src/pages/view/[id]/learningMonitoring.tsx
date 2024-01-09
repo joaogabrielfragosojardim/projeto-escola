@@ -70,7 +70,6 @@ const LearningMonitoring = ({
   );
 
   const onSubmit = (data: any) => {
-
     const formatedData = {
       writingLevel: data.writingLevel,
       questions: { ...data },
@@ -223,30 +222,21 @@ const LearningMonitoring = ({
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum
-                      .reconheceEEscreveAsLetrasDoAlfabeto
+                    LearningMonitoringValuesEnum.identificaAsVogais
                   ]
                 }
-                name={
-                  LearningMonitoringValuesEnum.reconheceEEscreveAsLetrasDoAlfabeto
-                }
-                label={
-                  LearningMonitoringLabelsEnum.reconheceEEscreveAsLetrasDoAlfabeto
-                }
+                name={LearningMonitoringValuesEnum.identificaAsVogais}
+                label={LearningMonitoringLabelsEnum.identificaAsVogais}
               />
               <InputCheckBoxThemed
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.identificaAsVogaisEConsoantes
+                    LearningMonitoringValuesEnum.identificaAsConsoantes
                   ]
                 }
-                name={
-                  LearningMonitoringValuesEnum.identificaAsVogaisEConsoantes
-                }
-                label={
-                  LearningMonitoringLabelsEnum.identificaAsVogaisEConsoantes
-                }
+                name={LearningMonitoringValuesEnum.identificaAsConsoantes}
+                label={LearningMonitoringLabelsEnum.identificaAsConsoantes}
               />
               <InputCheckBoxThemed
                 register={register}
@@ -293,53 +283,73 @@ const LearningMonitoring = ({
                 defaultChecked={
                   learningMonitoring.questions[
                     LearningMonitoringValuesEnum
-                      .lePalavrasComFluenciaOuSilabando
+                      .aoOuvirUmaPalavraIdentificaQuantasSilabasHa
                   ]
                 }
                 name={
-                  LearningMonitoringValuesEnum.lePalavrasComFluenciaOuSilabando
+                  LearningMonitoringValuesEnum.aoOuvirUmaPalavraIdentificaQuantasSilabasHa
                 }
                 label={
-                  LearningMonitoringLabelsEnum.lePalavrasComFluenciaOuSilabando
+                  LearningMonitoringLabelsEnum.aoOuvirUmaPalavraIdentificaQuantasSilabasHa
                 }
               />
               <InputCheckBoxThemed
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.leFrasesComFluenciaOuSilabando
+                    LearningMonitoringValuesEnum.lePalavrasComAutonomia
                   ]
                 }
-                name={
-                  LearningMonitoringValuesEnum.leFrasesComFluenciaOuSilabando
-                }
-                label={
-                  LearningMonitoringLabelsEnum.leFrasesComFluenciaOuSilabando
-                }
+                name={LearningMonitoringValuesEnum.lePalavrasComAutonomia}
+                label={LearningMonitoringLabelsEnum.lePalavrasComAutonomia}
               />
               <InputCheckBoxThemed
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.leTextosComAutonomia
+                    LearningMonitoringValuesEnum.leFrasesComFluencia
                   ]
                 }
-                name={LearningMonitoringValuesEnum.leTextosComAutonomia}
-                label={LearningMonitoringLabelsEnum.leTextosComAutonomia}
+                name={LearningMonitoringValuesEnum.leFrasesComFluencia}
+                label={LearningMonitoringLabelsEnum.leFrasesComFluencia}
+              />
+              <InputCheckBoxThemed
+                register={register}
+                defaultChecked={
+                  learningMonitoring.questions[
+                    LearningMonitoringValuesEnum.leTextosComFluencia
+                  ]
+                }
+                name={LearningMonitoringValuesEnum.leTextosComFluencia}
+                label={LearningMonitoringLabelsEnum.leTextosComFluencia}
               />
               <InputCheckBoxThemed
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
                     LearningMonitoringValuesEnum
-                      .identificaQuantasLetrasHaNumaPalavra
+                      .IdentificaOsDiferenetesGenerosTextuais
                   ]
                 }
                 name={
-                  LearningMonitoringValuesEnum.identificaQuantasLetrasHaNumaPalavra
+                  LearningMonitoringValuesEnum.IdentificaOsDiferenetesGenerosTextuais
                 }
                 label={
-                  LearningMonitoringLabelsEnum.identificaQuantasLetrasHaNumaPalavra
+                  LearningMonitoringLabelsEnum.IdentificaOsDiferenetesGenerosTextuais
+                }
+              />
+              <InputCheckBoxThemed
+                register={register}
+                defaultChecked={
+                  learningMonitoring.questions[
+                    LearningMonitoringValuesEnum.escreveFrasesDeFormaCondicional
+                  ]
+                }
+                name={
+                  LearningMonitoringValuesEnum.escreveFrasesDeFormaCondicional
+                }
+                label={
+                  LearningMonitoringLabelsEnum.escreveFrasesDeFormaCondicional
                 }
               />
               <InputCheckBoxThemed
@@ -347,100 +357,109 @@ const LearningMonitoring = ({
                 defaultChecked={
                   learningMonitoring.questions[
                     LearningMonitoringValuesEnum
-                      .aoOuvirAsPalavrasIdentificaQuantasSilabas
+                      .escreveTextosDeFormaLegivelECoerente
                   ]
                 }
                 name={
-                  LearningMonitoringValuesEnum.aoOuvirAsPalavrasIdentificaQuantasSilabas
+                  LearningMonitoringValuesEnum.escreveTextosDeFormaLegivelECoerente
                 }
                 label={
-                  LearningMonitoringLabelsEnum.aoOuvirAsPalavrasIdentificaQuantasSilabas
+                  LearningMonitoringLabelsEnum.escreveTextosDeFormaLegivelECoerente
                 }
               />
               <InputCheckBoxThemed
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.compreendeTextosLidosEmVozAlta
+                    LearningMonitoringValuesEnum
+                      .compreendeInformacoesExplicitasDoTextoQueLe
                   ]
                 }
                 name={
-                  LearningMonitoringValuesEnum.compreendeTextosLidosEmVozAlta
+                  LearningMonitoringValuesEnum.compreendeInformacoesExplicitasDoTextoQueLe
                 }
                 label={
-                  LearningMonitoringLabelsEnum.compreendeTextosLidosEmVozAlta
+                  LearningMonitoringLabelsEnum.compreendeInformacoesExplicitasDoTextoQueLe
                 }
               />
               <InputCheckBoxThemed
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.retiraInformacoesDosTextosQueLe
+                    LearningMonitoringValuesEnum
+                      .identificaOAssuntoPirncipalDeUmTexto
                   ]
                 }
                 name={
-                  LearningMonitoringValuesEnum.retiraInformacoesDosTextosQueLe
+                  LearningMonitoringValuesEnum.identificaOAssuntoPirncipalDeUmTexto
                 }
                 label={
-                  LearningMonitoringLabelsEnum.retiraInformacoesDosTextosQueLe
+                  LearningMonitoringLabelsEnum.identificaOAssuntoPirncipalDeUmTexto
                 }
               />
               <InputCheckBoxThemed
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.conheceVariosTiposDeTextos
+                    LearningMonitoringValuesEnum.solcitaInformacoesComCorencia
                   ]
                 }
-                name={LearningMonitoringValuesEnum.conheceVariosTiposDeTextos}
-                label={LearningMonitoringLabelsEnum.conheceVariosTiposDeTextos}
-              />
-              <InputCheckBoxThemed
-                register={register}
-                defaultChecked={
-                  learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.escreveSentencas
-                  ]
+                name={
+                  LearningMonitoringValuesEnum.solcitaInformacoesComCorencia
                 }
-                name={LearningMonitoringValuesEnum.escreveSentencas}
-                label={LearningMonitoringLabelsEnum.escreveSentencas}
-              />
-              <InputCheckBoxThemed
-                register={register}
-                defaultChecked={
-                  learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.compreendeOQueLeComAutonomia
-                  ]
-                }
-                name={LearningMonitoringValuesEnum.compreendeOQueLeComAutonomia}
                 label={
-                  LearningMonitoringLabelsEnum.compreendeOQueLeComAutonomia
+                  LearningMonitoringLabelsEnum.solcitaInformacoesComCorencia
+                }
+              />
+              <InputCheckBoxThemed
+                register={register}
+                defaultChecked={
+                  learningMonitoring.questions[
+                    LearningMonitoringValuesEnum
+                      .relataVivenciasOuExpressaOpinioes
+                  ]
+                }
+                name={
+                  LearningMonitoringValuesEnum.relataVivenciasOuExpressaOpinioes
+                }
+                label={
+                  LearningMonitoringLabelsEnum.relataVivenciasOuExpressaOpinioes
                 }
               />
             </div>
           </div>
           <div>
-            <h3 className="text-[22px]">Interação do estudante na aula</h3>
+            <h3 className="text-[22px]">Alfabetização em Matemática</h3>
             <div className="mt-[16px] grid grid-cols-1 gap-[16px]">
               <InputCheckBoxThemed
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.compreendeOValorAbsoluto
+                    LearningMonitoringValuesEnum
+                      .compreendeOValorAbsolutoDosAlgarismos
                   ]
                 }
-                name={LearningMonitoringValuesEnum.compreendeOValorAbsoluto}
-                label={LearningMonitoringLabelsEnum.compreendeOValorAbsoluto}
+                name={
+                  LearningMonitoringValuesEnum.compreendeOValorAbsolutoDosAlgarismos
+                }
+                label={
+                  LearningMonitoringLabelsEnum.compreendeOValorAbsolutoDosAlgarismos
+                }
               />
               <InputCheckBoxThemed
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.compreendeOValorRelativo
+                    LearningMonitoringValuesEnum
+                      .compreendeOValorRleativoDosAlgarismosEmDeterminadosNumeros
                   ]
                 }
-                name={LearningMonitoringValuesEnum.compreendeOValorRelativo}
-                label={LearningMonitoringLabelsEnum.compreendeOValorRelativo}
+                name={
+                  LearningMonitoringValuesEnum.compreendeOValorRleativoDosAlgarismosEmDeterminadosNumeros
+                }
+                label={
+                  LearningMonitoringLabelsEnum.compreendeOValorRleativoDosAlgarismosEmDeterminadosNumeros
+                }
               />
               <InputCheckBoxThemed
                 register={register}
@@ -466,55 +485,46 @@ const LearningMonitoring = ({
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.calculaAdicoesESubtracoes
-                  ]
-                }
-                name={LearningMonitoringValuesEnum.calculaAdicoesESubtracoes}
-                label={LearningMonitoringLabelsEnum.calculaAdicoesESubtracoes}
-              />
-              <InputCheckBoxThemed
-                register={register}
-                defaultChecked={
-                  learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.calculaMultiplicacoesEDivisoes
+                    LearningMonitoringValuesEnum
+                      .resolveSituacoesProblemaDeAdicaoESubtracao
                   ]
                 }
                 name={
-                  LearningMonitoringValuesEnum.calculaMultiplicacoesEDivisoes
+                  LearningMonitoringValuesEnum.resolveSituacoesProblemaDeAdicaoESubtracao
                 }
                 label={
-                  LearningMonitoringLabelsEnum.calculaMultiplicacoesEDivisoes
+                  LearningMonitoringLabelsEnum.resolveSituacoesProblemaDeAdicaoESubtracao
                 }
               />
               <InputCheckBoxThemed
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.utilizaCorretamenteOsSinas
+                    LearningMonitoringValuesEnum
+                      .resolveSituacoesProblemaDeMultiplicacaoEDivisao
                   ]
                 }
-                name={LearningMonitoringValuesEnum.utilizaCorretamenteOsSinas}
-                label={LearningMonitoringLabelsEnum.utilizaCorretamenteOsSinas}
+                name={
+                  LearningMonitoringValuesEnum.resolveSituacoesProblemaDeMultiplicacaoEDivisao
+                }
+                label={
+                  LearningMonitoringLabelsEnum.resolveSituacoesProblemaDeMultiplicacaoEDivisao
+                }
               />
               <InputCheckBoxThemed
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.resolveSituacoesComAsQuatro
+                    LearningMonitoringValuesEnum
+                      .identificaNumerosOuElementosAusentesNumaSequenciaMatematica
                   ]
                 }
-                name={LearningMonitoringValuesEnum.resolveSituacoesComAsQuatro}
-                label={LearningMonitoringLabelsEnum.resolveSituacoesComAsQuatro}
-              />
-              <InputCheckBoxThemed
-                register={register}
-                defaultChecked={
-                  learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.identificaNumeros
-                  ]
+                name={
+                  LearningMonitoringValuesEnum.identificaNumerosOuElementosAusentesNumaSequenciaMatematica
                 }
-                name={LearningMonitoringValuesEnum.identificaNumeros}
-                label={LearningMonitoringLabelsEnum.identificaNumeros}
+                label={
+                  LearningMonitoringLabelsEnum.identificaNumerosOuElementosAusentesNumaSequenciaMatematica
+                }
               />
               <InputCheckBoxThemed
                 register={register}
@@ -532,21 +542,53 @@ const LearningMonitoring = ({
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.identificaAsMedidas
+                    LearningMonitoringValuesEnum.identificaSolidosGeometricos
                   ]
                 }
-                name={LearningMonitoringValuesEnum.identificaAsMedidas}
-                label={LearningMonitoringLabelsEnum.identificaAsMedidas}
+                name={LearningMonitoringValuesEnum.identificaSolidosGeometricos}
+                label={
+                  LearningMonitoringLabelsEnum.identificaSolidosGeometricos
+                }
               />
               <InputCheckBoxThemed
                 register={register}
                 defaultChecked={
                   learningMonitoring.questions[
-                    LearningMonitoringValuesEnum.leTabelasEGraficos
+                    LearningMonitoringValuesEnum
+                      .identificaAsMedidasDeCadaGrandeza
                   ]
                 }
-                name={LearningMonitoringValuesEnum.leTabelasEGraficos}
-                label={LearningMonitoringLabelsEnum.leTabelasEGraficos}
+                name={
+                  LearningMonitoringValuesEnum.identificaAsMedidasDeCadaGrandeza
+                }
+                label={
+                  LearningMonitoringLabelsEnum.identificaAsMedidasDeCadaGrandeza
+                }
+              />
+              <InputCheckBoxThemed
+                register={register}
+                defaultChecked={
+                  learningMonitoring.questions[
+                    LearningMonitoringValuesEnum
+                      .reconheceOSistemaMonetarioBrasileiro
+                  ]
+                }
+                name={
+                  LearningMonitoringValuesEnum.reconheceOSistemaMonetarioBrasileiro
+                }
+                label={
+                  LearningMonitoringLabelsEnum.reconheceOSistemaMonetarioBrasileiro
+                }
+              />
+              <InputCheckBoxThemed
+                register={register}
+                defaultChecked={
+                  learningMonitoring.questions[
+                    LearningMonitoringValuesEnum.leTableasEGraficos
+                  ]
+                }
+                name={LearningMonitoringValuesEnum.leTableasEGraficos}
+                label={LearningMonitoringLabelsEnum.leTableasEGraficos}
               />
             </div>
           </div>

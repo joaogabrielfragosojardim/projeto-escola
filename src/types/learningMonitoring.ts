@@ -5,34 +5,34 @@ export enum LearningMonitoringLabelsEnum {
   participaDasAtividadesIndividuaisEOuColetivas = 'Participa das atividades individuais e/ou coletivas?',
   relacionaseBemComOsOutros = 'Relaciona-se bem com os outros?',
   ambienteDaAprendizagem = 'Ambiente da Aprendizagem',
-  reconheceEEscreveAsLetrasDoAlfabeto = 'Reconhece e escreve as letras do alfabeto?',
-  identificaAsVogaisEConsoantes = 'Identifica as vogais e consoantes?',
-  escreveSeuNome = 'Escreve seu nome?',
-  identificaDiferentesTiposDeLetraManuscriteOuImprensa = 'Identifica diferentes tipos de letra manuscrita ou imprensa (maiuscúla ou minuscula)',
-  aoOuvirAsPalavrasConsegueIdentificarSonsoESilabasQueAsCompoem = 'Ao ouvir as palavras consegue identificar sons e sílabas que as compõem?',
-  lePalavrasComFluenciaOuSilabando = 'Lê palavras com fluência ou silabando?',
-  leFrasesComFluenciaOuSilabando = 'Lê frases com fluência ou silabando?',
-  leTextosComAutonomia = 'Lê textos com autonomia?',
-  identificaQuantasLetrasHaNumaPalavra = 'Identifica quantas letras há numa palavra?',
-  aoOuvirAsPalavrasIdentificaQuantasSilabas = 'Ao ouvir as palavras identifica quantas sílabas?',
-  compreendeTextosLidosEmVozAlta = 'Compreende textos lidos em voz alta?',
-  leEmVozAltaSentencasEPequenosTextos = 'Lê em voz alta sentenças e pequenos textos?',
-  retiraInformacoesDosTextosQueLe = 'Retira informações dos textos que lê?',
-  conheceVariosTiposDeTextos = 'Conhece diversos tipos de textos como poesias e notícias?',
-  escreveSentencas = 'Escreve sentenças e pequenas textos legíveis e coerentes?',
-  compreendeOQueLeComAutonomia = 'Compreende o que ler com autonomia?',
-  compreendeOValorAbsoluto = 'Compreende o valor absoluto dos números/algarismos?',
-  compreendeOValorRelativo = 'Compreende o valor relativo dos números?',
-  escreveNumerosPorExtenso = 'Escreve números por extenso?',
-  escreveNumerosPorOrdem = 'Escreve números por ordem crescente e decrescente? ',
-  calculaAdicoesESubtracoes = 'Calcula adições e subtrações?',
-  calculaMultiplicacoesEDivisoes = 'Calcula multiplicações e divisões?',
-  utilizaCorretamenteOsSinas = 'Utiliza corretamente os sinais matemáticos?',
-  resolveSituacoesComAsQuatro = 'Resolve situações-problema com as quatro operações?',
-  identificaNumeros = 'Identifica números ausentes numa sequencia matematica?',
-  identificaFigurasGeometricas = 'Identifica as figuras geométricas?',
-  identificaAsMedidas = 'Identifica as medidas de cada grandeza?',
-  leTabelasEGraficos = 'Lê tabelas e gráficos?',
+  identificaAsVogais = 'LP01 -Identifica as vogais?',
+  identificaAsConsoantes = 'LP02 - Identifica as consoantes?',
+  escreveSeuNome = 'LP03 - Escreve o próprio nome completo de forma legivel?',
+  identificaDiferentesTiposDeLetraManuscriteOuImprensa = 'LP04 - Identifica diferentes tipos de letra manuscrita ou imprensa (maiuscúla ou minuscula)',
+  aoOuvirAsPalavrasConsegueIdentificarSonsoESilabasQueAsCompoem = 'LP05 - Ao ouvir uma palavra consegue identificar quais sílabas as compôe?',
+  aoOuvirUmaPalavraIdentificaQuantasSilabasHa = 'LP06 - Ao ouvir uma palavra identifica quantas sílabas há?',
+  lePalavrasComAutonomia = 'LP07 - Lê palavras com autonomia?',
+  leFrasesComFluencia = 'LP08 - Lê frases com fluência?',
+  leTextosComFluencia = 'LP09 - Lê textos com fluência?',
+  IdentificaOsDiferenetesGenerosTextuais = 'LP10 - Identifica os diferentes gêneros textuais como poemas e fabulas?',
+  escreveFrasesDeFormaCondicional = 'LP11 - Escreve frases de forma convencional?',
+  escreveTextosDeFormaLegivelECoerente = 'LP12 - Escreve textos de forma legível e coerente?',
+  compreendeInformacoesExplicitasDoTextoQueLe = 'LP13 - Compreende informações explícitas do texto que lê',
+  identificaOAssuntoPirncipalDeUmTexto = 'LP14 - Identifica o assunto principal de um texto?',
+  solcitaInformacoesComCorencia = 'LP15 - Solicita informações com coerência?',
+  relataVivenciasOuExpressaOpinioes = 'LP16 - Relata Vivências ou expressa opinioes?',
+  compreendeOValorAbsolutoDosAlgarismos = 'MAT01 - Compreende o valor absoluto dos algarismos?',
+  compreendeOValorRleativoDosAlgarismosEmDeterminadosNumeros = 'MAT02 - Compreende o valor relativo dos algarismos em determinados números?',
+  escreveNumerosPorExtenso = 'MAT03 - Escreve números por extenso?',
+  escreveNumerosPorOrdem = 'MAT04 - Escreve números por ordem crescente e decrescente? ',
+  resolveSituacoesProblemaDeAdicaoESubtracao = 'MAT05 - Resolve situações-problema de adição e subtração?',
+  resolveSituacoesProblemaDeMultiplicacaoEDivisao = 'MAT06 - Resolve situações-problema de multiplicação e divisão?',
+  identificaNumerosOuElementosAusentesNumaSequenciaMatematica = 'MAT07 - Identifica números ou elementos ausentes numa sequência matemática?',
+  identificaFigurasGeometricas = 'MAT08 - Identifica as figuras geométricas?',
+  identificaSolidosGeometricos = 'MAT09 - Identifica sólidos geométricos?',
+  identificaAsMedidasDeCadaGrandeza = 'MAT10 - Identifica as medidas de cada grandeza?',
+  reconheceOSistemaMonetarioBrasileiro = 'MAT11 - Reconhece o Sistema Monetário Brasileiro?',
+  leTableasEGraficos = 'MAT12 - Lê tabelas e gráficos?',
   preSilabico = 'Pré-Silábico',
   silabico = 'Silabico',
   silabicoAlfabético = 'Silábico-Alfabético',
@@ -45,35 +45,34 @@ export enum LearningMonitoringValuesEnum {
   realizaAtividadesEAcompanhanhaACorrecao = 'realizaAtividadesEAcompanhanhaACorrecao',
   participaDasAtividadesIndividuaisEOuColetivas = 'participaDasAtividadesIndividuaisEOuColetivas',
   relacionaseBemComOsOutros = 'relacionaseBemComOsOutros',
-  ambienteDaAprendizagem = 'ambienteDaAprendizagem',
-  reconheceEEscreveAsLetrasDoAlfabeto = 'reconheceEEscreveAsLetrasDoAlfabeto',
-  identificaAsVogaisEConsoantes = 'identificaAsVogaisEConsoantes',
+  identificaAsVogais = 'identificaAsVogais',
+  identificaAsConsoantes = 'identificaAsConsoantes',
   escreveSeuNome = 'escreveSeuNome',
   identificaDiferentesTiposDeLetraManuscriteOuImprensa = 'identificaDiferentesTiposDeLetraManuscriteOuImprensa',
   aoOuvirAsPalavrasConsegueIdentificarSonsoESilabasQueAsCompoem = 'aoOuvirAsPalavrasConsegueIdentificarSonsoESilabasQueAsCompoem',
-  lePalavrasComFluenciaOuSilabando = 'lePalavrasComFluenciaOuSilabando',
-  leFrasesComFluenciaOuSilabando = 'leFrasesComFluenciaOuSilabando',
-  leTextosComAutonomia = 'leTextosComAutonomia',
-  identificaQuantasLetrasHaNumaPalavra = 'identificaQuantasLetrasHaNumaPalavra',
-  aoOuvirAsPalavrasIdentificaQuantasSilabas = 'aoOuvirAsPalavrasIdentificaQuantasSilabas',
-  compreendeTextosLidosEmVozAlta = 'compreendeTextosLidosEmVozAlta',
-  leEmVozAltaSentencasEPequenosTextos = 'leEmVozAltaSentencasEPequenosTextos',
-  retiraInformacoesDosTextosQueLe = 'retiraInformacoesDosTextosQueLe',
-  conheceVariosTiposDeTextos = 'conheceVariosTiposDeTextos',
-  escreveSentencas = 'escreveSentencas',
-  compreendeOQueLeComAutonomia = 'compreendeOQueLeComAutonomia',
-  compreendeOValorAbsoluto = 'compreendeOValorAbsoluto',
-  compreendeOValorRelativo = 'compreendeOValorRelativo',
+  aoOuvirUmaPalavraIdentificaQuantasSilabasHa = 'aoOuvirUmaPalavraIdentificaQuantasSilabasHa',
+  lePalavrasComAutonomia = 'lePalavrasComAutonomia',
+  leFrasesComFluencia = 'leFrasesComFluencia',
+  leTextosComFluencia = 'leTextosComFluencia',
+  IdentificaOsDiferenetesGenerosTextuais = 'IdentificaOsDiferenetesGenerosTextuais',
+  escreveFrasesDeFormaCondicional = 'escreveFrasesDeFormaCondicional',
+  escreveTextosDeFormaLegivelECoerente = 'escreveTextosDeFormaLegivelECoerente',
+  compreendeInformacoesExplicitasDoTextoQueLe = 'compreendeInformacoesExplicitasDoTextoQueLe',
+  identificaOAssuntoPirncipalDeUmTexto = 'identificaOAssuntoPirncipalDeUmTexto',
+  solcitaInformacoesComCorencia = 'solcitaInformacoesComCorencia',
+  relataVivenciasOuExpressaOpinioes = 'relataVivenciasOuExpressaOpinioes',
+  compreendeOValorAbsolutoDosAlgarismos = 'compreendeOValorAbsolutoDosAlgarismos',
+  compreendeOValorRleativoDosAlgarismosEmDeterminadosNumeros = 'compreendeOValorRleativoDosAlgarismosEmDeterminadosNumeros',
   escreveNumerosPorExtenso = 'escreveNumerosPorExtenso',
   escreveNumerosPorOrdem = 'escreveNumerosPorOrdem',
-  calculaAdicoesESubtracoes = 'calculaAdicoesESubtracoes',
-  calculaMultiplicacoesEDivisoes = 'calculaMultiplicacoesEDivisoes',
-  utilizaCorretamenteOsSinas = 'utilizaCorretamenteOsSinas',
-  resolveSituacoesComAsQuatro = 'resolveSituacoesComAsQuatro',
-  identificaNumeros = 'identificaNumeros',
+  resolveSituacoesProblemaDeAdicaoESubtracao = 'resolveSituacoesProblemaDeAdicaoESubtracao',
+  resolveSituacoesProblemaDeMultiplicacaoEDivisao = 'resolveSituacoesProblemaDeMultiplicacaoEDivisao',
+  identificaNumerosOuElementosAusentesNumaSequenciaMatematica = 'identificaNumerosOuElementosAusentesNumaSequenciaMatematica',
   identificaFigurasGeometricas = 'identificaFigurasGeometricas',
-  identificaAsMedidas = 'identificaAsMedidas',
-  leTabelasEGraficos = 'leTabelasEGraficos',
+  identificaSolidosGeometricos = 'identificaSolidosGeometricos',
+  identificaAsMedidasDeCadaGrandeza = 'identificaAsMedidasDeCadaGrandeza',
+  reconheceOSistemaMonetarioBrasileiro = 'reconheceOSistemaMonetarioBrasileiro',
+  leTableasEGraficos = 'leTableasEGraficos',
   preSilabico = 'preSilabico',
   silabico = 'silabico',
   silabicoAlfabético = 'silabicoAlfabético',
@@ -131,33 +130,34 @@ export const learningMonitoringColumns = [
   LearningMonitoringLabelsEnum.realizaAtividadesEAcompanhanhaACorrecao,
   LearningMonitoringLabelsEnum.participaDasAtividadesIndividuaisEOuColetivas,
   LearningMonitoringLabelsEnum.relacionaseBemComOsOutros,
-  LearningMonitoringLabelsEnum.reconheceEEscreveAsLetrasDoAlfabeto,
-  LearningMonitoringLabelsEnum.identificaAsVogaisEConsoantes,
+  LearningMonitoringLabelsEnum.identificaAsVogais,
+  LearningMonitoringLabelsEnum.identificaAsConsoantes,
   LearningMonitoringLabelsEnum.escreveSeuNome,
   LearningMonitoringLabelsEnum.identificaDiferentesTiposDeLetraManuscriteOuImprensa,
   LearningMonitoringLabelsEnum.aoOuvirAsPalavrasConsegueIdentificarSonsoESilabasQueAsCompoem,
-  LearningMonitoringLabelsEnum.lePalavrasComFluenciaOuSilabando,
-  LearningMonitoringLabelsEnum.leFrasesComFluenciaOuSilabando,
-  LearningMonitoringLabelsEnum.leTextosComAutonomia,
-  LearningMonitoringLabelsEnum.identificaQuantasLetrasHaNumaPalavra,
-  LearningMonitoringLabelsEnum.aoOuvirAsPalavrasIdentificaQuantasSilabas,
-  LearningMonitoringLabelsEnum.compreendeTextosLidosEmVozAlta,
-  LearningMonitoringLabelsEnum.retiraInformacoesDosTextosQueLe,
-  LearningMonitoringLabelsEnum.conheceVariosTiposDeTextos,
-  LearningMonitoringLabelsEnum.escreveSentencas,
-  LearningMonitoringLabelsEnum.compreendeOQueLeComAutonomia,
-  LearningMonitoringLabelsEnum.compreendeOValorAbsoluto,
-  LearningMonitoringLabelsEnum.compreendeOValorRelativo,
+  LearningMonitoringLabelsEnum.aoOuvirUmaPalavraIdentificaQuantasSilabasHa,
+  LearningMonitoringLabelsEnum.lePalavrasComAutonomia,
+  LearningMonitoringLabelsEnum.leFrasesComFluencia,
+  LearningMonitoringLabelsEnum.leTextosComFluencia,
+  LearningMonitoringLabelsEnum.IdentificaOsDiferenetesGenerosTextuais,
+  LearningMonitoringLabelsEnum.escreveFrasesDeFormaCondicional,
+  LearningMonitoringLabelsEnum.escreveTextosDeFormaLegivelECoerente,
+  LearningMonitoringLabelsEnum.compreendeInformacoesExplicitasDoTextoQueLe,
+  LearningMonitoringLabelsEnum.identificaOAssuntoPirncipalDeUmTexto,
+  LearningMonitoringLabelsEnum.solcitaInformacoesComCorencia,
+  LearningMonitoringLabelsEnum.relataVivenciasOuExpressaOpinioes,
+  LearningMonitoringLabelsEnum.compreendeOValorAbsolutoDosAlgarismos,
+  LearningMonitoringLabelsEnum.compreendeOValorRleativoDosAlgarismosEmDeterminadosNumeros,
   LearningMonitoringLabelsEnum.escreveNumerosPorExtenso,
   LearningMonitoringLabelsEnum.escreveNumerosPorOrdem,
-  LearningMonitoringLabelsEnum.calculaAdicoesESubtracoes,
-  LearningMonitoringLabelsEnum.calculaMultiplicacoesEDivisoes,
-  LearningMonitoringLabelsEnum.utilizaCorretamenteOsSinas,
-  LearningMonitoringLabelsEnum.resolveSituacoesComAsQuatro,
-  LearningMonitoringLabelsEnum.identificaNumeros,
+  LearningMonitoringLabelsEnum.resolveSituacoesProblemaDeAdicaoESubtracao,
+  LearningMonitoringLabelsEnum.resolveSituacoesProblemaDeMultiplicacaoEDivisao,
+  LearningMonitoringLabelsEnum.identificaNumerosOuElementosAusentesNumaSequenciaMatematica,
   LearningMonitoringLabelsEnum.identificaFigurasGeometricas,
-  LearningMonitoringLabelsEnum.identificaAsMedidas,
-  LearningMonitoringLabelsEnum.leTabelasEGraficos,
+  LearningMonitoringLabelsEnum.identificaSolidosGeometricos,
+  LearningMonitoringLabelsEnum.identificaAsMedidasDeCadaGrandeza,
+  LearningMonitoringLabelsEnum.reconheceOSistemaMonetarioBrasileiro,
+  LearningMonitoringLabelsEnum.leTableasEGraficos,
 ];
 
 export const learningMonitoringValues = (item: any) => {
@@ -186,13 +186,13 @@ export const learningMonitoringValues = (item: any) => {
     ]
       ? 'Sim'
       : 'Não',
-    [LearningMonitoringValuesEnum.reconheceEEscreveAsLetrasDoAlfabeto]: item[
-      LearningMonitoringValuesEnum.reconheceEEscreveAsLetrasDoAlfabeto
+    [LearningMonitoringValuesEnum.identificaAsVogais]: item[
+      LearningMonitoringValuesEnum.identificaAsVogais
     ]
       ? 'Sim'
       : 'Não',
-    [LearningMonitoringValuesEnum.identificaAsVogaisEConsoantes]: item[
-      LearningMonitoringValuesEnum.identificaAsVogaisEConsoantes
+    [LearningMonitoringValuesEnum.identificaAsConsoantes]: item[
+      LearningMonitoringValuesEnum.identificaAsConsoantes
     ]
       ? 'Sim'
       : 'Não',
@@ -211,65 +211,72 @@ export const learningMonitoringValues = (item: any) => {
         LearningMonitoringValuesEnum
           .aoOuvirAsPalavrasConsegueIdentificarSonsoESilabasQueAsCompoem
       ],
-    [LearningMonitoringValuesEnum.lePalavrasComFluenciaOuSilabando]: item[
-      LearningMonitoringValuesEnum.lePalavrasComFluenciaOuSilabando
-    ]
-      ? 'Sim'
-      : 'Não',
-    [LearningMonitoringValuesEnum.leFrasesComFluenciaOuSilabando]: item[
-      LearningMonitoringValuesEnum.leFrasesComFluenciaOuSilabando
-    ]
-      ? 'Sim'
-      : 'Não',
-    [LearningMonitoringValuesEnum.leTextosComAutonomia]: item[
-      LearningMonitoringValuesEnum.leTextosComAutonomia
-    ]
-      ? 'Sim'
-      : 'Não',
-    [LearningMonitoringValuesEnum.identificaQuantasLetrasHaNumaPalavra]: item[
-      LearningMonitoringValuesEnum.identificaQuantasLetrasHaNumaPalavra
-    ]
-      ? 'Sim'
-      : 'Não',
-    [LearningMonitoringValuesEnum.aoOuvirAsPalavrasIdentificaQuantasSilabas]:
+    [LearningMonitoringValuesEnum.aoOuvirUmaPalavraIdentificaQuantasSilabasHa]:
       item[
-        LearningMonitoringValuesEnum.aoOuvirAsPalavrasIdentificaQuantasSilabas
-      ],
-    [LearningMonitoringValuesEnum.compreendeTextosLidosEmVozAlta]: item[
-      LearningMonitoringValuesEnum.compreendeTextosLidosEmVozAlta
+        LearningMonitoringValuesEnum.aoOuvirUmaPalavraIdentificaQuantasSilabasHa
+      ]
+        ? 'Sim'
+        : 'Não',
+    [LearningMonitoringValuesEnum.lePalavrasComAutonomia]: item[
+      LearningMonitoringValuesEnum.lePalavrasComAutonomia
     ]
       ? 'Sim'
       : 'Não',
-    [LearningMonitoringValuesEnum.retiraInformacoesDosTextosQueLe]: item[
-      LearningMonitoringValuesEnum.retiraInformacoesDosTextosQueLe
+    [LearningMonitoringValuesEnum.leFrasesComFluencia]: item[
+      LearningMonitoringValuesEnum.leFrasesComFluencia
     ]
       ? 'Sim'
       : 'Não',
-    [LearningMonitoringValuesEnum.conheceVariosTiposDeTextos]: item[
-      LearningMonitoringValuesEnum.conheceVariosTiposDeTextos
+    [LearningMonitoringValuesEnum.leTextosComFluencia]: item[
+      LearningMonitoringValuesEnum.leTextosComFluencia
     ]
       ? 'Sim'
       : 'Não',
-    [LearningMonitoringValuesEnum.escreveSentencas]: item[
-      LearningMonitoringValuesEnum.escreveSentencas
+    [LearningMonitoringValuesEnum.IdentificaOsDiferenetesGenerosTextuais]:
+      item[LearningMonitoringValuesEnum.IdentificaOsDiferenetesGenerosTextuais],
+    [LearningMonitoringValuesEnum.escreveFrasesDeFormaCondicional]: item[
+      LearningMonitoringValuesEnum.escreveFrasesDeFormaCondicional
     ]
       ? 'Sim'
       : 'Não',
-    [LearningMonitoringValuesEnum.compreendeOQueLeComAutonomia]: item[
-      LearningMonitoringValuesEnum.compreendeOQueLeComAutonomia
+    [LearningMonitoringValuesEnum.escreveTextosDeFormaLegivelECoerente]: item[
+      LearningMonitoringValuesEnum.escreveTextosDeFormaLegivelECoerente
     ]
       ? 'Sim'
       : 'Não',
-    [LearningMonitoringValuesEnum.compreendeOValorAbsoluto]: item[
-      LearningMonitoringValuesEnum.compreendeOValorAbsoluto
+    [LearningMonitoringValuesEnum.compreendeInformacoesExplicitasDoTextoQueLe]:
+      item[
+        LearningMonitoringValuesEnum.compreendeInformacoesExplicitasDoTextoQueLe
+      ]
+        ? 'Sim'
+        : 'Não',
+    [LearningMonitoringValuesEnum.identificaOAssuntoPirncipalDeUmTexto]: item[
+      LearningMonitoringValuesEnum.identificaOAssuntoPirncipalDeUmTexto
     ]
       ? 'Sim'
       : 'Não',
-    [LearningMonitoringValuesEnum.compreendeOValorRelativo]: item[
-      LearningMonitoringValuesEnum.compreendeOValorRelativo
+    [LearningMonitoringValuesEnum.solcitaInformacoesComCorencia]: item[
+      LearningMonitoringValuesEnum.solcitaInformacoesComCorencia
     ]
       ? 'Sim'
       : 'Não',
+    [LearningMonitoringValuesEnum.relataVivenciasOuExpressaOpinioes]: item[
+      LearningMonitoringValuesEnum.relataVivenciasOuExpressaOpinioes
+    ]
+      ? 'Sim'
+      : 'Não',
+    [LearningMonitoringValuesEnum.compreendeOValorAbsolutoDosAlgarismos]: item[
+      LearningMonitoringValuesEnum.compreendeOValorAbsolutoDosAlgarismos
+    ]
+      ? 'Sim'
+      : 'Não',
+    [LearningMonitoringValuesEnum.compreendeOValorRleativoDosAlgarismosEmDeterminadosNumeros]:
+      item[
+        LearningMonitoringValuesEnum
+          .compreendeOValorRleativoDosAlgarismosEmDeterminadosNumeros
+      ]
+        ? 'Sim'
+        : 'Não',
     [LearningMonitoringValuesEnum.escreveNumerosPorExtenso]: item[
       LearningMonitoringValuesEnum.escreveNumerosPorExtenso
     ]
@@ -280,43 +287,48 @@ export const learningMonitoringValues = (item: any) => {
     ]
       ? 'Sim'
       : 'Não',
-    [LearningMonitoringValuesEnum.calculaAdicoesESubtracoes]: item[
-      LearningMonitoringValuesEnum.calculaAdicoesESubtracoes
-    ]
-      ? 'Sim'
-      : 'Não',
-    [LearningMonitoringValuesEnum.calculaMultiplicacoesEDivisoes]: item[
-      LearningMonitoringValuesEnum.calculaMultiplicacoesEDivisoes
-    ]
-      ? 'Sim'
-      : 'Não',
-    [LearningMonitoringValuesEnum.utilizaCorretamenteOsSinas]: item[
-      LearningMonitoringValuesEnum.utilizaCorretamenteOsSinas
-    ]
-      ? 'Sim'
-      : 'Não',
-    [LearningMonitoringValuesEnum.resolveSituacoesComAsQuatro]: item[
-      LearningMonitoringValuesEnum.resolveSituacoesComAsQuatro
-    ]
-      ? 'Sim'
-      : 'Não',
-    [LearningMonitoringValuesEnum.identificaNumeros]: item[
-      LearningMonitoringValuesEnum.identificaNumeros
-    ]
-      ? 'Sim'
-      : 'Não',
+    [LearningMonitoringValuesEnum.resolveSituacoesProblemaDeAdicaoESubtracao]:
+      item[
+        LearningMonitoringValuesEnum.resolveSituacoesProblemaDeAdicaoESubtracao
+      ]
+        ? 'Sim'
+        : 'Não',
+    [LearningMonitoringValuesEnum.resolveSituacoesProblemaDeMultiplicacaoEDivisao]:
+      item[
+        LearningMonitoringValuesEnum
+          .resolveSituacoesProblemaDeMultiplicacaoEDivisao
+      ]
+        ? 'Sim'
+        : 'Não',
+    [LearningMonitoringValuesEnum.identificaNumerosOuElementosAusentesNumaSequenciaMatematica]:
+      item[
+        LearningMonitoringValuesEnum
+          .identificaNumerosOuElementosAusentesNumaSequenciaMatematica
+      ]
+        ? 'Sim'
+        : 'Não',
     [LearningMonitoringValuesEnum.identificaFigurasGeometricas]: item[
       LearningMonitoringValuesEnum.identificaFigurasGeometricas
     ]
       ? 'Sim'
       : 'Não',
-    [LearningMonitoringValuesEnum.identificaAsMedidas]: item[
-      LearningMonitoringValuesEnum.identificaAsMedidas
+    [LearningMonitoringValuesEnum.identificaSolidosGeometricos]: item[
+      LearningMonitoringValuesEnum.identificaSolidosGeometricos
     ]
       ? 'Sim'
       : 'Não',
-    [LearningMonitoringValuesEnum.leTabelasEGraficos]: item[
-      LearningMonitoringValuesEnum.leTabelasEGraficos
+    [LearningMonitoringValuesEnum.identificaAsMedidasDeCadaGrandeza]: item[
+      LearningMonitoringValuesEnum.identificaAsMedidasDeCadaGrandeza
+    ]
+      ? 'Sim'
+      : 'Não',
+    [LearningMonitoringValuesEnum.reconheceOSistemaMonetarioBrasileiro]: item[
+      LearningMonitoringValuesEnum.reconheceOSistemaMonetarioBrasileiro
+    ]
+      ? 'Sim'
+      : 'Não',
+    [LearningMonitoringValuesEnum.leTableasEGraficos]: item[
+      LearningMonitoringValuesEnum.leTableasEGraficos
     ]
       ? 'Sim'
       : 'Não',
