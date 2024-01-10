@@ -38,20 +38,20 @@ model Role {
 }
 
 model School {
-  id               String             @id @default(uuid())
+  id               String                @id @default(uuid())
   name             String
   projectId        String
   visualIdentity   String?
-  createdAt        DateTime           @default(now())
-  addressId        String             @unique
-  status           Boolean            @default(true)
-  Classroom        Classroom[]        @relation(name: "ClassroomToSchool")
-  Coordinator      Coordinator[]      @relation(name: "CoordinatorToSchool")
-  PedagogicalVisit PedagogicalVisit[] @relation(name: "PedagogicalVisitToSchool")
-  Address          Address            @relation(name: "AddressToSchool", fields: [addressId], references: [id])
-  project          Project            @relation(name: "ProjectToSchool", fields: [projectId], references: [id])
-  Student          Student[]          @relation(name: "SchoolToStudent")
-  Teacher          Teacher[]          @relation(name: "SchoolToTeacher")
+  createdAt        DateTime              @default(now())
+  addressId        String                @unique
+  status           Boolean               @default(true)
+  Classroom        Classroom[]           @relation("ClassroomToSchool")
+  coordinators     CoordinatorToSchool[]
+  PedagogicalVisit PedagogicalVisit[]    @relation("PedagogicalVisitToSchool")
+  Address          Address               @relation("AddressToSchool", fields: [addressId], references: [id])
+  project          Project               @relation("ProjectToSchool", fields: [projectId], references: [id])
+  Student          Student[]             @relation("SchoolToStudent")
+  Teacher          Teacher[]             @relation("SchoolToTeacher")
 
   @@map("school")
 }
@@ -100,24 +100,33 @@ model Teacher {
   user               User                 @relation(name: "TeacherToUser", fields: [userId], references: [id])
   Classroom          Classroom[]          @relation(name: "ClassroomToTeacher")
   PedagogicalVisit   PedagogicalVisit[]   @relation(name: "PedagogicalVisitToTeacher")
-  attendance         Attendance[]          @relation(name: "TeacherToAttendance")
+  attendance         Attendance[]         @relation(name: "TeacherToAttendance")
 
   @@map("teacher")
 }
 
 model Coordinator {
-  id               String             @id @default(uuid())
+  id               String                @id @default(uuid())
   userId           String
-  telephone        String             @unique
-  createdAt        DateTime           @default(now())
-  schoolId         String
-  status           Boolean            @default(true)
-  school           School             @relation(name: "CoordinatorToSchool", fields: [schoolId], references: [id])
-  user             User               @relation(name: "CoordinatorToUser", fields: [userId], references: [id])
-  PedagogicalVisit PedagogicalVisit[] @relation(name: "CoordinatorToPedagogicalVisit")
-  Teacher          Teacher[]          @relation(name: "CoordinatorToTeacher")
+  telephone        String                @unique
+  createdAt        DateTime              @default(now())
+  status           Boolean               @default(true)
+  schools          CoordinatorToSchool[]
+  user             User                  @relation("CoordinatorToUser", fields: [userId], references: [id])
+  PedagogicalVisit PedagogicalVisit[]    @relation("CoordinatorToPedagogicalVisit")
+  Teacher          Teacher[]             @relation("CoordinatorToTeacher")
 
   @@map("coordinator")
+}
+
+model CoordinatorToSchool {
+  coordinator Coordinator @relation(fields: [coordinatorId], references: [id])
+  school      School      @relation(fields: [schoolId], references: [id])
+
+  coordinatorId String
+  schoolId      String
+
+  @@id([coordinatorId, schoolId])
 }
 
 model Classroom {
@@ -155,7 +164,7 @@ model Attendance {
   isPresent Boolean   @default(false)
   studentId String
   classId   String
-  teacherId String    
+  teacherId String
   Classroom Classroom @relation(name: "AttendanceToClassroom", fields: [classId], references: [id])
   student   Student   @relation(name: "AttendanceToStudent", fields: [studentId], references: [id])
   Teacher   Teacher   @relation(name: "TeacherToAttendance", fields: [teacherId], references: [id])
