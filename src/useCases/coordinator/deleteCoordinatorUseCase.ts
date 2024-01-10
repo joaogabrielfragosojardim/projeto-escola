@@ -25,5 +25,11 @@ export class DeleteCoordinatorUseCase {
     await prisma.user.delete({
       where: { id: coordinator.userId },
     });
+
+    await prisma.coordinatorToSchool.deleteMany({
+      where: {
+        coordinatorId: id,
+      },
+    });
   }
 }
