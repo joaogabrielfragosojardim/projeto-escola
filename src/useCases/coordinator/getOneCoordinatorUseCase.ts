@@ -16,14 +16,18 @@ export class GetOneCoordinatorUseCase {
         id: true,
         status: true,
         telephone: true,
-        school: {
+        schools: {
           select: {
-            id: true,
-            name: true,
-            project: {
+            school: {
               select: {
                 id: true,
                 name: true,
+                project: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
               },
             },
           },

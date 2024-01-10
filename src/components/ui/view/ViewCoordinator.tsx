@@ -51,12 +51,14 @@ export const ViewCoordinator = ({
   );
 
   const onSubmit = (data: CoordinatorType) => {
-    const { visualIdentity, name, telephone, school } = data;
+    const { visualIdentity, name, telephone, schools } = data;
     const submitData = {
       visualIdentity: visualIdentity || coordinator.visualIdentity,
       name: name || coordinator.name,
       telephone: telephone || coordinator.telephone,
-      schoolId: school?.value || coordinator.school.id,
+      schoolIds:
+        schools.map((school) => school.value) ||
+        coordinator.schools.map((school) => school.value),
     };
     mutate(submitData);
   };
@@ -100,16 +102,15 @@ export const ViewCoordinator = ({
           <SelectThemed
             reset={reset}
             control={control}
-            name="school"
+            name="schools"
             label="Escola"
             placeholder="Escola"
             options={schoolOptions}
-            defaultValue={
-              {
-                value: coordinator.school.id,
-                label: coordinator.school.name,
-              } as unknown as any
-            }
+            isMulti
+            defaultValue={coordinator.schools.map((school) => ({
+              label: school.name,
+              value: school.value,
+            }))}
             menuPlacement="top"
           />
           <InputThemed
