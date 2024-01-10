@@ -14,6 +14,7 @@ export class GetOneCoordinatorUseCase {
       },
       select: {
         id: true,
+        status: true,
         telephone: true,
         school: {
           select: {

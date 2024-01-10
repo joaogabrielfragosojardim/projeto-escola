@@ -31,9 +31,10 @@ export class OptionsStudentUseCase {
           id: {
             equals: classId,
           },
-          teacherId: {
-            equals: teacherId || teacher?.id,
-          },
+          teachers:
+            teacherId || teacher?.id
+              ? { some: { id: teacherId || teacher?.id } }
+              : undefined,
         },
         school: {
           projectId: { equals: projectId },

@@ -19,7 +19,7 @@ export class GetOneClassUseCase {
             name: true,
           },
         },
-        teacher: {
+        teachers: {
           select: {
             id: true,
             user: {

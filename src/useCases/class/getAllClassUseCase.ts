@@ -27,7 +27,7 @@ export class GetAllClassUseCase {
         },
         where: {
           schoolId: { equals: schoolId },
-          teacherId: { equals: teacherId },
+          teachers: teacherId ? { some: { id: teacherId } } : undefined,
         },
         select: {
           id: true,
@@ -37,7 +37,7 @@ export class GetAllClassUseCase {
               name: true,
             },
           },
-          teacher: {
+          teachers: {
             select: {
               id: true,
               user: {
