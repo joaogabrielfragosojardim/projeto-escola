@@ -164,7 +164,7 @@ const CoordinatorSecondStep = ({
     });
 
   const onSubmit = (data: CoordinatorType) => {
-    const { email, telephone, school } = data;
+    const { email, telephone, schools } = data;
     const { visualIdentity, name } = coordinatorForm;
 
     const submitData = {
@@ -172,7 +172,7 @@ const CoordinatorSecondStep = ({
       name,
       email,
       telephone,
-      schoolId: school.value,
+      schoolIds: schools?.map((school) => school.value),
     };
     mutateCreateCoordinator(submitData);
   };
@@ -232,7 +232,8 @@ const CoordinatorSecondStep = ({
               required: 'Campo obrigatório',
             }}
             options={projects}
-            error={errors.project as unknown as any}
+            error={errors.projects as unknown as any}
+            isMulti
             onChange={(option: any) => {
               mutateFindSchoolByProjectMutation(option.value);
             }}
@@ -244,14 +245,15 @@ const CoordinatorSecondStep = ({
             reset={reset}
             label="Escola"
             placeholder="Escola"
-            name="school"
+            name="schools"
             validations={{
               required: 'Campo obrigatório',
             }}
             options={schoolOptions}
-            error={errors.school as unknown as any}
+            error={errors.schools as unknown as any}
             isDisabled={!schoolOptions.length || isMutating}
             isLoading={isMutating}
+            isMulti
           />
         </div>
         <div className="mt-[48px] text-[16px] lg:text-[20px]">

@@ -9,7 +9,7 @@ interface CreateCoordinatorUseCaseRequest {
   name: string;
   email: string;
   telephone: string;
-  schoolId: string;
+  schoolIds: string[];
   visualIdentity?: string;
 }
 
@@ -19,7 +19,7 @@ export class CreateCoordinatorUseCase {
     email,
     telephone,
     visualIdentity,
-    schoolId,
+    schoolIds,
   }: CreateCoordinatorUseCaseRequest) {
     const coordinatorRole = await prisma.role.findUnique({
       where: {
@@ -31,14 +31,17 @@ export class CreateCoordinatorUseCase {
       throw new AppError('Cargo inexistente', 400);
     }
 
-    const school = await prisma.school.findUnique({
+    const schools = await prisma.school.findMany({
       where: {
-        id: schoolId,
+        id: { in: schoolIds },
+      },
+      select: {
+        id: true,
       },
     });
 
-    if (!school) {
-      throw new AppError('Escola inexistente', 400);
+    if (schools.length === 0) {
+      throw new AppError('Escolas inexistentes', 400);
     }
 
     const userWithSameEmail = await prisma.user.findUnique({
@@ -81,11 +84,21 @@ export class CreateCoordinatorUseCase {
       },
     });
 
+    const newSchools = schoolIds.map((schoolId) => ({
+      school: {
+        connect: {
+          id: schoolId,
+        },
+      },
+    }));
+
     const coordinator = await prisma.coordinator.create({
       data: {
         telephone,
         userId: user.id,
-        schoolId,
+        schools: {
+          create: [...newSchools],
+        },
       },
     });
 
