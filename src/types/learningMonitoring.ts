@@ -327,8 +327,8 @@ export const learningMonitoringValues = (item: any) => {
     ]
       ? 'Sim'
       : 'Não',
-    [LearningMonitoringValuesEnum.leTableasEGraficos]: item[
-      LearningMonitoringValuesEnum.leTableasEGraficos
+    [LearningMonitoringValuesEnum.leTableasEGraficos ]: item[
+      LearningMonitoringValuesEnum.leTableasEGraficos 
     ]
       ? 'Sim'
       : 'Não',
