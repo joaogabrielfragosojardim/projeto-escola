@@ -193,7 +193,7 @@ export const SchoolTable = ({
 
   useEffect(() => {
     refetch();
-  }, [filtersValues, page, refetch]);
+  }, [filtersValues, page, perPage, refetch]);
 
   useEffect(() => {
     setTotalPages(data?.meta.totalPage);
