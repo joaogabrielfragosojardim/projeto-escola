@@ -43,9 +43,16 @@ export class GetAllAttendenceUseCase {
         userId,
       },
       select: {
-        schoolId: true,
+        schools: {
+          select: {
+            schoolId: true,
+          },
+        },
       },
     });
+
+    const coordinatorSchoolIds =
+      coordinator?.schools.map((school) => school.schoolId) || [];
 
     const [attendance, total] = await prisma.$transaction([
       prisma.attendance.findMany({
@@ -61,7 +68,7 @@ export class GetAllAttendenceUseCase {
             school: {
               projectId: { equals: projectId },
             },
-            schoolId: { equals: coordinator?.schoolId },
+            schoolId: { in: coordinatorSchoolIds },
             students: {
               some: {
                 id: studentId,

@@ -25,20 +25,27 @@ export class CreatePedagogicalVisitUseCase {
       where: {
         userId: coordinatorId,
       },
+      select: {
+        id: true,
+        schools: {
+          select: {
+            schoolId: true,
+          },
+        },
+      },
     });
 
     if (!coordinator) {
       throw new AppError('Coordenador não encontrado', 400);
     }
-
-    const school = await prisma.school.findFirst({
+    const schools = await prisma.school.findMany({
       where: {
-        id: coordinator.schoolId,
+        id: { in: coordinator.schools.map((school) => school.schoolId) },
       },
     });
 
-    if (!school) {
-      throw new AppError('Escola não encontrada', 400);
+    if (!schools) {
+      throw new AppError('Escolas não encontradas', 400);
     }
 
     const classroom = await prisma.classroom.findFirst({
@@ -56,7 +63,10 @@ export class CreatePedagogicalVisitUseCase {
       throw new AppError('Turma não encontrada', 400);
     }
 
-    if (classroom.schoolId !== school.id) {
+    const isSchoolExisting = schools.some(
+      (school) => school.id === classroom.schoolId,
+    );
+    if (!isSchoolExisting) {
       throw new AppError('Essa turma não pertence a essa escola', 400);
     }
 
@@ -70,7 +80,7 @@ export class CreatePedagogicalVisitUseCase {
         frequency,
         observations,
         questions,
-        schoolId: school.id,
+        schoolId: classroom.schoolId,
         classId: classroom.id,
         coordinatorId: coordinator.id,
         teacherId,

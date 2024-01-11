@@ -55,7 +55,11 @@ export class CreateTeacherUseCase {
 
     const coordinator = await prisma.coordinator.findMany({
       where: {
-        schoolId,
+        schools: {
+          some: {
+            schoolId: school.id,
+          },
+        },
       },
     });
 

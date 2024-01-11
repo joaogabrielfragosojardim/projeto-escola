@@ -44,6 +44,13 @@ export class GetAllStudentUseCase {
       where: {
         userId,
       },
+      select: {
+        schools: {
+          select: {
+            schoolId: true,
+          },
+        },
+      },
     });
 
     const [student, total] = await prisma.$transaction([
@@ -73,12 +80,23 @@ export class GetAllStudentUseCase {
           status: {
             equals: status ? status === 'true' : undefined,
           },
-          schoolId: { equals: schoolId || coordinator?.schoolId },
+          AND: [
+            {
+              schoolId: {
+                equals: schoolId,
+              },
+            },
+            {
+              schoolId: {
+                in: coordinator?.schools.map((school) => school.schoolId),
+              },
+            },
+          ],
           school: {
             projectId: { equals: projectId },
-            Coordinator: {
+            coordinators: {
               some: {
-                id: { equals: coordinatorId },
+                coordinatorId: { equals: coordinatorId },
               },
             },
           },
@@ -121,16 +139,17 @@ export class GetAllStudentUseCase {
             select: {
               id: true,
               name: true,
-              Coordinator: {
-                select: {
-                  id: true,
-                  user: {
-                    select: {
-                      name: true,
-                    },
-                  },
-                },
-              },
+              // Coordinator: {
+              //   select: {
+              //     id: true,
+              //     user: {
+              //       select: {
+              //         name: true,
+              //       },
+              //     },
+              //   },
+              // },
+
               project: {
                 select: {
                   id: true,

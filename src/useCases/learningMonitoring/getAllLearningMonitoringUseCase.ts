@@ -43,7 +43,11 @@ export class GetAllLearningMonitoringUseCase {
         userId,
       },
       select: {
-        schoolId: true,
+        schools: {
+          select: {
+            schoolId: true,
+          },
+        },
       },
     });
 
@@ -58,16 +62,16 @@ export class GetAllLearningMonitoringUseCase {
             lte: finalDate,
           },
           classroom: {
-            schoolId: { equals: coordinator?.schoolId },
+            schoolId: {
+              in: coordinator?.schools.map((school) => school.schoolId),
+            },
             school: {
               projectId: {
                 equals: projectId,
               },
-              Coordinator: {
+              coordinators: {
                 every: {
-                  id: {
-                    equals: coordinatorId,
-                  },
+                  coordinatorId: { equals: coordinatorId },
                 },
               },
             },

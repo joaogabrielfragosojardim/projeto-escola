@@ -58,9 +58,9 @@ export class OptionsSchoolUseCase {
             id: { equals: teacher?.id },
           },
         },
-        Coordinator: {
+        coordinators: {
           some: {
-            id: { equals: coordinator?.id },
+            coordinatorId: { equals: coordinator?.id },
           },
         },
       },
