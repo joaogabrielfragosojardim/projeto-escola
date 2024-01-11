@@ -1,7 +1,9 @@
 interface CoordinatorQuery {
   id: string;
   telephone: string;
-  school: School;
+  schools: {
+    school: School;
+  }[];
   status: boolean;
   user: User;
 }
@@ -29,11 +31,11 @@ export interface Coordinator {
   name: string;
   visualIdentity: string | null;
   telephone: string;
-  project: Project;
-  school: {
+  projects: Project[];
+  schools: {
     id: string;
     name: string;
-  };
+  }[];
 }
 
 export function toCoordinators(
@@ -46,14 +48,14 @@ export function toCoordinators(
     visualIdentity: coordinator.user.visualIdentity,
     email: coordinator.user.email,
     telephone: coordinator.telephone,
-    project: {
-      id: coordinator.school.project.id,
-      name: coordinator.school.project.name,
-    },
-    school: {
-      id: coordinator.school.id,
-      name: coordinator.school.name,
-    },
+    projects: coordinator.schools.map(({ school }) => ({
+      id: school.project.id,
+      name: school.project.name,
+    })),
+    schools: coordinator.schools.map(({ school }) => ({
+      id: school.id,
+      name: school.name,
+    })),
   }));
 }
 
@@ -64,13 +66,13 @@ export function toCoordinator(coordinator: CoordinatorQuery): Coordinator {
     visualIdentity: coordinator.user.visualIdentity,
     email: coordinator.user.email,
     telephone: coordinator.telephone,
-    project: {
-      id: coordinator.school.project.id,
-      name: coordinator.school.project.name,
-    },
-    school: {
-      id: coordinator.school.id,
-      name: coordinator.school.name,
-    },
+    projects: coordinator.schools.map(({ school }) => ({
+      id: school.project.id,
+      name: school.project.name,
+    })),
+    schools: coordinator.schools.map(({ school }) => ({
+      id: school.id,
+      name: school.name,
+    })),
   };
 }

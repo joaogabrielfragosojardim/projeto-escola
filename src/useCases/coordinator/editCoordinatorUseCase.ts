@@ -1,9 +1,10 @@
+import { AppError } from '@/errors';
 import { prisma } from '@/lib/prisma';
 
 interface EditCoordinatorUseCaseRequest {
   id: string | undefined;
   name: string;
-  schoolId: string;
+  schoolIds: string[];
   telephone: string;
   visualIdentity?: string;
 }
@@ -11,21 +12,28 @@ interface EditCoordinatorUseCaseRequest {
 export class EditCoordinatorUseCase {
   async execute({
     id,
-    schoolId,
+    schoolIds,
     name,
     telephone,
     visualIdentity,
   }: EditCoordinatorUseCaseRequest) {
+    if (!id) {
+      throw new AppError('Coordenador não encontrado', 400);
+    }
+
     const coordinator = await prisma.coordinator.update({
       where: { id },
       data: {
-        schoolId,
         telephone,
       },
       select: {
         id: true,
         telephone: true,
-        schoolId: true,
+        schools: {
+          select: {
+            schoolId: true,
+          },
+        },
         user: {
           select: {
             id: true,
@@ -46,9 +54,25 @@ export class EditCoordinatorUseCase {
       },
     });
 
+    const newSchools = schoolIds.map((school) => ({
+      coordinatorId: id,
+      schoolId: school,
+    }));
+
+    await prisma.coordinatorToSchool.deleteMany({
+      where: {
+        coordinatorId: id,
+      },
+    });
+
+    const updatedSchools = await prisma.coordinatorToSchool.createMany({
+      data: newSchools,
+    });
+
     return {
       coordinator: {
         ...coordinator,
+        schools: updatedSchools,
         ...user,
       },
     };

@@ -6,13 +6,13 @@ export type Coordinator = {
   email: string;
   password: string;
   telephone: string;
-  school: { id: string; name: string; value: string };
-  project: { id: string; name: string; value: string };
+  schools: { id: string; name: string; value: string }[];
+  projects: { id: string; name: string; value: string }[];
 };
 
 export type CoordinatorEdit = {
   visualIdentity?: string;
   name: string;
   telephone: string;
-  schoolId: string;
+  schoolIds: string[];
 };

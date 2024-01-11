@@ -26,32 +26,17 @@ export class GetAllCoordinatorsUseCase {
       prisma.coordinator.findMany({
         skip,
         take,
-        orderBy: [
-          {
-            school: {
-              project: {
-                name: 'asc',
-              },
-            },
-          },
-          {
-            school: {
-              name: 'asc',
-            },
-          },
-          {
-            user: {
-              name: 'asc',
-            },
-          },
-        ],
         where: {
           user: {
             name: { contains: name, mode: 'insensitive' },
           },
-          schoolId: { equals: schoolId },
-          school: {
-            projectId: { equals: projectId },
+          schools: {
+            some: {
+              schoolId: { equals: schoolId },
+              school: {
+                projectId: { equals: projectId },
+              },
+            },
           },
           status: {
             equals: status ? status === 'true' : undefined,
@@ -61,14 +46,18 @@ export class GetAllCoordinatorsUseCase {
           id: true,
           telephone: true,
           status: true,
-          school: {
+          schools: {
             select: {
-              id: true,
-              name: true,
-              project: {
+              school: {
                 select: {
                   id: true,
                   name: true,
+                  project: {
+                    select: {
+                      id: true,
+                      name: true,
+                    },
+                  },
                 },
               },
             },
@@ -87,9 +76,13 @@ export class GetAllCoordinatorsUseCase {
           user: {
             name: { contains: name, mode: 'insensitive' },
           },
-          schoolId: { equals: schoolId },
-          school: {
-            projectId: { equals: projectId },
+          schools: {
+            some: {
+              schoolId: { equals: schoolId },
+              school: {
+                projectId: { equals: projectId },
+              },
+            },
           },
           status: {
             equals: status ? status === 'true' : undefined,
@@ -100,8 +93,29 @@ export class GetAllCoordinatorsUseCase {
 
     const totalPage = Math.ceil(total / take);
 
+    const order = coordinators.sort((a, b) => {
+      const projectA = a.schools[0]?.school?.project?.name || '';
+      const projectB = b.schools[0]?.school?.project?.name || '';
+
+      if (projectA !== projectB) {
+        return projectA.localeCompare(projectB);
+      }
+
+      const schoolA = a.schools[0]?.school?.name || '';
+      const schoolB = b.schools[0]?.school?.name || '';
+
+      if (schoolA !== schoolB) {
+        return schoolA.localeCompare(schoolB);
+      }
+
+      const userA = a.user.name || '';
+      const userB = b.user.name || '';
+
+      return userA.localeCompare(userB);
+    });
+
     return {
-      data: toCoordinators(coordinators),
+      data: toCoordinators(order),
       meta: {
         page,
         totalPage,

@@ -297,10 +297,21 @@ export const CoordinatorTable = ({
                     status: item.status,
                     email: item.email,
                     telephone: item.telephone,
-                    project: item.project.name,
-                    school: item.school.name,
+                    projects: item.projects
+                      .map((project) => project.name)
+                      .join('-'),
+                    schools: item.schools
+                      .map((school) => school.name)
+                      .join('-'),
                   })),
-                  ['Nome', 'Status', 'Email', 'Telefone', 'Projeto', 'Escola'],
+                  [
+                    'Nome',
+                    'Status',
+                    'Email',
+                    'Telefone',
+                    'Projetos',
+                    'Escolas',
+                  ],
                   'relatorioCoordenadores',
                 )
               }
@@ -384,10 +395,14 @@ export const CoordinatorTable = ({
                             {coordinator.email}
                           </Cell>
                           <Cell className="text-[20px] text-main hover:text-main">
-                            {coordinator.project.name}
+                            {coordinator.projects.map((project) => (
+                              <p key={project.id}>{project.name}</p>
+                            ))}
                           </Cell>
                           <Cell className="text-[20px] text-main hover:text-main">
-                            {coordinator.school.name}
+                            {coordinator.schools.map((school) => (
+                              <p key={school.id}>{school.name}</p>
+                            ))}
                           </Cell>
                           <Cell className="text-center text-main hover:text-main">
                             <div className="flex gap-[8px]">
@@ -536,15 +551,26 @@ export const CoordinatorTable = ({
                       </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">Projeto:</p>
-                        <p className="text-[14px] text-complement-200">
-                          {coordinator.project.name}
-                        </p>
+
+                        {coordinator.projects.map((project) => (
+                          <p
+                            key={project.id}
+                            className="text-[14px] text-complement-200"
+                          >
+                            {project.name}
+                          </p>
+                        ))}
                       </div>
                       <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">Escola:</p>
-                        <p className="text-[14px] text-complement-200">
-                          {coordinator.school.name}
-                        </p>
+                        {coordinator.schools.map((school) => (
+                          <p
+                            key={school.id}
+                            className="text-[14px] text-complement-200"
+                          >
+                            {school.name}
+                          </p>
+                        ))}
                       </div>
                     </div>
                   </div>

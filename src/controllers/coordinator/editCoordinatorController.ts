@@ -11,21 +11,21 @@ export class EditCoordinatorController {
       });
 
       const editBodySchema = z.object({
-        schoolId: z.string(),
+        schoolIds: z.array(z.string().uuid()),
         telephone: z.string(),
         name: z.string(),
         visualIdentity: z.string().optional(),
       });
 
       const { id } = editQuerySchema.parse(req.query);
-      const { schoolId, telephone, name, visualIdentity } =
+      const { schoolIds, telephone, name, visualIdentity } =
         editBodySchema.parse(req.body);
 
       const editCoordinatorUseCase = new EditCoordinatorUseCase();
 
       const { coordinator } = await editCoordinatorUseCase.execute({
         id: id[0],
-        schoolId,
+        schoolIds,
         telephone,
         name,
         visualIdentity,

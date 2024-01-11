@@ -11,10 +11,10 @@ export class CreateCoordinatorController {
         email: z.string().email(),
         visualIdentity: z.string().optional(),
         telephone: z.string(),
-        schoolId: z.string().uuid(),
+        schoolIds: z.array(z.string().uuid()),
       });
 
-      const { name, email, schoolId, telephone, visualIdentity } =
+      const { name, email, schoolIds, telephone, visualIdentity } =
         createBodySchema.parse(req.body);
 
       const createCoordinatorUseCase = new CreateCoordinatorUseCase();
@@ -22,7 +22,7 @@ export class CreateCoordinatorController {
       const { coordinator } = await createCoordinatorUseCase.execute({
         name,
         email,
-        schoolId,
+        schoolIds,
         telephone,
         visualIdentity,
       });
