@@ -53,16 +53,20 @@ export class OptionsSchoolUseCase {
         projectId: {
           equals: projectId,
         },
-        Teacher: {
-          some: {
-            id: { equals: teacher?.id },
-          },
-        },
-        coordinators: {
-          some: {
-            coordinatorId: { equals: coordinator?.id },
-          },
-        },
+        Teacher: teacher?.id
+          ? {
+              some: {
+                id: { equals: teacher?.id },
+              },
+            }
+          : undefined,
+        coordinators: coordinator?.id
+          ? {
+              some: {
+                coordinatorId: { equals: coordinator?.id },
+              },
+            }
+          : undefined,
       },
       select: {
         id: true,
