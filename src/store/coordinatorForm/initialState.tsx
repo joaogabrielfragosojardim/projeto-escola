@@ -8,6 +8,6 @@ export const initialState: Coordinator = {
   email: '',
   password: '',
   telephone: '',
-  school: { id: '', name: '', value: '' },
-  project: { id: '', name: '', value: '' },
+  schools: [],
+  projects: [],
 };
