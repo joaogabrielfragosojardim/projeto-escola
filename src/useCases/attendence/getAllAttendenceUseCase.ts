@@ -35,6 +35,7 @@ export class GetAllAttendenceUseCase {
       },
       select: {
         id: true,
+        schoolId: true,
       },
     });
 
@@ -67,13 +68,18 @@ export class GetAllAttendenceUseCase {
           Classroom: {
             school: {
               projectId: { equals: projectId },
+              id:
+                coordinatorSchoolIds.length > 0
+                  ? { in: coordinatorSchoolIds }
+                  : undefined,
             },
-            schoolId: { in: coordinatorSchoolIds },
-            students: {
-              some: {
-                id: studentId,
-              },
-            },
+            students: studentId
+              ? {
+                  some: {
+                    id: studentId,
+                  },
+                }
+              : undefined,
             period: {
               equals: period,
             },
