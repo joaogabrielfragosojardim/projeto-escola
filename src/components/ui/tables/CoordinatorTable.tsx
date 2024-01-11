@@ -206,7 +206,7 @@ export const CoordinatorTable = ({
 
   useEffect(() => {
     refetch();
-  }, [filtersValues, page, refetch]);
+  }, [filtersValues, page, perPage, refetch]);
 
   useEffect(() => {
     setTotalPages(data?.meta.totalPage);

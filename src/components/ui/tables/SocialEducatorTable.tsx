@@ -237,7 +237,7 @@ export const SocialEducatorTable = ({
 
   useEffect(() => {
     refetch();
-  }, [filtersValues, page, refetch]);
+  }, [filtersValues, page, perPage, refetch]);
 
   useEffect(() => {
     setTotalPages(teachers?.meta.totalPage);

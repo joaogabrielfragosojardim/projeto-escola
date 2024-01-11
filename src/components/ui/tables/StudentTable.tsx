@@ -324,7 +324,7 @@ export const StudentTable = ({
 
   useEffect(() => {
     refetch();
-  }, [filtersValues, page, refetch]);
+  }, [filtersValues, page, perPage, refetch]);
 
   useEffect(() => {
     setTotalPages(data?.meta.totalPage);
