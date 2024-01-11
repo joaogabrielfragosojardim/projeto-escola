@@ -109,7 +109,7 @@ export const ViewCoordinator = ({
             isMulti
             defaultValue={coordinator.schools.map((school) => ({
               label: school.name,
-              value: school.value,
+              value: school.id,
             }))}
             menuPlacement="top"
           />
