@@ -18,18 +18,18 @@ export class DeleteCoordinatorUseCase {
       throw new AppError('Usuário inexistente', 400);
     }
 
+    await prisma.coordinatorToSchool.deleteMany({
+      where: {
+        coordinatorId: id,
+      },
+    });
+
     await prisma.coordinator.delete({
       where: { id },
     });
 
     await prisma.user.delete({
       where: { id: coordinator.userId },
-    });
-
-    await prisma.coordinatorToSchool.deleteMany({
-      where: {
-        coordinatorId: id,
-      },
     });
   }
 }

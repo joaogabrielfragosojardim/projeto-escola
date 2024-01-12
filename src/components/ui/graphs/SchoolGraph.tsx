@@ -17,6 +17,7 @@ import { Popover } from '../Popover';
 import { CitySelect } from '../tables/Selects/CitySelect';
 import { ProjectSelect } from '../tables/Selects/ProjectSelect';
 import { StateSelect } from '../tables/Selects/StateSelect';
+import { StatusSelect } from '../tables/Selects/StatusSelect';
 
 export const SchoolGraph = () => {
   const { register } = useForm();
@@ -25,6 +26,7 @@ export const SchoolGraph = () => {
     projectId: '',
     state: '',
     city: '',
+    status: undefined,
   });
   const [initialTotal, setInitialTotal] = useState(null);
 
@@ -39,6 +41,16 @@ export const SchoolGraph = () => {
           label="Nome"
           onChange={(event) => {
             nameDebounce(event.target.value);
+          }}
+        />
+      ),
+      view: false,
+    },
+    statusPopover: {
+      element: (
+        <StatusSelect
+          onChange={(event) => {
+            setFiltersValues((prev) => ({ ...prev, status: event.value }));
           }}
         />
       ),
@@ -103,6 +115,7 @@ export const SchoolGraph = () => {
           projectId: filtersValues.projectId || null,
           state: filtersValues.state || null,
           city: filtersValues.city || null,
+          status: filtersValues.status,
         },
       })
     ).data;
@@ -125,12 +138,12 @@ export const SchoolGraph = () => {
     }
   }, [data?.meta?.total, initialTotal]);
 
-  const COLORS = ['#5e69bd', '#737d8a'];
+  const COLORS = ['#5C6189', '#737d8a'];
 
   const dataGraph = [
     {
       name: 'Total',
-      value: initialTotal !== null ? initialTotal : data?.meta?.total,
+      value: initialTotal,
     },
     {
       name: 'Filtro',
@@ -145,7 +158,7 @@ export const SchoolGraph = () => {
           <Popover
             triggerElement={
               <button
-                disabled={isLoading || isRefetching || !data?.data.length}
+                disabled={isLoading || isRefetching}
                 type="button"
                 className="flex items-center gap-[8px] rounded bg-main px-[16px] py-[8px] text-[14px] text-complement-100 disabled:opacity-60 2xl:gap-[16px] 2xl:text-[20px]"
               >
@@ -160,6 +173,14 @@ export const SchoolGraph = () => {
                 name="namePopover"
                 onClick={(event) => {
                   handleChangeFilters('namePopover', 'name', event);
+                }}
+              />
+              <InputCheckBoxThemed
+                label="Status"
+                register={register}
+                name="statusPopover"
+                onClick={(event) => {
+                  handleChangeFilters('statusPopover', 'status', event);
                 }}
               />
               <InputCheckBoxThemed
@@ -189,7 +210,7 @@ export const SchoolGraph = () => {
             </form>
           </Popover>
         </div>
-        <div className="mt-[32px] flex flex-col gap-[16px] 2xl:grid 2xl:grid-cols-2 2xl:items-end">
+        <div className="mt-[32px] flex flex-col gap-[16px] 2xl:grid 2xl:grid-cols-1 2xl:items-end">
           {Object.keys(filters)
             .filter((item) => filters[item]?.view === true)
             .map((item) => (
@@ -198,7 +219,7 @@ export const SchoolGraph = () => {
         </div>
       </div>
       <div>
-        {(isLoading || isRefetching) && (
+        {isLoading || isRefetching ? (
           <div className="flex h-[420px] w-full items-center justify-center text-main">
             <div>
               <div className="animate-spin">
@@ -206,49 +227,42 @@ export const SchoolGraph = () => {
               </div>
             </div>
           </div>
-        )}
-        {(isLoading || isRefetching) && (
-          <div className="flex h-[420px] w-full items-center justify-center text-main">
-            <div>
-              <div className="animate-spin">
-                <TbLoader size={62} />
-              </div>
+        ) : (
+          <div className="relative  flex h-[300px] items-center justify-center p-[44px]">
+            <ResponsiveContainer>
+              <PieChart>
+                <Pie
+                  data={dataGraph}
+                  startAngle={180}
+                  endAngle={0}
+                  cy={135}
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={15}
+                  dataKey="value"
+                  label
+                >
+                  {dataGraph.map((item, index: any) => (
+                    <Cell
+                      key={`cell-${item.name}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="absolute bottom-[115px] flex text-[24px] font-bold">
+              <CountUp
+                end={
+                  ((data?.meta?.total || 0) * 100) / (initialTotal || 0) || 0
+                }
+                duration={1.5}
+              />
+              <p>%</p>
             </div>
           </div>
         )}
-
-        <div className="relative  flex h-[300px] items-center justify-center p-[44px]">
-          <ResponsiveContainer>
-            <PieChart>
-              <Pie
-                data={dataGraph}
-                startAngle={180}
-                endAngle={0}
-                cy={135}
-                innerRadius={60}
-                outerRadius={100}
-                paddingAngle={15}
-                dataKey="value"
-                label
-              >
-                {dataGraph.map((item, index: any) => (
-                  <Cell
-                    key={`cell-${item.name}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-          <div className="absolute bottom-[115px] flex text-[24px] font-bold">
-            <CountUp
-              end={((data?.meta?.total || 0) * 100) / (initialTotal || 0) || 0}
-              duration={1.5}
-            />
-            <p>%</p>
-          </div>
-        </div>
       </div>
     </div>
   );

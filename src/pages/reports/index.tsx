@@ -73,7 +73,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <SideNavMenuContainer title="Início">
+    <SideNavMenuContainer title="Relatórios">
       <div className="p-[22px] 2xl:p-[32px]">
         <p className="mb-[32px] text-[20px] font-semibold text-complement-200 2xl:text-[24px]">
           Informações

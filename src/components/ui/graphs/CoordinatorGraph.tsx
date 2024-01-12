@@ -16,6 +16,7 @@ import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
 import { ProjectSelect } from '../tables/Selects/ProjectSelect';
 import { SchoolSelect } from '../tables/Selects/SchoolSelect';
+import { StatusSelect } from '../tables/Selects/StatusSelect';
 
 export const CoordinatorGraph = () => {
   const { register } = useForm();
@@ -23,6 +24,7 @@ export const CoordinatorGraph = () => {
     name: '',
     projectId: '',
     schoolId: '',
+    status: undefined,
   });
 
   const [initialTotal, setInitialTotal] = useState(null);
@@ -38,6 +40,16 @@ export const CoordinatorGraph = () => {
           label="Nome do coordenador"
           onChange={(event) => {
             nameDebounce(event.target.value);
+          }}
+        />
+      ),
+      view: false,
+    },
+    statusPopover: {
+      element: (
+        <StatusSelect
+          onChange={(event) => {
+            setFiltersValues((prev) => ({ ...prev, status: event.value }));
           }}
         />
       ),
@@ -113,6 +125,7 @@ export const CoordinatorGraph = () => {
           name: filtersValues.name || null,
           projectId: filtersValues.projectId || null,
           schoolId: filtersValues.schoolId || null,
+          status: filtersValues.status,
         },
       })
     ).data;
@@ -135,12 +148,12 @@ export const CoordinatorGraph = () => {
     }
   }, [data?.meta?.total, initialTotal]);
 
-  const COLORS = ['#5e69bd', '#737d8a'];
+  const COLORS = ['#5C6189', '#737d8a'];
 
   const dataGraph = [
     {
       name: 'Total',
-      value: initialTotal !== null ? initialTotal : data?.meta?.total,
+      value: initialTotal,
     },
     {
       name: 'Filtro',
@@ -173,6 +186,14 @@ export const CoordinatorGraph = () => {
                 }}
               />
               <InputCheckBoxThemed
+                label="Status"
+                register={register}
+                name="statusPopover"
+                onClick={(event) => {
+                  handleChangeFilters('statusPopover', 'status', event);
+                }}
+              />
+              <InputCheckBoxThemed
                 label="Projeto"
                 register={register}
                 name="projectPopover"
@@ -181,25 +202,17 @@ export const CoordinatorGraph = () => {
                 }}
               />
               <InputCheckBoxThemed
-                label="Estado"
+                label="Escola"
                 register={register}
-                name="statePopover"
+                name="schoolPopover"
                 onClick={(event) => {
-                  handleChangeFilters('statePopover', 'state', event);
-                }}
-              />
-              <InputCheckBoxThemed
-                label="Cidade"
-                register={register}
-                name="cityPopover"
-                onClick={(event) => {
-                  handleChangeFilters('cityPopover', 'city', event);
+                  handleChangeFilters('schoolPopover', 'schoolId', event);
                 }}
               />
             </form>
           </Popover>
         </div>
-        <div className="mt-[32px] flex flex-col gap-[16px] 2xl:grid 2xl:grid-cols-2 2xl:items-end">
+        <div className="mt-[32px] flex flex-col gap-[16px] 2xl:grid 2xl:grid-cols-1 2xl:items-end">
           {Object.keys(filters)
             .filter((item) => filters[item]?.view === true)
             .map((item) => (
@@ -208,7 +221,7 @@ export const CoordinatorGraph = () => {
         </div>
       </div>
       <div>
-        {(isLoading || isRefetching) && (
+        {isLoading || isRefetching ? (
           <div className="flex h-[420px] w-full items-center justify-center text-main">
             <div>
               <div className="animate-spin">
@@ -216,49 +229,42 @@ export const CoordinatorGraph = () => {
               </div>
             </div>
           </div>
-        )}
-        {(isLoading || isRefetching) && (
-          <div className="flex h-[420px] w-full items-center justify-center text-main">
-            <div>
-              <div className="animate-spin">
-                <TbLoader size={62} />
-              </div>
+        ) : (
+          <div className="relative  flex h-[300px] items-center justify-center p-[44px]">
+            <ResponsiveContainer>
+              <PieChart>
+                <Pie
+                  data={dataGraph}
+                  startAngle={180}
+                  endAngle={0}
+                  cy={135}
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={15}
+                  dataKey="value"
+                  label
+                >
+                  {dataGraph.map((item, index: any) => (
+                    <Cell
+                      key={`cell-${item.name}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="absolute bottom-[115px] flex text-[24px] font-bold">
+              <CountUp
+                end={
+                  ((data?.meta?.total || 0) * 100) / (initialTotal || 0) || 0
+                }
+                duration={1.5}
+              />
+              <p>%</p>
             </div>
           </div>
         )}
-
-        <div className="relative  flex h-[300px] items-center justify-center p-[44px]">
-          <ResponsiveContainer>
-            <PieChart>
-              <Pie
-                data={dataGraph}
-                startAngle={180}
-                endAngle={0}
-                cy={135}
-                innerRadius={60}
-                outerRadius={100}
-                paddingAngle={15}
-                dataKey="value"
-                label
-              >
-                {dataGraph.map((item, index: any) => (
-                  <Cell
-                    key={`cell-${item.name}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-          <div className="absolute bottom-[115px] flex text-[24px] font-bold">
-            <CountUp
-              end={((data?.meta?.total || 0) * 100) / (initialTotal || 0) || 0}
-              duration={1.5}
-            />
-            <p>%</p>
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -150,7 +150,7 @@ export const FrequencyTable = ({
 
   const { mutate } = useMutation('deleteFrequencyMutation', deleteFrequency, {
     onSuccess: () => {
-      toast.success('Frequencia do aluno deletado!');
+      toast.success('Frequencia do aluno deletada!');
       refetch();
     },
     onError: () => {
