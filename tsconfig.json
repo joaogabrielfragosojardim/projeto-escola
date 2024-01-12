@@ -56,5 +56,5 @@
     ".storybook/*.ts",
     ".next/types/**/*.ts",
     "src/libs/Env.mjs"
-  ]
+, "src/pages/api/graphs/sea/index.tsx"  ]
 }

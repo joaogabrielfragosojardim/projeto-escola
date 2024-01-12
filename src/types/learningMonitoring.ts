@@ -34,7 +34,7 @@ export enum LearningMonitoringLabelsEnum {
   reconheceOSistemaMonetarioBrasileiro = 'MAT11 - Reconhece o Sistema Monetário Brasileiro?',
   leTableasEGraficos = 'MAT12 - Lê tabelas e gráficos?',
   preSilabico = 'Pré-Silábico',
-  silabico = 'Silabico',
+  silabico = 'Silábico',
   silabicoAlfabético = 'Silábico-Alfabético',
   alfabetico = 'Alfabético',
 }

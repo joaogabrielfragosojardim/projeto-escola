@@ -8,11 +8,13 @@ import {
   PiRulerLight,
   PiStackSimpleLight,
 } from 'react-icons/pi';
+import { SlNotebook } from 'react-icons/sl';
 
 import { CoordinatorGraph } from '@/components/ui/graphs/CoordinatorGraph';
 import { EducatorGraph } from '@/components/ui/graphs/EducatorGraph';
 import { ProjectGraph } from '@/components/ui/graphs/ProjectGraph';
 import { SchoolGraph } from '@/components/ui/graphs/SchoolGraph';
+import { SeaGraph } from '@/components/ui/graphs/SeaGraph';
 import { StudentGraph } from '@/components/ui/graphs/StudentGraph.tsx';
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
 
@@ -69,6 +71,15 @@ const Dashboard = () => {
               {graph.item}
             </div>
           ))}
+        </div>
+        <div className="mt-16 gap-x-4 gap-y-16">
+          <div className="border-b-[1px] border-solid border-complement-200 py-[16px] text-complement-200 2xl:rounded-[16px] 2xl:border-[3px] 2xl:border-main 2xl:p-[22px]">
+            <div className="mb-4 mt-2 flex gap-4 pl-8 font-bold">
+              <SlNotebook size={25} />
+              <span>Sea</span>
+            </div>
+            <SeaGraph />
+          </div>
         </div>
       </div>
     </SideNavMenuContainer>
