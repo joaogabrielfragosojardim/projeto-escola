@@ -6,10 +6,12 @@ interface CreateLearningMonitoringUseCaseRequest {
   questions: Record<string, string>;
   studentId: string;
   teacherId: string;
+  date: Date;
 }
 
 export class CreateLearningMonitoringUseCase {
   async execute({
+    date,
     questions,
     writingLevel,
     studentId,
@@ -50,6 +52,7 @@ export class CreateLearningMonitoringUseCase {
 
     const learningMonitoring = await prisma.learningMonitoring.create({
       data: {
+        createdAt: date,
         questions,
         classroomId: student.classId,
         teacherId: teacher?.id,

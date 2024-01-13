@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { InputCheckBoxThemed } from '@/components/ui/forms/InputCheckBoxThemed';
+import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
 import { useUser } from '@/store/user/context';
 import {
@@ -51,6 +52,7 @@ const LearningMonitoring = () => {
 
   const onSubmit = (data: any) => {
     const formatedData = {
+      date: data.date,
       teacherId: user.id,
       writingLevel: data.writingLevel,
       questions: { ...data },
@@ -60,6 +62,9 @@ const LearningMonitoring = () => {
     mutate(formatedData);
   };
 
+  const maxDate = new Date();
+  maxDate.setHours(maxDate.getHours() - 3);
+
   return (
     <SideNavMenuContainer title="Acompanhamento de Aprendizagem">
       <div className="p-[32px] text-complement-200">
@@ -68,6 +73,18 @@ const LearningMonitoring = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <div>
+            <div className="my-4">
+              <InputThemed
+                register={register}
+                name="date"
+                label="Data"
+                type="date"
+                max={maxDate.toISOString().split('T')[0]}
+                validations={{ required: 'Campo obrigatório' }}
+                // @ts-ignore
+                error={errors.date}
+              />
+            </div>
             <h3 className="text-[22px]">Observação direta da sala de aula</h3>
             <div className="mt-[16px] grid grid-cols-1 gap-[16px]">
               <InputCheckBoxThemed

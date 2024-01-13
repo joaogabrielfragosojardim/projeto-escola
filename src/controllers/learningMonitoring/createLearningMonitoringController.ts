@@ -7,13 +7,14 @@ export class CreateLearningMonitoringController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
     try {
       const createBodySchema = z.object({
+        date: z.coerce.date(),
         writingLevel: z.string(),
         questions: z.record(z.any(), z.any()),
         studentId: z.string().uuid(),
         teacherId: z.string().uuid(),
       });
 
-      const { writingLevel, questions, studentId, teacherId } =
+      const { writingLevel, questions, studentId, teacherId, date } =
         createBodySchema.parse(req.body);
 
       const createLearningMonitoringUseCase =
@@ -21,6 +22,7 @@ export class CreateLearningMonitoringController {
 
       const { learningMonitoring } =
         await createLearningMonitoringUseCase.execute({
+          date,
           writingLevel,
           questions,
           studentId,
