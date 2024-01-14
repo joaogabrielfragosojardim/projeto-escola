@@ -300,10 +300,10 @@ export const FrequencyTable = ({
                     date: item.date,
                     student: item.student.user.name,
                     registration: item.student.registration,
-                    classrooom: `${item.Classroom.year}º Ano - ${item.Classroom.period}`,
+                    classrooom: `${item.Classroom.year} - ${item.Classroom.period}`,
                     present: item.isPresent ? 'Presente' : 'Ausente',
                   })),
-                  ['Data', 'Matrícula', 'Estudante', 'Turma', 'Presente'],
+                  ['Data', 'Matrícula', 'Estudante', 'Turma', 'Frequência'],
                   'relatorioFrequencia',
                 )
               }
@@ -477,7 +477,7 @@ export const FrequencyTable = ({
                       <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">Turma:</p>
                         <p className="text-[14px] text-complement-200">
-                          {`${frequency.Classroom.year}º Ano - ${frequency.Classroom.period}`}
+                          {`${frequency.Classroom.year} - ${frequency.Classroom.period}`}
                         </p>
                       </div>
                     </div>

@@ -337,7 +337,7 @@ export const PedagogicalVisitTable = ({
                     date: item.date,
                     coordinator: item.coordinator.name,
                     teacher: item.teacher.name,
-                    classrooom: `${item.classroom.year}º Ano - ${item.classroom.period}`,
+                    classrooom: `${item.classroom.year} - ${item.classroom.period}`,
                     ...Object.fromEntries(
                       Object.entries(PedagogicalVisitEnumQuestions).map(
                         ([_, value]) => [
@@ -538,7 +538,7 @@ export const PedagogicalVisitTable = ({
                       <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">Turma:</p>
                         <p className="text-[14px] text-complement-200">
-                          {`${pedagogicalVisit.classroom.year}º Ano - ${pedagogicalVisit.classroom.period}`}
+                          {`${pedagogicalVisit.classroom.year} - ${pedagogicalVisit.classroom.period}`}
                         </p>
                       </div>
                     </div>

@@ -1,13 +1,13 @@
 export const allSeries = [
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
+  '1º ano',
+  '2º ano',
+  '3º ano',
+  '4º ano',
+  '5º ano',
+  '6º ano',
+  '7º ano',
+  '8º ano',
+  '9º ano',
   'EJA III',
   'EJA IV',
 ];
@@ -24,7 +24,7 @@ export type ClassRoom = {
 
 export const classrooms: ClassRoom[] = allSeries.flatMap((series) =>
   allPeriods.map((period) => ({
-    label: `${series}º ano - ${period}`,
+    label: `${series} - ${period}`,
     value: {
       series,
       period,

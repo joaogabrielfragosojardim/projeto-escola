@@ -10,7 +10,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BiBlock, BiDownload, BiTrash } from 'react-icons/bi';
 import { FiEye } from 'react-icons/fi';
@@ -226,6 +226,23 @@ export const CoordinatorTable = ({
     }
   };
 
+  const removeDoubleNames = useCallback(
+    (arr: { name: string; id: string }[]) => {
+      const entradasUnicas: any = {};
+
+      const resultado = arr.filter((obj: { name: string }) => {
+        if (!entradasUnicas[obj.name]) {
+          entradasUnicas[obj.name] = true;
+          return true;
+        }
+        return false;
+      });
+
+      return resultado;
+    },
+    [],
+  );
+
   return (
     <div>
       <div className="py-[22px] 2xl:p-[32px]">
@@ -395,9 +412,11 @@ export const CoordinatorTable = ({
                             {coordinator.email}
                           </Cell>
                           <Cell className="text-[20px] text-main hover:text-main">
-                            {coordinator.projects.map((project) => (
-                              <p key={project.id}>{project.name}</p>
-                            ))}
+                            {removeDoubleNames(coordinator.projects).map(
+                              (project) => (
+                                <p key={project.id}>{project.name}</p>
+                              ),
+                            )}
                           </Cell>
                           <Cell className="text-[20px] text-main hover:text-main">
                             {coordinator.schools.map((school) => (

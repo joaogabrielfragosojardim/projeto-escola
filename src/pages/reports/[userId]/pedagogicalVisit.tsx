@@ -302,7 +302,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       const classrooms = data?.teacher?.classrooms.map(
         (item: { id: string; year: number; period: number }) => ({
           value: item.id,
-          label: `${item.year}º ano - ${item.period}`,
+          label: `${item.year} - ${item.period}`,
         }),
       );
 

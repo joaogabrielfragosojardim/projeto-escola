@@ -1,11 +1,9 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { TbLoader } from 'react-icons/tb';
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
-import { z } from 'zod';
 
 import { axiosApi } from '@/components/api/axiosApi';
 import { InputPasswordThemed } from '@/components/ui/forms/InputPasswordThemed';
@@ -16,21 +14,26 @@ interface IResetPasswordRequest {
   token: string;
 }
 
-const schema = z
-  .object({
-    password: z
-      .string()
-      .min(8, { message: 'Digite uma senha com no mínimo 6 caracteres' }),
-    confirm_password: z
-      .string()
-      .min(8, { message: 'Digite uma senha com no mínimo 6 caracteres' }),
-  })
-  .refine((data) => data.password === data.confirm_password, {
-    path: ['confirm_password'],
-    message: 'As senhas precisam ser iguais',
-  });
+const passwordValidator = (value: string) => {
+  let warning = '';
 
-type ResetPasswordForm = z.infer<typeof schema>;
+  if (!value.match(/[A-Z]/g)) {
+    warning += 'Deve conter letras Maiúsculas, ';
+  }
+  if (!value.match(/[a-z]/g)) {
+    warning += 'Deve conter letras Minúsculas, ';
+  }
+  if (!value.match(/[0-9]/g)) {
+    warning += 'Deve conter Números, ';
+  }
+  if (!value.match(/[^A-Za-z0-9]/g)) {
+    warning += 'Deve conter caracteres especiais, ';
+  }
+  warning += '  Ex: Prime123@';
+  return warning === '  Ex: Prime123@' ? undefined : warning;
+};
+
+type ResetPasswordForm = { password: string; confirmPassword: string };
 
 const ResetPassword = () => {
   const {
@@ -38,7 +41,7 @@ const ResetPassword = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<ResetPasswordForm>({
-    resolver: zodResolver(schema),
+    mode: 'onChange',
   });
 
   const { query, push } = useRouter();
@@ -104,6 +107,13 @@ const ResetPassword = () => {
             register={register}
             name="password"
             error={errors.password}
+            validations={{
+              required: 'Campo obrigatório',
+              minLength: {
+                value: 8,
+                message: 'a senha deve conter no mínimo 8 caracteres',
+              },
+            }}
           />
 
           <InputPasswordThemed
@@ -112,7 +122,17 @@ const ResetPassword = () => {
             placeholder="Confirme sua senha"
             register={register}
             name="confirm_password"
-            error={errors.confirm_password}
+            validations={{
+              required: 'Campo obrigatório',
+              validate: (e) => {
+                return passwordValidator(e);
+              },
+              minLength: {
+                value: 8,
+                message: 'a senha deve conter no mínimo 8 caracteres',
+              },
+            }}
+            error={errors.confirmPassword}
           />
 
           <div className="mt-[42px] flex w-full items-center justify-center">

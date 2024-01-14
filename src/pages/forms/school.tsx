@@ -292,7 +292,6 @@ const SchoolFormSecondStep = ({
             name="houseNumber"
             validations={{ required: 'Campo obrigatório' }}
             error={errors.houseNumber}
-            type="number"
           />
         </div>
         <div className="mt-[48px] text-[16px] lg:text-[20px]">

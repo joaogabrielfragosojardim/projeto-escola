@@ -347,9 +347,9 @@ export const LearnMonitoringTable = ({
                     teacher: item.teacher.user.name,
                     student: item.student.user.name,
                     registration: item.student.registration,
-                    classrooom: `${item.classroom.year}º Ano - ${item.classroom.period}`,
-                    writingLevel: item.writingLevel,
+                    classrooom: `${item.classroom.year} - ${item.classroom.period}`,
                     ...learningMonitoringValues(item.questions),
+                    writingLevel: item.writingLevel,
                   })),
                   [
                     'Data',
@@ -544,7 +544,7 @@ export const LearnMonitoringTable = ({
                       <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">Turma:</p>
                         <p className="text-[14px] text-complement-200">
-                          {`${learningMonitoring.classroom.year}º Ano - ${learningMonitoring.classroom.period}`}
+                          {`${learningMonitoring.classroom.year} - ${learningMonitoring.classroom.period}`}
                         </p>
                       </div>
                     </div>
@@ -565,7 +565,7 @@ export const LearnMonitoringTable = ({
               />
             </div>
             <div className="text-center text-[22px] text-main">
-              <p>Nenhuma visita pedagógica encontrada!</p>
+              <p>Nenhum acompanhamento de aprendizagem encontrada!</p>
             </div>
           </div>
         ) : null}
@@ -573,7 +573,7 @@ export const LearnMonitoringTable = ({
       <ConfirmModal
         isOpen={deleteModal}
         setOpen={setDeleteModal}
-        text="Deseja realmente excluir essa visita pedagógica?"
+        text="Deseja realmente excluir ess acompanhamento de aprendizagem?"
         onConfirm={() => {
           mutate(learingMonitoringToDelete);
           setDeleteModal(false);

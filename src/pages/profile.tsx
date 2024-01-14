@@ -19,7 +19,14 @@ interface ProfileProps {
   user: User;
 }
 
-const Profile = ({ user: { name, email, visualIdentity } }: ProfileProps) => {
+const Profile = ({
+  user: {
+    name,
+    email,
+    visualIdentity,
+    role: { name: roleName },
+  },
+}: ProfileProps) => {
   const {
     register,
     reset,
@@ -52,8 +59,25 @@ const Profile = ({ user: { name, email, visualIdentity } }: ProfileProps) => {
     return;
   }
 
+  const translateRole = (role: string) => {
+    switch (role) {
+      case 'master':
+        return 'Adm Master';
+      case 'adm':
+        return 'Administrador';
+      case 'coordinator':
+        return 'Coordenador';
+      case 'teacher':
+        return 'Professor';
+      case 'student':
+        return 'Estudante';
+      default:
+        return '';
+    }
+  };
+
   return (
-    <SideNavMenuContainer title="Adm">
+    <SideNavMenuContainer title={translateRole(roleName)}>
       <div className="p-[32px]">
         <form className="max-w-[430px]" onSubmit={handleSubmit(onSubmit)}>
           <InputImageThemed

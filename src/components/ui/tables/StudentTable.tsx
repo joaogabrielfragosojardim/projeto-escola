@@ -455,7 +455,7 @@ export const StudentTable = ({
                     status: item.status,
                     email: item.email,
                     school: item.school.name,
-                    classrooms: `${item.classroom.year}º ano - ${item.classroom.period}`,
+                    classrooms: `${item.classroom.year} - ${item.classroom.period}`,
                   })),
                   ['Nome', 'Status', 'Email', 'Escola', 'Turma'],
                   'relatorioAlunos',
@@ -540,7 +540,7 @@ export const StudentTable = ({
                             {`${student.school.name}`}
                           </Cell>
                           <Cell className="text-[20px] text-main hover:text-main">
-                            {`${student.classroom.year}º Ano - ${student.classroom.period}`}
+                            {`${student.classroom.year} - ${student.classroom.period}`}
                           </Cell>
                           <Cell className="text-center text-main hover:text-main">
                             <div className="flex gap-[8px]">
@@ -712,7 +712,7 @@ export const StudentTable = ({
                       <div className="mt-[8px] flex items-center gap-[8px]">
                         <p className="text-[14px] text-main">Turma:</p>
                         <p className="text-[14px] text-complement-200">
-                          {`${student.classroom.year}º Ano - ${student.classroom.period}`}
+                          {`${student.classroom.year} - ${student.classroom.period}`}
                         </p>
                       </div>
                     </div>

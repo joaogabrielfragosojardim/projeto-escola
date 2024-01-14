@@ -145,10 +145,10 @@ const CoordinatorSecondStep = ({
     },
   );
 
-  const findSchoolsByProject = async (projectId: string) => {
+  const findSchoolsByProject = async (projectsIds: any[]) => {
     return axiosApi.get('/school/options', {
       params: {
-        projectId,
+        projects: JSON.stringify(projectsIds),
       },
     });
   };
@@ -235,7 +235,7 @@ const CoordinatorSecondStep = ({
             error={errors.projects as unknown as any}
             isMulti
             onChange={(option: any) => {
-              mutateFindSchoolByProjectMutation(option.value);
+              mutateFindSchoolByProjectMutation(option);
             }}
           />
         </div>

@@ -123,13 +123,13 @@ const SocialEducator = ({ student }: { student: StudentEdit }) => {
                 options={allPeriods
                   .map((period) =>
                     allSeries.map((serie) => ({
-                      label: `${serie}º Ano - ${period}`,
+                      label: `${serie} - ${period}`,
                       value: { year: serie, period },
                     })),
                   )
                   .flat()}
                 defaultValue={{
-                  label: `${student.Classroom.year}º Ano - ${student.Classroom.period}`,
+                  label: `${student.Classroom.year} - ${student.Classroom.period}`,
                 }}
               />
             </div>

@@ -91,11 +91,13 @@ const PedagogicalVisit = ({
   };
 
   return (
-    <SideNavMenuContainer title="Visita Pedagógica">
+    <SideNavMenuContainer title="">
       <div className="p-[32px] text-complement-200" id="pageContent">
+        <h1 className="mb-6 text-[32px]">Visita Pedagógica</h1>
         <form
           className="flex max-w-[875px] flex-col gap-[22px]"
           onSubmit={handleSubmit(onSubmit)}
+          id="myForm"
         >
           <InputThemed
             register={register}
@@ -127,7 +129,7 @@ const PedagogicalVisit = ({
             label="Turma"
             isDisabled
             defaultValue={{
-              label: `${pedagogicalVisit.Classroom.year}º Ano - ${pedagogicalVisit.Classroom.period}`,
+              label: `${pedagogicalVisit.Classroom.year} - ${pedagogicalVisit.Classroom.period}`,
               value: {
                 series: pedagogicalVisit.Classroom.year,
                 period: pedagogicalVisit.Classroom.period,
@@ -398,28 +400,29 @@ const PedagogicalVisit = ({
               new Date(pedagogicalVisit.date).toISOString().split('T')[0]
             }
           />
-          <div className="mt-[22px] flex gap-[8px] text-[16px] lg:text-[20px]">
-            <button
-              type="submit"
-              className="flex items-center justify-center gap-[16px] rounded-[5px] bg-main px-[62px] py-[8px] text-complement-100"
-            >
-              {isLoading ? (
-                <div className="animate-spin">
-                  <TbLoader />
-                </div>
-              ) : (
-                'Editar Relatório'
-              )}
-            </button>
-            <button
-              type="button"
-              className="flex items-center justify-center gap-[16px] rounded-[5px] bg-main px-[62px] py-[8px] text-complement-100"
-              onClick={downloadPDF}
-            >
-              Baixar PDF
-            </button>
-          </div>
         </form>
+      </div>
+      <div className="mt-[22px] flex gap-[8px] p-[32px] text-[16px] lg:text-[20px]">
+        <button
+          type="submit"
+          form="myForm"
+          className="flex items-center justify-center gap-[16px] rounded-[5px] bg-main px-[62px] py-[8px] text-complement-100"
+        >
+          {isLoading ? (
+            <div className="animate-spin">
+              <TbLoader />
+            </div>
+          ) : (
+            'Editar Relatório'
+          )}
+        </button>
+        <button
+          type="button"
+          className="flex items-center justify-center gap-[16px] rounded-[5px] bg-main px-[62px] py-[8px] text-complement-100"
+          onClick={downloadPDF}
+        >
+          Baixar PDF
+        </button>
       </div>
     </SideNavMenuContainer>
   );

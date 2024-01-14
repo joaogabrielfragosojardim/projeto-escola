@@ -83,11 +83,13 @@ const LearningMonitoring = ({
   maxDate.setHours(maxDate.getHours() - 3);
 
   return (
-    <SideNavMenuContainer title="Acompanhamento de Aprendizagem">
+    <SideNavMenuContainer title="">
       <div className="p-[32px] text-complement-200" id="pageContent">
+        <h1 className="mb-6 text-[32px]">Acompanhamento de Aprendizagem</h1>
         <form
           className="flex max-w-[875px] flex-col gap-[22px]"
           onSubmit={handleSubmit(onSubmit)}
+          id="myForm"
         >
           <div>
             <InputThemed
@@ -137,7 +139,7 @@ const LearningMonitoring = ({
               name="classroom"
               label="Turma"
               disabled
-              defaultValue={`${learningMonitoring.classroom.year}º Ano - ${learningMonitoring.classroom.period}`}
+              defaultValue={`${learningMonitoring.classroom.year} - ${learningMonitoring.classroom.period}`}
             />
           </div>
           <div>
@@ -678,22 +680,23 @@ const LearningMonitoring = ({
               )}
             </div>
           </div>
-          <div className="mt-[22px] flex gap-[8px] text-[16px] lg:text-[20px]">
-            <button
-              type="submit"
-              className="flex items-center justify-center gap-[16px] rounded-[5px] bg-main px-[62px] py-[8px] text-complement-100"
-            >
-              Editar Relatório
-            </button>
-            <button
-              type="button"
-              className="flex items-center justify-center gap-[16px] rounded-[5px] bg-main px-[62px] py-[8px] text-complement-100"
-              onClick={downloadPDF}
-            >
-              Baixar PDF
-            </button>
-          </div>
         </form>
+      </div>
+      <div className="mt-[22px] flex gap-[8px] p-[32px] text-[16px] lg:text-[20px]">
+        <button
+          type="submit"
+          className="flex items-center justify-center gap-[16px] rounded-[5px] bg-main px-[62px] py-[8px] text-complement-100"
+          form="myForm"
+        >
+          Editar Relatório
+        </button>
+        <button
+          type="button"
+          className="flex items-center justify-center gap-[16px] rounded-[5px] bg-main px-[62px] py-[8px] text-complement-100"
+          onClick={downloadPDF}
+        >
+          Baixar PDF
+        </button>
       </div>
     </SideNavMenuContainer>
   );

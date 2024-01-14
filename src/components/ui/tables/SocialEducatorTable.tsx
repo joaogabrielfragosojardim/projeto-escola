@@ -345,7 +345,7 @@ export const SocialEducatorTable = ({
                     classrooms: item.classrooms
                       .map(
                         (classroom) =>
-                          `${classroom.year}º ano - ${classroom.period}`,
+                          `${classroom.year} - ${classroom.period}`,
                       )
                       .join('/'),
                   })),
@@ -431,7 +431,7 @@ export const SocialEducatorTable = ({
                               <p
                                 key={`${classroom.year} - ${classroom.period}`}
                               >
-                                {classroom.year}º ano - {classroom.period}
+                                {classroom.year} - {classroom.period}
                               </p>
                             ))}
                           </Cell>
@@ -638,7 +638,7 @@ export const SocialEducatorTable = ({
                         <p className="text-[14px] text-complement-200">
                           {teacher.classrooms.map((classroom) => (
                             <p key={`${classroom.year} - ${classroom.period}`}>
-                              {classroom.year}º ano - {classroom.period}
+                              {classroom.year} - {classroom.period}
                             </p>
                           ))}
                         </p>

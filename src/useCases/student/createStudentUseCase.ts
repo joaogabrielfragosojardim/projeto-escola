@@ -33,7 +33,7 @@ export class CreateStudentUseCase {
       throw new AppError('Cargo inexistente', 400);
     }
 
-    const email = generateEmail(name);
+    const email = generateEmail(name, registration);
 
     const userWithSameEmail = await prisma.user.findUnique({
       where: {

@@ -8,9 +8,10 @@ export class OptionsSchoolController {
     try {
       const optionsQuerySchema = z.object({
         projectId: z.string().uuid().optional(),
+        projects: z.string().optional(),
       });
 
-      const { projectId } = optionsQuerySchema.parse(req.query);
+      const { projectId, projects } = optionsQuerySchema.parse(req.query);
 
       const optionsSchoolUseCase = new OptionsSchoolUseCase();
 
@@ -18,6 +19,7 @@ export class OptionsSchoolController {
 
       const { options } = await optionsSchoolUseCase.execute({
         projectId,
+        projects,
         userId,
       });
 

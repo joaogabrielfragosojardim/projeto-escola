@@ -16,7 +16,7 @@ export const YearSelect = ({
   const { control, reset } = useForm();
 
   const options = allSeries.map((serie) => ({
-    label: `${serie}º ano`,
+    label: `${serie}`,
     value: serie,
   }));
 
@@ -25,8 +25,8 @@ export const YearSelect = ({
       control={control}
       reset={reset}
       name="year"
-      label={label || 'Ano'}
-      placeholder={placeholder || 'Ano'}
+      label={label || 'Ano Cursivo'}
+      placeholder={placeholder || 'Ano Cursivo'}
       options={options}
       onChange={onChange}
       isClearable

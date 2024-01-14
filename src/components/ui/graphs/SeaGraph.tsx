@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import {
   Bar,
   BarChart,
+  CartesianGrid,
   Legend,
   Rectangle,
   ResponsiveContainer,
@@ -29,6 +30,32 @@ import { ProjectSelect } from '../tables/Selects/ProjectSelect';
 import { TeacherSelect } from '../tables/Selects/TeacherSelect';
 import { YearSelect } from '../tables/Selects/YearSelect';
 
+const CustomizedLabel = ({
+  x,
+  y,
+  fill,
+  value,
+}: {
+  x: number;
+  y: number;
+  fill: string;
+  value: number;
+}) => {
+  return (
+    <text
+      x={x}
+      y={y}
+      dy={-4}
+      fontSize="16"
+      fontFamily="sans-serif"
+      fill={fill}
+      width="100%"
+      textAnchor="middle"
+    >
+      {value}
+    </text>
+  );
+};
 export const SeaGraph = () => {
   const { register } = useForm();
   const [graphData, setGraphData] = useState([]);
@@ -190,6 +217,20 @@ export const SeaGraph = () => {
     }
   };
 
+  const sumNumbers = (data: any) => {
+    let total = 0;
+
+    data.forEach((item: any) => {
+      total +=
+        item['Pré-Silábico'] +
+        item['Silábico'] +
+        item['Silábico-Alfabético'] +
+        item['Alfabético'];
+    });
+
+    return total;
+  };
+
   return (
     <div>
       <div className="py-[22px] 2xl:p-[32px]">
@@ -267,7 +308,7 @@ export const SeaGraph = () => {
             </div>
           </div>
         ) : graphData.length ? (
-          <div className="h-[360px] w-full">
+          <div className="h-[360px] w-full pb-8">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 width={500}
@@ -278,32 +319,85 @@ export const SeaGraph = () => {
                   bottom: 15,
                 }}
               >
+                <CartesianGrid vertical={false} stroke="#ebf3f0" />
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
                 <Bar
                   dataKey="Pré-Silábico"
-                  fill="#89AAE6"
-                  activeBar={<Rectangle fill="#89aae684" stroke="black" />}
+                  fill="#EA4235"
+                  activeBar={<Rectangle fill="#ea41357d" stroke="black" />}
+                  // eslint-disable-next-line react/no-unstable-nested-components
+                  label={(props) => {
+                    console.log(props);
+                    const { x, y, value, width } = props;
+                    return (
+                      <CustomizedLabel
+                        x={x + width / 2}
+                        y={y}
+                        value={value}
+                        fill="black"
+                      />
+                    );
+                  }}
                 />
                 <Bar
                   dataKey="Silábico"
-                  fill="#3685B5"
-                  activeBar={<Rectangle fill="#3684b56f" stroke="black" />}
+                  fill="#4286F5"
+                  activeBar={<Rectangle fill="#4287f57b" stroke="black" />}
+                  // eslint-disable-next-line react/no-unstable-nested-components
+                  label={(props) => {
+                    const { x, y, value, width } = props;
+                    return (
+                      <CustomizedLabel
+                        x={x + width / 2}
+                        y={y}
+                        value={value}
+                        fill="black"
+                      />
+                    );
+                  }}
                 />
                 <Bar
                   dataKey="Silábico-Alfabético"
-                  fill="#0471A6"
-                  activeBar={<Rectangle fill="#0470a67a" stroke="black" />}
+                  fill="#F7BF01"
+                  activeBar={<Rectangle fill="#f7be017a" stroke="black" />}
+                  // eslint-disable-next-line react/no-unstable-nested-components
+                  label={(props) => {
+                    const { x, y, value, width } = props;
+                    return (
+                      <CustomizedLabel
+                        x={x + width / 2}
+                        y={y}
+                        value={value}
+                        fill="black"
+                      />
+                    );
+                  }}
                 />
                 <Bar
                   dataKey="Alfabético"
-                  fill="#0d3655"
-                  activeBar={<Rectangle fill="#0d365578" stroke="purple" />}
+                  fill="#35A853"
+                  activeBar={<Rectangle fill="#35a85478" stroke="purple" />}
+                  // eslint-disable-next-line react/no-unstable-nested-components
+                  label={(props) => {
+                    const { x, y, value, width } = props;
+                    return (
+                      <CustomizedLabel
+                        x={x + width / 2}
+                        y={y}
+                        value={value}
+                        fill="black"
+                      />
+                    );
+                  }}
                 />
               </BarChart>
             </ResponsiveContainer>
+            <p className="pl-12 text-[24px] font-bold">{`Total Geral: ${sumNumbers(
+              graphData,
+            )}`}</p>
           </div>
         ) : (
           <div className="p-[44px]">

@@ -139,17 +139,6 @@ export class GetAllStudentUseCase {
             select: {
               id: true,
               name: true,
-              // Coordinator: {
-              //   select: {
-              //     id: true,
-              //     user: {
-              //       select: {
-              //         name: true,
-              //       },
-              //     },
-              //   },
-              // },
-
               project: {
                 select: {
                   id: true,
@@ -165,9 +154,25 @@ export class GetAllStudentUseCase {
           status: {
             equals: status ? status === 'true' : undefined,
           },
-          schoolId: { equals: schoolId },
+          AND: [
+            {
+              schoolId: {
+                equals: schoolId,
+              },
+            },
+            {
+              schoolId: {
+                in: coordinator?.schools.map((school) => school.schoolId),
+              },
+            },
+          ],
           school: {
             projectId: { equals: projectId },
+            coordinators: {
+              some: {
+                coordinatorId: { equals: coordinatorId },
+              },
+            },
           },
           Classroom: {
             id: { equals: classId },
@@ -181,6 +186,9 @@ export class GetAllStudentUseCase {
                 : undefined,
             year: { equals: year },
             period: { equals: period },
+          },
+          user: {
+            name: { contains: name, mode: 'insensitive' },
           },
         },
       }),

@@ -36,7 +36,7 @@ export class OptionsClassUseCase {
     });
 
     const options = classRooms.map((classroom) => ({
-      label: `${classroom.year}º ano - ${classroom.period}`,
+      label: `${classroom.year} - ${classroom.period}`,
       value: classroom.id,
     }));
 

@@ -281,7 +281,7 @@ export const StudentGraph = () => {
           <Popover
             triggerElement={
               <button
-                disabled={isLoading || isRefetching || !data?.data.length}
+                disabled={isLoading || isRefetching}
                 type="button"
                 className="flex items-center gap-[8px] rounded bg-main px-[16px] py-[8px] text-[14px] text-complement-100 disabled:opacity-60 2xl:gap-[16px] 2xl:text-[20px]"
               >
