@@ -38,6 +38,7 @@ import { Popover } from '../Popover';
 import { CoordinatorSelect } from './Selects/CoordinatorSelect';
 import { PeriodSelect } from './Selects/PeriodSelect';
 import { ProjectSelect } from './Selects/ProjectSelect';
+import { SchoolSelect } from './Selects/SchoolSelect';
 import { TeacherSelect } from './Selects/TeacherSelect';
 import { YearSelect } from './Selects/YearSelect';
 
@@ -55,6 +56,7 @@ export const PedagogicalVisitTable = ({
   const { register } = useForm();
   const theme = useTableTheme();
   const [filtersValues, setFiltersValues] = useState({
+    schoolId: '',
     coordinatorId: '',
     teacherId: '',
     year: '',
@@ -103,6 +105,31 @@ export const PedagogicalVisitTable = ({
       ),
       view: false,
     },
+    projectPopover: {
+      element: (
+        <ProjectSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
+    schoolPopover: {
+      element: (
+        <SchoolSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({
+              ...prev,
+              schoolId: event.value,
+            }));
+          }}
+        />
+      ),
+      view: false,
+    },
     coordinatorPopover: {
       element: (
         <CoordinatorSelect
@@ -146,17 +173,6 @@ export const PedagogicalVisitTable = ({
               ...prev,
               teacherId: event.value,
             }));
-          }}
-        />
-      ),
-      view: false,
-    },
-    projectPopover: {
-      element: (
-        <ProjectSelect
-          onChange={(event) => {
-            setPage(1);
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
           }}
         />
       ),
@@ -246,6 +262,76 @@ export const PedagogicalVisitTable = ({
     }
   };
 
+  useEffect(() => {
+    if (filtersValues.projectId) {
+      setFilters((prev) => ({
+        ...prev,
+        schoolPopover: {
+          view: prev.schoolPopover?.view || false,
+          element: (
+            <SchoolSelect
+              onChange={(event) => {
+                setPage(1);
+                setFiltersValues((prevFIlters) => ({
+                  ...prevFIlters,
+                  schoolId: event.value,
+                }));
+              }}
+              projectId={filtersValues.projectId}
+            />
+          ),
+        },
+      }));
+    }
+    if (filtersValues.projectId || filtersValues.schoolId) {
+      setFilters((prev) => ({
+        ...prev,
+        coordinatorPopover: {
+          view: prev.coordinatorPopover?.view || false,
+          element: (
+            <CoordinatorSelect
+              onChange={(event) => {
+                setPage(1);
+                setFiltersValues((prevFilters) => ({
+                  ...prevFilters,
+                  coordinatorId: event.value,
+                }));
+              }}
+              projectId={filtersValues.projectId || undefined}
+              schoolId={filtersValues.schoolId || undefined}
+            />
+          ),
+        },
+      }));
+    }
+    if (
+      filtersValues.projectId ||
+      filtersValues.schoolId ||
+      filtersValues.coordinatorId
+    ) {
+      setFilters((prev) => ({
+        ...prev,
+        socialEducatorPopover: {
+          view: prev.socialEducatorPopover?.view || false,
+          element: (
+            <TeacherSelect
+              onChange={(event) => {
+                setPage(1);
+                setFiltersValues((prevFilters) => ({
+                  ...prevFilters,
+                  teacherId: event.value,
+                }));
+              }}
+              projectId={filtersValues.projectId || undefined}
+              schoolId={filtersValues.schoolId || undefined}
+              coordinatorId={filtersValues.coordinatorId || undefined}
+            />
+          ),
+        },
+      }));
+    }
+  }, [filtersValues, setPage]);
+
   return (
     <div>
       <div className="py-[22px] 2xl:p-[32px]">
@@ -262,6 +348,15 @@ export const PedagogicalVisitTable = ({
             }
           >
             <form className="flex flex-col gap-[8px]">
+              <InputCheckBoxThemed
+                label="Data"
+                register={register}
+                name="datePopopver"
+                onClick={(event) => {
+                  handleChangeFilters('datePopopver', '', event);
+                  setDateFilter({ startDate: '', finalDate: '' });
+                }}
+              />
               {!userIsCoordinator && (
                 <InputCheckBoxThemed
                   label="Projeto"
@@ -273,12 +368,11 @@ export const PedagogicalVisitTable = ({
                 />
               )}
               <InputCheckBoxThemed
-                label="Data"
+                label="Escola"
                 register={register}
-                name="datePopopver"
+                name="schoolPopover"
                 onClick={(event) => {
-                  handleChangeFilters('datePopopver', '', event);
-                  setDateFilter({ startDate: '', finalDate: '' });
+                  handleChangeFilters('schoolPopover', 'schoolId', event);
                 }}
               />
               {!userIsCoordinator && (
@@ -296,14 +390,6 @@ export const PedagogicalVisitTable = ({
                 />
               )}
               <InputCheckBoxThemed
-                label="Turma"
-                register={register}
-                name="periodPopover"
-                onClick={(event) => {
-                  handleChangeFilters('periodPopover', 'coordinatorId', event);
-                }}
-              />
-              <InputCheckBoxThemed
                 label="Educador"
                 register={register}
                 name="socialEducatorPopover"
@@ -313,6 +399,14 @@ export const PedagogicalVisitTable = ({
                     'teacherId',
                     event,
                   );
+                }}
+              />
+              <InputCheckBoxThemed
+                label="Turma"
+                register={register}
+                name="periodPopover"
+                onClick={(event) => {
+                  handleChangeFilters('periodPopover', 'coordinatorId', event);
                 }}
               />
             </form>

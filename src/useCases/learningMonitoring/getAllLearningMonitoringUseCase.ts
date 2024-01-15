@@ -7,6 +7,7 @@ interface GetAllLearningMonitoringUseCaseRequest {
   finalDate?: Date;
   teacherId?: string;
   studentId?: string;
+  schoolId?: string;
   coordinatorId?: string;
   projectId?: string;
   period?: string;
@@ -27,6 +28,7 @@ export class GetAllLearningMonitoringUseCase {
     year,
     period,
     userId,
+    schoolId,
   }: GetAllLearningMonitoringUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
@@ -65,7 +67,9 @@ export class GetAllLearningMonitoringUseCase {
           },
           classroom: {
             schoolId: {
-              in: coordinator?.schools.map((school) => school.schoolId),
+              in: schoolId
+                ? [schoolId || '']
+                : coordinator?.schools.map((school) => school.schoolId),
             },
             school: {
               projectId: {
@@ -120,6 +124,21 @@ export class GetAllLearningMonitoringUseCase {
             lte: finalDate,
           },
           classroom: {
+            schoolId: {
+              in: schoolId
+                ? [schoolId || '']
+                : coordinator?.schools.map((school) => school.schoolId),
+            },
+            school: {
+              projectId: {
+                equals: projectId,
+              },
+              coordinators: {
+                every: {
+                  coordinatorId: { equals: coordinatorId },
+                },
+              },
+            },
             period: {
               equals: period,
             },

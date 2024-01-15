@@ -10,6 +10,7 @@ export class GetAllLearningMonitoringController {
         page: z.coerce.number().default(1),
         perPage: z.coerce.number().default(10),
         teacherId: z.string().uuid().optional(),
+        schoolId: z.string().uuid().optional(),
         studentId: z.string().uuid().optional(),
         coordinatorId: z.string().uuid().optional(),
         projectId: z.string().uuid().optional(),
@@ -27,6 +28,7 @@ export class GetAllLearningMonitoringController {
         startDate,
         finalDate,
         teacherId,
+        schoolId,
         coordinatorId,
         studentId,
         projectId,
@@ -47,6 +49,7 @@ export class GetAllLearningMonitoringController {
         teacherId,
         studentId,
         coordinatorId,
+        schoolId,
         projectId,
         userId,
       });
