@@ -217,10 +217,10 @@ export const SeaGraph = () => {
     }
   };
 
-  const sumNumbers = (data: any) => {
+  const sumNumbers = (dataNumbers: any) => {
     let total = 0;
 
-    data.forEach((item: any) => {
+    dataNumbers.forEach((item: any) => {
       total +=
         item['Pré-Silábico'] +
         item['Silábico'] +
