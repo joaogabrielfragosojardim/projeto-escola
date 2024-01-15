@@ -7,6 +7,7 @@ import { IoClose } from 'react-icons/io5';
 interface IConfirmModal {
   text: string;
   onConfirm: () => void;
+  onClose?: () => void;
   isOpen: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -16,6 +17,7 @@ export const ConfirmModal = ({
   text,
   onConfirm,
   setOpen,
+  onClose,
 }: IConfirmModal) => {
   useEffect(() => {
     if (isOpen) {
@@ -38,6 +40,7 @@ export const ConfirmModal = ({
       className="fixed left-0 top-0 z-50 flex h-[100vh] w-full items-center justify-center bg-[#0000006e]"
       onClick={() => {
         setOpen(false);
+        if (onClose) onClose();
       }}
     >
       <div
@@ -51,6 +54,7 @@ export const ConfirmModal = ({
             type="button"
             onClick={() => {
               setOpen(false);
+              if (onClose) onClose();
             }}
           >
             <IoClose size={16} />
@@ -70,6 +74,7 @@ export const ConfirmModal = ({
             className="rounded bg-complement-100 px-[24px] py-[8px] text-[16px] text-complement-200 disabled:opacity-60"
             onClick={() => {
               setOpen(false);
+              if (onClose) onClose();
             }}
           >
             Não

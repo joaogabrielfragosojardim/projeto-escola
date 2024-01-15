@@ -10,6 +10,7 @@ export class GetAllLearningMonitoringController {
         page: z.coerce.number().default(1),
         perPage: z.coerce.number().default(10),
         teacherId: z.string().uuid().optional(),
+        studentId: z.string().uuid().optional(),
         coordinatorId: z.string().uuid().optional(),
         projectId: z.string().uuid().optional(),
         startDate: z.coerce.date().optional(),
@@ -27,6 +28,7 @@ export class GetAllLearningMonitoringController {
         finalDate,
         teacherId,
         coordinatorId,
+        studentId,
         projectId,
       } = getAllQuerySchema.parse(req.query);
 
@@ -43,6 +45,7 @@ export class GetAllLearningMonitoringController {
         startDate,
         finalDate,
         teacherId,
+        studentId,
         coordinatorId,
         projectId,
         userId,

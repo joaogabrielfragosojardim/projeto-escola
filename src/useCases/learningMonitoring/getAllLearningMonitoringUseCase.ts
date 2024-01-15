@@ -6,6 +6,7 @@ interface GetAllLearningMonitoringUseCaseRequest {
   startDate?: Date;
   finalDate?: Date;
   teacherId?: string;
+  studentId?: string;
   coordinatorId?: string;
   projectId?: string;
   period?: string;
@@ -22,6 +23,7 @@ export class GetAllLearningMonitoringUseCase {
     projectId,
     finalDate,
     startDate,
+    studentId,
     year,
     period,
     userId,
@@ -83,6 +85,7 @@ export class GetAllLearningMonitoringUseCase {
             },
           },
           teacher: { id: { equals: teacherId || teacher?.id } },
+          studentId: { equals: studentId },
         },
         select: {
           id: true,
@@ -125,6 +128,7 @@ export class GetAllLearningMonitoringUseCase {
             },
           },
           teacher: { id: { equals: teacherId || teacher?.id } },
+          studentId: { equals: studentId },
         },
       }),
     ]);

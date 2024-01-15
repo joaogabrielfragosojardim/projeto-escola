@@ -40,6 +40,7 @@ import { Popover } from '../Popover';
 import { CoordinatorSelect } from './Selects/CoordinatorSelect';
 import { PeriodSelect } from './Selects/PeriodSelect';
 import { ProjectSelect } from './Selects/ProjectSelect';
+import { StudentSelect } from './Selects/StudentSelect';
 import { TeacherSelect } from './Selects/TeacherSelect';
 import { YearSelect } from './Selects/YearSelect';
 
@@ -58,6 +59,7 @@ export const LearnMonitoringTable = ({
   const theme = useTableTheme();
   const [filtersValues, setFiltersValues] = useState({
     teacherId: '',
+    studentId: '',
     year: '',
     period: '',
     projectId: '',
@@ -167,6 +169,20 @@ export const LearnMonitoringTable = ({
       ),
       view: false,
     },
+    studentPopover: {
+      element: (
+        <StudentSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({
+              ...prev,
+              studentId: event.value,
+            }));
+          }}
+        />
+      ),
+      view: false,
+    },
   });
 
   const deleteLearningMonitoring = async (id: string) => {
@@ -202,6 +218,7 @@ export const LearnMonitoringTable = ({
           period: filtersValues.period || null,
           projectId: filtersValues.projectId || null,
           coordinatorId: filtersValues.coordinatorId || null,
+          studentId: filtersValues.studentId || null,
         },
       })
     ).data;
@@ -324,6 +341,14 @@ export const LearnMonitoringTable = ({
                   }}
                 />
               ) : null}
+              <InputCheckBoxThemed
+                label="Aluno"
+                register={register}
+                name="studentPopover"
+                onClick={(event) => {
+                  handleChangeFilters('studentPopover', 'studentId', event);
+                }}
+              />
             </form>
           </Popover>
           <Popover
