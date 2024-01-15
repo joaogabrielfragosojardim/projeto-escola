@@ -205,7 +205,7 @@ export const SeaGraph = () => {
     ).data;
   };
 
-  const { isLoading, data, mutate } = useMutation('fetchSea', fetchSea, {
+  const { isLoading, mutate } = useMutation('fetchSea', fetchSea, {
     onSuccess: (dataFromApi) => {
       setGraphData(dataFromApi.data);
     },
