@@ -86,8 +86,22 @@ export class GetAllSchoolsUseCase {
 
     const totalPage = Math.ceil(total / take);
 
+    const order = schools.sort((a, b) => {
+      const projectA = a.project.name || '';
+      const projectB = b.project.name || '';
+
+      if (projectA !== projectB) {
+        return projectA.localeCompare(projectB);
+      }
+
+      const schoolA = a.name || '';
+      const schoolB = b.name || '';
+
+      return schoolA.localeCompare(schoolB);
+    });
+
     return {
-      data: toSchool(schools),
+      data: toSchool(order),
       meta: {
         page,
         totalPage,

@@ -1,4 +1,4 @@
-type SchoolQuery = {
+export type SchoolQuery = {
   id: string;
   name: string;
   status: boolean;
@@ -17,7 +17,7 @@ type SchoolQuery = {
   };
 };
 
-type School = {
+export type School = {
   id: string;
   name: string;
   visualIdentity: string | null;
