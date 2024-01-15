@@ -34,6 +34,7 @@ import { ConfirmModal } from '../ConfirmModal';
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
 import { Popover } from '../Popover';
+import { CoordinatorSelect } from './Selects/CoordinatorSelect';
 import { PeriodSelect } from './Selects/PeriodSelect';
 import { ProjectSelect } from './Selects/ProjectSelect';
 import { SchoolSelect } from './Selects/SchoolSelect';
@@ -68,6 +69,7 @@ export const SocialEducatorTable = ({
     name: '',
     projectId: '',
     schoolId: '',
+    coordinatorId: '',
     year: '',
     period: '',
     status: undefined,
@@ -84,6 +86,17 @@ export const SocialEducatorTable = ({
           label="Nome"
           onChange={(event) => {
             nameDebounce(event.target.value);
+          }}
+        />
+      ),
+      view: false,
+    },
+    statusPopover: {
+      element: (
+        <StatusSelect
+          onChange={(event) => {
+            setPage(1);
+            setFiltersValues((prev) => ({ ...prev, status: event.value }));
           }}
         />
       ),
@@ -112,12 +125,15 @@ export const SocialEducatorTable = ({
       ),
       view: false,
     },
-    statusPopover: {
+    coordinatorPopover: {
       element: (
-        <StatusSelect
+        <CoordinatorSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+            setFiltersValues((prev) => ({
+              ...prev,
+              coordinatorId: event.value,
+            }));
           }}
         />
       ),
@@ -160,7 +176,27 @@ export const SocialEducatorTable = ({
                   schoolId: event.value,
                 }));
               }}
-              projectId={filtersValues.projectId}
+              projectId={filtersValues.projectId || undefined}
+            />
+          ),
+        },
+      }));
+    }
+    if (filtersValues.projectId || filtersValues.schoolId) {
+      setFilters((prev) => ({
+        ...prev,
+        coordinatorPopover: {
+          view: prev.schoolPopover?.view || false,
+          element: (
+            <CoordinatorSelect
+              onChange={(event) => {
+                setFiltersValues((prevFIlters) => ({
+                  ...prevFIlters,
+                  coordinatorId: event.value,
+                }));
+              }}
+              projectId={filtersValues.projectId || undefined}
+              schoolId={filtersValues.schoolId || undefined}
             />
           ),
         },
@@ -175,6 +211,7 @@ export const SocialEducatorTable = ({
         perPage,
         name: filtersValues.name || null,
         projectId: filtersValues.projectId || null,
+        coordinatorId: filtersValues.coordinatorId || null,
         schoolId: filtersValues.schoolId || null,
         year: filtersValues.year || null,
         period: filtersValues.period || null,
@@ -289,26 +326,38 @@ export const SocialEducatorTable = ({
                   handleChangeFilters('statusPopover', 'status', event);
                 }}
               />
-              {!userIsCoordinator ? (
-                <>
-                  <InputCheckBoxThemed
-                    label="Projeto"
-                    register={register}
-                    name="projectPopover"
-                    onClick={(event) => {
-                      handleChangeFilters('projectPopover', 'projectId', event);
-                    }}
-                  />
-                  <InputCheckBoxThemed
-                    label="Escola"
-                    register={register}
-                    name="schoolPopover"
-                    onClick={(event) => {
-                      handleChangeFilters('schoolPopover', 'schoolId', event);
-                    }}
-                  />
-                </>
-              ) : null}
+              {!userIsCoordinator && (
+                <InputCheckBoxThemed
+                  label="Projeto"
+                  register={register}
+                  name="projectPopover"
+                  onClick={(event) => {
+                    handleChangeFilters('projectPopover', 'projectId', event);
+                  }}
+                />
+              )}
+              <InputCheckBoxThemed
+                label="Escola"
+                register={register}
+                name="schoolPopover"
+                onClick={(event) => {
+                  handleChangeFilters('schoolPopover', 'schoolId', event);
+                }}
+              />
+              {!userIsCoordinator && (
+                <InputCheckBoxThemed
+                  label="Coordenador"
+                  register={register}
+                  name="coordinatorPopover"
+                  onClick={(event) => {
+                    handleChangeFilters(
+                      'coordinatorPopover',
+                      'coordinatorId',
+                      event,
+                    );
+                  }}
+                />
+              )}
               <InputCheckBoxThemed
                 label="Turma"
                 register={register}

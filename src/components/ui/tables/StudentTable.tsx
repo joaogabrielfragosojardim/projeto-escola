@@ -368,6 +368,14 @@ export const StudentTable = ({
                   handleChangeFilters('namePopover', 'name', event);
                 }}
               />
+              <InputCheckBoxThemed
+                label="Status"
+                register={register}
+                name="statusPopover"
+                onClick={(event) => {
+                  handleChangeFilters('statusPopover', 'status', event);
+                }}
+              />
               {(userIsAdm || userIsAdmMaster) && (
                 <InputCheckBoxThemed
                   label="Projeto"
@@ -422,14 +430,6 @@ export const StudentTable = ({
                 name="classroomPopover"
                 onClick={(event) => {
                   handleChangeFilters('classroomPopover', 'classId', event);
-                }}
-              />
-              <InputCheckBoxThemed
-                label="Status"
-                register={register}
-                name="statusPopover"
-                onClick={(event) => {
-                  handleChangeFilters('statusPopover', 'status', event);
                 }}
               />
             </form>

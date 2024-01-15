@@ -10,15 +10,30 @@ export const StudentSelect = ({
   onChange,
   label,
   placeholder,
+  projectId,
+  classId,
+  schoolId,
+  teacherId,
 }: {
   onChange: (event: any) => void;
   label?: string;
   placeholder?: string;
+  projectId?: string;
+  classId?: string;
+  schoolId?: string;
+  teacherId?: string;
 }) => {
   const { control, reset } = useForm();
 
   const fetchStudentOptions = async () => {
-    return axiosApi.get('/student/options');
+    return axiosApi.get('/student/options', {
+      params: {
+        projectId: projectId || undefined,
+        classId: classId || undefined,
+        schoolId: schoolId || undefined,
+        teacherId: teacherId || undefined,
+      },
+    });
   };
 
   const { data, isLoading } = useQuery(

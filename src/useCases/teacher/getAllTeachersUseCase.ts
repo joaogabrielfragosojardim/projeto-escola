@@ -8,6 +8,7 @@ interface GetAllTeacherUseCaseRequest {
   name?: string;
   schoolId?: string;
   projectId?: string;
+  coordinatorId?: string;
   period?: string;
   year?: string;
   status?: string;
@@ -21,6 +22,7 @@ export class GetAllTeacherUseCase {
     name,
     schoolId,
     projectId,
+    coordinatorId,
     period,
     year,
     status,
@@ -101,6 +103,7 @@ export class GetAllTeacherUseCase {
               },
             },
           },
+          coordinatorId: { equals: coordinatorId },
         },
         select: {
           status: true,
@@ -174,6 +177,7 @@ export class GetAllTeacherUseCase {
               },
             },
           },
+          coordinatorId: { equals: coordinatorId },
         },
       }),
     ]);
