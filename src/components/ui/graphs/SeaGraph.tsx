@@ -106,7 +106,7 @@ export const SeaGraph = () => {
           />
         </div>
       ),
-      view: false,
+      view: true,
     },
     projectPopover: {
       element: (

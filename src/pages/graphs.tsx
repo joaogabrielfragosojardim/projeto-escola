@@ -99,9 +99,11 @@ const Dashboard = () => {
         </div>
         <div className="mt-16 gap-x-4 gap-y-16">
           <div className="border-b-[1px] border-solid border-complement-200 py-[16px] text-complement-200 2xl:rounded-[16px] 2xl:border-[3px] 2xl:border-main 2xl:p-[22px]">
-            <div className="mb-4 mt-2 flex gap-4 pl-8 font-bold">
+            <div className="mb-4 mt-2 flex gap-4 items-center pl-8 font-bold">
               <SlNotebook size={25} />
-              <span>Monitoramento da Aprendizagem SEA/SND</span>
+              <span className="text-[28px]">
+                Monitoramento da Aprendizagem SEA/SND
+              </span>
             </div>
             <SeaGraph />
           </div>
