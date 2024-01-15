@@ -379,7 +379,7 @@ export const SeaGraph = () => {
                 <Bar
                   dataKey="Alfabético"
                   fill="#35A853"
-                  activeBar={<Rectangle fill="#35a85478" stroke="purple" />}
+                  activeBar={<Rectangle fill="#35a85478" stroke="black" />}
                   // eslint-disable-next-line react/no-unstable-nested-components
                   label={(props) => {
                     const { x, y, value, width } = props;
