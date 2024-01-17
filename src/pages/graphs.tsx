@@ -58,7 +58,10 @@ const downloadPDF = () => {
   if (element) {
     html2canvas(element).then((canvas) => {
       const imgData = canvas.toDataURL('img/png');
-      const doc = new JSPDF('p', 'mm', 'a4');
+      const doc = new JSPDF('p', 'mm', [
+        element.offsetWidth,
+        element.offsetHeight,
+      ]);
       const width = doc.internal.pageSize.getWidth();
       const height = doc.internal.pageSize.getHeight();
       doc.addImage(imgData, 'PNG', 0, 0, width, height);
