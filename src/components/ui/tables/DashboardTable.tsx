@@ -82,7 +82,7 @@ export const DashBoardTable = ({
         </div>
         <div>{filteredTables[selectedTable]?.table}</div>
       </div>
-      {totalPages !== 1 ? (
+      {totalPages > 1 ? (
         <>
           <div className="mt-[24px] flex w-full justify-between">
             <button
@@ -96,47 +96,93 @@ export const DashBoardTable = ({
               Anterior
             </button>
             <div className="flex gap-[16px]">
-              {slicedPagesArrayMobile.map((pageArray) => (
-                <button
-                  key={pageArray}
-                  type="button"
-                  className={`${
-                    page === pageArray
-                      ? 'bg-main text-complement-100'
-                      : 'bg-complement-100 text-complement-200'
-                  } rounded px-[16px] py-[8px] text-[16px]`}
-                  onClick={() => {
-                    setPage(pageArray);
-                  }}
-                >
-                  {pageArray}
-                </button>
-              ))}
-              {pagesArray.length > 5 ? (
-                <>
-                  {!slicedPagesArray.includes(page) && page !== totalPages ? (
-                    <div className="rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100">
-                      {page}
-                    </div>
-                  ) : (
-                    <div className="rounded bg-complement-100 px-[16px] py-[8px] text-[16px] text-complement-200">
-                      ...
-                    </div>
-                  )}
-
+              <div className="hidden gap-[16px] 2xl:flex">
+                {slicedPagesArray.map((pageArray) => (
                   <button
+                    key={pageArray}
                     type="button"
                     className={`${
-                      page === totalPages
+                      page === pageArray
                         ? 'bg-main text-complement-100'
                         : 'bg-complement-100 text-complement-200'
                     } rounded px-[16px] py-[8px] text-[16px]`}
                     onClick={() => {
-                      setPage(totalPages);
+                      setPage(pageArray);
                     }}
                   >
-                    {totalPages}
+                    {pageArray}
                   </button>
+                ))}
+              </div>
+              <div className="flex gap-[16px] 2xl:hidden">
+                {slicedPagesArrayMobile.map((pageArray) => (
+                  <button
+                    key={pageArray}
+                    type="button"
+                    className={`${
+                      page === pageArray
+                        ? 'bg-main text-complement-100'
+                        : 'bg-complement-100 text-complement-200'
+                    } rounded px-[16px] py-[8px] text-[16px]`}
+                    onClick={() => {
+                      setPage(pageArray);
+                    }}
+                  >
+                    {pageArray}
+                  </button>
+                ))}
+              </div>
+              {pagesArray.length > 5 ? (
+                <>
+                  <div className="hidden gap-4 2xl:flex">
+                    {!slicedPagesArray.includes(page) && page !== totalPages ? (
+                      <div className="rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100">
+                        {page}
+                      </div>
+                    ) : (
+                      <div className="rounded bg-complement-100 px-[16px] py-[8px] text-[16px] text-complement-200">
+                        ...
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      className={`${
+                        page === totalPages
+                          ? 'bg-main text-complement-100'
+                          : 'bg-complement-100 text-complement-200'
+                      } rounded px-[16px] py-[8px] text-[16px]`}
+                      onClick={() => {
+                        setPage(totalPages);
+                      }}
+                    >
+                      {totalPages}
+                    </button>
+                  </div>
+                  <div className="flex gap-4 2xl:hidden">
+                    {!slicedPagesArrayMobile.includes(page) &&
+                    page !== totalPages ? (
+                      <div className="rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100">
+                        {page}
+                      </div>
+                    ) : (
+                      <div className="rounded bg-complement-100 px-[16px] py-[8px] text-[16px] text-complement-200">
+                        ...
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      className={`${
+                        page === totalPages
+                          ? 'bg-main text-complement-100'
+                          : 'bg-complement-100 text-complement-200'
+                      } rounded px-[16px] py-[8px] text-[16px]`}
+                      onClick={() => {
+                        setPage(totalPages);
+                      }}
+                    >
+                      {totalPages}
+                    </button>
+                  </div>
                 </>
               ) : null}
             </div>

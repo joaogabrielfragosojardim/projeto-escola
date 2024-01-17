@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import { z } from 'zod';
 
-import { ChangeCoordinatorStatusUseCase } from '@/useCases/coordinator/changCoordinatorStatusUseCase';
+import { ChangeSchoolStatusUseCase } from '@/useCases/school/changeSchoolStatusUseCase';
 
 export class ChangeCoordinatorStatusController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
@@ -13,14 +13,14 @@ export class ChangeCoordinatorStatusController {
 
       const { schoolId, status } = editBodySchema.parse(req.body);
 
-      const changeCoordinatorStatus = new ChangeCoordinatorStatusUseCase();
+      const changeSchoolStatus = new ChangeSchoolStatusUseCase();
 
-      const { coordinator } = await changeCoordinatorStatus.execute({
+      const { school } = await changeSchoolStatus.execute({
         schoolId,
         status,
       });
 
-      return res.status(200).json({ coordinator });
+      return res.status(200).json({ school });
     } catch (error) {
       throw error;
     }
