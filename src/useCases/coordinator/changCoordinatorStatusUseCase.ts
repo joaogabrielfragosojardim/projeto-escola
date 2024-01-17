@@ -1,17 +1,14 @@
 import { prisma } from '@/lib/prisma';
 
 interface ChangeCoordinatorStatusUseCaseRequest {
-  coordinatorId: string;
+  schoolId: string;
   status: boolean;
 }
 
 export class ChangeCoordinatorStatusUseCase {
-  async execute({
-    coordinatorId,
-    status,
-  }: ChangeCoordinatorStatusUseCaseRequest) {
-    const coordinator = await prisma.coordinator.update({
-      where: { id: coordinatorId },
+  async execute({ schoolId, status }: ChangeCoordinatorStatusUseCaseRequest) {
+    const coordinator = await prisma.school.update({
+      where: { id: schoolId },
       data: {
         status,
       },

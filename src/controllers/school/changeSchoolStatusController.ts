@@ -7,16 +7,16 @@ export class ChangeCoordinatorStatusController {
   async handle(req: NextApiRequest, res: NextApiResponse) {
     try {
       const editBodySchema = z.object({
-        coordinatorId: z.string().uuid(),
+        schoolId: z.string().uuid(),
         status: z.boolean(),
       });
 
-      const { coordinatorId, status } = editBodySchema.parse(req.body);
+      const { schoolId, status } = editBodySchema.parse(req.body);
 
       const changeCoordinatorStatus = new ChangeCoordinatorStatusUseCase();
 
       const { coordinator } = await changeCoordinatorStatus.execute({
-        coordinatorId,
+        schoolId,
         status,
       });
 
