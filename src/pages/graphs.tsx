@@ -56,7 +56,10 @@ const pizzaGraphs = [
   },
 ];
 
-const downloadPDF = (elementID: string) => {
+const downloadPDF = (
+  elementID: string,
+  orientation: 'p' | 'portrait' | 'l' | 'landscape' | undefined,
+) => {
   const element = document.getElementById(elementID);
   const pdfButton01 = document.getElementById('pdfButton01');
   const modal = document.getElementById('modal');
@@ -65,7 +68,7 @@ const downloadPDF = (elementID: string) => {
     modal.style.display = 'none';
     html2canvas(element).then((canvas) => {
       const imgData = canvas.toDataURL('img/png');
-      const doc = new JSPDF('p', 'mm', [
+      const doc = new JSPDF(orientation, 'mm', [
         element.offsetWidth,
         element.offsetHeight,
       ]);
@@ -102,21 +105,21 @@ const Dashboard = () => {
               <button
                 type="button"
                 className="flex items-center gap-[8px]"
-                onClick={() => downloadPDF('pageContent')}
+                onClick={() => downloadPDF('pageContent', 'p')}
               >
                 Total <BiDownload size={16} />
               </button>
               <button
                 type="button"
                 className="flex items-center gap-[8px]"
-                onClick={() => downloadPDF('pizzaGraphs')}
+                onClick={() => downloadPDF('pizzaGraphs', 'l')}
               >
                 Pizzas <BiDownload size={16} />
               </button>
               <button
                 type="button"
                 className="flex items-center gap-[8px]"
-                onClick={() => downloadPDF('seasnd')}
+                onClick={() => downloadPDF('seasnd', 'l')}
               >
                 SEA/SND
                 <BiDownload size={16} />
