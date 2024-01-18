@@ -5,7 +5,10 @@ interface OptionStudentUseCaseRequest {
   classId?: string;
   schoolId?: string;
   teacherId?: string;
+  coordinatorId?: string;
+  period?: string;
   userId: string;
+  year?: string;
 }
 
 export class OptionsStudentUseCase {
@@ -15,6 +18,9 @@ export class OptionsStudentUseCase {
     schoolId,
     teacherId,
     userId,
+    period,
+    coordinatorId,
+    year,
   }: OptionStudentUseCaseRequest) {
     const teacher = await prisma.teacher.findFirst({
       where: {
@@ -35,9 +41,16 @@ export class OptionsStudentUseCase {
             teacherId || teacher?.id
               ? { some: { id: teacherId || teacher?.id } }
               : undefined,
+          year: { equals: year },
+          period: { equals: period },
         },
         school: {
           projectId: { equals: projectId },
+          coordinators: {
+            some: {
+              coordinatorId: { equals: coordinatorId },
+            },
+          },
         },
       },
       select: {

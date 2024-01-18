@@ -336,7 +336,9 @@ export const SeaGraph = () => {
       filtersValues.projectId ||
       filtersValues.schoolId ||
       filtersValues.coordinatorId ||
-      filtersValues.teacherId
+      filtersValues.teacherId ||
+      filtersValues.period ||
+      filtersValues.year
     ) {
       setFilters((prev) => ({
         ...prev,
@@ -352,6 +354,10 @@ export const SeaGraph = () => {
               }}
               projectId={filtersValues.projectId || undefined}
               schoolId={filtersValues.schoolId || undefined}
+              coordinatorId={filtersValues.coordinatorId || undefined}
+              teacherId={filtersValues.teacherId || undefined}
+              year={filtersValues.year || undefined}
+              period={filtersValues.period || undefined}
             />
           ),
         },

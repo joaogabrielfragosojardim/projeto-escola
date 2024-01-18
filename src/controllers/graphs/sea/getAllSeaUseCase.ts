@@ -13,6 +13,7 @@ interface GetAllLearningMonitoringUseCaseRequest {
   year?: string;
   studentId?: string;
   schoolId?: string;
+  userId: string;
 }
 
 type SeaStatus =
@@ -31,8 +32,27 @@ export class GetAllSeaUseCase {
     startDate,
     year,
     period,
+    userId,
     schoolId,
   }: GetAllLearningMonitoringUseCaseRequest) {
+    const teacher = await prisma.teacher.findFirst({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    const coordinator = await prisma.coordinator.findFirst({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
     const learningMonitoring = await prisma.learningMonitoring.findMany({
       select: {
         writingLevel: true,
@@ -52,7 +72,7 @@ export class GetAllSeaUseCase {
             id: { equals: schoolId },
             coordinators: {
               some: {
-                coordinatorId: { equals: coordinatorId },
+                coordinatorId: { equals: coordinatorId || coordinator?.id },
               },
             },
           },
@@ -63,7 +83,7 @@ export class GetAllSeaUseCase {
             equals: year,
           },
         },
-        teacher: { id: { equals: teacherId } },
+        teacher: { id: { equals: teacherId || teacher?.id } },
         studentId: { equals: studentId },
       },
     });

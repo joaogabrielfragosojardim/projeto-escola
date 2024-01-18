@@ -29,6 +29,7 @@ export class GetAllSeaController {
         projectId,
         schoolId,
       } = getAllSeaSchema.parse(req.query);
+      const { userId } = req;
 
       const getAllSeaUseCase = new GetAllSeaUseCase();
 
@@ -42,6 +43,7 @@ export class GetAllSeaController {
         projectId,
         studentId,
         schoolId,
+        userId,
       });
 
       return res.status(200).json({ data });

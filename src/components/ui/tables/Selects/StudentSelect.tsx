@@ -14,6 +14,9 @@ export const StudentSelect = ({
   classId,
   schoolId,
   teacherId,
+  coordinatorId,
+  period,
+  year,
 }: {
   onChange: (event: any) => void;
   label?: string;
@@ -21,6 +24,9 @@ export const StudentSelect = ({
   projectId?: string;
   classId?: string;
   schoolId?: string;
+  coordinatorId?: string;
+  period?: string;
+  year?: string;
   teacherId?: string;
 }) => {
   const { control, reset } = useForm();
@@ -32,6 +38,9 @@ export const StudentSelect = ({
         classId: classId || undefined,
         schoolId: schoolId || undefined,
         teacherId: teacherId || undefined,
+        coordinatorId: coordinatorId || undefined,
+        period: period || undefined,
+        year: year || undefined,
       },
     });
   };

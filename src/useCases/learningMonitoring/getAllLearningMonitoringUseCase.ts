@@ -47,11 +47,7 @@ export class GetAllLearningMonitoringUseCase {
         userId,
       },
       select: {
-        schools: {
-          select: {
-            schoolId: true,
-          },
-        },
+        id: true,
       },
     });
 
@@ -66,16 +62,14 @@ export class GetAllLearningMonitoringUseCase {
             lte: finalDate,
           },
           classroom: {
-            schoolId: coordinator
-              ? { in: coordinator?.schools.map((school) => school.schoolId) }
-              : { equals: schoolId },
+            schoolId: { equals: schoolId },
             school: {
               projectId: {
                 equals: projectId,
               },
               coordinators: {
                 some: {
-                  coordinatorId: { equals: coordinatorId },
+                  coordinatorId: { equals: coordinatorId || coordinator?.id },
                 },
               },
             },
@@ -122,18 +116,14 @@ export class GetAllLearningMonitoringUseCase {
             lte: finalDate,
           },
           classroom: {
-            schoolId: {
-              in: schoolId
-                ? [schoolId || '']
-                : coordinator?.schools.map((school) => school.schoolId),
-            },
+            schoolId: { equals: schoolId },
             school: {
               projectId: {
                 equals: projectId,
               },
               coordinators: {
-                every: {
-                  coordinatorId: { equals: coordinatorId },
+                some: {
+                  coordinatorId: { equals: coordinatorId || coordinator?.id },
                 },
               },
             },
