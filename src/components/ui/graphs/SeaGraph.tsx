@@ -20,6 +20,9 @@ import {
 } from 'recharts';
 
 import { axiosApi } from '@/components/api/axiosApi';
+import { useUserIsAdm } from '@/hooks/useUserIsAdm';
+import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
+import { useUserIsTeacher } from '@/hooks/useUserIsTeacher';
 
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
@@ -74,6 +77,9 @@ export const SeaGraph = () => {
     startDate: '',
     finalDate: '',
   });
+  const userIsAdmMaster = useUserIsAdmMaster();
+  const userIsAdm = useUserIsAdm();
+  const userIsTeacher = useUserIsTeacher();
 
   const maxDate = new Date();
   maxDate.setHours(maxDate.getHours() - 3);
@@ -199,6 +205,7 @@ export const SeaGraph = () => {
           period: filtersValues.period || null,
           projectId: filtersValues.projectId || null,
           coordinatorId: filtersValues.coordinatorId || null,
+          schoolId: filtersValues.schoolId || null,
           studentId: filtersValues.studentId || null,
         },
       })
@@ -368,34 +375,40 @@ export const SeaGraph = () => {
             }
           >
             <form className="flex flex-col gap-[8px]">
-              <InputCheckBoxThemed
-                label="Projeto"
-                register={register}
-                name="projectPopover"
-                onClick={(event) => {
-                  handleChangeFilters('projectPopover', 'projectId', event);
-                }}
-              />
-              <InputCheckBoxThemed
-                label="Escola"
-                register={register}
-                name="schoolPopover"
-                onClick={(event) => {
-                  handleChangeFilters('schoolPopover', 'schoolId', event);
-                }}
-              />
-              <InputCheckBoxThemed
-                label="Coordenador"
-                register={register}
-                name="coordinatorPopover"
-                onClick={(event) => {
-                  handleChangeFilters(
-                    'coordinatorPopover',
-                    'coordinatorId',
-                    event,
-                  );
-                }}
-              />
+              {!userIsTeacher && (
+                <InputCheckBoxThemed
+                  label="Projeto"
+                  register={register}
+                  name="projectPopover"
+                  onClick={(event) => {
+                    handleChangeFilters('projectPopover', 'projectId', event);
+                  }}
+                />
+              )}
+              {!userIsTeacher && (
+                <InputCheckBoxThemed
+                  label="Escola"
+                  register={register}
+                  name="schoolPopover"
+                  onClick={(event) => {
+                    handleChangeFilters('schoolPopover', 'schoolId', event);
+                  }}
+                />
+              )}
+              {(userIsAdm || userIsAdmMaster) && (
+                <InputCheckBoxThemed
+                  label="Coordenador"
+                  register={register}
+                  name="coordinatorPopover"
+                  onClick={(event) => {
+                    handleChangeFilters(
+                      'coordinatorPopover',
+                      'coordinatorId',
+                      event,
+                    );
+                  }}
+                />
+              )}
               <InputCheckBoxThemed
                 label="Turma"
                 register={register}
@@ -404,18 +417,20 @@ export const SeaGraph = () => {
                   handleChangeFilters('periodPopover', 'coordinatorId', event);
                 }}
               />
-              <InputCheckBoxThemed
-                label="Educador"
-                register={register}
-                name="socialEducatorPopover"
-                onClick={(event) => {
-                  handleChangeFilters(
-                    'socialEducatorPopover',
-                    'teacherId',
-                    event,
-                  );
-                }}
-              />
+              {!userIsTeacher && (
+                <InputCheckBoxThemed
+                  label="Educador"
+                  register={register}
+                  name="socialEducatorPopover"
+                  onClick={(event) => {
+                    handleChangeFilters(
+                      'socialEducatorPopover',
+                      'teacherId',
+                      event,
+                    );
+                  }}
+                />
+              )}
               <InputCheckBoxThemed
                 label="Aluno"
                 register={register}

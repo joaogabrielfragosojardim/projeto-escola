@@ -186,7 +186,7 @@ export const SocialEducatorTable = ({
       setFilters((prev) => ({
         ...prev,
         coordinatorPopover: {
-          view: prev.schoolPopover?.view || false,
+          view: prev.coordinatorPopover?.view || false,
           element: (
             <CoordinatorSelect
               onChange={(event) => {

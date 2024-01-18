@@ -98,7 +98,7 @@ export const sideNavMenuRoutes = (role: RoleEnum) => {
       name: 'Gráficos',
       icon: <SlGraph size={25} />,
       route: '/graphs',
-      userCanView: [RoleEnum.ADM_MASTER, RoleEnum.ADM].includes(role),
+      userCanView: true,
     },
   ];
 };

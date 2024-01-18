@@ -22,39 +22,9 @@ import { SeaGraph } from '@/components/ui/graphs/SeaGraph';
 import { StudentGraph } from '@/components/ui/graphs/StudentGraph.tsx';
 import { Popover } from '@/components/ui/Popover';
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
-
-const pizzaGraphs = [
-  {
-    name: 'Projetos',
-    icon: <PiStackSimpleLight size={25} />,
-    item: <ProjectGraph />,
-    key: 0,
-  },
-  {
-    name: 'Escolas',
-    icon: <PiBookBookmarkLight size={25} />,
-    item: <SchoolGraph />,
-    key: 1,
-  },
-  {
-    name: 'Coordenadores',
-    icon: <GoPeople size={25} />,
-    item: <CoordinatorGraph />,
-    key: 2,
-  },
-  {
-    name: 'Educadores',
-    icon: <PiRulerLight size={25} />,
-    item: <EducatorGraph />,
-    key: 3,
-  },
-  {
-    name: 'Estudantes',
-    icon: <IoSchoolOutline size={25} />,
-    item: <StudentGraph />,
-    key: 4,
-  },
-];
+import { useUserIsAdm } from '@/hooks/useUserIsAdm';
+import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
+import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
 
 const downloadPDF = (
   elementID: string,
@@ -83,6 +53,50 @@ const downloadPDF = (
 };
 
 const Dashboard = () => {
+  const isAdmMaster = useUserIsAdmMaster();
+  const isAdm = useUserIsAdm();
+  const isCoordinator = useUserIsCoordinator();
+
+  const pizzaGraphs = [
+    {
+      name: 'Projetos',
+      userCanView: isAdmMaster || isAdm,
+      icon: <PiStackSimpleLight size={25} />,
+      item: <ProjectGraph />,
+      key: 0,
+    },
+    {
+      name: 'Escolas',
+      userCanView: isAdmMaster || isAdm,
+      icon: <PiBookBookmarkLight size={25} />,
+      item: <SchoolGraph />,
+      key: 1,
+    },
+    {
+      name: 'Coordenadores',
+      userCanView: isAdmMaster || isAdm,
+      icon: <GoPeople size={25} />,
+      item: <CoordinatorGraph />,
+      key: 2,
+    },
+    {
+      name: 'Educadores',
+      userCanView: isAdmMaster || isAdm || isCoordinator,
+      icon: <PiRulerLight size={25} />,
+      item: <EducatorGraph />,
+      key: 3,
+    },
+    {
+      name: 'Estudantes',
+      userCanView: true,
+      icon: <IoSchoolOutline size={25} />,
+      item: <StudentGraph />,
+      key: 4,
+    },
+  ];
+
+  const filteredGraphs = pizzaGraphs.filter((table) => table.userCanView);
+
   return (
     <SideNavMenuContainer title="Gráficos">
       <div className="p-[22px] 2xl:p-[32px]" id="pageContent">
@@ -131,7 +145,7 @@ const Dashboard = () => {
           className="grid grid-cols-1 gap-x-4 gap-y-16 2xl:grid-cols-3"
           id="pizzaGraphs"
         >
-          {pizzaGraphs.map((graph) => (
+          {filteredGraphs.map((graph) => (
             <div
               className="border-b-[1px] border-solid border-complement-200 text-complement-200 2xl:rounded-[16px] 2xl:border-[3px] 2xl:border-main"
               key={graph.key}

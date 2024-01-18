@@ -258,14 +258,16 @@ export const EducatorGraph = () => {
                   handleChangeFilters('statusPopover', 'status', event);
                 }}
               />
-              <InputCheckBoxThemed
-                label="Projeto"
-                register={register}
-                name="projectPopover"
-                onClick={(event) => {
-                  handleChangeFilters('projectPopover', 'projectId', event);
-                }}
-              />
+              {!userIsCoordinator && (
+                <InputCheckBoxThemed
+                  label="Projeto"
+                  register={register}
+                  name="projectPopover"
+                  onClick={(event) => {
+                    handleChangeFilters('projectPopover', 'projectId', event);
+                  }}
+                />
+              )}
               <InputCheckBoxThemed
                 label="Escola"
                 register={register}
@@ -274,18 +276,20 @@ export const EducatorGraph = () => {
                   handleChangeFilters('schoolPopover', 'schoolId', event);
                 }}
               />
-              <InputCheckBoxThemed
-                label="Coordenador"
-                register={register}
-                name="coordinatorPopover"
-                onClick={(event) => {
-                  handleChangeFilters(
-                    'coordinatorPopover',
-                    'coordinatorId',
-                    event,
-                  );
-                }}
-              />
+              {!userIsCoordinator && (
+                <InputCheckBoxThemed
+                  label="Coordenador"
+                  register={register}
+                  name="coordinatorPopover"
+                  onClick={(event) => {
+                    handleChangeFilters(
+                      'coordinatorPopover',
+                      'coordinatorId',
+                      event,
+                    );
+                  }}
+                />
+              )}
               <InputCheckBoxThemed
                 label="Turma"
                 register={register}

@@ -12,6 +12,7 @@ interface GetAllLearningMonitoringUseCaseRequest {
   period?: string;
   year?: string;
   studentId?: string;
+  schoolId?: string;
 }
 
 type SeaStatus =
@@ -30,6 +31,7 @@ export class GetAllSeaUseCase {
     startDate,
     year,
     period,
+    schoolId,
   }: GetAllLearningMonitoringUseCaseRequest) {
     const learningMonitoring = await prisma.learningMonitoring.findMany({
       select: {
@@ -47,8 +49,9 @@ export class GetAllSeaUseCase {
             projectId: {
               equals: projectId,
             },
+            id: { equals: schoolId },
             coordinators: {
-              every: {
+              some: {
                 coordinatorId: { equals: coordinatorId },
               },
             },

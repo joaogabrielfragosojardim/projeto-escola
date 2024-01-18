@@ -66,17 +66,15 @@ export class GetAllLearningMonitoringUseCase {
             lte: finalDate,
           },
           classroom: {
-            schoolId: {
-              in: schoolId
-                ? [schoolId || '']
-                : coordinator?.schools.map((school) => school.schoolId),
-            },
+            schoolId: coordinator
+              ? { in: coordinator?.schools.map((school) => school.schoolId) }
+              : { equals: schoolId },
             school: {
               projectId: {
                 equals: projectId,
               },
               coordinators: {
-                every: {
+                some: {
                   coordinatorId: { equals: coordinatorId },
                 },
               },

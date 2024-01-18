@@ -68,7 +68,9 @@ const LearningMonitoring = () => {
   maxDate.setHours(maxDate.getHours() - 3);
 
   const getFirstAndLastDayOfMonth = (dateString: string) => {
-    const date = new Date(dateString);
+    const date = new Date(
+      new Date(dateString).getTime() + 60 * 60 * 60 * 60 * 3,
+    );
 
     const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
 

@@ -10,6 +10,7 @@ export class GetAllSeaController {
         teacherId: z.string().uuid().optional(),
         studentId: z.string().uuid().optional(),
         coordinatorId: z.string().uuid().optional(),
+        schoolId: z.string().uuid().optional(),
         projectId: z.string().uuid().optional(),
         startDate: z.coerce.date().optional(),
         finalDate: z.coerce.date().optional(),
@@ -26,6 +27,7 @@ export class GetAllSeaController {
         coordinatorId,
         studentId,
         projectId,
+        schoolId,
       } = getAllSeaSchema.parse(req.query);
 
       const getAllSeaUseCase = new GetAllSeaUseCase();
@@ -39,6 +41,7 @@ export class GetAllSeaController {
         coordinatorId,
         projectId,
         studentId,
+        schoolId,
       });
 
       return res.status(200).json({ data });

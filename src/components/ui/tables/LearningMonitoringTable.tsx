@@ -393,7 +393,7 @@ export const LearnMonitoringTable = ({
                   }}
                 />
               )}
-              {!userIsTeacher ? (
+              {!userIsTeacher && (
                 <InputCheckBoxThemed
                   label="Escola"
                   register={register}
@@ -402,7 +402,7 @@ export const LearnMonitoringTable = ({
                     handleChangeFilters('schoolPopover', 'schoolId', event);
                   }}
                 />
-              ) : null}
+              )}
               {(userIsAdm || userIsAdmMaster) && (
                 <InputCheckBoxThemed
                   label="Coordenador"
@@ -417,8 +417,7 @@ export const LearnMonitoringTable = ({
                   }}
                 />
               )}
-
-              {!userIsTeacher ? (
+              {!userIsTeacher && (
                 <InputCheckBoxThemed
                   label="Educador"
                   register={register}
@@ -431,7 +430,7 @@ export const LearnMonitoringTable = ({
                     );
                   }}
                 />
-              ) : null}
+              )}
               <InputCheckBoxThemed
                 label="Turma"
                 register={register}
