@@ -80,6 +80,9 @@ export class GetAllSchoolsUseCase {
             city: { contains: city, mode: 'insensitive' },
             state: { contains: state, mode: 'insensitive' },
           },
+          status: {
+            equals: status ? status === 'true' : undefined,
+          },
         },
       }),
     ]);

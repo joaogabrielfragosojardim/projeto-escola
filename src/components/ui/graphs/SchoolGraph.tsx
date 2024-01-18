@@ -122,7 +122,7 @@ export const SchoolGraph = () => {
   };
 
   const { isLoading, data, refetch, isRefetching } = useQuery(
-    'fetchAllSchoolsQuery',
+    'fetchAllSchoolsGraph',
     fetchSchools,
     { refetchOnWindowFocus: false },
   );
