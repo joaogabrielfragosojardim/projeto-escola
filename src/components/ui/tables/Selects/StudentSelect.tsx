@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { TbLoader } from 'react-icons/tb';
 import { useQuery } from 'react-query';
@@ -45,10 +46,25 @@ export const StudentSelect = ({
     });
   };
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     'fetchStudentsOptionsTable',
     fetchStudentOptions,
   );
+
+  useEffect(() => {
+    if (schoolId || projectId || coordinatorId) {
+      refetch();
+    }
+  }, [
+    schoolId,
+    coordinatorId,
+    classId,
+    teacherId,
+    period,
+    year,
+    refetch,
+    projectId,
+  ]);
 
   if (isLoading) {
     return (
