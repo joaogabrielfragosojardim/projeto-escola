@@ -204,7 +204,7 @@ export const DashBoardTable = ({
                   ]}
                   onChange={(e: any) => {
                     setPage(1);
-                    setPerPage(parseInt(e.value, 10));
+                    setPerPage(parseInt(e?.value, 10));
                   }}
                 />
               </div>

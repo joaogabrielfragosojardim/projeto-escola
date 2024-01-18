@@ -86,6 +86,7 @@ const Dashboard = () => {
           setPage={setPage}
           totalPages={totalPages}
           setPerPage={setPerPage}
+          perPage={perPage}
         />
       </div>
     </SideNavMenuContainer>
