@@ -8,7 +8,7 @@ export class OptionsProjectController {
       const optionsProjectUseCase = new OptionsProjectUseCase();
       const { userId } = req;
 
-      const { options } = await optionsProjectUseCase.execute({userId});
+      const { options } = await optionsProjectUseCase.execute({ userId });
 
       return res.status(200).json({ options });
     } catch (error) {
