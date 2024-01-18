@@ -110,7 +110,7 @@ export const PedagogicalVisitTable = ({
         <ProjectSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, projectId: event?.value }));
           }}
         />
       ),
@@ -123,7 +123,7 @@ export const PedagogicalVisitTable = ({
             setPage(1);
             setFiltersValues((prev) => ({
               ...prev,
-              schoolId: event.value,
+              schoolId: event?.value,
             }));
           }}
         />
@@ -137,7 +137,7 @@ export const PedagogicalVisitTable = ({
             setPage(1);
             setFiltersValues((prev) => ({
               ...prev,
-              coordinatorId: event.value,
+              coordinatorId: event?.value,
             }));
           }}
         />
@@ -171,7 +171,7 @@ export const PedagogicalVisitTable = ({
             setPage(1);
             setFiltersValues((prev) => ({
               ...prev,
-              teacherId: event.value,
+              teacherId: event?.value,
             }));
           }}
         />
@@ -274,7 +274,7 @@ export const PedagogicalVisitTable = ({
                 setPage(1);
                 setFiltersValues((prevFIlters) => ({
                   ...prevFIlters,
-                  schoolId: event.value,
+                  schoolId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId}
@@ -294,7 +294,7 @@ export const PedagogicalVisitTable = ({
                 setPage(1);
                 setFiltersValues((prevFilters) => ({
                   ...prevFilters,
-                  coordinatorId: event.value,
+                  coordinatorId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}
@@ -319,7 +319,7 @@ export const PedagogicalVisitTable = ({
                 setPage(1);
                 setFiltersValues((prevFilters) => ({
                   ...prevFilters,
-                  teacherId: event.value,
+                  teacherId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}

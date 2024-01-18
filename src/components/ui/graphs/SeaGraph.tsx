@@ -118,7 +118,7 @@ export const SeaGraph = () => {
       element: (
         <ProjectSelect
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, projectId: event?.value }));
           }}
         />
       ),
@@ -129,7 +129,7 @@ export const SeaGraph = () => {
         <SchoolSelect
           coordinatorId={filtersValues.coordinatorId}
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, schoolId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, schoolId: event?.value }));
           }}
         />
       ),
@@ -141,7 +141,7 @@ export const SeaGraph = () => {
           onChange={(event) => {
             setFiltersValues((prev) => ({
               ...prev,
-              coordinatorId: event.value,
+              coordinatorId: event?.value,
             }));
           }}
         />
@@ -172,7 +172,7 @@ export const SeaGraph = () => {
           onChange={(event) => {
             setFiltersValues((prev) => ({
               ...prev,
-              teacherId: event.value,
+              teacherId: event?.value,
             }));
           }}
         />
@@ -185,7 +185,7 @@ export const SeaGraph = () => {
           onChange={(event) => {
             setFiltersValues((prev) => ({
               ...prev,
-              studentId: event.value,
+              studentId: event?.value,
             }));
           }}
         />
@@ -278,7 +278,7 @@ export const SeaGraph = () => {
               onChange={(event) => {
                 setFiltersValues((prevFIlters) => ({
                   ...prevFIlters,
-                  schoolId: event.value,
+                  schoolId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId}
@@ -297,7 +297,7 @@ export const SeaGraph = () => {
               onChange={(event) => {
                 setFiltersValues((prevFilters) => ({
                   ...prevFilters,
-                  coordinatorId: event.value,
+                  coordinatorId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}
@@ -321,7 +321,7 @@ export const SeaGraph = () => {
               onChange={(event) => {
                 setFiltersValues((prevFilters) => ({
                   ...prevFilters,
-                  teacherId: event.value,
+                  teacherId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}
@@ -349,7 +349,7 @@ export const SeaGraph = () => {
               onChange={(event) => {
                 setFiltersValues((prevFilters) => ({
                   ...prevFilters,
-                  studentId: event.value,
+                  studentId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}
