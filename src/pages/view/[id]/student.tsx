@@ -14,7 +14,11 @@ import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
 import { allPeriods, allSeries } from '@/constants/classroom';
 import type { PrismaError } from '@/types/prismaError';
 import { RoleEnum } from '@/types/roles';
-import type { StudentEdit, StudentEditForm } from '@/types/student';
+import type {
+  StudentEdit,
+  StudentEditForm,
+  StudentEditRequest,
+} from '@/types/student';
 
 const SocialEducator = ({ student }: { student: StudentEdit }) => {
   const {
@@ -28,7 +32,7 @@ const SocialEducator = ({ student }: { student: StudentEdit }) => {
   const maxDate = new Date();
   maxDate.setHours(maxDate.getHours() - 3);
 
-  const editStudentHandle = async (data: StudentEditForm): Promise<any> => {
+  const editStudentHandle = async (data: StudentEditRequest): Promise<any> => {
     return (await axiosApi.put(`/student/${student.id}`, data)).data;
   };
 
@@ -50,10 +54,14 @@ const SocialEducator = ({ student }: { student: StudentEdit }) => {
 
   const onSubmit = (data: StudentEditForm) => {
     const { visualIdentity, name, classRoom, birtday, registration } = data;
+    console.log(classRoom);
+
     const submitData = {
       visualIdentity: visualIdentity || student.user.visualIdentity,
       name: name || student.user.name,
-      classRoom: classRoom || student.Classroom,
+      classRoom:
+        { period: classRoom.value.period, year: classRoom.value.year } ||
+        student.Classroom,
       birtday: birtday || student.birtday,
       registration: registration || student.registration,
     };
@@ -117,19 +125,23 @@ const SocialEducator = ({ student }: { student: StudentEdit }) => {
               <SelectThemed
                 control={control}
                 reset={reset}
-                name="classRooms"
+                name="classRoom"
                 label="Turma"
                 placeholder="turma"
                 options={allPeriods
-                  .map((period) =>
-                    allSeries.map((serie) => ({
+                  .map((period) => {
+                    return allSeries.map((serie) => ({
                       label: `${serie} - ${period}`,
                       value: { year: serie, period },
-                    })),
-                  )
+                    }));
+                  })
                   .flat()}
                 defaultValue={{
                   label: `${student.Classroom.year} - ${student.Classroom.period}`,
+                  valeu: {
+                    year: student.Classroom.year,
+                    period: student.Classroom.period,
+                  },
                 }}
               />
             </div>

@@ -54,7 +54,14 @@ export interface StudentEditForm {
   registration: string;
   visualIdentity: string;
   classRoom: {
-    period: string;
-    year: number;
+    value: { period: string; year: number };
   };
+}
+
+export interface StudentEditRequest {
+  birtday: Date;
+  name: string;
+  registration: string;
+  visualIdentity: string;
+  classRoom: { period: string; year: number };
 }
