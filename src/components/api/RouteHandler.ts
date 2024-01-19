@@ -6,7 +6,7 @@ import { AppError } from '@/errors';
 import { permissions } from './permissions';
 import { verifyJWT } from './verifyJWT';
 
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS';
 type HttpHandler = (request: NextApiRequest, response: NextApiResponse) => void;
 
 interface RouteHandlerParams {
@@ -33,6 +33,17 @@ export const RouteHandler = async (
     }
 
     const method = request.method as HttpMethod;
+    if (method === 'OPTIONS') {
+      response.setHeader('Access-Control-Allow-Credentials', 'true');
+      response.setHeader('Access-Control-Allow-Origin', '*');
+      response.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET,DELETE,PATCH,POST,PUT,OPTIONS',
+      );
+      response.setHeader('Access-Control-Allow-Headers', '*');
+      return response.status(200).send('');
+    }
+
     const handler = handlers[method];
 
     if (!handler) {
