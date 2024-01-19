@@ -43,7 +43,7 @@ export const Footer = () => {
                       <FiMapPin size={15} />
                     </div>
                     <p className="text-[14px] text-complement-200">
-                      Rua Castro Leão, 86, Sala 02, Madalena, Recife - PE
+                      Rua Castro Leão, 86, Sala 02, Madalena, Recife - PE - Teste
                     </p>
                   </div>
                 </li>
