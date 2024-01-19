@@ -8,6 +8,8 @@ import { Section } from '@react-email/section';
 import { Text } from '@react-email/text';
 import * as React from 'react';
 
+import { LOGO_URL } from '@/constants/logo';
+
 interface ForgotPasswordEmailTemplateProps {
   url: string;
   email: string;
@@ -30,11 +32,7 @@ export const ForgotPasswordEmail: React.FC<
     >
       <Row>
         <Column>
-          <Img
-            style={img}
-            alt="Escola prime"
-            src="https://jrgqdaonyjwefdaxvvjt.supabase.co/storage/v1/object/public/project-school-bucket/logo.png"
-          />
+          <Img style={img} alt="Escola prime" src={LOGO_URL} />
         </Column>
       </Row>
 
