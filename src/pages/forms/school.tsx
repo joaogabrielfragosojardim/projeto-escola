@@ -154,10 +154,12 @@ const SchoolFormSecondStep = ({
     } = await axiosApi.get(`https://viacep.com.br/ws/${cep}/json/`, {
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods':
-          'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        'Access-Control-Allow-Methods': 'OPTIONS, HEAD, GET',
+        'Access-Control-Allow-Headers':
+          'Access-Control-Allow-Origin, X-Requested-With, X-HTTP-Method-Override, Content-Type, Authorization, Accept',
+        'Access-Control-Allow-Credentials': 'true',
+        Accept: 'text/plain; charset=utf-8',
+        'Content-Type': 'text/plain; charset=utf-8',
       },
     });
     setValue('city', localidade);
