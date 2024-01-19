@@ -6,7 +6,7 @@ import { AppError } from '@/errors';
 import { permissions } from './permissions';
 import { verifyJWT } from './verifyJWT';
 
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS';
 type HttpHandler = (request: NextApiRequest, response: NextApiResponse) => void;
 
 interface RouteHandlerParams {
@@ -33,6 +33,10 @@ export const RouteHandler = async (
     }
 
     const method = request.method as HttpMethod;
+    if (method === 'OPTIONS') {
+      return response.status(200).send('');
+    }
+
     const handler = handlers[method];
 
     if (!handler) {
