@@ -34,6 +34,7 @@ export const RouteHandler = async (
 
     const method = request.method as HttpMethod;
     if (method === 'OPTIONS') {
+      response.setHeader('Allow', 'GET, DELETE, PATCH, POST, PUT, OPTIONS');
       return response.status(200).send('');
     }
 
