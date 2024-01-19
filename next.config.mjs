@@ -42,14 +42,12 @@ export default bundleAnalyzer({
   async headers() {
     return [
       {
-        // matching all API routes
         source: '/api/:path*',
         headers: [
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
           {
             key: 'Access-Control-Allow-Origin',
-            value:
-              'https://escolaprimepe.com.br, https://www.escolaprimepe.com.br',
+            value: '*',
           },
           {
             key: 'Access-Control-Allow-Methods',
