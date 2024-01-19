@@ -30,3 +30,5 @@ jobs:
     - run: npm i -g yarn
     - run: yarn
     - run: yarn build
+    - run: cd /home/escolaprime/actions-runner/_work/Escola-Prime/Escola-Prime
+    - run: pm2 restart 0
