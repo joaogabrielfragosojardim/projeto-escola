@@ -11,6 +11,7 @@ const authMethods: Record<HttpMethod, boolean> = {
   POST: true,
   DELETE: false,
   PUT: false,
+  OPTIONS: false,
 };
 
 const permissionMethods: Record<HttpMethod, Role[]> = {
@@ -18,6 +19,7 @@ const permissionMethods: Record<HttpMethod, Role[]> = {
   POST: ['master'],
   PUT: [],
   DELETE: [],
+  OPTIONS: [],
 };
 
 export default async function handler(
