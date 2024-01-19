@@ -19,6 +19,9 @@ jobs:
       NEXT_PUBLIC_SUPABASE_KEY: ${{secrets.NEXT_PUBLIC_SUPABASE_KEY}}
       NEXT_PUBLIC_SUPABASE_PROJECT_URL: ${{secrets.NEXT_PUBLIC_SUPABASE_PROJECT_URL}}
       RESEND_API_KEY: ${{secrets.RESEND_API_KEY}}
+
+
+
     
     steps:
     - uses: actions/checkout@v3
@@ -27,6 +30,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: echo ${{secrets.DATABASE_URL}}
     - run: npm i -g yarn
     - run: yarn
     - run: yarn build
