@@ -30,7 +30,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: echo ${{secrets.DATABASE_URL}}
     - run: npm i -g yarn
     - run: yarn
     - run: yarn build
