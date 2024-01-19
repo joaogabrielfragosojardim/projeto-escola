@@ -151,7 +151,16 @@ const SchoolFormSecondStep = ({
     }
     const {
       data: { localidade, uf },
-    } = await axiosApi.get(`https://viacep.com.br/ws/${cep}/json/`);
+    } = await axiosApi.get(`https://viacep.com.br/ws/${cep}/json/`, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Methods':
+          'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
     setValue('city', localidade);
     setValue('state', uf);
   };
