@@ -34,7 +34,16 @@ export const RouteHandler = async (
 
     const method = request.method as HttpMethod;
     if (method === 'OPTIONS') {
-      response.setHeader('Allow', 'GET, DELETE, PATCH, POST, PUT, OPTIONS');
+      response.setHeader('Access-Control-Allow-Credentials', 'true');
+      response.setHeader('Access-Control-Allow-Origin', '*');
+      response.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET,DELETE,PATCH,POST,PUT,OPTIONS',
+      );
+      response.setHeader(
+        'Access-Control-Allow-Headers',
+        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+      );
       return response.status(200).send('');
     }
 
