@@ -40,10 +40,7 @@ export const RouteHandler = async (
         'Access-Control-Allow-Methods',
         'GET,DELETE,PATCH,POST,PUT,OPTIONS',
       );
-      response.setHeader(
-        'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
-      );
+      response.setHeader('Access-Control-Allow-Headers', '*');
       return response.status(200).send('');
     }
 
