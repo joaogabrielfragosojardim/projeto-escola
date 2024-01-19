@@ -53,7 +53,7 @@ export default bundleAnalyzer({
           },
           {
             key: 'Access-Control-Allow-Methods',
-            value: 'GET,DELETE,PATCH,POST,PUT',
+            value: 'GET,DELETE,PATCH,POST,PUT,OPTIONS',
           },
           {
             key: 'Access-Control-Allow-Headers',
