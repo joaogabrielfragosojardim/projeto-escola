@@ -154,7 +154,6 @@ const SchoolFormSecondStep = ({
     } = await axiosApi.get(`https://viacep.com.br/ws/${cep}/json/`, {
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*',
         'Access-Control-Allow-Methods':
           'GET, POST, OPTIONS, PUT, PATCH, DELETE',
         Accept: 'application/json',
