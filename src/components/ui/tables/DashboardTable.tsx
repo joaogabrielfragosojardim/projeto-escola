@@ -19,6 +19,7 @@ interface IDashboardTable {
   setPage: Dispatch<SetStateAction<number>>;
   totalPages: number;
   setPerPage: Dispatch<SetStateAction<number>>;
+  perPage: number;
 }
 
 export const DashBoardTable = ({
@@ -29,6 +30,7 @@ export const DashBoardTable = ({
   setPage,
   totalPages,
   setPerPage,
+  perPage,
 }: IDashboardTable) => {
   const pagesArray = Array.from({ length: totalPages }, (_, i) => i + 1);
   const filteredTables = tables.filter((table) => table.userCanView);
@@ -198,10 +200,11 @@ export const DashBoardTable = ({
                     { label: '10', value: '10' },
                     { label: '30', value: '30' },
                     { label: '50', value: '50' },
+                    { label: 'Total', value: `${totalPages * perPage}` },
                   ]}
                   onChange={(e: any) => {
                     setPage(1);
-                    setPerPage(parseInt(e.value, 10));
+                    setPerPage(parseInt(e?.value, 10));
                   }}
                 />
               </div>
@@ -251,13 +254,15 @@ export const DashBoardTable = ({
             name="perPageSelect"
             placeholder="quantidade"
             menuPlacement="top"
+            isClearable={false}
             options={[
               { label: '10', value: '10' },
               { label: '30', value: '30' },
               { label: '50', value: '50' },
+              { label: 'Total', value: `${totalPages * perPage}` },
             ]}
             onChange={(e: any) => {
-              setPerPage(parseInt(e.value, 10));
+              setPerPage(parseInt(e?.value, 10));
             }}
           />
         </div>

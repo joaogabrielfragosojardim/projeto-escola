@@ -28,8 +28,33 @@ export class OptionsStudentUseCase {
       },
     });
 
+    const coordinator = await prisma.coordinator.findFirst({
+      where: {
+        userId,
+      },
+      select: {
+        schools: {
+          select: {
+            schoolId: true,
+          },
+        },
+      },
+    });
+
     const students = await prisma.student.findMany({
       where: {
+        AND: [
+          {
+            schoolId: {
+              equals: schoolId,
+            },
+          },
+          {
+            schoolId: {
+              in: coordinator?.schools.map((school) => school.schoolId),
+            },
+          },
+        ],
         schoolId: {
           equals: schoolId,
         },

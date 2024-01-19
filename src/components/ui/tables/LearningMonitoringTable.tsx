@@ -93,7 +93,7 @@ export const LearnMonitoringTable = ({
         <ProjectSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, projectId: event?.value }));
           }}
         />
       ),
@@ -152,7 +152,7 @@ export const LearnMonitoringTable = ({
           coordinatorId={userIsCoordinator ? user.id : undefined}
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, schoolId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, schoolId: event?.value }));
           }}
         />
       ),
@@ -165,7 +165,7 @@ export const LearnMonitoringTable = ({
             setPage(1);
             setFiltersValues((prev) => ({
               ...prev,
-              coordinatorId: event.value,
+              coordinatorId: event?.value,
             }));
           }}
         />
@@ -179,7 +179,7 @@ export const LearnMonitoringTable = ({
             setPage(1);
             setFiltersValues((prev) => ({
               ...prev,
-              teacherId: event.value,
+              teacherId: event?.value,
             }));
           }}
         />
@@ -193,7 +193,7 @@ export const LearnMonitoringTable = ({
             setPage(1);
             setFiltersValues((prev) => ({
               ...prev,
-              studentId: event.value,
+              studentId: event?.value,
             }));
           }}
         />
@@ -300,7 +300,7 @@ export const LearnMonitoringTable = ({
                 setPage(1);
                 setFiltersValues((prevFIlters) => ({
                   ...prevFIlters,
-                  schoolId: event.value,
+                  schoolId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId}
@@ -320,7 +320,7 @@ export const LearnMonitoringTable = ({
                 setPage(1);
                 setFiltersValues((prevFilters) => ({
                   ...prevFilters,
-                  coordinatorId: event.value,
+                  coordinatorId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}
@@ -345,7 +345,7 @@ export const LearnMonitoringTable = ({
                 setPage(1);
                 setFiltersValues((prevFilters) => ({
                   ...prevFilters,
-                  teacherId: event.value,
+                  teacherId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}

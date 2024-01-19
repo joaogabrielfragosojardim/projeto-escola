@@ -44,7 +44,7 @@ export const ProjectGraph = () => {
       element: (
         <StatusSelect
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+            setFiltersValues((prev) => ({ ...prev, status: event?.value }));
           }}
         />
       ),

@@ -68,7 +68,7 @@ export const StudentGraph = () => {
       element: (
         <ProjectSelect
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, projectId: event?.value }));
           }}
         />
       ),
@@ -79,7 +79,7 @@ export const StudentGraph = () => {
         <SchoolSelect
           coordinatorId={userIsCoordinator ? user.id : undefined}
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, schoolId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, schoolId: event?.value }));
           }}
         />
       ),
@@ -91,7 +91,7 @@ export const StudentGraph = () => {
           onChange={(event) => {
             setFiltersValues((prev) => ({
               ...prev,
-              coordinatorId: event.value,
+              coordinatorId: event?.value,
             }));
           }}
         />
@@ -122,7 +122,7 @@ export const StudentGraph = () => {
           onChange={(event) => {
             setFiltersValues((prev) => ({
               ...prev,
-              teacherId: event.value,
+              teacherId: event?.value,
             }));
           }}
         />
@@ -133,7 +133,7 @@ export const StudentGraph = () => {
       element: (
         <StatusSelect
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+            setFiltersValues((prev) => ({ ...prev, status: event?.value }));
           }}
         />
       ),
@@ -152,7 +152,7 @@ export const StudentGraph = () => {
               onChange={(event) => {
                 setFiltersValues((prevFIlters) => ({
                   ...prevFIlters,
-                  schoolId: event.value,
+                  schoolId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId}
@@ -171,7 +171,7 @@ export const StudentGraph = () => {
               onChange={(event) => {
                 setFiltersValues((prevFilters) => ({
                   ...prevFilters,
-                  coordinatorId: event.value,
+                  coordinatorId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}
@@ -195,7 +195,7 @@ export const StudentGraph = () => {
               onChange={(event) => {
                 setFiltersValues((prevFilters) => ({
                   ...prevFilters,
-                  teacherId: event.value,
+                  teacherId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}

@@ -84,7 +84,7 @@ export const CoordinatorTable = ({
         <StatusSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+            setFiltersValues((prev) => ({ ...prev, status: event?.value }));
           }}
         />
       ),
@@ -95,7 +95,7 @@ export const CoordinatorTable = ({
         <ProjectSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, projectId: event?.value }));
           }}
         />
       ),
@@ -106,7 +106,7 @@ export const CoordinatorTable = ({
         <SchoolSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, schoolId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, schoolId: event?.value }));
           }}
         />
       ),
@@ -126,7 +126,7 @@ export const CoordinatorTable = ({
                 setPage(1);
                 setFiltersValues((prevFIlters) => ({
                   ...prevFIlters,
-                  schoolId: event.value,
+                  schoolId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId}

@@ -86,7 +86,7 @@ export const SchoolTable = ({
         <StatusSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+            setFiltersValues((prev) => ({ ...prev, status: event?.value }));
           }}
         />
       ),
@@ -97,7 +97,7 @@ export const SchoolTable = ({
         <ProjectSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, projectId: event?.value }));
           }}
         />
       ),
@@ -108,7 +108,7 @@ export const SchoolTable = ({
         <StateSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, state: event.value }));
+            setFiltersValues((prev) => ({ ...prev, state: event?.value }));
           }}
         />
       ),
@@ -119,7 +119,7 @@ export const SchoolTable = ({
         <CitySelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, city: event.value }));
+            setFiltersValues((prev) => ({ ...prev, city: event?.value }));
           }}
         />
       ),

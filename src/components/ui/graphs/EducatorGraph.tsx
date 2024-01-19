@@ -59,7 +59,7 @@ export const EducatorGraph = () => {
       element: (
         <StatusSelect
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+            setFiltersValues((prev) => ({ ...prev, status: event?.value }));
           }}
         />
       ),
@@ -69,7 +69,7 @@ export const EducatorGraph = () => {
       element: (
         <ProjectSelect
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, projectId: event?.value }));
           }}
         />
       ),
@@ -80,7 +80,7 @@ export const EducatorGraph = () => {
         <SchoolSelect
           coordinatorId={userIsCoordinator ? user.id : undefined}
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, schoolId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, schoolId: event?.value }));
           }}
         />
       ),
@@ -92,7 +92,7 @@ export const EducatorGraph = () => {
           onChange={(event) => {
             setFiltersValues((prev) => ({
               ...prev,
-              coordinatorId: event.value,
+              coordinatorId: event?.value,
             }));
           }}
         />
@@ -130,7 +130,7 @@ export const EducatorGraph = () => {
               onChange={(event) => {
                 setFiltersValues((prevFIlters) => ({
                   ...prevFIlters,
-                  schoolId: event.value,
+                  schoolId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId}
@@ -149,7 +149,7 @@ export const EducatorGraph = () => {
               onChange={(event) => {
                 setFiltersValues((prevFIlters) => ({
                   ...prevFIlters,
-                  coordinatorId: event.value,
+                  coordinatorId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}

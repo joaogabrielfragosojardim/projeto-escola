@@ -96,7 +96,7 @@ export const SocialEducatorTable = ({
         <StatusSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+            setFiltersValues((prev) => ({ ...prev, status: event?.value }));
           }}
         />
       ),
@@ -107,7 +107,7 @@ export const SocialEducatorTable = ({
         <ProjectSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, projectId: event?.value }));
           }}
         />
       ),
@@ -119,7 +119,7 @@ export const SocialEducatorTable = ({
           coordinatorId={userIsCoordinator ? user.id : undefined}
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, schoolId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, schoolId: event?.value }));
           }}
         />
       ),
@@ -132,7 +132,7 @@ export const SocialEducatorTable = ({
             setPage(1);
             setFiltersValues((prev) => ({
               ...prev,
-              coordinatorId: event.value,
+              coordinatorId: event?.value,
             }));
           }}
         />
@@ -173,7 +173,7 @@ export const SocialEducatorTable = ({
                 setPage(1);
                 setFiltersValues((prevFIlters) => ({
                   ...prevFIlters,
-                  schoolId: event.value,
+                  schoolId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}
@@ -192,7 +192,7 @@ export const SocialEducatorTable = ({
               onChange={(event) => {
                 setFiltersValues((prevFIlters) => ({
                   ...prevFIlters,
-                  coordinatorId: event.value,
+                  coordinatorId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}
