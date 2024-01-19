@@ -14,15 +14,11 @@ jobs:
         node-version: [20.11.0]
     env:
       DATABASE_URL: ${{secrets.DATABASE_URL}}
+      RESEND_API_KEY: ${{secrets.RESEND_API_KEY}}
       SECRET_KEY: ${{secrets.SECRET_KEY}}
       NEXT_PUBLIC_BASE_URL: ${{secrets.NEXT_PUBLIC_BASE_URL}}
       NEXT_PUBLIC_SUPABASE_KEY: ${{secrets.NEXT_PUBLIC_SUPABASE_KEY}}
       NEXT_PUBLIC_SUPABASE_PROJECT_URL: ${{secrets.NEXT_PUBLIC_SUPABASE_PROJECT_URL}}
-      RESEND_API_KEY: ${{secrets.RESEND_API_KEY}}
-
-
-
-    
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
