@@ -2,13 +2,14 @@ import { verify } from 'jsonwebtoken';
 import type { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import nookies from 'nookies';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TbLoader } from 'react-icons/tb';
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 
 import { axiosApi } from '@/components/api/axiosApi';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 import { InputCheckBoxThemed } from '@/components/ui/forms/InputCheckBoxThemed';
 import { InputThemed } from '@/components/ui/forms/InputThemed';
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
@@ -28,6 +29,7 @@ const LearningMonitoring = () => {
     formState: { errors },
   } = useForm<any>();
   const user = useUser();
+  const [modal, setModal] = useState(false);
 
   const createLearningMonitoring = async (data: any): Promise<any> => {
     return (await axiosApi.post('/learningMonitoring', data)).data;
@@ -65,6 +67,48 @@ const LearningMonitoring = () => {
   const maxDate = new Date();
   maxDate.setHours(maxDate.getHours() - 3);
 
+  const getFirstAndLastDayOfMonth = (dateString: string) => {
+    const date = new Date(
+      new Date(dateString).getTime() + 60 * 60 * 60 * 60 * 3,
+    );
+
+    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+    const firstDayFormatted = firstDay.toISOString().split('T')[0];
+    const lastDayFormatted = lastDay.toISOString().split('T')[0];
+
+    return { firstDay: firstDayFormatted, lastDay: lastDayFormatted };
+  };
+
+  const fetchLearningMonitoring = async (dates: {
+    startDate: string;
+    finalDate: string;
+  }) => {
+    const { startDate, finalDate } = dates;
+    return (
+      await axiosApi.get('/learningMonitoring', {
+        params: {
+          startDate,
+          finalDate,
+          studentId: router.query.userId,
+        },
+      })
+    ).data;
+  };
+
+  const { data: dataLearning, mutate: mutateLearning } = useMutation(
+    'fetchLearningMonitoring',
+    fetchLearningMonitoring,
+  );
+
+  useEffect(() => {
+    if (dataLearning && dataLearning?.data?.length) {
+      setModal(true);
+    }
+  }, [dataLearning]);
+
   return (
     <SideNavMenuContainer title="Acompanhamento de Aprendizagem">
       <div className="p-[32px] text-complement-200">
@@ -83,6 +127,15 @@ const LearningMonitoring = () => {
                 validations={{ required: 'Campo obrigatório' }}
                 // @ts-ignore
                 error={errors.date}
+                onChange={(e) => {
+                  const { firstDay, lastDay } = getFirstAndLastDayOfMonth(
+                    e.target.value,
+                  );
+                  mutateLearning({
+                    startDate: firstDay || '',
+                    finalDate: lastDay || '',
+                  });
+                }}
               />
             </div>
             <h3 className="text-[22px]">Observação direta da sala de aula</h3>
@@ -429,6 +482,17 @@ const LearningMonitoring = () => {
           </div>
         </form>
       </div>
+      <ConfirmModal
+        isOpen={modal}
+        setOpen={setModal}
+        text="Já existe um Acompanhamento de aprendizagem neste mês para este aluno, deseja editar?"
+        onConfirm={() => {
+          router.push(`/view/${dataLearning?.data[0].id}/learningMonitoring`);
+        }}
+        onClose={() => {
+          router.push('/dashboard');
+        }}
+      />
     </SideNavMenuContainer>
   );
 };

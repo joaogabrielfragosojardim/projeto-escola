@@ -36,6 +36,7 @@ export const SelectThemed = (props: SelectThemedProps) => {
     placeholder,
     reset,
     isDisabled,
+    isClearable = true,
   } = props;
 
   const colourStyles: any = {
@@ -95,6 +96,7 @@ export const SelectThemed = (props: SelectThemedProps) => {
             styles={colourStyles}
             placeholder={placeholder}
             defaultValue={defaultValue}
+            isClearable={isClearable}
             className={`${props.className}disabled:bg-complement-100 disabled:placeholder:text-complement-200`}
           />
         )}

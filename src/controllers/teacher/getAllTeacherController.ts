@@ -11,6 +11,7 @@ export class GetAllTeacherController {
         perPage: z.coerce.number().default(10),
         name: z.string().optional(),
         schoolId: z.string().uuid().optional(),
+        coordinatorId: z.string().uuid().optional(),
         projectId: z.string().uuid().optional(),
         period: z.enum(['Manhã', 'Tarde', 'Noite']).optional(),
         year: z.coerce.string().optional(),
@@ -19,8 +20,17 @@ export class GetAllTeacherController {
 
       const { userId } = req;
 
-      const { page, perPage, name, period, year, projectId, schoolId, status } =
-        getAllQuerySchema.parse(req.query);
+      const {
+        page,
+        perPage,
+        name,
+        period,
+        year,
+        projectId,
+        schoolId,
+        status,
+        coordinatorId,
+      } = getAllQuerySchema.parse(req.query);
 
       const getAllTeacherUseCase = new GetAllTeacherUseCase();
 
@@ -33,6 +43,7 @@ export class GetAllTeacherController {
         year,
         projectId,
         schoolId,
+        coordinatorId,
         status,
       });
 

@@ -3,7 +3,9 @@ import { verify } from 'jsonwebtoken';
 import JSPDF from 'jspdf';
 import type { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
+import { BiDownload } from 'react-icons/bi';
 import { GoPeople } from 'react-icons/go';
+import { IoIosArrowDown } from 'react-icons/io';
 import { IoSchoolOutline } from 'react-icons/io5';
 import {
   PiBookBookmarkLight,
@@ -18,56 +20,83 @@ import { ProjectGraph } from '@/components/ui/graphs/ProjectGraph';
 import { SchoolGraph } from '@/components/ui/graphs/SchoolGraph';
 import { SeaGraph } from '@/components/ui/graphs/SeaGraph';
 import { StudentGraph } from '@/components/ui/graphs/StudentGraph.tsx';
+import { Popover } from '@/components/ui/Popover';
 import { SideNavMenuContainer } from '@/components/ui/SideNavMenuContainer';
+import { useUserIsAdm } from '@/hooks/useUserIsAdm';
+import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
+import { useUserIsCoordinator } from '@/hooks/useUserIsCoordinator';
 
-const pizzaGraphs = [
-  {
-    name: 'Projetos',
-    icon: <PiStackSimpleLight size={25} />,
-    item: <ProjectGraph />,
-    key: 0,
-  },
-  {
-    name: 'Escolas',
-    icon: <PiBookBookmarkLight size={25} />,
-    item: <SchoolGraph />,
-    key: 1,
-  },
-  {
-    name: 'Coordenadores',
-    icon: <GoPeople size={25} />,
-    item: <CoordinatorGraph />,
-    key: 2,
-  },
-  {
-    name: 'Educadores',
-    icon: <PiRulerLight size={25} />,
-    item: <EducatorGraph />,
-    key: 3,
-  },
-  {
-    name: 'Estudantes',
-    icon: <IoSchoolOutline size={25} />,
-    item: <StudentGraph />,
-    key: 4,
-  },
-];
-
-const downloadPDF = () => {
-  const element = document.getElementById('pageContent');
-  if (element) {
+const downloadPDF = (
+  elementID: string,
+  orientation: 'p' | 'portrait' | 'l' | 'landscape' | undefined,
+) => {
+  const element = document.getElementById(elementID);
+  const pdfButton01 = document.getElementById('pdfButton01');
+  const modal = document.getElementById('modal');
+  if (element && pdfButton01 && modal) {
+    pdfButton01.style.display = 'none';
+    modal.style.display = 'none';
     html2canvas(element).then((canvas) => {
       const imgData = canvas.toDataURL('img/png');
-      const doc = new JSPDF('p', 'mm', 'a4');
+      const doc = new JSPDF(orientation, 'mm', [
+        element.offsetWidth,
+        element.offsetHeight,
+      ]);
       const width = doc.internal.pageSize.getWidth();
       const height = doc.internal.pageSize.getHeight();
       doc.addImage(imgData, 'PNG', 0, 0, width, height);
       doc.save('dashboard.pdf');
     });
+    pdfButton01.style.display = 'flex';
+    modal.style.display = 'inline';
   }
 };
 
 const Dashboard = () => {
+  const isAdmMaster = useUserIsAdmMaster();
+  const isAdm = useUserIsAdm();
+  const isCoordinator = useUserIsCoordinator();
+
+  const pizzaGraphs = [
+    {
+      name: 'Projetos',
+      userCanView: isAdmMaster || isAdm,
+      icon: <PiStackSimpleLight size={25} />,
+      item: <ProjectGraph />,
+      key: 0,
+    },
+    {
+      name: 'Escolas',
+      userCanView: isAdmMaster || isAdm,
+      icon: <PiBookBookmarkLight size={25} />,
+      item: <SchoolGraph />,
+      key: 1,
+    },
+    {
+      name: 'Coordenadores',
+      userCanView: isAdmMaster || isAdm,
+      icon: <GoPeople size={25} />,
+      item: <CoordinatorGraph />,
+      key: 2,
+    },
+    {
+      name: 'Educadores',
+      userCanView: isAdmMaster || isAdm || isCoordinator,
+      icon: <PiRulerLight size={25} />,
+      item: <EducatorGraph />,
+      key: 3,
+    },
+    {
+      name: 'Estudantes',
+      userCanView: true,
+      icon: <IoSchoolOutline size={25} />,
+      item: <StudentGraph />,
+      key: 4,
+    },
+  ];
+
+  const filteredGraphs = pizzaGraphs.filter((table) => table.userCanView);
+
   return (
     <SideNavMenuContainer title="Gráficos">
       <div className="p-[22px] 2xl:p-[32px]" id="pageContent">
@@ -75,16 +104,48 @@ const Dashboard = () => {
           <p className="text-[20px] font-semibold text-complement-200 2xl:text-[24px]">
             Informações Gráficas
           </p>
-          <button
-            type="button"
-            className="flex items-center justify-center gap-[16px] rounded-[5px] bg-main px-[62px] py-[8px] text-complement-100"
-            onClick={downloadPDF}
+          <Popover
+            triggerElement={
+              <button
+                type="button"
+                className="flex items-center justify-center gap-[16px] rounded-[5px] bg-main px-[62px] py-[8px] text-complement-100"
+                id="pdfButton01"
+              >
+                Baixar PDF <IoIosArrowDown size={20} />
+              </button>
+            }
           >
-            Baixar PDF
-          </button>
+            <div className="flex flex-col gap-3" id="modal">
+              <button
+                type="button"
+                className="flex items-center gap-[8px]"
+                onClick={() => downloadPDF('pageContent', 'p')}
+              >
+                Total <BiDownload size={16} />
+              </button>
+              <button
+                type="button"
+                className="flex items-center gap-[8px]"
+                onClick={() => downloadPDF('pizzaGraphs', 'l')}
+              >
+                Pizzas <BiDownload size={16} />
+              </button>
+              <button
+                type="button"
+                className="flex items-center gap-[8px]"
+                onClick={() => downloadPDF('seasnd', 'l')}
+              >
+                SEA/SND
+                <BiDownload size={16} />
+              </button>
+            </div>
+          </Popover>
         </div>
-        <div className="grid grid-cols-1 gap-x-4 gap-y-16 2xl:grid-cols-3">
-          {pizzaGraphs.map((graph) => (
+        <div
+          className="grid grid-cols-1 gap-x-4 gap-y-16 2xl:grid-cols-3"
+          id="pizzaGraphs"
+        >
+          {filteredGraphs.map((graph) => (
             <div
               className="border-b-[1px] border-solid border-complement-200 text-complement-200 2xl:rounded-[16px] 2xl:border-[3px] 2xl:border-main"
               key={graph.key}
@@ -97,11 +158,13 @@ const Dashboard = () => {
             </div>
           ))}
         </div>
-        <div className="mt-16 gap-x-4 gap-y-16">
+        <div className="mt-16 gap-x-4 gap-y-16" id="seasnd">
           <div className="border-b-[1px] border-solid border-complement-200 py-[16px] text-complement-200 2xl:rounded-[16px] 2xl:border-[3px] 2xl:border-main 2xl:p-[22px]">
-            <div className="mb-4 mt-2 flex gap-4 pl-8 font-bold">
+            <div className="mb-4 mt-2 flex items-center gap-4 pl-8 font-bold">
               <SlNotebook size={25} />
-              <span>Monitoramento da Aprendizagem SEA/SND</span>
+              <span className="text-[28px]">
+                Monitoramento da Aprendizagem SEA/SND
+              </span>
             </div>
             <SeaGraph />
           </div>

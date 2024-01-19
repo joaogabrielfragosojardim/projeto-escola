@@ -7,7 +7,7 @@ interface ChangeSchoolStatusUseCaseRequest {
 
 export class ChangeSchoolStatusUseCase {
   async execute({ schoolId, status }: ChangeSchoolStatusUseCaseRequest) {
-    const project = await prisma.school.update({
+    const school = await prisma.school.update({
       where: { id: schoolId },
       data: {
         status,
@@ -15,7 +15,7 @@ export class ChangeSchoolStatusUseCase {
     });
 
     return {
-      project,
+      school,
     };
   }
 }

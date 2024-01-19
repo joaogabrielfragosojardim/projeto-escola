@@ -49,7 +49,7 @@ export const CoordinatorGraph = () => {
       element: (
         <StatusSelect
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+            setFiltersValues((prev) => ({ ...prev, status: event?.value }));
           }}
         />
       ),
@@ -59,7 +59,7 @@ export const CoordinatorGraph = () => {
       element: (
         <ProjectSelect
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, projectId: event?.value }));
           }}
         />
       ),
@@ -69,7 +69,7 @@ export const CoordinatorGraph = () => {
       element: (
         <SchoolSelect
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, schoolId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, schoolId: event?.value }));
           }}
         />
       ),
@@ -88,7 +88,7 @@ export const CoordinatorGraph = () => {
               onChange={(event) => {
                 setFiltersValues((prevFIlters) => ({
                   ...prevFIlters,
-                  schoolId: event.value,
+                  schoolId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId}

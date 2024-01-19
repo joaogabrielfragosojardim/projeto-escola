@@ -6,6 +6,8 @@ interface GetAllLearningMonitoringUseCaseRequest {
   startDate?: Date;
   finalDate?: Date;
   teacherId?: string;
+  studentId?: string;
+  schoolId?: string;
   coordinatorId?: string;
   projectId?: string;
   period?: string;
@@ -22,9 +24,11 @@ export class GetAllLearningMonitoringUseCase {
     projectId,
     finalDate,
     startDate,
+    studentId,
     year,
     period,
     userId,
+    schoolId,
   }: GetAllLearningMonitoringUseCaseRequest) {
     const skip = perPage * (page - 1);
     const take = perPage;
@@ -43,11 +47,7 @@ export class GetAllLearningMonitoringUseCase {
         userId,
       },
       select: {
-        schools: {
-          select: {
-            schoolId: true,
-          },
-        },
+        id: true,
       },
     });
 
@@ -62,16 +62,14 @@ export class GetAllLearningMonitoringUseCase {
             lte: finalDate,
           },
           classroom: {
-            schoolId: {
-              in: coordinator?.schools.map((school) => school.schoolId),
-            },
+            schoolId: { equals: schoolId },
             school: {
               projectId: {
                 equals: projectId,
               },
               coordinators: {
-                every: {
-                  coordinatorId: { equals: coordinatorId },
+                some: {
+                  coordinatorId: { equals: coordinatorId || coordinator?.id },
                 },
               },
             },
@@ -83,6 +81,7 @@ export class GetAllLearningMonitoringUseCase {
             },
           },
           teacher: { id: { equals: teacherId || teacher?.id } },
+          studentId: { equals: studentId },
         },
         select: {
           id: true,
@@ -117,6 +116,17 @@ export class GetAllLearningMonitoringUseCase {
             lte: finalDate,
           },
           classroom: {
+            schoolId: { equals: schoolId },
+            school: {
+              projectId: {
+                equals: projectId,
+              },
+              coordinators: {
+                some: {
+                  coordinatorId: { equals: coordinatorId || coordinator?.id },
+                },
+              },
+            },
             period: {
               equals: period,
             },
@@ -125,6 +135,7 @@ export class GetAllLearningMonitoringUseCase {
             },
           },
           teacher: { id: { equals: teacherId || teacher?.id } },
+          studentId: { equals: studentId },
         },
       }),
     ]);

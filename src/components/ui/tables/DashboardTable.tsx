@@ -19,6 +19,7 @@ interface IDashboardTable {
   setPage: Dispatch<SetStateAction<number>>;
   totalPages: number;
   setPerPage: Dispatch<SetStateAction<number>>;
+  perPage: number;
 }
 
 export const DashBoardTable = ({
@@ -29,6 +30,7 @@ export const DashBoardTable = ({
   setPage,
   totalPages,
   setPerPage,
+  perPage,
 }: IDashboardTable) => {
   const pagesArray = Array.from({ length: totalPages }, (_, i) => i + 1);
   const filteredTables = tables.filter((table) => table.userCanView);
@@ -82,7 +84,7 @@ export const DashBoardTable = ({
         </div>
         <div>{filteredTables[selectedTable]?.table}</div>
       </div>
-      {totalPages !== 1 ? (
+      {totalPages > 1 ? (
         <>
           <div className="mt-[24px] flex w-full justify-between">
             <button
@@ -96,47 +98,93 @@ export const DashBoardTable = ({
               Anterior
             </button>
             <div className="flex gap-[16px]">
-              {slicedPagesArrayMobile.map((pageArray) => (
-                <button
-                  key={pageArray}
-                  type="button"
-                  className={`${
-                    page === pageArray
-                      ? 'bg-main text-complement-100'
-                      : 'bg-complement-100 text-complement-200'
-                  } rounded px-[16px] py-[8px] text-[16px]`}
-                  onClick={() => {
-                    setPage(pageArray);
-                  }}
-                >
-                  {pageArray}
-                </button>
-              ))}
-              {pagesArray.length > 5 ? (
-                <>
-                  {!slicedPagesArray.includes(page) && page !== totalPages ? (
-                    <div className="rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100">
-                      {page}
-                    </div>
-                  ) : (
-                    <div className="rounded bg-complement-100 px-[16px] py-[8px] text-[16px] text-complement-200">
-                      ...
-                    </div>
-                  )}
-
+              <div className="hidden gap-[16px] 2xl:flex">
+                {slicedPagesArray.map((pageArray) => (
                   <button
+                    key={pageArray}
                     type="button"
                     className={`${
-                      page === totalPages
+                      page === pageArray
                         ? 'bg-main text-complement-100'
                         : 'bg-complement-100 text-complement-200'
                     } rounded px-[16px] py-[8px] text-[16px]`}
                     onClick={() => {
-                      setPage(totalPages);
+                      setPage(pageArray);
                     }}
                   >
-                    {totalPages}
+                    {pageArray}
                   </button>
+                ))}
+              </div>
+              <div className="flex gap-[16px] 2xl:hidden">
+                {slicedPagesArrayMobile.map((pageArray) => (
+                  <button
+                    key={pageArray}
+                    type="button"
+                    className={`${
+                      page === pageArray
+                        ? 'bg-main text-complement-100'
+                        : 'bg-complement-100 text-complement-200'
+                    } rounded px-[16px] py-[8px] text-[16px]`}
+                    onClick={() => {
+                      setPage(pageArray);
+                    }}
+                  >
+                    {pageArray}
+                  </button>
+                ))}
+              </div>
+              {pagesArray.length > 5 ? (
+                <>
+                  <div className="hidden gap-4 2xl:flex">
+                    {!slicedPagesArray.includes(page) && page !== totalPages ? (
+                      <div className="rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100">
+                        {page}
+                      </div>
+                    ) : (
+                      <div className="rounded bg-complement-100 px-[16px] py-[8px] text-[16px] text-complement-200">
+                        ...
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      className={`${
+                        page === totalPages
+                          ? 'bg-main text-complement-100'
+                          : 'bg-complement-100 text-complement-200'
+                      } rounded px-[16px] py-[8px] text-[16px]`}
+                      onClick={() => {
+                        setPage(totalPages);
+                      }}
+                    >
+                      {totalPages}
+                    </button>
+                  </div>
+                  <div className="flex gap-4 2xl:hidden">
+                    {!slicedPagesArrayMobile.includes(page) &&
+                    page !== totalPages ? (
+                      <div className="rounded bg-main px-[16px] py-[8px] text-[16px] text-complement-100">
+                        {page}
+                      </div>
+                    ) : (
+                      <div className="rounded bg-complement-100 px-[16px] py-[8px] text-[16px] text-complement-200">
+                        ...
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      className={`${
+                        page === totalPages
+                          ? 'bg-main text-complement-100'
+                          : 'bg-complement-100 text-complement-200'
+                      } rounded px-[16px] py-[8px] text-[16px]`}
+                      onClick={() => {
+                        setPage(totalPages);
+                      }}
+                    >
+                      {totalPages}
+                    </button>
+                  </div>
                 </>
               ) : null}
             </div>
@@ -152,10 +200,11 @@ export const DashBoardTable = ({
                     { label: '10', value: '10' },
                     { label: '30', value: '30' },
                     { label: '50', value: '50' },
+                    { label: 'Total', value: `${totalPages * perPage}` },
                   ]}
                   onChange={(e: any) => {
                     setPage(1);
-                    setPerPage(parseInt(e.value, 10));
+                    setPerPage(parseInt(e?.value, 10));
                   }}
                 />
               </div>
@@ -205,13 +254,15 @@ export const DashBoardTable = ({
             name="perPageSelect"
             placeholder="quantidade"
             menuPlacement="top"
+            isClearable={false}
             options={[
               { label: '10', value: '10' },
               { label: '30', value: '30' },
               { label: '50', value: '50' },
+              { label: 'Total', value: `${totalPages * perPage}` },
             ]}
             onChange={(e: any) => {
-              setPerPage(parseInt(e.value, 10));
+              setPerPage(parseInt(e?.value, 10));
             }}
           />
         </div>

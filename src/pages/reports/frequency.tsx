@@ -104,7 +104,7 @@ const Frequency = () => {
                 <div>
                   <ClassRoomSelect
                     onChange={(e) => {
-                      setClassId(e.value);
+                      setClassId(e?.value);
                     }}
                   />
                 </div>

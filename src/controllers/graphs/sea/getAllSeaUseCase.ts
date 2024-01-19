@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 import { monthsObject } from '@/constants/month';
 import { prisma } from '@/lib/prisma';
@@ -11,6 +11,8 @@ interface GetAllLearningMonitoringUseCaseRequest {
   projectId?: string;
   period?: string;
   year?: string;
+  studentId?: string;
+  schoolId?: string;
   userId: string;
 }
 
@@ -25,11 +27,13 @@ export class GetAllSeaUseCase {
     teacherId,
     coordinatorId,
     projectId,
+    studentId,
     finalDate,
     startDate,
     year,
     period,
     userId,
+    schoolId,
   }: GetAllLearningMonitoringUseCaseRequest) {
     const teacher = await prisma.teacher.findFirst({
       where: {
@@ -45,11 +49,7 @@ export class GetAllSeaUseCase {
         userId,
       },
       select: {
-        schools: {
-          select: {
-            schoolId: true,
-          },
-        },
+        id: true,
       },
     });
 
@@ -65,16 +65,14 @@ export class GetAllSeaUseCase {
           lte: finalDate,
         },
         classroom: {
-          schoolId: {
-            in: coordinator?.schools.map((school) => school.schoolId),
-          },
           school: {
             projectId: {
               equals: projectId,
             },
+            id: { equals: schoolId },
             coordinators: {
-              every: {
-                coordinatorId: { equals: coordinatorId },
+              some: {
+                coordinatorId: { equals: coordinatorId || coordinator?.id },
               },
             },
           },
@@ -86,11 +84,13 @@ export class GetAllSeaUseCase {
           },
         },
         teacher: { id: { equals: teacherId || teacher?.id } },
+        studentId: { equals: studentId },
       },
     });
-
     const momentData = learningMonitoring.map((item) => {
-      const monthAndYear = moment(item.createdAt).format('YYYY-MM');
+      const monthAndYear = moment(
+        new Date(item.createdAt).getTime() + 60 * 60 * 60 * 60 * 3,
+      ).format('YYYY-MM');
 
       return {
         writingLevel: item.writingLevel,
@@ -99,7 +99,11 @@ export class GetAllSeaUseCase {
     });
 
     const uniqueYears = [
-      ...new Set(momentData.map((item) => moment(item.date).year())),
+      ...new Set(
+        momentData.map((item) =>
+          moment(new Date(item.date).getTime() + 60 * 60 * 60 * 60 * 3).year(),
+        ),
+      ),
     ];
 
     const allSameYear = uniqueYears.length === 1;
@@ -114,8 +118,12 @@ export class GetAllSeaUseCase {
 
     if (allSameYear) {
       const byMonthData = momentData.map((item) => {
-        const monthFormat = moment(item.date).format('MM');
-        const yearFormat = moment(item.date).format('YYYY');
+        const monthFormat = moment(
+          new Date(item.date).getTime() + 60 * 60 * 60 * 60 * 3,
+        ).format('MM');
+        const yearFormat = moment(
+          new Date(item.date).getTime() + 60 * 60 * 60 * 60 * 3,
+        ).format('YYYY');
 
         return {
           writingLevel: item.writingLevel,
@@ -146,7 +154,6 @@ export class GetAllSeaUseCase {
           ] += 1;
 
           result.push(dataToPush);
-          console.log('bateu aq');
         } else if (hasMonthInArray[0]) {
           const existentIndex = result.indexOf(hasMonthInArray[0]);
           // @ts-ignore
@@ -162,7 +169,9 @@ export class GetAllSeaUseCase {
     }
 
     const byYearData = momentData.map((item) => {
-      const yearFormat = moment(item.date).format('YYYY');
+      const yearFormat = moment(
+        new Date(item.date).getTime() + 60 * 60 * 60 * 60 * 3,
+      ).format('YYYY');
 
       return {
         writingLevel: item.writingLevel,

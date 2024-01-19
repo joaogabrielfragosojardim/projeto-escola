@@ -11,10 +11,20 @@ export class OptionsStudentController {
         schoolId: z.string().uuid().optional(),
         projectId: z.string().uuid().optional(),
         teacherId: z.string().uuid().optional(),
+        period: z.string().optional(),
+        year: z.string().optional(),
+        coordinatorId: z.string().uuid().optional(),
       });
 
-      const { projectId, classId, schoolId, teacherId } =
-        optionsQuerySchema.parse(req.query);
+      const {
+        projectId,
+        classId,
+        schoolId,
+        teacherId,
+        period,
+        coordinatorId,
+        year,
+      } = optionsQuerySchema.parse(req.query);
 
       const { userId } = req;
 
@@ -26,6 +36,9 @@ export class OptionsStudentController {
         schoolId,
         teacherId,
         userId,
+        period,
+        coordinatorId,
+        year,
       });
 
       return res.status(200).json({ options });

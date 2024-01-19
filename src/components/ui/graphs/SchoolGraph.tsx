@@ -50,7 +50,7 @@ export const SchoolGraph = () => {
       element: (
         <StatusSelect
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+            setFiltersValues((prev) => ({ ...prev, status: event?.value }));
           }}
         />
       ),
@@ -60,7 +60,7 @@ export const SchoolGraph = () => {
       element: (
         <ProjectSelect
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, projectId: event?.value }));
           }}
         />
       ),
@@ -70,7 +70,7 @@ export const SchoolGraph = () => {
       element: (
         <StateSelect
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, state: event.value }));
+            setFiltersValues((prev) => ({ ...prev, state: event?.value }));
           }}
         />
       ),
@@ -80,7 +80,7 @@ export const SchoolGraph = () => {
       element: (
         <CitySelect
           onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, city: event.value }));
+            setFiltersValues((prev) => ({ ...prev, city: event?.value }));
           }}
         />
       ),
@@ -122,7 +122,7 @@ export const SchoolGraph = () => {
   };
 
   const { isLoading, data, refetch, isRefetching } = useQuery(
-    'fetchAllSchoolsQuery',
+    'fetchAllSchoolsGraph',
     fetchSchools,
     { refetchOnWindowFocus: false },
   );

@@ -105,7 +105,7 @@ export const StudentTable = ({
         <ProjectSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, projectId: event?.value }));
           }}
         />
       ),
@@ -117,7 +117,7 @@ export const StudentTable = ({
           coordinatorId={userIsCoordinator ? user.id : undefined}
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, schoolId: event.value }));
+            setFiltersValues((prev) => ({ ...prev, schoolId: event?.value }));
           }}
         />
       ),
@@ -130,7 +130,7 @@ export const StudentTable = ({
             setPage(1);
             setFiltersValues((prev) => ({
               ...prev,
-              coordinatorId: event.value,
+              coordinatorId: event?.value,
             }));
           }}
         />
@@ -164,7 +164,7 @@ export const StudentTable = ({
             setPage(1);
             setFiltersValues((prev) => ({
               ...prev,
-              teacherId: event.value,
+              teacherId: event?.value,
             }));
           }}
         />
@@ -176,7 +176,7 @@ export const StudentTable = ({
         <StatusSelect
           onChange={(event) => {
             setPage(1);
-            setFiltersValues((prev) => ({ ...prev, status: event.value }));
+            setFiltersValues((prev) => ({ ...prev, status: event?.value }));
           }}
         />
       ),
@@ -196,7 +196,7 @@ export const StudentTable = ({
                 setPage(1);
                 setFiltersValues((prevFIlters) => ({
                   ...prevFIlters,
-                  schoolId: event.value,
+                  schoolId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId}
@@ -216,7 +216,7 @@ export const StudentTable = ({
                 setPage(1);
                 setFiltersValues((prevFilters) => ({
                   ...prevFilters,
-                  coordinatorId: event.value,
+                  coordinatorId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}
@@ -241,7 +241,7 @@ export const StudentTable = ({
                 setPage(1);
                 setFiltersValues((prevFilters) => ({
                   ...prevFilters,
-                  teacherId: event.value,
+                  teacherId: event?.value,
                 }));
               }}
               projectId={filtersValues.projectId || undefined}
@@ -368,6 +368,14 @@ export const StudentTable = ({
                   handleChangeFilters('namePopover', 'name', event);
                 }}
               />
+              <InputCheckBoxThemed
+                label="Status"
+                register={register}
+                name="statusPopover"
+                onClick={(event) => {
+                  handleChangeFilters('statusPopover', 'status', event);
+                }}
+              />
               {(userIsAdm || userIsAdmMaster) && (
                 <InputCheckBoxThemed
                   label="Projeto"
@@ -422,14 +430,6 @@ export const StudentTable = ({
                 name="classroomPopover"
                 onClick={(event) => {
                   handleChangeFilters('classroomPopover', 'classId', event);
-                }}
-              />
-              <InputCheckBoxThemed
-                label="Status"
-                register={register}
-                name="statusPopover"
-                onClick={(event) => {
-                  handleChangeFilters('statusPopover', 'status', event);
                 }}
               />
             </form>

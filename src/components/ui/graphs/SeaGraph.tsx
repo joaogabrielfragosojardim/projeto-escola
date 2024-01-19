@@ -20,6 +20,9 @@ import {
 } from 'recharts';
 
 import { axiosApi } from '@/components/api/axiosApi';
+import { useUserIsAdm } from '@/hooks/useUserIsAdm';
+import { useUserIsAdmMaster } from '@/hooks/useUserIsAdmMaster';
+import { useUserIsTeacher } from '@/hooks/useUserIsTeacher';
 
 import { InputCheckBoxThemed } from '../forms/InputCheckBoxThemed';
 import { InputThemed } from '../forms/InputThemed';
@@ -27,6 +30,8 @@ import { Popover } from '../Popover';
 import { CoordinatorSelect } from '../tables/Selects/CoordinatorSelect';
 import { PeriodSelect } from '../tables/Selects/PeriodSelect';
 import { ProjectSelect } from '../tables/Selects/ProjectSelect';
+import { SchoolSelect } from '../tables/Selects/SchoolSelect';
+import { StudentSelect } from '../tables/Selects/StudentSelect';
 import { TeacherSelect } from '../tables/Selects/TeacherSelect';
 import { YearSelect } from '../tables/Selects/YearSelect';
 
@@ -61,6 +66,8 @@ export const SeaGraph = () => {
   const [graphData, setGraphData] = useState([]);
   const [filtersValues, setFiltersValues] = useState({
     teacherId: '',
+    schoolId: '',
+    studentId: '',
     year: '',
     period: '',
     projectId: '',
@@ -70,6 +77,9 @@ export const SeaGraph = () => {
     startDate: '',
     finalDate: '',
   });
+  const userIsAdmMaster = useUserIsAdmMaster();
+  const userIsAdm = useUserIsAdm();
+  const userIsTeacher = useUserIsTeacher();
 
   const maxDate = new Date();
   maxDate.setHours(maxDate.getHours() - 3);
@@ -77,16 +87,6 @@ export const SeaGraph = () => {
   const [filters, setFilters] = useState<{
     [key: string]: { element: ReactNode; view: boolean };
   }>({
-    projectPopover: {
-      element: (
-        <ProjectSelect
-          onChange={(event) => {
-            setFiltersValues((prev) => ({ ...prev, projectId: event.value }));
-          }}
-        />
-      ),
-      view: false,
-    },
     datePopover: {
       element: (
         <div className="flex items-center gap-[16px]">
@@ -114,6 +114,40 @@ export const SeaGraph = () => {
       ),
       view: true,
     },
+    projectPopover: {
+      element: (
+        <ProjectSelect
+          onChange={(event) => {
+            setFiltersValues((prev) => ({ ...prev, projectId: event?.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
+    schoolPopover: {
+      element: (
+        <SchoolSelect
+          coordinatorId={filtersValues.coordinatorId}
+          onChange={(event) => {
+            setFiltersValues((prev) => ({ ...prev, schoolId: event?.value }));
+          }}
+        />
+      ),
+      view: false,
+    },
+    coordinatorPopover: {
+      element: (
+        <CoordinatorSelect
+          onChange={(event) => {
+            setFiltersValues((prev) => ({
+              ...prev,
+              coordinatorId: event?.value,
+            }));
+          }}
+        />
+      ),
+      view: false,
+    },
     periodPopover: {
       element: (
         <div className="flex w-full items-center gap-[16px]">
@@ -132,26 +166,26 @@ export const SeaGraph = () => {
       ),
       view: false,
     },
-    coordinatorPopover: {
-      element: (
-        <CoordinatorSelect
-          onChange={(event) => {
-            setFiltersValues((prev) => ({
-              ...prev,
-              coordinatorId: event.value,
-            }));
-          }}
-        />
-      ),
-      view: false,
-    },
     socialEducatorPopover: {
       element: (
         <TeacherSelect
           onChange={(event) => {
             setFiltersValues((prev) => ({
               ...prev,
-              teacherId: event.value,
+              teacherId: event?.value,
+            }));
+          }}
+        />
+      ),
+      view: false,
+    },
+    studentPopover: {
+      element: (
+        <StudentSelect
+          onChange={(event) => {
+            setFiltersValues((prev) => ({
+              ...prev,
+              studentId: event?.value,
             }));
           }}
         />
@@ -171,12 +205,14 @@ export const SeaGraph = () => {
           period: filtersValues.period || null,
           projectId: filtersValues.projectId || null,
           coordinatorId: filtersValues.coordinatorId || null,
+          schoolId: filtersValues.schoolId || null,
+          studentId: filtersValues.studentId || null,
         },
       })
     ).data;
   };
 
-  const { isLoading, data, mutate } = useMutation('fetchSea', fetchSea, {
+  const { isLoading, mutate } = useMutation('fetchSea', fetchSea, {
     onSuccess: (dataFromApi) => {
       setGraphData(dataFromApi.data);
     },
@@ -217,10 +253,10 @@ export const SeaGraph = () => {
     }
   };
 
-  const sumNumbers = (data: any) => {
+  const sumNumbers = (dataNumbers: any) => {
     let total = 0;
 
-    data.forEach((item: any) => {
+    dataNumbers.forEach((item: any) => {
       total +=
         item['Pré-Silábico'] +
         item['Silábico'] +
@@ -231,6 +267,104 @@ export const SeaGraph = () => {
     return total;
   };
 
+  useEffect(() => {
+    if (filtersValues.projectId) {
+      setFilters((prev) => ({
+        ...prev,
+        schoolPopover: {
+          view: prev.schoolPopover?.view || false,
+          element: (
+            <SchoolSelect
+              onChange={(event) => {
+                setFiltersValues((prevFIlters) => ({
+                  ...prevFIlters,
+                  schoolId: event?.value,
+                }));
+              }}
+              projectId={filtersValues.projectId}
+            />
+          ),
+        },
+      }));
+    }
+    if (filtersValues.projectId || filtersValues.schoolId) {
+      setFilters((prev) => ({
+        ...prev,
+        coordinatorPopover: {
+          view: prev.coordinatorPopover?.view || false,
+          element: (
+            <CoordinatorSelect
+              onChange={(event) => {
+                setFiltersValues((prevFilters) => ({
+                  ...prevFilters,
+                  coordinatorId: event?.value,
+                }));
+              }}
+              projectId={filtersValues.projectId || undefined}
+              schoolId={filtersValues.schoolId || undefined}
+            />
+          ),
+        },
+      }));
+    }
+    if (
+      filtersValues.projectId ||
+      filtersValues.schoolId ||
+      filtersValues.coordinatorId
+    ) {
+      setFilters((prev) => ({
+        ...prev,
+        socialEducatorPopover: {
+          view: prev.socialEducatorPopover?.view || false,
+          element: (
+            <TeacherSelect
+              onChange={(event) => {
+                setFiltersValues((prevFilters) => ({
+                  ...prevFilters,
+                  teacherId: event?.value,
+                }));
+              }}
+              projectId={filtersValues.projectId || undefined}
+              schoolId={filtersValues.schoolId || undefined}
+              coordinatorId={filtersValues.coordinatorId || undefined}
+            />
+          ),
+        },
+      }));
+    }
+    if (
+      filtersValues.projectId ||
+      filtersValues.schoolId ||
+      filtersValues.coordinatorId ||
+      filtersValues.teacherId ||
+      filtersValues.period ||
+      filtersValues.year
+    ) {
+      setFilters((prev) => ({
+        ...prev,
+        studentPopover: {
+          view: prev.studentPopover?.view || false,
+          element: (
+            <StudentSelect
+              onChange={(event) => {
+                setFiltersValues((prevFilters) => ({
+                  ...prevFilters,
+                  studentId: event?.value,
+                }));
+              }}
+              projectId={filtersValues.projectId || undefined}
+              schoolId={filtersValues.schoolId || undefined}
+              coordinatorId={filtersValues.coordinatorId || undefined}
+              teacherId={filtersValues.teacherId || undefined}
+              year={filtersValues.year || undefined}
+              period={filtersValues.period || undefined}
+            />
+          ),
+        },
+      }));
+    }
+  }, [filtersValues]);
+
   return (
     <div>
       <div className="py-[22px] 2xl:p-[32px]">
@@ -238,7 +372,7 @@ export const SeaGraph = () => {
           <Popover
             triggerElement={
               <button
-                disabled={isLoading || !data?.data.length}
+                disabled={isLoading}
                 type="button"
                 className="flex items-center gap-[8px] rounded bg-main px-[16px] py-[8px] text-[14px] text-complement-100 disabled:opacity-60 2xl:gap-[16px] 2xl:text-[20px]"
               >
@@ -247,14 +381,40 @@ export const SeaGraph = () => {
             }
           >
             <form className="flex flex-col gap-[8px]">
-              <InputCheckBoxThemed
-                label="Projeto"
-                register={register}
-                name="projectPopover"
-                onClick={(event) => {
-                  handleChangeFilters('projectPopover', 'projectId', event);
-                }}
-              />
+              {!userIsTeacher && (
+                <InputCheckBoxThemed
+                  label="Projeto"
+                  register={register}
+                  name="projectPopover"
+                  onClick={(event) => {
+                    handleChangeFilters('projectPopover', 'projectId', event);
+                  }}
+                />
+              )}
+              {!userIsTeacher && (
+                <InputCheckBoxThemed
+                  label="Escola"
+                  register={register}
+                  name="schoolPopover"
+                  onClick={(event) => {
+                    handleChangeFilters('schoolPopover', 'schoolId', event);
+                  }}
+                />
+              )}
+              {(userIsAdm || userIsAdmMaster) && (
+                <InputCheckBoxThemed
+                  label="Coordenador"
+                  register={register}
+                  name="coordinatorPopover"
+                  onClick={(event) => {
+                    handleChangeFilters(
+                      'coordinatorPopover',
+                      'coordinatorId',
+                      event,
+                    );
+                  }}
+                />
+              )}
               <InputCheckBoxThemed
                 label="Turma"
                 register={register}
@@ -263,28 +423,26 @@ export const SeaGraph = () => {
                   handleChangeFilters('periodPopover', 'coordinatorId', event);
                 }}
               />
+              {!userIsTeacher && (
+                <InputCheckBoxThemed
+                  label="Educador"
+                  register={register}
+                  name="socialEducatorPopover"
+                  onClick={(event) => {
+                    handleChangeFilters(
+                      'socialEducatorPopover',
+                      'teacherId',
+                      event,
+                    );
+                  }}
+                />
+              )}
               <InputCheckBoxThemed
-                label="Coordenador"
+                label="Aluno"
                 register={register}
-                name="coordinatorPopover"
+                name="studentPopover"
                 onClick={(event) => {
-                  handleChangeFilters(
-                    'coordinatorPopover',
-                    'coordinatorId',
-                    event,
-                  );
-                }}
-              />
-              <InputCheckBoxThemed
-                label="Educador"
-                register={register}
-                name="socialEducatorPopover"
-                onClick={(event) => {
-                  handleChangeFilters(
-                    'socialEducatorPopover',
-                    'teacherId',
-                    event,
-                  );
+                  handleChangeFilters('studentPopover', 'studentId', event);
                 }}
               />
             </form>
@@ -379,7 +537,7 @@ export const SeaGraph = () => {
                 <Bar
                   dataKey="Alfabético"
                   fill="#35A853"
-                  activeBar={<Rectangle fill="#35a85478" stroke="purple" />}
+                  activeBar={<Rectangle fill="#35a85478" stroke="black" />}
                   // eslint-disable-next-line react/no-unstable-nested-components
                   label={(props) => {
                     const { x, y, value, width } = props;

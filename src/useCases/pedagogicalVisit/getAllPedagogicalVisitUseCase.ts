@@ -7,6 +7,7 @@ interface GetAllPedagogicalVisitUseCaseRequest {
   startDate?: Date;
   finalDate?: Date;
   coordinatorId?: string;
+  schoolId?: string;
   projectId?: string;
   teacherId?: string;
   period?: string;
@@ -19,6 +20,7 @@ export class GetAllPedagogicalVisitsUseCase {
     page,
     perPage,
     coordinatorId,
+    schoolId,
     projectId,
     teacherId,
     finalDate,
@@ -63,6 +65,7 @@ export class GetAllPedagogicalVisitsUseCase {
               equals: year,
             },
           },
+          schoolId: { equals: schoolId },
         },
         select: {
           date: true,
@@ -95,7 +98,32 @@ export class GetAllPedagogicalVisitsUseCase {
         skip,
         take,
       }),
-      prisma.pedagogicalVisit.count({}),
+      prisma.pedagogicalVisit.count({
+        where: {
+          date: {
+            gte: startDate,
+            lte: finalDate,
+          },
+          coordinatorId: {
+            equals: coordinatorId || coordinator?.id,
+          },
+          teacherId: { equals: teacherId },
+          School: {
+            projectId: {
+              equals: projectId,
+            },
+          },
+          Classroom: {
+            period: {
+              equals: period,
+            },
+            year: {
+              equals: year,
+            },
+          },
+          schoolId: { equals: schoolId },
+        },
+      }),
     ]);
 
     const totalPage = Math.ceil(total / take);

@@ -8,7 +8,9 @@ export class GetAllSeaController {
     try {
       const getAllSeaSchema = z.object({
         teacherId: z.string().uuid().optional(),
+        studentId: z.string().uuid().optional(),
         coordinatorId: z.string().uuid().optional(),
+        schoolId: z.string().uuid().optional(),
         projectId: z.string().uuid().optional(),
         startDate: z.coerce.date().optional(),
         finalDate: z.coerce.date().optional(),
@@ -23,12 +25,13 @@ export class GetAllSeaController {
         finalDate,
         teacherId,
         coordinatorId,
+        studentId,
         projectId,
+        schoolId,
       } = getAllSeaSchema.parse(req.query);
+      const { userId } = req;
 
       const getAllSeaUseCase = new GetAllSeaUseCase();
-
-      const { userId } = req;
 
       const { data } = await getAllSeaUseCase.execute({
         period,
@@ -38,6 +41,8 @@ export class GetAllSeaController {
         teacherId,
         coordinatorId,
         projectId,
+        studentId,
+        schoolId,
         userId,
       });
 
