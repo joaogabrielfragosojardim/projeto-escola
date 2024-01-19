@@ -5,6 +5,7 @@ import { Img } from '@react-email/img';
 import { Row } from '@react-email/row';
 import { Section } from '@react-email/section';
 import { Text } from '@react-email/text';
+import { LOGO_URL } from '@/constants/contacts';
 import * as React from 'react';
 
 interface PasswordEmailTemplateProps {
@@ -35,7 +36,7 @@ export const PasswordEmail: React.FC<Readonly<PasswordEmailTemplateProps>> = ({
           <Img
             style={img}
             alt="Escola prime"
-            src="https://jrgqdaonyjwefdaxvvjt.supabase.co/storage/v1/object/public/project-school-bucket/logo.png"
+            src={LOGO_URL}
           />
         </Column>
       </Row>
