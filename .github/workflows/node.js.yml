@@ -23,6 +23,7 @@ jobs:
         echo "NEXT_PUBLIC_SUPABASE_KEY=${{secrets.NEXT_PUBLIC_SUPABASE_KEY}}" >> .env
         echo "NEXT_PUBLIC_SUPABASE_PROJECT_URL=${{secrets.NEXT_PUBLIC_SUPABASE_PROJECT_URL}}" >> .env
         echo "RESEND_API_KEY=${{secrets.RESEND_API_KEY}}" >> .env
+        echo "NEXT_PUBLIC_LOGO_URL=${{secrets.NEXT_PUBLIC_LOGO_URL}}" >> .env
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
