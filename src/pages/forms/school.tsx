@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { verify } from 'jsonwebtoken';
 import type { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
@@ -151,17 +152,7 @@ const SchoolFormSecondStep = ({
     }
     const {
       data: { localidade, uf },
-    } = await axiosApi.get(`https://viacep.com.br/ws/${cep}/json/`, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'OPTIONS, HEAD, GET',
-        'Access-Control-Allow-Headers':
-          'Access-Control-Allow-Origin, X-Requested-With, X-HTTP-Method-Override, Content-Type, Authorization, Accept',
-        'Access-Control-Allow-Credentials': 'true',
-        Accept: 'text/plain; charset=utf-8',
-        'Content-Type': 'text/plain; charset=utf-8',
-      },
-    });
+    } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
     setValue('city', localidade);
     setValue('state', uf);
   };
