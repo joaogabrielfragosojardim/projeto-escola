@@ -3,14 +3,6 @@ name: Node.js CI
 on:
   push:
     branches: [ "prod" ]
-
-env:
-  DATABASE_URL: ${{secrets.DATABASE_URL}}
-  SECRET_KEY: ${{secrets.SECRET_KEY}}
-  NEXT_PUBLIC_BASE_URL: ${{secrets.NEXT_PUBLIC_BASE_URL}}
-  NEXT_PUBLIC_SUPABASE_KEY: ${{secrets.NEXT_PUBLIC_SUPABASE_KEY}}
-  NEXT_PUBLIC_SUPABASE_PROJECT_URL: ${{secrets.NEXT_PUBLIC_SUPABASE_PROJECT_URL}}
-  RESEND_API_KEY: ${{secrets.RESEND_API_KEY}}
   
 jobs:
   build:
@@ -26,9 +18,18 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm i -g yarn
-    - run: yarn
+        cache: 'yarn'
+    - run: yarn install
     - run: yarn build
     - run: cd /home/escolaprime/actions-runner/_work/Escola-Prime/Escola-Prime
     - run: pm2 restart 0
+    
+    env:
+        DATABASE_URL: ${{secrets.DATABASE_URL}}
+        SECRET_KEY: ${{secrets.SECRET_KEY}}
+        NEXT_PUBLIC_BASE_URL: ${{secrets.NEXT_PUBLIC_BASE_URL}}
+        NEXT_PUBLIC_SUPABASE_KEY: ${{secrets.NEXT_PUBLIC_SUPABASE_KEY}}
+        NEXT_PUBLIC_SUPABASE_PROJECT_URL: ${{secrets.NEXT_PUBLIC_SUPABASE_PROJECT_URL}}
+        RESEND_API_KEY: ${{secrets.RESEND_API_KEY}}
+
+
