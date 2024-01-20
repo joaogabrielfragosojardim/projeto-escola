@@ -89,7 +89,7 @@ const Login = () => {
           </div>
         </div>
         <div className="text-center text-[24px] text-main">
-          <p>Seja bem vindo(a) a Escola Prime</p>
+          <p>Seja bem-vindo(a) à Escola Prime</p>
         </div>
         <form className="mt-[52px]" onSubmit={handleSubmit(onSubmit)}>
           <InputThemed
