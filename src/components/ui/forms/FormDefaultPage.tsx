@@ -18,6 +18,8 @@ export const FormDefaultPage = ({
           alt="image-form-create"
           className="object-cover"
           fill
+          quality={100}
+          style={{ objectFit: 'cover' }}
         />
       </div>
     </div>

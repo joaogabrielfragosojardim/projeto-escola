@@ -115,10 +115,7 @@ const AdmForm = () => {
 
 const Project = () => {
   return (
-    <FormDefaultPage
-      image="/assets/images/form-project.png"
-      form={<AdmForm />}
-    />
+    <FormDefaultPage image="/assets/images/form-adm.jpg" form={<AdmForm />} />
   );
 };
 

@@ -284,7 +284,7 @@ const Coordinator = ({
   const [step, setStep] = useState(0);
   return (
     <FormDefaultPage
-      image="/assets/images/form-coordinator.png"
+      image="/assets/images/form-coordinator.jpg"
       form={
         <MultiStepForm
           step={step}

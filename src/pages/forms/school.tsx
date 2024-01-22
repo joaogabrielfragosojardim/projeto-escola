@@ -323,7 +323,7 @@ const School = ({
   const [step, setStep] = useState(0);
   return (
     <FormDefaultPage
-      image="/assets/images/form-school.png"
+      image="/assets/images/form-school.jpg"
       form={
         <MultiStepForm
           step={step}

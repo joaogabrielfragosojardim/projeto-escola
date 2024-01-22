@@ -80,7 +80,13 @@ const Login = () => {
   return (
     <div className="flex h-[100vh] w-full justify-center">
       <div className="relative hidden h-full w-[42%] lg:inline">
-        <Image src="/assets/images/login.png" alt="" fill />
+        <Image
+          src="/assets/images/login.jpg"
+          alt=""
+          fill
+          quality={100}
+          style={{ objectFit: 'cover' }}
+        />
       </div>
       <div className="w-full px-[20px] md:w-[58%] lg:px-[190px]">
         <div className="mt-[32px]">
