@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { verify } from 'jsonwebtoken';
 import type { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
@@ -90,7 +91,7 @@ const School = ({
     }
     const {
       data: { localidade, uf },
-    } = await axiosApi.get(`https://viacep.com.br/ws/${cep}/json/`);
+    } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
     setValue('city', localidade);
     setValue('state', uf);
   };

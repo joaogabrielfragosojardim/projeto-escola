@@ -9,6 +9,7 @@ const authMethods: Record<HttpMethod, boolean> = {
   POST: true,
   DELETE: false,
   PUT: false,
+  OPTIONS: false,
 };
 
 export default async function handler(

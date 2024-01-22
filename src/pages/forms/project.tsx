@@ -118,7 +118,7 @@ const ProjectForm = () => {
 const Project = () => {
   return (
     <FormDefaultPage
-      image="/assets/images/form-project.png"
+      image="/assets/images/form-project.jpg"
       form={<ProjectForm />}
     />
   );

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { verify } from 'jsonwebtoken';
 import type { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
@@ -151,7 +152,7 @@ const SchoolFormSecondStep = ({
     }
     const {
       data: { localidade, uf },
-    } = await axiosApi.get(`https://viacep.com.br/ws/${cep}/json/`);
+    } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
     setValue('city', localidade);
     setValue('state', uf);
   };
@@ -322,7 +323,7 @@ const School = ({
   const [step, setStep] = useState(0);
   return (
     <FormDefaultPage
-      image="/assets/images/form-school.png"
+      image="/assets/images/form-school.jpg"
       form={
         <MultiStepForm
           step={step}

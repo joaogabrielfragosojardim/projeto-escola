@@ -324,7 +324,7 @@ const Educator = ({
   const [step, setStep] = useState(0);
   return (
     <FormDefaultPage
-      image="/assets/images/form-educator.png"
+      image="/assets/images/form-educator.jpg"
       form={
         <MultiStepForm
           step={step}
